@@ -9,24 +9,23 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.mate.carpool.R
 
-class RegisterDetailFragment : Fragment() {
-
-    //todo_sypark 이부분 부터 작업 진행해주시면 됩니다.
+class LoginFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_register_detail, container, false)
+        return inflater.inflate(R.layout.fragment_login, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val btnConfirm = view.findViewById<Button>(R.id.btn_confirm)
-        btnConfirm.setOnClickListener {
-            findNavController().navigate(RegisterDetailFragmentDirections.actionRegisterDetailFragmentToMainFragment())
-        }
+        val btnLogin = view.findViewById<Button>(R.id.btn_login)
 
+        btnLogin.setOnClickListener {
+            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
+        }
     }
+
 }

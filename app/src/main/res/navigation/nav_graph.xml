@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.mate.carpool.LoginFragment"
+        android:name="com.mate.carpool.fragments.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
         <action
@@ -29,6 +29,16 @@
         android:id="@+id/registerDetailFragment"
         android:name="com.mate.carpool.fragments.RegisterDetailFragment"
         android:label="RegisterDetailFragment"
-        tools:layout="@layout/fragment_register_detail" />
+        tools:layout="@layout/fragment_register_detail">
+        <action
+            android:id="@+id/action_registerDetailFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.mate.carpool.fragments.MainFragment"
+        android:label="MainFragment"
+        tools:layout="@layout/fragment_main" />
 
 </navigation>
