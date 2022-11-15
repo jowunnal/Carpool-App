@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">com.mate.carpool</string>
+    <string name="login_title">경운대학교\n카풀 서비스</string>
+    <string name="login_content">간편하게 가입하고 \n카풀 서비스를 이용해보세요</string>
+    <string name="login_start">시작하기</string>
+    <string name="login_id_check">이미 아이디가 있으신가요?</string>
 </resources>
