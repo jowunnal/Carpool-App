@@ -9,6 +9,7 @@
     <string name="login_name">이름</string>
     <string name="login_confirm">확인</string>
     <string name="login_next">다음</string>
+    <string name="login_finish">완료하기</string>
     <string name="login_name_example">예: 홍길동</string>
     <string name="login_input_student_number">학번을 입력해주세요.</string>
     <string name="login_input_student_major">학과를 입력해주세요.</string>
@@ -25,4 +26,9 @@
     <string name="login_number_example">예: 01011111111</string>
     <string name="login_type_content">드라이버는 자차보유자를, 패신저는 승객(이용자)를 뜻합니다.\n추후에 변경 가능합니다.</string>
     <string name="login_profile_content">미설정시, 기본이미지로 자동설정됩니다.</string>
+    <string name="login_select_monday">월</string>
+    <string name="login_select_tuesday">화</string>
+    <string name="login_select_wednesday">수</string>
+    <string name="login_select_thursday">목</string>
+    <string name="login_select_friday">금</string>
 </resources>

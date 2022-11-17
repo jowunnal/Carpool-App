@@ -28,19 +28,71 @@
         <RelativeLayout
             android:id="@+id/layout_type"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/text_login_type">
+            android:layout_height="44dp"
+            android:layout_below="@+id/text_login_type"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
-                android:layout_marginStart="21.5dp"
-                android:layout_marginEnd="21.5dp"
                 android:orientation="horizontal">
 
                 <Button
-                    android:layout_width="44dp"
-                    android:layout_height="match_parent" />
+                    android:id="@+id/btn_mon"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_circle"
+                    android:text="@string/login_select_monday"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/btn_tue"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_circle"
+                    android:text="@string/login_select_tuesday"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/btn_wed"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_circle"
+                    android:text="@string/login_select_wednesday"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/btn_thu"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_circle"
+                    android:text="@string/login_select_thursday"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/btn_fri"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_circle"
+                    android:text="@string/login_select_friday"
+                    android:textColor="@color/white" />
 
             </LinearLayout>
 
