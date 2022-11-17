@@ -52,7 +52,34 @@
         android:id="@+id/loginStartFragment3"
         android:name="com.mate.carpool.fragments.LoginStartFragment3"
         android:label="LoginStartFragment3"
-        tools:layout="@layout/fragment_login_start3" />
+        tools:layout="@layout/fragment_login_start3">
+        <action
+            android:id="@+id/action_loginStartFragment3_to_loginStartFragment4"
+            app:destination="@id/loginStartFragment4" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginStartFragment4"
+        android:name="com.mate.carpool.fragments.LoginStartFragment4"
+        android:label="LoginStartFragment4"
+        tools:layout="@layout/fragment_login_start4">
+        <action
+            android:id="@+id/action_loginStartFragment4_to_loginTypeFragment"
+            app:destination="@id/loginTypeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginTypeFragment"
+        android:name="com.mate.carpool.fragments.LoginTypeFragment"
+        android:label="LoginTypeFragment"
+        tools:layout="@layout/fragment_login_type">
+        <action
+            android:id="@+id/action_loginTypeFragment_to_loginProfileFragment"
+            app:destination="@id/loginProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginProfileFragment"
+        android:name="com.mate.carpool.fragments.LoginProfileFragment"
+        android:label="LoginProfileFragment"
+        tools:layout="@layout/fragment_login_profile" />
 
 
     <!--    <fragment-->

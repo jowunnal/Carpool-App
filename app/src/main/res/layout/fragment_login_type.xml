@@ -18,7 +18,7 @@
             android:id="@+id/text_login_type"
             android:layout_width="match_parent"
             android:layout_height="58dp"
-            android:text="@string/login_input_student_number"
+            android:text="@string/login_input_type"
             android:textColor="@color/black"
             android:textSize="22sp"
             android:textStyle="bold"
@@ -26,54 +26,51 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <RelativeLayout
-            android:id="@+id/layout_student_number"
+            android:id="@+id/layout_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_login_type">
 
             <TextView
-                android:id="@+id/text_student_number"
-                android:layout_width="wrap_content"
+                android:id="@+id/text_type_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/login_student_number"
-                android:textColor="@color/black_151515"
+                android:text="@string/login_type_content"
+                android:textColor="@color/gray_4E5760"
                 android:textSize="13sp" />
 
-            <EditText
-                android:id="@+id/edit_student_number"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:layout_below="@+id/text_student_number"
-                android:background="@drawable/round_10_gray"
-                android:hint="@string/login_student_number_example"
-                android:paddingStart="5dp" />
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:id="@+id/layout_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/layout_student_number"
-            android:layout_marginTop="24dp">
-
-            <TextView
-                android:id="@+id/text_name"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/login_name"
-                android:textColor="@color/black_151515"
-                android:textSize="13sp" />
+                android:layout_below="@+id/text_type_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/ic_register_detail_round_20_white"
+                android:orientation="horizontal"
+                android:padding="3dp">
 
-            <EditText
-                android:id="@+id/edit_name"
-                android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:layout_below="@+id/text_name"
-                android:background="@drawable/round_10_gray"
-                android:enabled="false"
-                android:hint="@string/login_name_example"
-                android:paddingStart="5dp" />
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_20_blue"
+                    android:text="드라이버"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/button2"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_20_blue"
+                    android:text="패신저"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </RelativeLayout>
 
         <Button

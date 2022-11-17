@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.mate.carpool.R
 
 class LoginStartFragment3 : Fragment() {
@@ -33,7 +34,7 @@ class LoginStartFragment3 : Fragment() {
             .setTitle("입력하신 정보가 정확한가요?")
             .setMessage("이름,학번과 학과는 추후 수정이 불가능합니다. \n다음으로 넘어가시겠어요?")
             .setPositiveButton("확인") { _: DialogInterface, _ ->
-//                findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToRegisterDetailFragment())
+                findNavController().navigate(LoginStartFragment3Directions.actionLoginStartFragment3ToLoginStartFragment4())
             }
             .setNegativeButton("취소") { dialog: DialogInterface, _ -> dialog.dismiss() }
             .show()
