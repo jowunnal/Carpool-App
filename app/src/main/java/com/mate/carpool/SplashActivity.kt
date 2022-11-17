@@ -12,12 +12,17 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
+        val delayTime = if (BuildConfig.DEBUG) {
+             100
+        } else {
+            3000
+        }
         Handler(Looper.getMainLooper()).postDelayed({
             val intent = Intent(this, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
             finish()
-        }, 3000)
+        }, delayTime.toLong())
 
     }
 

@@ -10,35 +10,74 @@
         android:name="com.mate.carpool.fragments.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
+
         <action
-            android:id="@+id/action_loginFragment_to_registerFragment"
-            app:destination="@id/registerFragment" />
+            android:id="@+id/action_loginFragment_to_loginStartFragment1"
+            app:destination="@id/loginStartFragment1" />
     </fragment>
 
     <fragment
-        android:id="@+id/registerFragment"
-        android:name="com.mate.carpool.fragments.RegisterFragment"
-        android:label="RegisterFragment"
-        tools:layout="@layout/fragment_register">
+        android:id="@+id/loginStartFragment1"
+        android:name="com.mate.carpool.fragments.LoginStartFragment1"
+        android:label="LoginStartFragment1"
+        tools:layout="@layout/fragment_login_start1">
+
+        <!--        <argument-->
+        <!--            android:name="userInfo"-->
+        <!--            app:argType="com.mate.carpool.model.UserInfo" />-->
+
         <action
-            android:id="@+id/action_registerFragment_to_registerDetailFragment"
-            app:destination="@id/registerDetailFragment" />
-    </fragment>
+            android:id="@+id/action_loginStartFragment1_to_loginStartFragment2"
+            app:destination="@id/loginStartFragment2">
+            <!--            <argument-->
+            <!--                android:name="userInfo"-->
+            <!--                app:argType="com.mate.carpool.model.UserInfo" />-->
+        </action>
 
+    </fragment>
     <fragment
-        android:id="@+id/registerDetailFragment"
-        android:name="com.mate.carpool.fragments.RegisterDetailFragment"
-        android:label="RegisterDetailFragment"
-        tools:layout="@layout/fragment_register_detail">
+        android:id="@+id/loginStartFragment2"
+        android:name="com.mate.carpool.fragments.LoginStartFragment2"
+        android:label="LoginStartFragment2"
+        tools:layout="@layout/fragment_login_start2">
+
+        <!--        <argument-->
+        <!--            android:name="userInfo"-->
+        <!--            app:argType="com.mate.carpool.model.UserInfo" />-->
         <action
-            android:id="@+id/action_registerDetailFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
+            android:id="@+id/action_loginStartFragment2_to_loginStartFragment3"
+            app:destination="@id/loginStartFragment3" />
     </fragment>
-
     <fragment
-        android:id="@+id/mainFragment"
-        android:name="com.mate.carpool.fragments.MainFragment"
-        android:label="MainFragment"
-        tools:layout="@layout/fragment_main" />
+        android:id="@+id/loginStartFragment3"
+        android:name="com.mate.carpool.fragments.LoginStartFragment3"
+        android:label="LoginStartFragment3"
+        tools:layout="@layout/fragment_login_start3" />
 
+
+    <!--    <fragment-->
+    <!--        android:id="@+id/registerFragment"-->
+    <!--        android:name="com.mate.carpool.fragments.RegisterFragment"-->
+    <!--        android:label="RegisterFragment"-->
+    <!--        tools:layout="@layout/fragment_register">-->
+    <!--        <action-->
+    <!--            android:id="@+id/action_registerFragment_to_registerDetailFragment"-->
+    <!--            app:destination="@id/registerDetailFragment" />-->
+    <!--    </fragment>-->
+
+    <!--    <fragment-->
+    <!--        android:id="@+id/registerDetailFragment"-->
+    <!--        android:name="com.mate.carpool.fragments.RegisterDetailFragment"-->
+    <!--        android:label="RegisterDetailFragment"-->
+    <!--        tools:layout="@layout/fragment_register_detail">-->
+    <!--        <action-->
+    <!--            android:id="@+id/action_registerDetailFragment_to_mainFragment"-->
+    <!--            app:destination="@id/mainFragment" />-->
+    <!--    </fragment>-->
+
+    <!--    <fragment-->
+    <!--        android:id="@+id/mainFragment"-->
+    <!--        android:name="com.mate.carpool.fragments.MainFragment"-->
+    <!--        android:label="MainFragment"-->
+    <!--        tools:layout="@layout/fragment_main" />-->
 </navigation>

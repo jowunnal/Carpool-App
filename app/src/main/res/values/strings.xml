@@ -1,7 +1,19 @@
 <resources>
-    <string name="app_name">com.mate.carpool</string>
+    <string name="app_name">carpool</string>
     <string name="login_title">경운대학교\n카풀 서비스</string>
     <string name="login_content">간편하게 가입하고 \n카풀 서비스를 이용해보세요</string>
-    <string name="login_start">시작하기</string>
+    <string name="login_register">시작하기</string>
     <string name="login_id_check">이미 아이디가 있으신가요?</string>
+    <string name="login_start"><u>로그인 하기</u></string>
+    <string name="login_input_name">이름을 입력해주세요.</string>
+    <string name="login_name">이름</string>
+    <string name="login_confirm">확인</string>
+    <string name="login_next">다음</string>
+    <string name="login_name_example">예: 홍길동</string>
+    <string name="login_input_student_number">학번을 입력해주세요.</string>
+    <string name="login_input_student_major">학과를 입력해주세요.</string>
+    <string name="login_student_number">학번</string>
+    <string name="login_student_number_example">예: 123@</string>
+    <string name="login_student_major">학과</string>
+    <string name="login_student_major_example">예: 미학과</string>
 </resources>

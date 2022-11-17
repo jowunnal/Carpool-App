@@ -9,23 +9,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.mate.carpool.R
 
-class RegisterFragment : Fragment() {
+class LoginStartFragment3 : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_register, container, false)
+        return inflater.inflate(R.layout.fragment_login_start3, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val btnRegister = view.findViewById<Button>(R.id.btn_register)
-        btnRegister.setOnClickListener {
+        val btnNext = view.findViewById<Button>(R.id.btn_confirm)
+        btnNext.setOnClickListener {
             showDialog(it.context)
         }
     }
@@ -33,11 +31,11 @@ class RegisterFragment : Fragment() {
     private fun showDialog(context: Context) {
         AlertDialog.Builder(context)
             .setTitle("입력하신 정보가 정확한가요?")
-            .setMessage("한번 입력하신 정보는 수정 및 변경 불가합니다. 정확히 확인 후 입력해주세요!")
+            .setMessage("이름,학번과 학과는 추후 수정이 불가능합니다. \n다음으로 넘어가시겠어요?")
             .setPositiveButton("확인") { _: DialogInterface, _ ->
 //                findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToRegisterDetailFragment())
             }
-            .setNegativeButton("수정") { dialog: DialogInterface, _ -> dialog.dismiss() }
+            .setNegativeButton("취소") { dialog: DialogInterface, _ -> dialog.dismiss() }
             .show()
     }
 }

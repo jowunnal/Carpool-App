@@ -31,7 +31,6 @@
             android:layout_height="16dp"
             android:layout_alignBottom="@+id/text_login_title"
             android:layout_marginStart="7dp"
-
             android:layout_toEndOf="@+id/text_login_title"
             android:src="@drawable/ic_car"
             app:layout_constraintTop_toTopOf="parent" />
@@ -46,9 +45,10 @@
             app:layout_constraintTop_toBottomOf="@+id/text_login_title" />
 
         <LinearLayout
+            android:id="@+id/layout_login_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/btn_login"
+            android:layout_above="@+id/btn_confirm"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="18dp"
             android:orientation="vertical">
@@ -59,10 +59,18 @@
                 android:text="@string/login_id_check"
                 android:textColor="@color/black_151515" />
 
+            <TextView
+                android:id="@+id/text_login_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/gray"
+                android:textSize="14sp" />
+
         </LinearLayout>
 
         <Button
-            android:id="@+id/btn_login"
+            android:id="@+id/btn_confirm"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_alignParentBottom="true"
@@ -70,7 +78,7 @@
             android:height="50dp"
             android:background="@drawable/round_100_blue"
             android:gravity="center"
-            android:text="@string/login_start"
+            android:text="@string/login_register"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
