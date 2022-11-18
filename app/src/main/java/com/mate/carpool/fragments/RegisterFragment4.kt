@@ -9,20 +9,20 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.mate.carpool.R
 
-class LoginStartFragment2 : Fragment() {
+class RegisterFragment4 : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_login_start2, container, false)
+        return inflater.inflate(R.layout.fragment_register4, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val btnNext = view.findViewById<Button>(R.id.btn_confirm)
         btnNext.setOnClickListener {
-            findNavController().navigate(LoginStartFragment2Directions.actionLoginStartFragment2ToLoginStartFragment3())
+            findNavController().navigate(RegisterFragment4Directions.actionRegisterFragment4ToRegisterTypeFragment())
         }
     }
 }

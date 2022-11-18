@@ -28,7 +28,7 @@ class LoginFragment : Fragment() {
         val btnLogin = view.findViewById<Button>(R.id.btn_confirm)
 
         btnLogin.setOnClickListener {
-            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToLoginStartFragment1())
+            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment1())
         }
 
         val loginString = "로그인 하기"

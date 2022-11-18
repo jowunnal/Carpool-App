@@ -12,99 +12,87 @@
         tools:layout="@layout/fragment_login">
 
         <action
-            android:id="@+id/action_loginFragment_to_loginStartFragment1"
-            app:destination="@id/loginStartFragment1" />
+            android:id="@+id/action_loginFragment_to_RegisterFragment1"
+            app:destination="@id/RegisterFragment1" />
     </fragment>
 
     <fragment
-        android:id="@+id/loginStartFragment1"
-        android:name="com.mate.carpool.fragments.LoginStartFragment1"
-        android:label="LoginStartFragment1"
-        tools:layout="@layout/fragment_login_start1">
+        android:id="@+id/RegisterFragment1"
+        android:name="com.mate.carpool.fragments.RegisterFragment1"
+        android:label="RegisterFragment1"
+        tools:layout="@layout/fragment_register1">
 
         <!--        <argument-->
         <!--            android:name="userInfo"-->
         <!--            app:argType="com.mate.carpool.model.UserInfo" />-->
 
-        <action
-            android:id="@+id/action_loginStartFragment1_to_loginStartFragment2"
-            app:destination="@id/loginStartFragment2">
+
             <!--            <argument-->
             <!--                android:name="userInfo"-->
             <!--                app:argType="com.mate.carpool.model.UserInfo" />-->
-        </action>
 
+
+        <action
+            android:id="@+id/action_RegisterFragment1_to_RegisterFragment2"
+            app:destination="@id/RegisterFragment2" />
     </fragment>
     <fragment
-        android:id="@+id/loginStartFragment2"
-        android:name="com.mate.carpool.fragments.LoginStartFragment2"
-        android:label="LoginStartFragment2"
-        tools:layout="@layout/fragment_login_start2">
+        android:id="@+id/RegisterFragment2"
+        android:name="com.mate.carpool.fragments.RegisterFragment2"
+        android:label="RegisterFragment2"
+        tools:layout="@layout/fragment_register2">
 
         <!--        <argument-->
         <!--            android:name="userInfo"-->
         <!--            app:argType="com.mate.carpool.model.UserInfo" />-->
+
         <action
-            android:id="@+id/action_loginStartFragment2_to_loginStartFragment3"
-            app:destination="@id/loginStartFragment3" />
+            android:id="@+id/action_RegisterFragment2_to_RegisterFragment3"
+            app:destination="@id/RegisterFragment3" />
     </fragment>
     <fragment
-        android:id="@+id/loginStartFragment3"
-        android:name="com.mate.carpool.fragments.LoginStartFragment3"
-        android:label="LoginStartFragment3"
-        tools:layout="@layout/fragment_login_start3">
+        android:id="@+id/RegisterFragment3"
+        android:name="com.mate.carpool.fragments.RegisterFragment3"
+        android:label="RegisterFragment3"
+        tools:layout="@layout/fragment_register3">
+
         <action
-            android:id="@+id/action_loginStartFragment3_to_loginStartFragment4"
-            app:destination="@id/loginStartFragment4" />
+            android:id="@+id/action_RegisterFragment3_to_RegisterFragment4"
+            app:destination="@id/RegisterFragment4" />
     </fragment>
     <fragment
-        android:id="@+id/loginStartFragment4"
-        android:name="com.mate.carpool.fragments.LoginStartFragment4"
-        android:label="LoginStartFragment4"
-        tools:layout="@layout/fragment_login_start4">
+        android:id="@+id/RegisterFragment4"
+        android:name="com.mate.carpool.fragments.RegisterFragment4"
+        android:label="RegisterFragment4"
+        tools:layout="@layout/fragment_register4">
+
         <action
-            android:id="@+id/action_loginStartFragment4_to_loginTypeFragment"
-            app:destination="@id/loginTypeFragment" />
+            android:id="@+id/action_RegisterFragment4_to_RegisterTypeFragment"
+            app:destination="@id/RegisterTypeFragment" />
     </fragment>
     <fragment
-        android:id="@+id/loginTypeFragment"
-        android:name="com.mate.carpool.fragments.LoginTypeFragment"
+        android:id="@+id/RegisterTypeFragment"
+        android:name="com.mate.carpool.fragments.RegisterTypeFragment"
         android:label="LoginTypeFragment"
-        tools:layout="@layout/fragment_login_type">
+        tools:layout="@layout/fragment_register_type">
+
         <action
-            android:id="@+id/action_loginTypeFragment_to_loginProfileFragment"
-            app:destination="@id/loginProfileFragment" />
+            android:id="@+id/action_RegisterTypeFragment_to_RegisterProfileFragment"
+            app:destination="@id/RegisterProfileFragment" />
     </fragment>
     <fragment
-        android:id="@+id/loginProfileFragment"
-        android:name="com.mate.carpool.fragments.LoginProfileFragment"
-        android:label="LoginProfileFragment"
-        tools:layout="@layout/fragment_login_profile" />
+        android:id="@+id/RegisterProfileFragment"
+        android:name="com.mate.carpool.fragments.RegisterProfileFragment"
+        android:label="RegisterProfileFragment"
+        tools:layout="@layout/fragment_register_profile">
 
-
-    <!--    <fragment-->
-    <!--        android:id="@+id/registerFragment"-->
-    <!--        android:name="com.mate.carpool.fragments.RegisterFragment"-->
-    <!--        android:label="RegisterFragment"-->
-    <!--        tools:layout="@layout/fragment_register">-->
-    <!--        <action-->
-    <!--            android:id="@+id/action_registerFragment_to_registerDetailFragment"-->
-    <!--            app:destination="@id/registerDetailFragment" />-->
-    <!--    </fragment>-->
-
-    <!--    <fragment-->
-    <!--        android:id="@+id/registerDetailFragment"-->
-    <!--        android:name="com.mate.carpool.fragments.RegisterDetailFragment"-->
-    <!--        android:label="RegisterDetailFragment"-->
-    <!--        tools:layout="@layout/fragment_register_detail">-->
-    <!--        <action-->
-    <!--            android:id="@+id/action_registerDetailFragment_to_mainFragment"-->
-    <!--            app:destination="@id/mainFragment" />-->
-    <!--    </fragment>-->
-
-    <!--    <fragment-->
-    <!--        android:id="@+id/mainFragment"-->
-    <!--        android:name="com.mate.carpool.fragments.MainFragment"-->
-    <!--        android:label="MainFragment"-->
-    <!--        tools:layout="@layout/fragment_main" />-->
+        <action
+            android:id="@+id/action_RegisterProfileFragment_to_RegisterSelectDayFragment"
+            app:destination="@id/RegisterSelectDayFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/RegisterSelectDayFragment"
+        android:name="com.mate.carpool.fragments.RegisterSelectDayFragment"
+        android:label="LoginSelectDayFragment"
+        tools:layout="@layout/fragment_register_select_day" />
 </navigation>

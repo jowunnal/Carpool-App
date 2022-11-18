@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.mate.carpool.R
 
-class LoginStartFragment1 : Fragment() {
+class RegisterFragment1 : Fragment() {
 
 //    private val args: LoginStartFragment1Args by navArgs()
 
@@ -19,7 +19,7 @@ class LoginStartFragment1 : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_login_start1, container, false)
+        return inflater.inflate(R.layout.fragment_register1, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -32,9 +32,7 @@ class LoginStartFragment1 : Fragment() {
 //            args.userInfo.name = name.toString()
 
             findNavController().navigate(
-                LoginStartFragment1Directions.actionLoginStartFragment1ToLoginStartFragment2(
-//                    args.userInfo
-                )
+                RegisterFragment1Directions.actionRegisterFragment1ToRegisterFragment2()
             )
         }
     }
