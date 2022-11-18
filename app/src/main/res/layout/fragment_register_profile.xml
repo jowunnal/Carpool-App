@@ -32,7 +32,7 @@
             android:layout_below="@+id/text_login_type">
 
             <TextView
-                android:id="@+id/text_type_content"
+                android:id="@+id/text_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/login_profile_content"
@@ -43,7 +43,7 @@
                 android:id="@+id/img_profile"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:layout_below="@+id/text_type_content"
+                android:layout_below="@+id/text_number"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/drawable_round" />
 

@@ -32,7 +32,7 @@
             android:layout_below="@+id/text_login_type">
 
             <TextView
-                android:id="@+id/text_type_content"
+                android:id="@+id/text_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/login_number"
@@ -40,10 +40,10 @@
                 android:textSize="13sp" />
 
             <EditText
-                android:id="@+id/edit_student_major"
+                android:id="@+id/edit_number"
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
-                android:layout_below="@+id/text_type_content"
+                android:layout_below="@+id/text_number"
                 android:background="@drawable/round_10_gray"
                 android:hint="@string/login_number_example"
                 android:paddingStart="5dp" />

@@ -16,6 +16,7 @@
     <string name="login_input_number">전화번호를 입력해주세요.</string>
     <string name="login_input_type">사용자 유형을 선택해주세요.</string>
     <string name="login_input_profile">프로필 사진을 설정해주세요.</string>
+    <string name="login_input_login">로그인 하기</string>
     <string name="login_input_day">이용할 요일을 선택해주세요.</string>
     <string name="login_student_number">학번</string>
     <string name="login_student_number_example">예: 123@</string>

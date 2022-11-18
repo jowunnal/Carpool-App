@@ -9,11 +9,13 @@
         android:id="@+id/loginFragment"
         android:name="com.mate.carpool.fragments.LoginFragment"
         android:label="LoginFragment"
-        tools:layout="@layout/fragment_login">
-
+        tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_loginFragment_to_RegisterFragment1"
             app:destination="@id/RegisterFragment1" />
+        <action
+            android:id="@+id/action_loginFragment_to_loginStartFragment"
+            app:destination="@id/loginStartFragment" />
     </fragment>
 
     <fragment
@@ -27,9 +29,9 @@
         <!--            app:argType="com.mate.carpool.model.UserInfo" />-->
 
 
-            <!--            <argument-->
-            <!--                android:name="userInfo"-->
-            <!--                app:argType="com.mate.carpool.model.UserInfo" />-->
+        <!--            <argument-->
+        <!--                android:name="userInfo"-->
+        <!--                app:argType="com.mate.carpool.model.UserInfo" />-->
 
 
         <action
@@ -95,4 +97,10 @@
         android:name="com.mate.carpool.fragments.RegisterSelectDayFragment"
         android:label="LoginSelectDayFragment"
         tools:layout="@layout/fragment_register_select_day" />
+
+    <fragment
+        android:id="@+id/loginStartFragment"
+        android:name="com.mate.carpool.fragments.LoginStartFragment"
+        android:label="LoginStartFragment"
+        tools:layout="@layout/fragment_login_start" />
 </navigation>
