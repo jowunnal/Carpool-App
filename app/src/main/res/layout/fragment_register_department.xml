@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="navController"
+            type="androidx.navigation.NavController" />
+        <variable
+            name="registerViewModel"
+            type="com.mate.carpool.data.viewmodel.RegisterViewModel" />
+        <import type="com.mate.carpool.R"/>
+    </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -46,6 +53,7 @@
                 android:layout_below="@+id/text_number"
                 android:background="@drawable/round_10_gray"
                 android:hint="@string/login_student_major_example"
+                android:text="@{registerViewModel.mutableUserModel.studentDepartment}"
                 android:paddingStart="5dp" />
         </RelativeLayout>
 
@@ -72,6 +80,7 @@
                 android:background="@drawable/round_10_gray"
                 android:enabled="false"
                 android:hint="@string/login_student_number_example"
+                android:text="@{registerViewModel.mutableUserModel.studentID}"
                 android:paddingStart="5dp" />
         </RelativeLayout>
 
@@ -116,5 +125,4 @@
             android:textSize="18sp"
             android:textStyle="bold" />
     </RelativeLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
