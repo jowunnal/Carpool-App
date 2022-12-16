@@ -1,4 +1,4 @@
-package com.mate.carpool.fragments
+package com.mate.carpool.ui.fragment
 
 import android.app.AlertDialog
 import android.content.Context
@@ -11,8 +11,12 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.mate.carpool.R
+import com.mate.carpool.databinding.FragmentRegisterBinding
+import com.mate.carpool.ui.binder.BindFragment
+import dagger.hilt.android.AndroidEntryPoint
 
-class RegisterFragment : Fragment() {
+@AndroidEntryPoint
+class RegisterFragment : BindFragment<FragmentRegisterBinding>(R.layout.fragment_register) {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -26,18 +30,8 @@ class RegisterFragment : Fragment() {
 
         val btnRegister = view.findViewById<Button>(R.id.btn_register)
         btnRegister.setOnClickListener {
-            showDialog(it.context)
+            CheckDialogFragment().show(requireActivity().supportFragmentManager,"대화상자")
         }
     }
 
-    private fun showDialog(context: Context) {
-        AlertDialog.Builder(context)
-            .setTitle("입력하신 정보가 정확한가요?")
-            .setMessage("한번 입력하신 정보는 수정 및 변경 불가합니다. 정확히 확인 후 입력해주세요!")
-            .setPositiveButton("확인") { _: DialogInterface, _ ->
-//                findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToRegisterDetailFragment())
-            }
-            .setNegativeButton("수정") { dialog: DialogInterface, _ -> dialog.dismiss() }
-            .show()
-    }
 }
