@@ -1,4 +1,4 @@
-package com.mate.carpool.util
+package com.mate.carpool.data.utils
 
 import android.content.Context
 import com.afollestad.materialdialogs.MaterialDialog
@@ -10,7 +10,7 @@ object DialogUtil {
     
     fun showDialog(context: Context) {
         MaterialDialog(context).show {
-            customView(R.layout.dialog_custom)
+            customView(R.layout.dialog_check)
             val customView = getCustomView()
         }
     }
