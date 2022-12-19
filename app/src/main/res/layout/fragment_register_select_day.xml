@@ -45,7 +45,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/round_circle"
+                    android:background="@drawable/round_circle_blue"
                     android:text="@string/login_select_monday"
                     android:textColor="@color/white" />
 
@@ -56,7 +56,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/round_circle"
+                    android:background="@drawable/round_circle_blue"
                     android:text="@string/login_select_tuesday"
                     android:textColor="@color/white" />
 
@@ -67,7 +67,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/round_circle"
+                    android:background="@drawable/round_circle_blue"
                     android:text="@string/login_select_wednesday"
                     android:textColor="@color/white" />
 
@@ -78,7 +78,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/round_circle"
+                    android:background="@drawable/round_circle_blue"
                     android:text="@string/login_select_thursday"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
@@ -90,7 +90,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/round_circle"
+                    android:background="@drawable/round_circle_blue"
                     android:text="@string/login_select_friday"
                     android:textColor="@color/white" />
 
