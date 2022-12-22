@@ -19,7 +19,7 @@ class SplashActivity : AppCompatActivity() {
         val delayTime = if (BuildConfig.DEBUG) {
              100
         } else {
-            3000
+            1000
         }
         Handler(Looper.getMainLooper()).postDelayed({
             val intent = Intent(this, MainActivity::class.java)

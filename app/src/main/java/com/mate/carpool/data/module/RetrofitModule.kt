@@ -1,6 +1,7 @@
-package org.jinhostudy.swproject.api
+package com.mate.carpool.data.module
 
 import com.google.gson.GsonBuilder
+import com.mate.carpool.data.service.APIService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -52,7 +53,7 @@ object RetrofitModule {
 
     @Singleton
     @Provides
-    fun createRestaurantService(retrofit: Retrofit):APIService{
+    fun createRestaurantService(retrofit: Retrofit): APIService {
         return retrofit.create(APIService::class.java)
     }
 

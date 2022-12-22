@@ -1,55 +1,33 @@
 package com.mate.carpool.ui.fragment
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.LayoutInflater
+import android.util.Log
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
+import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.Navigation
 import com.mate.carpool.R
+import com.mate.carpool.data.utils.ButtonCheckUtils
+import com.mate.carpool.data.vm.RegisterViewModel
+import com.mate.carpool.databinding.FragmentRegisterPhoneBinding
+import com.mate.carpool.ui.binder.BindFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class RegisterPhoneFragment : Fragment() {
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_register_phone, container, false)
-    }
+class RegisterPhoneFragment : BindFragment<FragmentRegisterPhoneBinding>(R.layout.fragment_register_phone) {
+    val registerViewModel:RegisterViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val btnNext = view.findViewById<Button>(R.id.btn_confirm)
-        btnNext.setOnClickListener {
-            findNavController().navigate(RegisterPhoneFragmentDirections.actionRegisterPhoneFragmentToRegisterTypeFragment())
+
+        binding.registerViewModel = registerViewModel
+        binding.navController = Navigation.findNavController(view)
+        binding.lifecycleOwner = this
+
+        binding.editNumber.doOnTextChanged { text, start, before, count ->
+            binding.btnConfirm.isSelected =
+                ButtonCheckUtils.checkRegisterInfoIsCorrect(text.toString(),"[^0-9]",11,11)
+            Log.d("test",binding.btnConfirm.isSelected.toString())
         }
-
-        val numberEdit = view.findViewById<EditText>(R.id.edit_number)
-        val confirmButton = view.findViewById<Button>(R.id.btn_confirm)
-        var phoneNumber = ""
-
-//        confirmButton.isEnabled = false
-
-        numberEdit.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-                confirmButton.isEnabled = numberEdit.length() >= 4
-
-            }
-
-            override fun afterTextChanged(p0: Editable?) {}
-
-        })
-
-
     }
 }

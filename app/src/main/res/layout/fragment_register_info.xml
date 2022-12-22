@@ -8,7 +8,7 @@
             type="androidx.navigation.NavController" />
         <variable
             name="registerViewModel"
-            type="com.mate.carpool.data.viewmodel.RegisterViewModel" />
+            type="com.mate.carpool.data.vm.RegisterViewModel" />
         <import type="com.mate.carpool.R"/>
     </data>
 
@@ -45,7 +45,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_login_type"
             app:layout_constrainedWidth="true"
-            app:layout_constrainedHeight="true"/>
+            app:layout_constrainedHeight="true" />
 
         <Button
             android:id="@+id/btn_confirm"
@@ -54,12 +54,13 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="33dp"
             android:height="50dp"
-            android:background="@drawable/round_100_blue"
+            android:background="@drawable/button_select_navigate"
             android:gravity="center"
             android:text="@string/login_next"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"
+            isSelectedAddItemToRegisterRCV="@{registerViewModel}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_percent="0.1"

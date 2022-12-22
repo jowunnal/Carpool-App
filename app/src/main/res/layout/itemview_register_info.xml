@@ -1,38 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <TextView
-        android:id="@+id/text_register_kind"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="25dp"
-        android:text="@string/login_student_major"
-        android:textColor="@color/black_151515"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toTopOf="@+id/et_register_input"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.2"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.1" />
-
-    <EditText
-        android:id="@+id/et_register_input"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="registerItem"
+            type="com.mate.carpool.data.model.RegisterItem" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout 
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@drawable/round_10_gray"
-        android:hint="@string/login_student_major_example"
-        android:paddingStart="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.52"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_register_kind"
-        app:layout_constraintWidth_percent="1" />
+        android:layout_height="wrap_content">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/text_register_kind"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="25dp"
+            android:text="@{registerItem.kind}"
+            android:textColor="@color/black_151515"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toTopOf="@+id/et_register_input"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.2"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.1" />
+
+        <EditText
+            android:id="@+id/et_register_input"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/round_10_gray"
+            android:hint="@string/login_student_major_example"
+            android:text="@={registerItem.input}"
+            android:paddingStart="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.52"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_register_kind"
+            app:layout_constraintWidth_percent="1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
