@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="342dp">
+
+    <ImageView
+        android:id="@+id/img_profile"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="17dp"
+        android:background="@drawable/ic_home_profile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="17dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/text_driver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="드라이버"
+            android:textColor="@color/gray_4E5760" />
+
+        <TextView
+            android:id="@+id/text_driver_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="{이름} "
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/img_ticket_rightarrow"
+        android:layout_width="32dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="231dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/linearLayout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_home_rightarrow" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="84dp"
+        android:background="@drawable/round_10_gray"
+        android:orientation="vertical"
+        android:paddingStart="10dp"
+        android:paddingTop="5dp"
+        app:layout_constraintEnd_toStartOf="@+id/img_arrow"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/text_departure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="출발지"
+            android:textColor="@color/gray_4E5760" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="2dp"
+            android:text="인동"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/img_arrow"
+        android:layout_width="72dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="106dp"
+        app:layout_constraintEnd_toStartOf="@+id/linearLayout3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/linearLayout2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_ticket_bluearrow" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="84dp"
+        android:background="@drawable/round_10_gray"
+        android:orientation="vertical"
+        android:paddingStart="10dp"
+        android:paddingTop="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/img_arrow"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView999"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="도착지"
+            android:textColor="@color/gray_4E5760" />
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="2dp"
+            android:text="경운대학교"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_bording"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="272dp"
+        android:layout_marginEnd="20dp"
+        android:height="50dp"
+        android:background="@drawable/round_100_blue"
+        android:gravity="center"
+        android:text="@string/ticket_bording"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+        <TextView
+            android:id="@+id/text_time_departure"
+            android:layout_width="171dp"
+            android:layout_height="wrap_content"
+            android:text="출발 시간"
+            android:textColor="@color/gray_4E5760" />
+
+        <TextView
+            android:id="@+id/text_time_departure_detail"
+            android:layout_width="171dp"
+            android:layout_height="wrap_content"
+            android:text="오전 11시, 8월 29일"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
+
+        <TextView
+            android:id="@+id/text_bording_number"
+            android:layout_width="171dp"
+            android:layout_height="wrap_content"
+            android:text="탑승 인원"
+            android:textColor="@color/gray_4E5760" />
+
+        <TextView
+            android:id="@+id/text_bording_number_detail"
+            android:layout_width="171dp"
+            android:layout_height="wrap_content"
+            android:text="4명"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="164dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/text_bording_location"
+            android:layout_width="171dp"
+            android:layout_height="wrap_content"
+            android:text="탑승 장소"
+            android:textColor="@color/gray_4E5760" />
+
+        <TextView
+            android:id="@+id/text_bording_location_detail"
+            android:layout_width="171dp"
+            android:layout_height="wrap_content"
+            android:text="주소들어가는 자리"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout6">
+
+        <TextView
+            android:id="@+id/text_charge"
+            android:layout_width="171dp"
+            android:layout_height="wrap_content"
+            android:text="비용"
+            android:textColor="@color/gray_4E5760" />
+
+        <TextView
+            android:id="@+id/text_charge_type"
+            android:layout_width="171dp"
+            android:layout_height="wrap_content"
+            android:text="유료"
+            android:textColor="@color/red" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
