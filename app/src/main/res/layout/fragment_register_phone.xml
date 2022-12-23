@@ -6,6 +6,10 @@
         <variable
             name="navController"
             type="androidx.navigation.NavController" />
+        <variable
+            name="registerViewModel"
+            type="com.mate.carpool.data.viewmodel.RegisterViewModel" />
+        <import type="com.mate.carpool.R"/>
     </data>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -20,7 +24,7 @@
             android:id="@+id/text_login_type"
             android:layout_width="match_parent"
             android:layout_height="58dp"
-            android:text="@string/login_input_login"
+            android:text="@string/login_input_number"
             android:textColor="@color/black"
             android:textSize="22sp"
             android:textStyle="bold"
@@ -28,60 +32,10 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <RelativeLayout
-            android:id="@+id/layout_name"
+            android:id="@+id/layout_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_login_type">
-
-            <TextView
-                android:id="@+id/text_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/login_name"
-                android:textColor="@color/black_151515"
-                android:textSize="13sp" />
-
-            <EditText
-                android:id="@+id/edit_name"
-                android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:layout_below="@+id/text_name"
-                android:background="@drawable/round_10_gray"
-                android:hint="@string/login_name_example"
-                android:paddingStart="5dp" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/layout_student_number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/layout_name"
-            android:layout_marginTop="24dp">
-
-            <TextView
-                android:id="@+id/text_student_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/login_student_number"
-                android:textColor="@color/black_151515"
-                android:textSize="13sp" />
-
-            <EditText
-                android:id="@+id/edit_student_number"
-                android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:layout_below="@+id/text_student_number"
-                android:background="@drawable/round_10_gray"
-                android:hint="@string/login_student_number_example"
-                android:paddingStart="5dp" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/layout_number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/layout_student_number"
-            android:layout_marginTop="24dp">
 
             <TextView
                 android:id="@+id/text_number"
@@ -108,7 +62,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="33dp"
             android:height="50dp"
-            android:background="@drawable/round_100_blue"
+            android:background="@drawable/button_back"
             android:gravity="center"
             android:text="@string/login_next"
             android:textColor="@color/white"
