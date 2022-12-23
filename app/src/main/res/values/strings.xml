@@ -32,4 +32,8 @@
     <string name="login_select_wednesday">수</string>
     <string name="login_select_thursday">목</string>
     <string name="login_select_friday">금</string>
+    <string name="home_no_reservation">예약된 카풀이 없습니다</string>
+    <string name="home_no_list">생성한 카풀이 없습니다</string>
+    <string name="home_show_mycarpool">내 카풀 보기</string>
+    <string name="ticket_bording">탑승하기</string>
 </resources>
