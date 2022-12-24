@@ -65,7 +65,13 @@
         android:id="@+id/RegisterSelectDayFragment"
         android:name="com.mate.carpool.ui.fragment.RegisterSelectDayFragment"
         android:label="LoginSelectDayFragment"
-        tools:layout="@layout/fragment_register_select_day" />
+        tools:layout="@layout/fragment_register_select_day" >
+        <action
+            android:id="@+id/action_RegisterSelectDayFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
 
     <fragment
         android:id="@+id/loginStartFragment"
