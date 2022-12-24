@@ -2,7 +2,6 @@ package com.mate.carpool.ui.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.databinding.ObservableField
 import androidx.fragment.app.activityViewModels
@@ -35,12 +34,14 @@ class RegisterInfoFragment : BindFragment<FragmentRegisterInfoBinding>(R.layout.
 
         // dialog 를 띄우기 위해 activityContext 필요하기 때문에 분리
         registerViewModel.rcvFlag.observe(viewLifecycleOwner, Observer {
-            if(it>=3){
+            if(it==0){
+                registerViewModel.clearRCVItems()
+            }
+            else if(it>=3){
                 CheckDialogFragment().show(requireActivity().supportFragmentManager,"대화상자")
                 val items = studentInfoAdapter.getItems()
                 registerViewModel.mutableUserModel.value=(UserModel(items[2],items[1],items[0],
                     ObservableField(),"","",null))
-                Log.d("test",registerViewModel.userModel.value.toString())
             }
         })
 

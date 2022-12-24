@@ -1,7 +1,6 @@
 package com.mate.carpool.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
@@ -27,7 +26,8 @@ class RegisterPhoneFragment : BindFragment<FragmentRegisterPhoneBinding>(R.layou
         binding.editNumber.doOnTextChanged { text, start, before, count ->
             binding.btnConfirm.isSelected =
                 ButtonCheckUtils.checkRegisterInfoIsCorrect(text.toString(),"[^0-9]",11,11)
-            Log.d("test",binding.btnConfirm.isSelected.toString())
         }
+
+
     }
 }
