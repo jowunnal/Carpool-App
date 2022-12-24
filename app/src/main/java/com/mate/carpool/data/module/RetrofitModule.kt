@@ -1,10 +1,12 @@
 package com.mate.carpool.data.module
 
+import android.content.Context
 import com.google.gson.GsonBuilder
 import com.mate.carpool.data.service.APIService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -13,12 +15,12 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
+import javax.inject.Inject
 import javax.inject.Singleton
-class HeaderInterceptor constructor(private val token: String) : Interceptor {
-
+class HeaderInterceptor @Inject constructor(@ApplicationContext private val context:Context) : Interceptor {
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
-        val token = "Bearer $token"
+        val token = "Bearer "+context.applicationContext.getSharedPreferences("accessToken",Context.MODE_PRIVATE).getString("accessToken","")
         val newRequest = chain.request().newBuilder()
             .addHeader("Authorization", token)
             .build()
@@ -36,7 +38,7 @@ object RetrofitModule {
         return OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
-            }).addInterceptor(HeaderInterceptor(""))
+            })
             .build()
     }
 
@@ -47,7 +49,7 @@ object RetrofitModule {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
             .client(okHttpClient)
-            .baseUrl("")
+            .baseUrl("http://13.209.43.209:8080/")
             .build()
     }
 
