@@ -10,7 +10,7 @@ data class UserModel(
     val studentID:String,
     var studentDepartment:String,
     val studentPhone:ObservableField<String>,
-    val studentType:String,
+    var studentType:String,
     val studentProfile:String,
-    val studentDayCodes: ArrayList<Int>?
+    var studentDayCodes: ArrayList<MemberTimetableRequestDTO>?
 )
