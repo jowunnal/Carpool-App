@@ -6,8 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mate.carpool.data.model.WeekModel
 import com.mate.carpool.databinding.ItemviewWeekBinding
+import javax.inject.Inject
 
-class WeekViewAdapter  : RecyclerView.Adapter<WeekViewAdapter.ViewHolder>(){
+class WeekViewAdapter @Inject constructor()  : RecyclerView.Adapter<WeekViewAdapter.ViewHolder>(){
     private val items = ArrayList<WeekModel>()
 
     inner class ViewHolder(private val binding: ItemviewWeekBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -21,7 +22,7 @@ class WeekViewAdapter  : RecyclerView.Adapter<WeekViewAdapter.ViewHolder>(){
                     item.weekFlag=true
                 }else{
                     binding.btnDay.isSelected=false
-                    binding.btnDay.setTextColor(Color.GRAY)
+                    binding.btnDay.setTextColor(Color.BLUE)
                     item.weekFlag=false
                 }
             }
@@ -44,5 +45,10 @@ class WeekViewAdapter  : RecyclerView.Adapter<WeekViewAdapter.ViewHolder>(){
         this.items.clear()
         this.items.addAll(items)
     }
+
+    fun getItems():ArrayList<WeekModel>{
+        return this.items
+    }
+
 
 }

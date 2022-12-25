@@ -8,14 +8,14 @@
             type="androidx.navigation.NavController" />
         <variable
             name="registerViewModel"
-            type="com.mate.carpool.data.viewmodel.RegisterViewModel" />
+            type="com.mate.carpool.data.vm.RegisterViewModel" />
         <import type="com.mate.carpool.R"/>
     </data>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="70dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -52,6 +52,7 @@
                 android:layout_below="@+id/text_number"
                 android:background="@drawable/round_10_gray"
                 android:hint="@string/login_number_example"
+                android:text="@={registerViewModel.mutableUserModel.studentPhone}"
                 android:paddingStart="5dp" />
         </RelativeLayout>
 
@@ -62,11 +63,13 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="33dp"
             android:height="50dp"
-            android:background="@drawable/button_back"
+            android:background="@drawable/button_select_navigate"
             android:gravity="center"
             android:text="@string/login_next"
             android:textColor="@color/white"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            navController="@{navController}"
+            navi_ID="@{R.id.action_RegisterPhoneFragment_to_RegisterTypeFragment}" />
     </RelativeLayout>
 </layout>

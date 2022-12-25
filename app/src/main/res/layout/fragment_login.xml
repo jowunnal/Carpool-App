@@ -55,7 +55,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="18dp"
             android:orientation="vertical"
-            android:onClick="@{}">
+            android:onClick="@{()->navController.navigate(R.id.action_loginFragment_to_loginStartFragment)}">
 
             <TextView
                 android:layout_width="170dp"
