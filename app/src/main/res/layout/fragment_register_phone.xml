@@ -11,65 +11,112 @@
             type="com.mate.carpool.data.vm.RegisterViewModel" />
         <import type="com.mate.carpool.R"/>
     </data>
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="70dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/text_login_type"
+        android:layout_height="match_parent">
+        <Toolbar
+            android:id="@+id/appbar_back"
             android:layout_width="match_parent"
-            android:layout_height="58dp"
-            android:text="@string/login_input_number"
-            android:textColor="@color/black"
-            android:textSize="22sp"
-            android:textStyle="bold"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHeight_percent="0.07"
+            navController="@{navController}"
+            />
 
-        <RelativeLayout
-            android:id="@+id/layout_type"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/text_login_type">
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appbar_back">
 
             <TextView
-                android:id="@+id/text_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/login_number"
-                android:textColor="@color/black_151515"
-                android:textSize="13sp" />
+                android:id="@+id/text_login_type"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="17dp"
+                android:layout_marginBottom="40dp"
+                android:text="@string/login_input_number"
+                android:textColor="@color/black"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/text_number"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.04"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_confirm"
+                navController="@{navController}"
+                navi_ID="@{R.id.action_RegisterPhoneFragment_to_RegisterTypeFragment}"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_alignParentBottom="true"
+                android:height="50dp"
+                android:background="@drawable/button_select_navigate"
+                android:gravity="center"
+                android:text="@string/login_next"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/guidelineButtonPosition"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.083"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <EditText
                 android:id="@+id/edit_number"
                 android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:layout_below="@+id/text_number"
+                android:layout_height="0dp"
                 android:background="@drawable/round_10_gray"
                 android:hint="@string/login_number_example"
+                android:paddingStart="5dp"
                 android:text="@={registerViewModel.mutableUserModel.studentPhone}"
-                android:paddingStart="5dp" />
-        </RelativeLayout>
+                app:layout_constraintBottom_toTopOf="@+id/guidelineButtonPosition2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.09"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_number" />
 
-        <Button
-            android:id="@+id/btn_confirm"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="33dp"
-            android:height="50dp"
-            android:background="@drawable/button_select_navigate"
-            android:gravity="center"
-            android:text="@string/login_next"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            navController="@{navController}"
-            navi_ID="@{R.id.action_RegisterPhoneFragment_to_RegisterTypeFragment}" />
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/text_number"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:text="@string/login_number"
+                android:textColor="@color/black_151515"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toTopOf="@+id/edit_number"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.03"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_login_type" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineButtonPosition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_end="33dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineButtonPosition2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.25" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

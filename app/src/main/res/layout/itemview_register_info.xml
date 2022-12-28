@@ -19,7 +19,7 @@
             android:text="@{registerItem.kind}"
             android:textColor="@color/black_151515"
             android:textSize="13sp"
-            app:layout_constraintBottom_toTopOf="@+id/et_register_input"
+            app:layout_constraintBottom_toTopOf="@+id/etLayout_register_input"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_percent="0.2"
             app:layout_constraintHorizontal_bias="0.0"
@@ -27,20 +27,27 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.1" />
 
-        <EditText
-            android:id="@+id/et_register_input"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/etLayout_register_input"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="@drawable/round_10_gray"
-            android:hint="@string/login_student_major_example"
-            android:text="@={registerItem.input}"
-            android:paddingStart="5dp"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.52"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_register_kind"
-            app:layout_constraintWidth_percent="1" />
+            app:layout_constraintWidth_percent="1"
+            app:helperText="@{registerItem.helperText}"
+            app:helperTextTextColor="@color/red_E0302D">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_register_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_10_gray"
+                android:text="@={registerItem.input}"
+                android:paddingStart="5dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -60,25 +60,33 @@
             <TextView
                 android:layout_width="170dp"
                 android:layout_height="20dp"
+                android:gravity="center"
                 android:text="@string/login_id_check"
                 android:textColor="@color/black_151515" />
 
             <TextView
                 android:id="@+id/text_login_start"
+                android:text="@string/로그인하기"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/gray"
+                android:textStyle="bold"
                 android:textSize="14sp" />
+            <TextView
+                android:layout_width="66dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/gray" />
 
         </LinearLayout>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_confirm"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="33dp"
+            android:layout_marginBottom="34dp"
             android:height="50dp"
             android:background="@drawable/round_100_blue"
             android:gravity="center"
