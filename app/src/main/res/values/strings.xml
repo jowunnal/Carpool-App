@@ -36,4 +36,11 @@
     <string name="home_no_list">생성한 카풀이 없습니다</string>
     <string name="home_show_mycarpool">내 카풀 보기</string>
     <string name="ticket_bording">탑승하기</string>
+    <string name="로그인하기">로그인하기</string>
+    <string name="출발지역">출발 지역을 선택해 주세요</string>
+    <string name="탑승장소">예: 안동사우나 앞</string>
+    <string name="출발날짜">MM/DD 예:11/30</string>
+    <string name="출발시간">HH/MM, 예:08:30</string>
+    <string name="오픈채팅방링크">링크를 붙여넣기 해주세요.</string>
+    <string name="선택">선택</string>
 </resources>

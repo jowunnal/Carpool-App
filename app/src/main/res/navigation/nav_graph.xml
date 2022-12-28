@@ -77,5 +77,45 @@
         android:id="@+id/loginStartFragment"
         android:name="com.mate.carpool.ui.fragment.LoginStartFragment"
         android:label="LoginStartFragment"
-        tools:layout="@layout/fragment_login_start" />
+        tools:layout="@layout/fragment_login_start" >
+        <action
+            android:id="@+id/action_loginStartFragment_to_fragmentRegisterCarpool"
+            app:destination="@id/createTicketBoardingAreaFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createTicketBoardingAreaFragment"
+        android:name="com.mate.carpool.ui.fragment.CreateTicketBoardingAreaFragment"
+        android:label="createTicketBoardingAreaFragment"
+        tools:layout="@layout/fragment_create_carpool_ticket_boarding_area">
+        <action
+            android:id="@+id/action_createTicketBoardingAreaFragment_to_createTicketBoardingTimeFragment"
+            app:destination="@id/createTicketBoardingTimeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createTicketBoardingTimeFragment"
+        android:name="com.mate.carpool.ui.fragment.CreateTicketBoardingTimeFragment"
+        android:label="fragment_create_carpool_ticket_boarding_time"
+        tools:layout="@layout/fragment_create_carpool_ticket_boarding_time" >
+        <action
+            android:id="@+id/action_createTicketBoardingTimeFragment_to_createTicketOpenChatFragment"
+            app:destination="@id/createTicketOpenChatFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createTicketOpenChatFragment"
+        android:name="com.mate.carpool.ui.fragment.CreateTicketOpenChatFragment"
+        android:label="fragment_create_carpool_ticket_open_chat"
+        tools:layout="@layout/fragment_create_carpool_ticket_open_chat" >
+        <action
+            android:id="@+id/action_createTicketOpenChatFragment_to_createTicketPreviewFragment"
+            app:destination="@id/createTicketPreviewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createTicketPreviewFragment"
+        android:name="com.mate.carpool.ui.fragment.CreateTicketPreviewFragment"
+        android:label="fragment_create_carpool_ticket_preview"
+        tools:layout="@layout/fragment_create_carpool_ticket_preview" >
+        <action
+            android:id="@+id/action_createTicketPreviewFragment_to_createTicketBoardingAreaFragment"
+            app:destination="@id/createTicketBoardingAreaFragment" />
+    </fragment>
 </navigation>
