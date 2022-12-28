@@ -1,6 +1,7 @@
 package com.mate.carpool.data.module
 
 import android.content.Context
+import android.util.Log
 import com.google.gson.GsonBuilder
 import com.mate.carpool.data.service.APIService
 import dagger.Module
@@ -34,11 +35,18 @@ object RetrofitModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient():OkHttpClient{
+    fun provideHeaderIntercepter(@ApplicationContext context:Context):HeaderInterceptor{
+        return HeaderInterceptor(context)
+    }
+
+    @Singleton
+    @Provides
+    fun provideOkHttpClient(headerInterceptor: HeaderInterceptor):OkHttpClient{
         return OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
             })
+            .addInterceptor(headerInterceptor)
             .build()
     }
 
