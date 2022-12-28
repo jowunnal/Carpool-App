@@ -1,5 +1,6 @@
 package com.mate.carpool.data.model
 
+import android.net.Uri
 import androidx.databinding.ObservableField
 
 /*
@@ -7,10 +8,10 @@ import androidx.databinding.ObservableField
  */
 data class UserModel(
     val name: String,
-    val studentID:String,
+    var studentID:String,
     var studentDepartment:String,
     val studentPhone:ObservableField<String>,
     var studentType:String,
-    val studentProfile:String,
+    var studentProfile:String?,
     var studentDayCodes: ArrayList<MemberTimetableRequestDTO>?
 )

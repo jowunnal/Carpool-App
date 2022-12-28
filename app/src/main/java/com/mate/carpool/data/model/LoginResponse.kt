@@ -1,15 +1,13 @@
 package com.mate.carpool.data.model
 
-import com.google.gson.annotations.SerializedName
 
-data class LoginResponse(@SerializedName("grantType") val grantType:String,
-                         @SerializedName("accessToken") val accessToken:String,
-                         @SerializedName("refreshToken") val refreshToken:String,
-                         @SerializedName("accessTokenExpiresIn") val accessTokenExpiresIn:Int,
-                         @SerializedName("refreshTokenExpiresIn") val refreshTokenExpiresIn:Int):ResponseMessage()
+data class LoginResponse(val grantType:String,
+                         val accessToken:String,
+                         val refreshToken:String,
+                         val accessTokenExpiresIn:String,
+                         val refreshTokenExpiresIn:String):ResponseMessage()
 
-abstract class ResponseMessage(val status:Int,
-                               val message:String,
-                               val code:String){
-    constructor():this(0,"","")
-}
+open class ResponseMessage(val status:Int=0,
+                               val message:String=""):MessageCode()
+
+open class MessageCode(val code:String="")
