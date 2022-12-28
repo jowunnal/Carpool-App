@@ -35,12 +35,9 @@ class CheckDialogFragment :DialogFragment() {
         binding.message.text="이름, 학번과 학과는 추후 수정이 불가능합니다.\n다음으로 넘어가시겠어요?"
 
         binding.positiveButton.setOnClickListener {
-            registerViewModel.rcvFlag.value=0
             dismiss()
-            NavHostFragment.findNavController(this).navigate(R.id.action_RegisterInfoFragment_to_RegisterPhoneFragment)
         }
         binding.negativeButton.setOnClickListener {
-            registerViewModel.rcvFlag.value=0
             dismiss()
         }
     }
