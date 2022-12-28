@@ -7,6 +7,7 @@ import android.view.animation.AnimationUtils
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import com.mate.carpool.R
+import com.mate.carpool.data.utils.SettingToolbarUtils
 import com.mate.carpool.data.vm.RegisterViewModel
 import com.mate.carpool.databinding.FragmentRegisterTypeBinding
 import com.mate.carpool.ui.binder.BindFragment
@@ -24,7 +25,8 @@ class RegisterTypeFragment : BindFragment<FragmentRegisterTypeBinding>(R.layout.
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnPassenger.isSelected=true
-        binding.lifecycleOwner=this
+        binding.lifecycleOwner=viewLifecycleOwner
+        binding.navController=Navigation.findNavController(view)
         binding.data=this
 
         binding.btnConfirm.setOnClickListener {
@@ -36,6 +38,9 @@ class RegisterTypeFragment : BindFragment<FragmentRegisterTypeBinding>(R.layout.
             }
             Navigation.findNavController(view).navigate(R.id.action_RegisterTypeFragment_to_RegisterProfileFragment)
         }
+
+        SettingToolbarUtils.setActionBar(requireActivity(), binding.appbarBack)
+
     }
 
     fun transDriverPassenger(){
@@ -64,4 +69,5 @@ class RegisterTypeFragment : BindFragment<FragmentRegisterTypeBinding>(R.layout.
             }
         }
     }
+
 }

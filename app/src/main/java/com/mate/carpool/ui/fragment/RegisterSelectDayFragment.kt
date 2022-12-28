@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.mate.carpool.R
 import com.mate.carpool.data.model.MemberTimetableRequestDTO
 import com.mate.carpool.data.model.WeekModel
+import com.mate.carpool.data.utils.SettingToolbarUtils
 import com.mate.carpool.data.vm.RegisterViewModel
 import com.mate.carpool.databinding.FragmentRegisterSelectDayBinding
 import com.mate.carpool.ui.adapter.WeekViewAdapter
@@ -21,7 +22,8 @@ class RegisterSelectDayFragment : BindFragment<FragmentRegisterSelectDayBinding>
     val registerViewModel:RegisterViewModel by activityViewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.lifecycleOwner=this
+        binding.lifecycleOwner=viewLifecycleOwner
+        binding.navController = Navigation.findNavController(view)
 
         binding.rcvWeek.apply {
             adapter=weekViewAdapter.apply {
@@ -47,5 +49,7 @@ class RegisterSelectDayFragment : BindFragment<FragmentRegisterSelectDayBinding>
             Navigation.findNavController(view).navigate(R.id.action_RegisterSelectDayFragment_to_loginFragment)
             registerViewModel.signUpStudentMember()
         }
+
+        SettingToolbarUtils.setActionBar(requireActivity(), binding.appbarBack)
     }
 }

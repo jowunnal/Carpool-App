@@ -1,7 +1,6 @@
 package com.mate.carpool.ui.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
@@ -17,6 +16,7 @@ class RegisterViewAdapter @Inject constructor(@ActivityContext private val conte
     private val items = ArrayList<RegisterItem>()
     private var button : FragmentRegisterInfoBinding ?= null
     private var isAllConditionsTrue : ArrayList<Boolean> = arrayListOf(true,true,true)
+    private var studentNumberIsExistsHelperText = ""
 
     inner class ViewHolder(private val binding: ItemviewRegisterInfoBinding) : RecyclerView.ViewHolder(binding.root) {
         private var pattern:String = ""
@@ -30,7 +30,8 @@ class RegisterViewAdapter @Inject constructor(@ActivityContext private val conte
                             isAllConditionsTrue[0] = checkRegisterInfoIsCorrect(text.toString(), "[^ㄱ-힣]",4,1)
                         }
                         "학번"->{
-                            isAllConditionsTrue[1] = checkRegisterInfoIsCorrect(text.toString(), "[^0-9a-zA-Z]",15,1)
+                            isAllConditionsTrue[1] =
+                                checkRegisterInfoIsCorrect(text.toString(), "[^0-9a-zA-Z]",15,1)
                         }
                         "학과"->{
                             isAllConditionsTrue[2] = checkRegisterInfoIsCorrect(text.toString(), "[^ㄱ-힣]",15,1)
@@ -50,6 +51,7 @@ class RegisterViewAdapter @Inject constructor(@ActivityContext private val conte
                 }
                 "학번"->{
                     binding.etRegisterInput.hint="예:123a123"
+                    item.helperText.set(studentNumberIsExistsHelperText)
                     pattern = "학번"
                 }
                 "학과"->{
@@ -73,8 +75,6 @@ class RegisterViewAdapter @Inject constructor(@ActivityContext private val conte
         return items.size
     }
 
-
-
     fun getItems():ArrayList<String>{
         val list = arrayListOf<String>()
         for(item in this.items){
@@ -95,5 +95,8 @@ class RegisterViewAdapter @Inject constructor(@ActivityContext private val conte
         this.button=button
     }
 
+    fun setStudentNumberIsExistsHelperText(text:String){
+        this.studentNumberIsExistsHelperText=text
+    }
 
 }

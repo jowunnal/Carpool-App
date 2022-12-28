@@ -1,33 +1,48 @@
 package com.mate.carpool.ui.fragment
 
 import android.os.Bundle
-import android.text.SpannableString
-import android.text.style.UnderlineSpan
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.fragment.app.Fragment
+import android.widget.Toast
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import com.mate.carpool.R
 import com.mate.carpool.databinding.FragmentLoginBinding
+import com.mate.carpool.ui.activity.MainActivity
 import com.mate.carpool.ui.binder.BindFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class LoginFragment : BindFragment<FragmentLoginBinding>(R.layout.fragment_login) {
-
+    private var backPressedTime = 0L
+    lateinit var mainActivity:MainActivity
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.lifecycleOwner=this
+        binding.lifecycleOwner=viewLifecycleOwner
         binding.navController=Navigation.findNavController(view)
-        binding.btnConfirm.text = SpannableString("로그인하기").apply {
-            setSpan(UnderlineSpan(), 0, 5, 0)
-        }
+        mainActivity = activity as MainActivity
+
+        mainActivity.setOnBackPressedListener(object : MainActivity.OnBackPressedListener{
+            override fun onBack() {
+                if (backPressedTime == 0L) {
+                    Toast.makeText(
+                        requireActivity(),
+                        " 한 번 더 누르면 종료됩니다.", Toast.LENGTH_LONG
+                    ).show()
+                    backPressedTime = System.currentTimeMillis()
+                } else {
+                    val seconds = (System.currentTimeMillis() - backPressedTime)
+                    backPressedTime = if (seconds < 2000) {
+                        mainActivity.setOnBackPressedListener(null)
+                        mainActivity.onBackPressed()
+                        0L
+                    } else {
+                        0L
+                    }
+                }
+                mainActivity.setOnBackPressedListener(null)
+            }
+        })
     }
+
 
 }

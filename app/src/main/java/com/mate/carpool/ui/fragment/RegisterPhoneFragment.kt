@@ -7,6 +7,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import com.mate.carpool.R
 import com.mate.carpool.data.utils.ButtonCheckUtils
+import com.mate.carpool.data.utils.SettingToolbarUtils.setActionBar
 import com.mate.carpool.data.vm.RegisterViewModel
 import com.mate.carpool.databinding.FragmentRegisterPhoneBinding
 import com.mate.carpool.ui.binder.BindFragment
@@ -21,13 +22,13 @@ class RegisterPhoneFragment : BindFragment<FragmentRegisterPhoneBinding>(R.layou
 
         binding.registerViewModel = registerViewModel
         binding.navController = Navigation.findNavController(view)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
 
         binding.editNumber.doOnTextChanged { text, start, before, count ->
             binding.btnConfirm.isSelected =
                 ButtonCheckUtils.checkRegisterInfoIsCorrect(text.toString(),"[^0-9]",11,11)
         }
 
-
+        setActionBar(requireActivity(),binding.appbarBack)
     }
 }
