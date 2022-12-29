@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.fragment
+package com.mate.carpool.ui.fragment.us2
 
 import android.os.Bundle
 import android.view.LayoutInflater

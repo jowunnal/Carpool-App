@@ -1,6 +1,5 @@
 package com.mate.carpool.data.model
 
-import android.net.Uri
 import androidx.databinding.ObservableField
 
 /*

@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.adapter
+package com.mate.carpool.ui.adapter.us2
 
 import android.graphics.Color
 import android.view.LayoutInflater

@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.fragment
+package com.mate.carpool.ui.fragment.us2
 
 import android.content.Context
 import android.content.Intent

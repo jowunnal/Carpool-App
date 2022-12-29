@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.fragment
+package com.mate.carpool.ui.fragment.us2
 
 import android.os.Bundle
 import android.view.View
@@ -11,7 +11,7 @@ import com.mate.carpool.data.model.WeekModel
 import com.mate.carpool.data.utils.SettingToolbarUtils
 import com.mate.carpool.data.vm.RegisterViewModel
 import com.mate.carpool.databinding.FragmentRegisterSelectDayBinding
-import com.mate.carpool.ui.adapter.WeekViewAdapter
+import com.mate.carpool.ui.adapter.us2.WeekViewAdapter
 import com.mate.carpool.ui.binder.BindFragment
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

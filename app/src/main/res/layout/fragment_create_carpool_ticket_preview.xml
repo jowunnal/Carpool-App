@@ -2,7 +2,7 @@
 <layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.fragment.CreateTicketPreviewFragment">
+    tools:context=".ui.fragment.us5.CreateTicketPreviewFragment">
     <data>
         <variable
             name="navController"

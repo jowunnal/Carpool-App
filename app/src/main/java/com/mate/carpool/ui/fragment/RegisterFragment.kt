@@ -28,10 +28,7 @@ class RegisterFragment : BindFragment<FragmentRegisterBinding>(R.layout.fragment
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val btnRegister = view.findViewById<Button>(R.id.btn_register)
-        btnRegister.setOnClickListener {
-            CheckDialogFragment().show(requireActivity().supportFragmentManager,"대화상자")
-        }
+
     }
 
 }
