@@ -1,7 +1,6 @@
 package com.mate.carpool.data.module
 
 import android.content.Context
-import android.util.Log
 import com.google.gson.GsonBuilder
 import com.mate.carpool.data.service.APIService
 import dagger.Module
@@ -12,12 +11,17 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
+import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
+import java.lang.reflect.Type
 import javax.inject.Inject
 import javax.inject.Singleton
+
+
 class HeaderInterceptor @Inject constructor(@ApplicationContext private val context:Context) : Interceptor {
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -29,6 +33,18 @@ class HeaderInterceptor @Inject constructor(@ApplicationContext private val cont
     }
 }
 
+class NullOnEmptyConverterFactory : Converter.Factory() {
+    override fun responseBodyConverter(
+        type: Type,
+        annotations: Array<out Annotation>,
+        retrofit: Retrofit
+    ): Converter<ResponseBody, *> {
+        val delegate: Converter<ResponseBody, *> =
+            retrofit.nextResponseBodyConverter<Any>(this, type, annotations)
+        return Converter { body -> if (body.contentLength() == 0L) null else delegate.convert(body) }
+    }
+}
+
 @Module
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {
@@ -37,6 +53,12 @@ object RetrofitModule {
     @Provides
     fun provideHeaderIntercepter(@ApplicationContext context:Context):HeaderInterceptor{
         return HeaderInterceptor(context)
+    }
+
+    @Singleton
+    @Provides
+    fun provideNullOnEmptyConverterFactory():NullOnEmptyConverterFactory{
+        return NullOnEmptyConverterFactory()
     }
 
     @Singleton
@@ -53,11 +75,12 @@ object RetrofitModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient):Retrofit{
+    fun provideRetrofit(okHttpClient: OkHttpClient,nullOnEmptyConverterFactory: NullOnEmptyConverterFactory):Retrofit{
         return Retrofit.Builder()
+            .addConverterFactory(nullOnEmptyConverterFactory)
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
-            .client(okHttpClient)
             .baseUrl("http://13.209.43.209:8080/")
+            .client(okHttpClient)
             .build()
     }
 

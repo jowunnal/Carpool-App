@@ -22,4 +22,10 @@ interface APIService {
 
     @POST("ticket/new")
     fun postTicketNew(@Body ticket:CarpoolTicketModel) : Call<ResponseMessage>
+
+    @GET("ticket/read/{id}")
+    fun getTicketReadId(@Path("id") id:Int):Call<TicketDetailResponseDTO>
+
+    @GET("ticket/update/{id}")
+    fun getTicketUpdateId(@Path("id") id:Int,@Query("status") status:String):Call<ResponseMessage>
 }
