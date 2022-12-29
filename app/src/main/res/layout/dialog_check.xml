@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="310dp"
-    android:layout_height="144dp"
-    android:background="@drawable/round_20_white">
+    android:layout_height="200dp"
+    android:background="@drawable/round_20_white"
+    >
 
     <TextView
         android:id="@+id/title"
@@ -12,14 +13,14 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="35dp"
-        android:layout_marginTop="19dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="35dp"
         android:gravity="center"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintHeight_percent="0.15"
         app:layout_constraintBottom_toTopOf="@id/message"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.15"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,15 +30,13 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="35dp"
-        android:layout_marginTop="12dp"
         android:layout_marginEnd="35dp"
-        android:layout_marginBottom="19dp"
         android:gravity="center"
         android:textColor="@color/black"
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/seperatingLine1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.22"
+        app:layout_constraintHeight_percent="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title"
         tools:text="제목" />
@@ -63,7 +62,7 @@
         app:layout_constraintEnd_toStartOf="@+id/positiveButton"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/seperatingLine1"
-        app:layout_constraintHeight_percent="0.28"
+        app:layout_constraintHeight_percent="0.25"
         app:layout_constraintWidth_percent="0.5"/>
 
     <View
@@ -73,7 +72,7 @@
         android:layout_marginTop="19dp"
         android:background="#e4e4e4"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHeight_percent="0.28"
+        app:layout_constraintHeight_percent="0.25"
         app:layout_constraintLeft_toRightOf="@id/negativeButton"
         app:layout_constraintRight_toLeftOf="@id/positiveButton"
         app:layout_constraintTop_toBottomOf="@id/message" />
@@ -90,7 +89,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toRightOf="@id/seperatingLine2"
         app:layout_constraintTop_toBottomOf="@id/seperatingLine1"
-        app:layout_constraintHeight_percent="0.28"
+        app:layout_constraintHeight_percent="0.25"
         app:layout_constraintWidth_percent="0.5"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
