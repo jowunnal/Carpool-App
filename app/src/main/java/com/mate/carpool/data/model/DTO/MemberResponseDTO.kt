@@ -1,4 +1,4 @@
-package com.mate.carpool.data.model
+package com.mate.carpool.data.model.DTO
 
 data class MemberResponseDTO(
     val token:String,

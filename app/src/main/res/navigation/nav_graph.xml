@@ -79,8 +79,8 @@
         android:label="LoginStartFragment"
         tools:layout="@layout/fragment_login_start" >
         <action
-            android:id="@+id/action_loginStartFragment_to_fragmentRegisterCarpool"
-            app:destination="@id/createTicketBoardingAreaFragment" />
+            android:id="@+id/action_loginStartFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/createTicketBoardingAreaFragment"
@@ -115,7 +115,15 @@
         android:label="fragment_create_carpool_ticket_preview"
         tools:layout="@layout/fragment_create_carpool_ticket_preview" >
         <action
-            android:id="@+id/action_createTicketPreviewFragment_to_createTicketBoardingAreaFragment"
+            android:id="@+id/action_createTicketPreviewFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.mate.carpool.ui.compose.HomeFragment"
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_createTicketBoardingAreaFragment"
             app:destination="@id/createTicketBoardingAreaFragment" />
     </fragment>
 </navigation>

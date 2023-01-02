@@ -7,8 +7,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mate.carpool.data.model.ResponseMessage
-import com.mate.carpool.data.model.TicketDetailResponseDTO
+import com.mate.carpool.data.model.response.ResponseMessage
+import com.mate.carpool.data.model.DTO.TicketDetailResponseDTO
 import com.mate.carpool.data.service.APIService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext

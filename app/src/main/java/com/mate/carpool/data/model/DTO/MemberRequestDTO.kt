@@ -1,4 +1,6 @@
-package com.mate.carpool.data.model
+package com.mate.carpool.data.model.DTO
+
+import com.mate.carpool.data.model.domain.UserModel
 
 data class MemberRequestDTO(val studentNumber:String,
                             val memberName: String,
@@ -6,9 +8,7 @@ data class MemberRequestDTO(val studentNumber:String,
                             val phoneNumber: String,
                             var auth:String,
                             var area:String,
-                            var memberTimeTable: List<MemberTimetableRequestDTO>?){
+                            var memberTimeTable: List<MemberTimeTableResponseDTO>?){
     constructor(userModel: UserModel):this(userModel.studentID,userModel.name,userModel.studentDepartment,userModel.studentPhone.get()!!,userModel.studentType,"dd",
     userModel.studentDayCodes)
 }
-
-data class MemberTimetableRequestDTO(var dayCode:String)

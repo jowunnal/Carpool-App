@@ -6,8 +6,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mate.carpool.R
-import com.mate.carpool.data.model.MemberTimetableRequestDTO
-import com.mate.carpool.data.model.WeekModel
+import com.mate.carpool.data.model.DTO.MemberTimeTableResponseDTO
+import com.mate.carpool.data.model.item.WeekItem
 import com.mate.carpool.data.utils.SettingToolbarUtils
 import com.mate.carpool.data.vm.RegisterViewModel
 import com.mate.carpool.databinding.FragmentRegisterSelectDayBinding
@@ -28,11 +28,12 @@ class RegisterSelectDayFragment : BindFragment<FragmentRegisterSelectDayBinding>
         binding.rcvWeek.apply {
             adapter=weekViewAdapter.apply {
                 setItems(arrayListOf(
-                WeekModel("월",false),
-                WeekModel("화",false),
-                WeekModel("수",false),
-                WeekModel("목",false),
-                WeekModel("금",false)))
+                WeekItem("월",false),
+                WeekItem("화",false),
+                WeekItem("수",false),
+                WeekItem("목",false),
+                WeekItem("금",false)
+                ))
                 notifyDataSetChanged()
             }
             layoutManager=LinearLayoutManager(requireActivity(),LinearLayoutManager.HORIZONTAL,false)
@@ -43,7 +44,8 @@ class RegisterSelectDayFragment : BindFragment<FragmentRegisterSelectDayBinding>
             for(item in weekViewAdapter.getItems()){
                 if(item.weekFlag){
                     registerViewModel.mutableUserModel.value?.studentDayCodes?.add(
-                        MemberTimetableRequestDTO((weekViewAdapter.getItems().indexOf(item)+1).toString()))
+                        MemberTimeTableResponseDTO((weekViewAdapter.getItems().indexOf(item)+1).toString())
+                    )
                 }
             }
             Navigation.findNavController(view).navigate(R.id.action_RegisterSelectDayFragment_to_loginFragment)

@@ -1,16 +1,12 @@
 package com.mate.carpool.ui.adapter.us7
 
-import android.app.Activity
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
-import com.mate.carpool.data.model.TicketDetailResponseDTO
 import com.mate.carpool.databinding.ItemviewPassengerInfoBinding
-import com.mate.carpool.ui.fragment.us7.TicketPassengerPopUp
 import com.mate.carpool.ui.listener.OnItemClickListener
 import dagger.hilt.android.qualifiers.ActivityContext
 import javax.inject.Inject

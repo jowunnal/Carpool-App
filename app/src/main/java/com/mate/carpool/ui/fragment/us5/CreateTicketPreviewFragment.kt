@@ -25,7 +25,7 @@ class CreateTicketPreviewFragment : BindFragment<FragmentCreateCarpoolTicketPrev
         }
 
         binding.btnCancel.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_createTicketPreviewFragment_to_createTicketBoardingAreaFragment)
+            Navigation.findNavController(view).navigate(R.id.action_createTicketPreviewFragment_to_homeFragment)
         }
 
         SettingToolbarUtils.setActionBar(requireActivity(), binding.appbarBack)

@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView
-import com.mate.carpool.data.model.RegisterItem
+import com.mate.carpool.data.model.item.RegisterItem
 import com.mate.carpool.data.utils.ButtonCheckUtils.checkRegisterInfoIsCorrect
 import com.mate.carpool.databinding.FragmentRegisterInfoBinding
 import com.mate.carpool.databinding.ItemviewRegisterInfoBinding

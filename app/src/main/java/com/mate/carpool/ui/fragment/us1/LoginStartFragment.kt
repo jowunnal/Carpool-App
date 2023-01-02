@@ -34,7 +34,7 @@ class LoginStartFragment  : BindFragment<FragmentLoginStartBinding>(R.layout.fra
 
         registerViewModel.loginFlag.observe(viewLifecycleOwner, Observer {
             if(it){
-                Navigation.findNavController(view).navigate(R.id.action_loginStartFragment_to_fragmentRegisterCarpool)
+                Navigation.findNavController(view).navigate(R.id.action_loginStartFragment_to_homeFragment)
                 registerViewModel.loginFlag.value=false
             }
         })

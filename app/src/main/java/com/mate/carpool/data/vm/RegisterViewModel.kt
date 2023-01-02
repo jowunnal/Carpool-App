@@ -7,7 +7,12 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mate.carpool.data.model.*
+import com.mate.carpool.data.model.DTO.MemberRequestDTO
+import com.mate.carpool.data.model.item.RegisterItem
+import com.mate.carpool.data.model.item.StudentItem
+import com.mate.carpool.data.model.domain.UserModel
+import com.mate.carpool.data.model.response.LoginResponse
+import com.mate.carpool.data.model.response.ResponseMessage
 import com.mate.carpool.data.service.APIService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -93,7 +98,8 @@ class RegisterViewModel @Inject constructor(@ApplicationContext private val cont
         val body = MultipartBody.Part.createFormData("image", file.name, requestFile)
 
         viewModelScope.launch(Dispatchers.IO) {
-            apiService.postSingUp(MemberRequestDTO(userModel.value!!),
+            apiService.postSingUp(
+                MemberRequestDTO(userModel.value!!),
                 body
                 ).enqueue(object : Callback<ResponseMessage> {
                 override fun onResponse(
@@ -125,7 +131,7 @@ class RegisterViewModel @Inject constructor(@ApplicationContext private val cont
 
     fun loginStudentMember(studentNumber:String,memberName:String,phoneNumber:String){
         viewModelScope.launch {
-            apiService.postLogin(StudentInfo(studentNumber,memberName,phoneNumber)).enqueue(object : Callback<LoginResponse>{
+            apiService.postLogin(StudentItem(studentNumber,memberName,phoneNumber)).enqueue(object : Callback<LoginResponse>{
                 override fun onResponse(
                     call: Call<LoginResponse>,
                     response: Response<LoginResponse>

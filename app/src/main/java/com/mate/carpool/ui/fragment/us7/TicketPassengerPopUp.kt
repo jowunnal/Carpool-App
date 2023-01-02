@@ -1,9 +1,6 @@
 package com.mate.carpool.ui.fragment.us7
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.DialogFragment
 import com.mate.carpool.data.utils.LayoutParamsUtils.getBottomSheetDialogDefaultWidth

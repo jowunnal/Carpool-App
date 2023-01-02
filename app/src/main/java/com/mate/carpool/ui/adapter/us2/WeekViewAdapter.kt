@@ -4,16 +4,16 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.mate.carpool.data.model.WeekModel
+import com.mate.carpool.data.model.item.WeekItem
 import com.mate.carpool.databinding.ItemviewWeekBinding
 import javax.inject.Inject
 
 class WeekViewAdapter @Inject constructor()  : RecyclerView.Adapter<WeekViewAdapter.ViewHolder>(){
-    private val items = ArrayList<WeekModel>()
+    private val items = ArrayList<WeekItem>()
 
     inner class ViewHolder(private val binding: ItemviewWeekBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: WeekModel){
+        fun bind(item: WeekItem){
             binding.btnDay.text=item.weekName
             binding.btnDay.setOnClickListener {
                 if(!item.weekFlag){
@@ -41,12 +41,12 @@ class WeekViewAdapter @Inject constructor()  : RecyclerView.Adapter<WeekViewAdap
         return items.size
     }
 
-    fun setItems(items:List<WeekModel>){
+    fun setItems(items:List<WeekItem>){
         this.items.clear()
         this.items.addAll(items)
     }
 
-    fun getItems():ArrayList<WeekModel>{
+    fun getItems():ArrayList<WeekItem>{
         return this.items
     }
 

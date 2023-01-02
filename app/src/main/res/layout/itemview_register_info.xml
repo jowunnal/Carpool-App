@@ -5,7 +5,7 @@
     <data>
         <variable
             name="registerItem"
-            type="com.mate.carpool.data.model.RegisterItem" />
+            type="com.mate.carpool.data.model.item.RegisterItem" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout 
         android:layout_width="match_parent"

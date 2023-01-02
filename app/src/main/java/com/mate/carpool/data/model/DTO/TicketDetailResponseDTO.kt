@@ -1,11 +1,11 @@
-package com.mate.carpool.data.model
+package com.mate.carpool.data.model.DTO
 
 /*
 
  */
-data class TicketDetailResponseDTO(val id:Int,
-                                   val memberName:String,
-                                   val profileImage:String,
+data class TicketDetailResponseDTO(val id:Int=0,
+                                   val memberName:String="",
+                                   val profileImage:String="",
                                    var startArea:String = "",
                                    val endArea:String="경운대학교",
                                    var boardingPlace:String="",
@@ -16,4 +16,4 @@ data class TicketDetailResponseDTO(val id:Int,
                                    var recruitPerson: Int=0,
                                    var ticketType: String="",
                                    val ticketPrice: Int=0,
-                                   val passengers:ArrayList<MemberResponseDTO>):ResponseMessage()
+                                   val passengers:ArrayList<MemberResponseDTO>?=null)

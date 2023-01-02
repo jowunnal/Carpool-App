@@ -1,10 +1,11 @@
-package com.mate.carpool.data.model
+package com.mate.carpool.data.model.domain
 
 /*
     ticket Model
 */
 
-data class CarpoolTicketModel(
+data class TicketModel(
+    var memberName:String = "",
     var startArea:String = "",
     val endArea:String="경운대학교",
     var boardingPlace:String="",

@@ -2,7 +2,9 @@ package com.mate.carpool.data.utils
 
 import android.widget.Toolbar
 import androidx.fragment.app.FragmentActivity
+import com.google.android.material.button.MaterialButton
 import com.mate.carpool.R
+import com.mate.carpool.ui.fragment.CheckDialogFragment
 
 object SettingToolbarUtils {
     /*
@@ -16,5 +18,10 @@ object SettingToolbarUtils {
             setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_ios_24)
             setDisplayShowTitleEnabled(false)
         }
+    }
+
+    @JvmStatic
+    fun showBottomSheetFragment(fragmentActivity:FragmentActivity, title:String, message:String, tag:String){
+        CheckDialogFragment(title,message).show(fragmentActivity.supportFragmentManager,tag)
     }
 }

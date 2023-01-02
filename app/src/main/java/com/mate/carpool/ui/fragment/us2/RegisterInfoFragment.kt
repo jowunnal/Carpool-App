@@ -8,7 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mate.carpool.R
-import com.mate.carpool.data.model.UserModel
+import com.mate.carpool.data.model.domain.UserModel
 import com.mate.carpool.data.vm.RegisterViewModel
 import com.mate.carpool.databinding.FragmentRegisterInfoBinding
 import com.mate.carpool.ui.activity.MainActivity
