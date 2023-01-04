@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.fragment.us7
+package com.mate.carpool.ui.us.reserveDriver.fragment
 
 import android.os.Bundle
 import android.view.*

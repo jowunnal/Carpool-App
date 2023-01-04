@@ -1,4 +1,4 @@
-package com.mate.carpool.data.vm
+package com.mate.carpool.ui.us.reserveDriver.vm
 
 import android.content.Context
 import android.util.Log
@@ -23,10 +23,10 @@ class ReserveDriverViewModel @Inject constructor(@ApplicationContext private val
     private val mutableTicketDetail = MutableLiveData<TicketDetailResponseDTO>()
     val ticketDetail:LiveData<TicketDetailResponseDTO> get() = mutableTicketDetail
     var passengerCount = MutableLiveData<String>()
-    val ticketID=MutableLiveData(504)
+    val ticketID=MutableLiveData(0)
 
     fun getTicketDetailFromId(){
-        apiService.getTicketReadId(ticketID.value!!).enqueue(object : Callback<TicketDetailResponseDTO>{
+        apiService.getTicketReadIds(ticketID.value!!).enqueue(object : Callback<TicketDetailResponseDTO>{
             override fun onResponse(
                 call: Call<TicketDetailResponseDTO>,
                 response: Response<TicketDetailResponseDTO>

@@ -1,10 +1,9 @@
-package com.mate.carpool.ui.fragment.us7
+package com.mate.carpool.ui.us.reserveDriver.fragment
 
 import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -13,18 +12,18 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mate.carpool.R
 import com.mate.carpool.data.utils.LayoutParamsUtils.getBottomSheetDialogDefaultHeight
 import com.mate.carpool.data.utils.SettingToolbarUtils
-import com.mate.carpool.data.vm.ReserveDriverViewModel
 import com.mate.carpool.databinding.BottomSheetReserveDriverBinding
 import com.mate.carpool.ui.adapter.us7.ReserveDriverViewAdapter
 import com.mate.carpool.ui.binder.BindBottomSheetDialogFragment
 import com.mate.carpool.ui.listener.OnItemClickListener
+import com.mate.carpool.ui.us.reserveDriver.vm.ReserveDriverViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class ReserveDriverFragment : BindBottomSheetDialogFragment<BottomSheetReserveDriverBinding>(R.layout.bottom_sheet_reserve_driver) {
-    private val reserveDriverViewModel:ReserveDriverViewModel by activityViewModels()
+    private val reserveDriverViewModel: ReserveDriverViewModel by activityViewModels()
     @Inject lateinit var reserveDriverViewAdapter: ReserveDriverViewAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,15 +41,15 @@ class ReserveDriverFragment : BindBottomSheetDialogFragment<BottomSheetReserveDr
             override fun setOnItemClickListener(view: View, pos: Int) {
                 if(!requireActivity().isFinishing){
                     val location = IntArray(2)
-                    Log.d("test",pos.toString())
-                    /*location[0]=view.x.toInt()
-                    location[1]=view.y.toInt()*/
                     view.getLocationOnScreen(location)
-                    Log.d("test",location[0].toString()+" "+location[1].toString())
                     TicketPassengerPopUp(location).show(requireActivity().supportFragmentManager,"popup")
                 }
             }
 
+        })
+
+        reserveDriverViewModel.ticketID.observe(viewLifecycleOwner, Observer {
+            reserveDriverViewModel.getTicketDetailFromId()
         })
 
         reserveDriverViewModel.ticketDetail.observe(viewLifecycleOwner, Observer {

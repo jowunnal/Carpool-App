@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.mate.carpool.ui.fragment.us1.LoginFragment"
+        android:name="com.mate.carpool.ui.us.login.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login" >
         <action
@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/RegisterInfoFragment"
-        android:name="com.mate.carpool.ui.fragment.us2.RegisterInfoFragment"
+        android:name="com.mate.carpool.ui.us.register.fragment.RegisterInfoFragment"
         android:label="RegisterFragment3"
         tools:layout="@layout/fragment_register_info">
 
@@ -33,7 +33,7 @@
     </fragment>
     <fragment
         android:id="@+id/RegisterPhoneFragment"
-        android:name="com.mate.carpool.ui.fragment.us2.RegisterPhoneFragment"
+        android:name="com.mate.carpool.ui.us.register.fragment.RegisterPhoneFragment"
         android:label="RegisterFragment4"
         tools:layout="@layout/fragment_register_phone">
 
@@ -43,7 +43,7 @@
     </fragment>
     <fragment
         android:id="@+id/RegisterTypeFragment"
-        android:name="com.mate.carpool.ui.fragment.us2.RegisterTypeFragment"
+        android:name="com.mate.carpool.ui.us.register.fragment.RegisterTypeFragment"
         android:label="LoginTypeFragment"
         tools:layout="@layout/fragment_register_type">
 
@@ -53,7 +53,7 @@
     </fragment>
     <fragment
         android:id="@+id/RegisterProfileFragment"
-        android:name="com.mate.carpool.ui.fragment.us2.RegisterProfileFragment"
+        android:name="com.mate.carpool.ui.us.register.fragment.RegisterProfileFragment"
         android:label="RegisterProfileFragment"
         tools:layout="@layout/fragment_register_profile">
 
@@ -63,7 +63,7 @@
     </fragment>
     <fragment
         android:id="@+id/RegisterSelectDayFragment"
-        android:name="com.mate.carpool.ui.fragment.us2.RegisterSelectDayFragment"
+        android:name="com.mate.carpool.ui.us.register.fragment.RegisterSelectDayFragment"
         android:label="LoginSelectDayFragment"
         tools:layout="@layout/fragment_register_select_day" >
         <action
@@ -75,16 +75,18 @@
 
     <fragment
         android:id="@+id/loginStartFragment"
-        android:name="com.mate.carpool.ui.fragment.us1.LoginStartFragment"
+        android:name="com.mate.carpool.ui.us.login.LoginStartFragment"
         android:label="LoginStartFragment"
         tools:layout="@layout/fragment_login_start" >
         <action
             android:id="@+id/action_loginStartFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/createTicketBoardingAreaFragment"
-        android:name="com.mate.carpool.ui.fragment.us5.CreateTicketBoardingAreaFragment"
+        android:name="com.mate.carpool.ui.us.createCarpool.fragment.CreateTicketBoardingAreaFragment"
         android:label="createTicketBoardingAreaFragment"
         tools:layout="@layout/fragment_create_carpool_ticket_boarding_area">
         <action
@@ -93,7 +95,7 @@
     </fragment>
     <fragment
         android:id="@+id/createTicketBoardingTimeFragment"
-        android:name="com.mate.carpool.ui.fragment.us5.CreateTicketBoardingTimeFragment"
+        android:name="com.mate.carpool.ui.us.createCarpool.fragment.CreateTicketBoardingTimeFragment"
         android:label="fragment_create_carpool_ticket_boarding_time"
         tools:layout="@layout/fragment_create_carpool_ticket_boarding_time" >
         <action
@@ -102,7 +104,7 @@
     </fragment>
     <fragment
         android:id="@+id/createTicketOpenChatFragment"
-        android:name="com.mate.carpool.ui.fragment.us5.CreateTicketOpenChatFragment"
+        android:name="com.mate.carpool.ui.us.createCarpool.fragment.CreateTicketOpenChatFragment"
         android:label="fragment_create_carpool_ticket_open_chat"
         tools:layout="@layout/fragment_create_carpool_ticket_open_chat" >
         <action
@@ -111,12 +113,14 @@
     </fragment>
     <fragment
         android:id="@+id/createTicketPreviewFragment"
-        android:name="com.mate.carpool.ui.fragment.us5.CreateTicketPreviewFragment"
+        android:name="com.mate.carpool.ui.us.createCarpool.fragment.CreateTicketPreviewFragment"
         android:label="fragment_create_carpool_ticket_preview"
         tools:layout="@layout/fragment_create_carpool_ticket_preview" >
         <action
             android:id="@+id/action_createTicketPreviewFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/homeFragment"

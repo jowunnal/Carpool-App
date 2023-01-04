@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.fragment.us1
+package com.mate.carpool.ui.us.login
 
 import android.os.Bundle
 import android.view.View
@@ -6,7 +6,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.mate.carpool.R
-import com.mate.carpool.data.vm.RegisterViewModel
+import com.mate.carpool.ui.us.register.vm.RegisterViewModel
 import com.mate.carpool.databinding.FragmentLoginStartBinding
 import com.mate.carpool.ui.activity.MainActivity
 import com.mate.carpool.ui.binder.BindFragment

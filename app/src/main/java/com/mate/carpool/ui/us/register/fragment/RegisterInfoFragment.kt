@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.fragment.us2
+package com.mate.carpool.ui.us.register.fragment
 
 import android.os.Bundle
 import android.view.View
@@ -9,18 +9,18 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mate.carpool.R
 import com.mate.carpool.data.model.domain.UserModel
-import com.mate.carpool.data.vm.RegisterViewModel
 import com.mate.carpool.databinding.FragmentRegisterInfoBinding
 import com.mate.carpool.ui.activity.MainActivity
 import com.mate.carpool.ui.adapter.us2.RegisterViewAdapter
 import com.mate.carpool.ui.binder.BindFragment
+import com.mate.carpool.ui.us.register.vm.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class RegisterInfoFragment : BindFragment<FragmentRegisterInfoBinding>(R.layout.fragment_register_info){
     @Inject lateinit var studentInfoAdapter: RegisterViewAdapter
-    val registerViewModel:RegisterViewModel by activityViewModels()
+    val registerViewModel: RegisterViewModel by activityViewModels()
     lateinit var mainActivity:MainActivity
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

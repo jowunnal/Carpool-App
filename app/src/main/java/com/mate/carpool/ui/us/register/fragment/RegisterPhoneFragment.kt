@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.fragment.us2
+package com.mate.carpool.ui.us.register.fragment
 
 import android.os.Bundle
 import android.view.View
@@ -8,14 +8,14 @@ import androidx.navigation.Navigation
 import com.mate.carpool.R
 import com.mate.carpool.data.utils.ButtonCheckUtils
 import com.mate.carpool.data.utils.SettingToolbarUtils.setActionBar
-import com.mate.carpool.data.vm.RegisterViewModel
 import com.mate.carpool.databinding.FragmentRegisterPhoneBinding
 import com.mate.carpool.ui.binder.BindFragment
+import com.mate.carpool.ui.us.register.vm.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class RegisterPhoneFragment : BindFragment<FragmentRegisterPhoneBinding>(R.layout.fragment_register_phone) {
-    val registerViewModel:RegisterViewModel by activityViewModels()
+    val registerViewModel: RegisterViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

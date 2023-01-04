@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.fragment
+package com.mate.carpool.ui.us
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -6,16 +6,13 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.NavHostFragment
-import com.mate.carpool.R
-import com.mate.carpool.data.vm.RegisterViewModel
-import com.mate.carpool.data.vm.ReserveDriverViewModel
+import com.mate.carpool.ui.us.reserveDriver.vm.ReserveDriverViewModel
 import com.mate.carpool.databinding.DialogCheckBinding
 
 class CheckDialogFragment(private val titleText:String,private val messageText:String) :DialogFragment() {
     private var _binding:DialogCheckBinding ?= null
     private val binding get() = _binding!!
-    private val reserveDriverViewModel:ReserveDriverViewModel by activityViewModels()
+    private val reserveDriverViewModel: ReserveDriverViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.fragment.us2
+package com.mate.carpool.ui.us.register.fragment
 
 import android.content.Context
 import android.content.Intent
@@ -13,14 +13,14 @@ import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.mate.carpool.R
 import com.mate.carpool.data.utils.SettingToolbarUtils
-import com.mate.carpool.data.vm.RegisterViewModel
 import com.mate.carpool.databinding.FragmentRegisterProfileBinding
 import com.mate.carpool.ui.binder.BindFragment
+import com.mate.carpool.ui.us.register.vm.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class RegisterProfileFragment : BindFragment<FragmentRegisterProfileBinding>(R.layout.fragment_register_profile) {
-    val registerViewModel:RegisterViewModel by activityViewModels()
+    val registerViewModel: RegisterViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

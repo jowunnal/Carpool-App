@@ -2,11 +2,11 @@
 <layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.fragment.us7.ReserveDriverFragment">
+    tools:context=".ui.us.reserveDriver.fragment.ReserveDriverFragment">
     <data>
         <variable
             name="reserveDriverViewModel"
-            type="com.mate.carpool.data.vm.ReserveDriverViewModel" />
+            type="com.mate.carpool.ui.us.reserveDriver.vm.ReserveDriverViewModel" />
         <import type="com.mate.carpool.R"/>
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout

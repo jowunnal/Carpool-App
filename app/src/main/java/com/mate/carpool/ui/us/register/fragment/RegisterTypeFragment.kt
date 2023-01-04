@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.fragment.us2
+package com.mate.carpool.ui.us.register.fragment
 
 import android.graphics.Color
 import android.os.Bundle
@@ -8,9 +8,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import com.mate.carpool.R
 import com.mate.carpool.data.utils.SettingToolbarUtils
-import com.mate.carpool.data.vm.RegisterViewModel
 import com.mate.carpool.databinding.FragmentRegisterTypeBinding
 import com.mate.carpool.ui.binder.BindFragment
+import com.mate.carpool.ui.us.register.vm.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class RegisterTypeFragment : BindFragment<FragmentRegisterTypeBinding>(R.layout.fragment_register_type) {
-    val registerViewModel:RegisterViewModel by activityViewModels()
+    val registerViewModel: RegisterViewModel by activityViewModels()
     private var btnFlag = true
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

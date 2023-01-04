@@ -1,4 +1,4 @@
-package com.mate.carpool.data.vm
+package com.mate.carpool.ui.us.register.vm
 
 import android.content.Context
 import android.util.Log
