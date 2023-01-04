@@ -1,10 +1,7 @@
 package com.mate.carpool.data.service
 
 import com.mate.carpool.data.model.*
-import com.mate.carpool.data.model.DTO.MemberRequestDTO
-import com.mate.carpool.data.model.DTO.TicketDetailResponseDTO
-import com.mate.carpool.data.model.domain.TicketModel
-import com.mate.carpool.data.model.DTO.MemberProfileDTO
+import com.mate.carpool.data.model.DTO.*
 import com.mate.carpool.data.model.item.StudentItem
 import com.mate.carpool.data.model.response.LoginResponse
 import com.mate.carpool.data.model.response.ResponseMessage
@@ -28,20 +25,23 @@ interface APIService {
     fun checkIsStudentNumberExists(@Path("studentNumber") studentNumber:String) : Call<ResponseMessage>
 
     @POST("ticket/new")
-    fun postTicketNew(@Body ticket: TicketModel) : Call<ResponseMessage>
+    fun postTicketNew(@Body ticket: CreateCarpoolRequestDTO) : Call<ResponseMessage>
 
     @GET("ticket/read/{id}")
-    fun getTicketReadId(@Path("id") id:Int):Call<TicketDetailResponseDTO>
+    suspend fun getTicketReadId(@Path("id") id:Int):TicketDetailResponseDTO
+
+    @GET("ticket/read/{id}")
+    fun getTicketReadIds(@Path("id") id:Int):Call<TicketDetailResponseDTO>
 
     @GET("ticket/update/{id}")
     fun getTicketUpdateId(@Path("id") id:Int,@Query("status") status:String):Call<ResponseMessage>
 
     @GET("ticket/list")
-    suspend fun getTicketList():List<TicketDetailResponseDTO>
+    suspend fun getTicketList():List<UserTicketDTO>
 
     @GET("ticket/promise")
     suspend fun getTicketPromise(): TicketDetailResponseDTO
 
     @GET("member/me")
-    suspend fun getUserProfile(): MemberProfileDTO
+    suspend fun getMemberProfile(): MemberProfileDTO
 }

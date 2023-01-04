@@ -7,4 +7,6 @@ data class UserTicketDTO(val id:Int = 0,
                          val startTime:String = "",
                          val recruitPerson:Int = 0,
                          val currentPersonCount:Int = 0,
-                         val ticketStatus:String = "")
+                         val ticketStatus:String = "",
+                         val ticketType: String="")
+

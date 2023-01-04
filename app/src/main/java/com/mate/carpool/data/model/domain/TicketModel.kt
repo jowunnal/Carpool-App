@@ -5,6 +5,7 @@ package com.mate.carpool.data.model.domain
 */
 
 data class TicketModel(
+    var id:Int = 0,
     var memberName:String = "",
     var startArea:String = "",
     val endArea:String="경운대학교",

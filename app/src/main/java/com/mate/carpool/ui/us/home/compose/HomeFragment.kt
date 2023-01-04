@@ -1,14 +1,16 @@
 package com.mate.carpool.ui.compose
 
+import android.content.ContextWrapper
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -26,23 +28,32 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import com.mate.carpool.R
-import com.mate.carpool.data.vm.HomeCarpoolListViewModel
+import com.mate.carpool.ui.us.home.vm.HomeCarpoolListViewModel
+import com.mate.carpool.ui.us.reserveDriver.fragment.ReserveDriverFragment
+import com.mate.carpool.ui.us.reserveDriver.vm.ReserveDriverViewModel
+import com.mate.carpool.ui.us.reservePassenger.ReservePassengerFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
+    val reserveDriverViewModel:ReserveDriverViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -51,7 +62,7 @@ class HomeFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                HomeCarpoolSheet()
+                HomeCarpoolSheet(findNavController(),reserveDriverViewModel)
             }
         }
     }
@@ -71,22 +82,45 @@ object Colors{
 fun PrevHome(
     bottomSheetState:ModalBottomSheetState,
     coroutineScope:CoroutineScope,
+    navController:NavController,
+    reserveDriverViewModel: ReserveDriverViewModel,
     carpoolListViewModel: HomeCarpoolListViewModel = viewModel()){
     val buttonState by carpoolListViewModel.carpoolExistState.collectAsStateWithLifecycle()
-    carpoolListViewModel.getCarpoolTicket()
+    val memberRole by carpoolListViewModel.memberRoleState.collectAsStateWithLifecycle()
+    val context = (LocalContext.current as ContextWrapper).baseContext as FragmentActivity
+
     Column() {
         HomeAppBar()
         Column(Modifier.padding(start = 16.dp, end = 16.dp,top=32.dp)) {
-            HomeCardView(R.drawable.ic_home_folder,"공지사항",R.drawable.ic_home_rightarrow)
+            HomeCardView(R.drawable.ic_home_folder,"공지사항",R.drawable.ic_home_rightarrow,navController)
             Spacer(modifier = Modifier.height(4.dp))
-            HomeCardView(R.drawable.ic_home_location,"지역설정",R.drawable.ic_home_rightarrow)
+
+            when(memberRole.memberRole){
+                "PASSENGER"->{
+                    HomeCardView(R.drawable.ic_home_location,memberRole.memberRole,R.drawable.ic_home_rightarrow,navController)
+                }
+                "DRIVER"->{
+                    HomeCardView(R.drawable.ic_home_location,memberRole.memberRole,R.drawable.ic_home_rightarrow,navController)
+                }
+            }
+
             Spacer(modifier = Modifier.height(4.dp))
-            HomeCarpoolList()
+            HomeCarpoolList(bottomSheetState,reserveDriverViewModel)
             Spacer(modifier = Modifier.height(8.dp))
             Button(onClick = {
                 coroutineScope.launch {
-                    if(buttonState)
-                        bottomSheetState.show()
+                    if(buttonState) {
+                        when(memberRole.memberRole){
+                            "PASSENGER"->{
+                                ReservePassengerFragment().show(context.supportFragmentManager,"passenger reservation")
+                            }
+                            "DRIVER"->{
+                                reserveDriverViewModel.ticketID.value = memberRole.ticketList!![0].id
+                                ReserveDriverFragment().show(context.supportFragmentManager,"driver reservation")
+                            }
+                        }
+                    }
+
                 }
             },
                 modifier = Modifier
@@ -109,7 +143,7 @@ fun PrevHome(
 }
 
 @Composable
-fun HomeCardView(@DrawableRes image:Int,text:String,@DrawableRes icon:Int){
+fun HomeCardView(@DrawableRes image:Int,text:String,@DrawableRes icon:Int,navController:NavController){
     ElevatedCard(shape = RoundedCornerShape(7.dp),
         modifier = Modifier
             .fillMaxWidth()
@@ -121,13 +155,24 @@ fun HomeCardView(@DrawableRes image:Int,text:String,@DrawableRes icon:Int){
             .fillMaxHeight()
             .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically) {
-            Image(painter = painterResource(id = image),
+            Image(painter = painterResource(id =
+            when(text){
+                "DRIVER"-> R.drawable.ic_car
+                "PASSENGER"->R.drawable.ic_home_location
+                else->image
+            }),
                 contentDescription = null,
             modifier = Modifier
                 .width(20.dp)
                 .height(16.dp))
             Spacer(modifier = Modifier.width(8.dp))
-            Text(text = text,
+            Text(text =
+            when(text)
+            {
+                "DRIVER"->"카풀 모집하기"
+                "PASSENGER"->"지역설정"
+                else->text
+            },
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color=Color.Black
@@ -135,7 +180,13 @@ fun HomeCardView(@DrawableRes image:Int,text:String,@DrawableRes icon:Int){
                     .weight(1f)
                     .height(22.dp))
 
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = {
+                when(text){
+                    "DRIVER"->navController.navigate(R.id.action_homeFragment_to_createTicketBoardingAreaFragment)
+                    "PASSENGER"->{}
+                    else->{}
+                }
+            }) {
                 Icon(painter = painterResource(id = icon),
                     contentDescription = null,
                     modifier = Modifier
@@ -146,8 +197,11 @@ fun HomeCardView(@DrawableRes image:Int,text:String,@DrawableRes icon:Int){
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun HomeCarpoolList(){
+fun HomeCarpoolList(
+    bottomSheetState:ModalBottomSheetState,reserveDriverViewModel: ReserveDriverViewModel
+){
     Column(Modifier.height(370.dp)) {
         Row(modifier = Modifier
             .fillMaxWidth()
@@ -177,17 +231,49 @@ fun HomeCarpoolList(){
                 .height(1.dp)
                 .background(Colors.Gray_DADDE1)
         )
-        HomeCarpoolItems()
+        HomeCarpoolItems(bottomSheetState,reserveDriverViewModel)
     }
 }
 @OptIn( ExperimentalLifecycleComposeApi::class, ExperimentalMaterialApi::class)
 @Composable
-fun HomeCarpoolItems(homeCarpoolListViewModel: HomeCarpoolListViewModel = viewModel()) {
+fun HomeCarpoolItems(
+    bottomSheetState: ModalBottomSheetState,
+    reserveDriverViewModel: ReserveDriverViewModel,
+    homeCarpoolListViewModel: HomeCarpoolListViewModel = viewModel())
+{
     val carpoolList by homeCarpoolListViewModel.carpoolListState.collectAsStateWithLifecycle()
-    homeCarpoolListViewModel.getCarpoolList()
+    val memberRole by homeCarpoolListViewModel.memberRoleState.collectAsStateWithLifecycle()
+    val coroutineScope = rememberCoroutineScope()
+    val context = (LocalContext.current as ContextWrapper).baseContext as FragmentActivity
     LazyColumn() {
         items(carpoolList) { item ->
-            Column() {
+            Column(Modifier.clickable {
+                if(!bottomSheetState.isVisible){
+                    coroutineScope.launch {
+                        when(memberRole.memberRole){
+                            "DRIVER"->{
+                                homeCarpoolListViewModel.getCarpoolTicket(item.id)
+                                if(homeCarpoolListViewModel.isTicketIsMineOrNot(item.id)){
+                                    reserveDriverViewModel.ticketID.value = item.id
+                                    ReserveDriverFragment().show(context.supportFragmentManager,"driver reservation")
+                                }
+                                else
+                                    bottomSheetState.animateTo(ModalBottomSheetValue.Expanded)
+                            }
+                            "PASSENGER"->{
+                                homeCarpoolListViewModel.getCarpoolTicket(item.id)
+                                if(homeCarpoolListViewModel.isTicketIsMineOrNot(item.id)){
+                                    reserveDriverViewModel.ticketID.value = item.id
+                                    ReservePassengerFragment().show(context.supportFragmentManager,"passenger reservation")
+                                }
+                                else
+                                    bottomSheetState.animateTo(ModalBottomSheetValue.Expanded)
+                            }
+                        }
+
+                    }
+                }
+            }) {
                 Row(
                     modifier = Modifier.padding(16.dp),
                     verticalAlignment = Alignment.CenterVertically
@@ -224,7 +310,7 @@ fun HomeCarpoolItems(homeCarpoolListViewModel: HomeCarpoolListViewModel = viewMo
                         }
                     )
                     {
-                        Text(text = "${item.recruitPerson}/4")
+                        Text(text = "${item.currentPersonCount}/${item.recruitPerson}")
                     }
                 }
             }
@@ -242,31 +328,44 @@ fun HomeCarpoolItems(homeCarpoolListViewModel: HomeCarpoolListViewModel = viewMo
 
 @OptIn(ExperimentalLifecycleComposeApi::class, ExperimentalMaterialApi::class)
 @Composable
-fun HomeCarpoolSheet(carpoolListViewModel: HomeCarpoolListViewModel = viewModel()){
+fun HomeCarpoolSheet(
+    navController: NavController,
+    reserveDriverViewModel: ReserveDriverViewModel,
+    carpoolListViewModel: HomeCarpoolListViewModel = viewModel(),
+)
+{
     val bottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden
     )
     val coroutineScope = rememberCoroutineScope()
     val ticketDetail by carpoolListViewModel.carpoolTicketState.collectAsStateWithLifecycle()
+    val memberRole by carpoolListViewModel.memberRoleState.collectAsStateWithLifecycle()
+    val context = (LocalContext.current as ContextWrapper).baseContext as FragmentActivity
+
 
     ModalBottomSheetLayout(
         sheetContent = {
-            Column(Modifier
-                .padding(
-                    start = 20.dp,
-                    end = 20.dp,
-                    top = 16.dp,
-                    bottom = 20.dp))
+            Column(
+                Modifier
+                    .padding(
+                        start = 20.dp,
+                        end = 20.dp,
+                        top = 16.dp,
+                        bottom = 20.dp
+                    )
+            )
             {
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .height(24.dp),
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(24.dp),
                     horizontalArrangement = Arrangement.End
-                    ) {
+                ) {
                     IconButton(onClick = {
                         coroutineScope.launch {
                             bottomSheetState.hide()
-                    } })
+                        }
+                    })
                     {
                         Icon(
                             painter = painterResource(id = R.drawable.icon_x),
@@ -281,7 +380,8 @@ fun HomeCarpoolSheet(carpoolListViewModel: HomeCarpoolListViewModel = viewModel(
                 Row(
                     Modifier
                         .height(56.dp)
-                        .fillMaxWidth()) {
+                        .fillMaxWidth()
+                ) {
                     Column(
                         Modifier
                             .width(120.dp)
@@ -296,7 +396,7 @@ fun HomeCarpoolSheet(carpoolListViewModel: HomeCarpoolListViewModel = viewModel(
                     }
                     Spacer(modifier = Modifier.width(5.dp))
                     Image(
-                        painter = painterResource(id = R.drawable.ic_ticket_bluearrow), 
+                        painter = painterResource(id = R.drawable.ic_ticket_bluearrow),
                         contentDescription = null,
                         modifier = Modifier
                             .weight(1f)
@@ -320,21 +420,25 @@ fun HomeCarpoolSheet(carpoolListViewModel: HomeCarpoolListViewModel = viewModel(
                     Modifier
                         .height(44.dp)
                         .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically)
+                    verticalAlignment = Alignment.CenterVertically
+                )
                 {
-                    ProfileImage(image = R.drawable.icon_main_profile,50.dp,47.dp)
+                    ProfileImage(image = R.drawable.icon_main_profile, 50.dp, 47.dp)
                     Spacer(modifier = Modifier.width(8.dp))
                     Column(Modifier.weight(1f)) {
-                        Text(text = "드라이버",
-                            fontSize = 12.sp , color = Colors.Gray_4E5760,
+                        Text(
+                            text = "드라이버",
+                            fontSize = 12.sp, color = Colors.Gray_4E5760,
                             modifier = Modifier.fillMaxWidth()
                         )
                         Spacer(modifier = Modifier.height(4.dp))
-                        Text(text = ticketDetail.memberName,
+                        Text(
+                            text = ticketDetail.memberName,
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
-                    Image(painter = painterResource(id = R.drawable.ic_home_rightarrow),
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_home_rightarrow),
                         contentDescription = null,
                         modifier = Modifier
                             .width(24.dp)
@@ -357,27 +461,34 @@ fun HomeCarpoolSheet(carpoolListViewModel: HomeCarpoolListViewModel = viewModel(
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                        if(memberRole.memberRole == "PASSENGER"){
+                            ReservePassengerFragment().show(context.supportFragmentManager,"passenger reservation")
+                            reserveDriverViewModel.ticketID.value = ticketDetail.id
+                        }
+                        else
+                            Toast.makeText(context,"드라이버는 탑승하기를 할 수 없습니다",Toast.LENGTH_SHORT).show()
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp),
-                colors = ButtonDefaults.buttonColors(Colors.Blue_007AFF),
-                shape = RoundedCornerShape(100.dp)
+                    colors = ButtonDefaults.buttonColors(Colors.Blue_007AFF),
+                    shape = RoundedCornerShape(100.dp)
                 )
                 {
-                    Text(text = "탑승하기",
+                    Text(
+                        text = "탑승하기",
                         color = Color.White,
                         fontWeight = FontWeight.W900,
                         fontSize = 18.sp
                     )
                 }
             }
-
-    },
+        },
         sheetState = bottomSheetState,
         sheetShape = RoundedCornerShape(20.dp)
     ) {
-        PrevHome(bottomSheetState,coroutineScope)
+        PrevHome(bottomSheetState,coroutineScope,navController,reserveDriverViewModel)
     }
 }
 

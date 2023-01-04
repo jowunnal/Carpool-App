@@ -2,9 +2,8 @@ package com.mate.carpool.data.utils
 
 import android.widget.Toolbar
 import androidx.fragment.app.FragmentActivity
-import com.google.android.material.button.MaterialButton
 import com.mate.carpool.R
-import com.mate.carpool.ui.fragment.CheckDialogFragment
+import com.mate.carpool.ui.us.CheckDialogFragment
 
 object SettingToolbarUtils {
     /*
