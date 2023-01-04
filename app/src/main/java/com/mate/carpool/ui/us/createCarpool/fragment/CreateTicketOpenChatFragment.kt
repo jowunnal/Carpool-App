@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.fragment.us5
+package com.mate.carpool.ui.us.createCarpool.fragment
 
 import android.os.Bundle
 import android.view.View
@@ -7,7 +7,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.mate.carpool.R
 import com.mate.carpool.data.utils.SettingToolbarUtils
-import com.mate.carpool.data.vm.CreateTicketViewModel
+import com.mate.carpool.ui.us.createCarpool.vm.CreateTicketViewModel
 import com.mate.carpool.databinding.FragmentCreateCarpoolTicketOpenChatBinding
 import com.mate.carpool.ui.binder.BindFragment
 

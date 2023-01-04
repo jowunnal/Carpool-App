@@ -1,4 +1,4 @@
-package com.mate.carpool.data.vm
+package com.mate.carpool.ui.us.createCarpool.vm
 
 import android.content.Context
 import android.util.Log
@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mate.carpool.data.model.DTO.CreateCarpoolRequestDTO
 import com.mate.carpool.data.model.domain.TicketModel
 import com.mate.carpool.data.model.response.ResponseMessage
 import com.mate.carpool.data.service.APIService
@@ -28,7 +29,9 @@ class CreateTicketViewModel @Inject constructor(@ApplicationContext private val 
 
     fun createCarpoolTicket(){
         viewModelScope.launch {
-            apiService.postTicketNew(ticketModel.value!!).enqueue(object : Callback<ResponseMessage>{
+            mutableTicketModel?.value?.startDayMonth= mutableTicketModel?.value?.startDayMonth?.replace("/","").toString()
+            mutableTicketModel?.value?.startTime = mutableTicketModel?.value?.startTime?.replace(":","").toString()
+            apiService.postTicketNew(CreateCarpoolRequestDTO(ticketModel.value!!)).enqueue(object : Callback<ResponseMessage>{
                 override fun onResponse(
                     call: Call<ResponseMessage>,
                     response: Response<ResponseMessage>

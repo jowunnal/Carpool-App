@@ -2,37 +2,27 @@ package com.mate.carpool.ui.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Build
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toolbar
 import androidx.annotation.IdRes
-import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.BindingAdapter
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.mate.carpool.R
-import com.mate.carpool.data.vm.CreateTicketViewModel
-import com.mate.carpool.data.vm.RegisterViewModel
-import com.mate.carpool.ui.fragment.CheckDialogFragment
+import com.mate.carpool.ui.us.createCarpool.vm.CreateTicketViewModel
+import com.mate.carpool.ui.us.register.vm.RegisterViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.collections.ArrayList
 
 @BindingAdapter("isSelectedAddItemToRegisterRCV")
-fun isSelectedAddItemToRegisterRCV(button:AppCompatButton,registerViewModel:RegisterViewModel){
+fun isSelectedAddItemToRegisterRCV(button:AppCompatButton,registerViewModel: RegisterViewModel){
     button.setOnClickListener {
         if(button.isSelected){
             if(registerViewModel.rcvFlag.value==1){
@@ -109,7 +99,7 @@ fun setAreaItemsToStartingAreaAdapter(tv: AutoCompleteTextView,areaItems:ArrayLi
 
 @SuppressLint("SimpleDateFormat")
 @BindingAdapter("ticketViewModel","buttonFlag","context")
-fun setBoardingAreaTextInputListener(et: TextInputEditText, ticketViewModel: CreateTicketViewModel,buttonFlag: MutableLiveData<ArrayList<Boolean>>, context: Context){
+fun setBoardingAreaTextInputListener(et: TextInputEditText, ticketViewModel: CreateTicketViewModel, buttonFlag: MutableLiveData<ArrayList<Boolean>>, context: Context){
     et.doOnTextChanged { text, start, before, count ->
 
         when(et.hint) {
@@ -118,13 +108,11 @@ fun setBoardingAreaTextInputListener(et: TextInputEditText, ticketViewModel: Cre
                 setTicketButtonSelected(text.toString(), buttonFlag, 1)
             }
             context.getString(R.string.출발날짜) -> {
-                val date=SimpleDateFormat("MM/dd").parse(text.toString())
-                ticketViewModel.mutableTicketModel.value?.startDayMonth = date.month.toString()+date.day.toString()
+                ticketViewModel.mutableTicketModel.value?.startDayMonth = text.toString()
                 setTicketButtonSelected(text.toString(), buttonFlag, 0)
             }
             context.getString(R.string.출발시간) -> {
-                val time=SimpleDateFormat("HH:mm").parse(text.toString())
-                ticketViewModel.mutableTicketModel.value?.startTime = time.hours.toString()+time.minutes.toString()
+                ticketViewModel.mutableTicketModel.value?.startTime = text.toString()
                 setTicketButtonSelected(text.toString(), buttonFlag, 2)
             }
             context.getString(R.string.오픈채팅방링크)->{
