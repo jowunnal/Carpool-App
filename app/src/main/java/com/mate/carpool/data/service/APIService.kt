@@ -2,7 +2,7 @@ package com.mate.carpool.data.service
 
 import com.mate.carpool.data.model.*
 import com.mate.carpool.data.model.DTO.*
-import com.mate.carpool.data.model.item.StudentItem
+import com.mate.carpool.data.model.domain.item.StudentItem
 import com.mate.carpool.data.model.response.LoginResponse
 import com.mate.carpool.data.model.response.ResponseMessage
 import okhttp3.MultipartBody
@@ -30,9 +30,6 @@ interface APIService {
     @GET("ticket/read/{id}")
     suspend fun getTicketReadId(@Path("id") id:Int):TicketDetailResponseDTO
 
-    @GET("ticket/read/{id}")
-    fun getTicketReadIds(@Path("id") id:Int):Call<TicketDetailResponseDTO>
-
     @GET("ticket/update/{id}")
     fun getTicketUpdateId(@Path("id") id:Int,@Query("status") status:String):Call<ResponseMessage>
 
@@ -40,8 +37,14 @@ interface APIService {
     suspend fun getTicketList():List<UserTicketDTO>
 
     @GET("ticket/promise")
-    suspend fun getTicketPromise(): TicketDetailResponseDTO
+    suspend fun getMyTicket(): TicketDetailResponseDTO
 
     @GET("member/me")
-    suspend fun getMemberProfile(): MemberProfileDTO
+    suspend fun getMemberMe(): MemberProfileDTO
+
+    @POST("passenger/new")
+    suspend fun postPassengerNew(@Body ticketId:TicketNewMemberRequestDTO):ResponseMessage
+
+    @HTTP(method = "DELETE", path = "passenger", hasBody = true)
+    suspend fun deletePassenger(@Body ticket:TicketDeleteMemberRequestDTO):ResponseMessage
 }

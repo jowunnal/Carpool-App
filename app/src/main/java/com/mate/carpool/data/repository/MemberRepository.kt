@@ -4,5 +4,5 @@ import kotlinx.coroutines.flow.Flow
 
 
 interface MemberRepository {
-    fun getMemberRole() : Flow<Any>
+    fun getMemberInfo() : Flow<Any>
 }

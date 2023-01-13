@@ -3,15 +3,23 @@ package com.mate.carpool.ui.us.reserveDriver.vm
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.runtime.MutableState
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mate.carpool.data.model.response.ResponseMessage
 import com.mate.carpool.data.model.DTO.TicketDetailResponseDTO
+import com.mate.carpool.data.model.domain.TicketModel
+import com.mate.carpool.data.model.response.ApiResponse
+import com.mate.carpool.data.repository.CarpoolListRepository
+import com.mate.carpool.data.repository.PassengerRepository
+import com.mate.carpool.data.repository.PassengerRepositoryImpl
 import com.mate.carpool.data.service.APIService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -19,44 +27,54 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class ReserveDriverViewModel @Inject constructor(@ApplicationContext private val context: Context, private val apiService: APIService) :ViewModel(){
-    private val mutableTicketDetail = MutableLiveData<TicketDetailResponseDTO>()
-    val ticketDetail:LiveData<TicketDetailResponseDTO> get() = mutableTicketDetail
+class ReserveDriverViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val apiService: APIService,
+    private val carpoolListRepository: CarpoolListRepository,
+    private val passengerRepository: PassengerRepository
+) :ViewModel() {
+
     var passengerCount = MutableLiveData<String>()
-    val ticketID=MutableLiveData(0)
+    val ticketID = MutableStateFlow(0)
+    val passengerId = MutableStateFlow(0)
 
-    fun getTicketDetailFromId(){
-        apiService.getTicketReadIds(ticketID.value!!).enqueue(object : Callback<TicketDetailResponseDTO>{
-            override fun onResponse(
-                call: Call<TicketDetailResponseDTO>,
-                response: Response<TicketDetailResponseDTO>
-            ) {
-                when(response.code()){
-                    200->{
-                        mutableTicketDetail.value=response.body()
-                        when(mutableTicketDetail.value?.ticketType){
-                            "COST"-> mutableTicketDetail.value?.ticketType="유료"
-                            "FREE"-> mutableTicketDetail.value?.ticketType="무료"
-                        }
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val ticketDetail : StateFlow<TicketModel> = ticketID.flatMapLatest {
+        carpoolListRepository.getTicket(it)
+    }.transform{
+        if(it is TicketModel)
+            emit(it)
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(3000),
+        initialValue = TicketModel()
+    )
 
-                        passengerCount.value = "패신져 ("+(mutableTicketDetail.value?.passengers?.size!!).toString()+"/3)"
+    init {
+        getMyTicket()
+    }
+
+    fun getMyTicket(){
+        viewModelScope.launch {
+            carpoolListRepository.getMyTicket().collectLatest {
+                when(it){
+                    is TicketModel -> {
+                        ticketID.value = it.id
                     }
-                    404->{
-                        Toast.makeText(context,"존재하지 않는 카풀 입니다.", Toast.LENGTH_SHORT).show()
+                    is ApiResponse.FailResponse -> {
+                        Toast.makeText(context,"티켓정보를 가져오는데 실패했습니다. ${it.responseMessage.message}",Toast.LENGTH_SHORT).show()
+                    }
+                    is ApiResponse.ExceptionResponse ->{
+                        Toast.makeText(context,"일시적인 장애가 발생하였습니다.",Toast.LENGTH_SHORT).show()
                     }
                 }
             }
-
-            override fun onFailure(call: Call<TicketDetailResponseDTO>, t: Throwable) {
-                Log.d("test","실패: "+ t.message)
-            }
-
-        })
+        }
     }
 
     fun updateTicketStatus(status:String){
         viewModelScope.launch {
-            apiService.getTicketUpdateId(ticketID.value!!,status).enqueue(object : Callback<ResponseMessage>{
+            apiService.getTicketUpdateId(ticketID.value,status).enqueue(object : Callback<ResponseMessage>{
                 override fun onResponse(
                     call: Call<ResponseMessage>,
                     response: Response<ResponseMessage>
@@ -80,5 +98,24 @@ class ReserveDriverViewModel @Inject constructor(@ApplicationContext private val
 
             })
         }
+    }
+
+    fun deletePassengerToTicket(){
+        viewModelScope.launch {
+            passengerRepository.deletePassengerToTicket(ticketID.value,passengerId.value!!).collectLatest {
+                Toast.makeText(context,it, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    fun setTicketPassengerId(
+        studentNumber:String
+    ){
+        ticketDetail.value.passenger?.forEach {
+            if(it.studentID==studentNumber) {
+                passengerId.value = it.passengerId!!
+            }
+        }
+        passengerId.value = -1
     }
 }

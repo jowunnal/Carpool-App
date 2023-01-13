@@ -1,5 +1,6 @@
 package com.mate.carpool.ui.binder
 
+import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -10,7 +11,10 @@ import android.view.Window
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.mate.carpool.R
+import com.mate.carpool.ui.utils.LayoutParamsUtils
 
 abstract class BindBottomSheetDialogFragment<T:ViewDataBinding>(@LayoutRes private val layoutRes: Int): BottomSheetDialogFragment()  {
     private var _binding :T ?= null
@@ -22,8 +26,10 @@ abstract class BindBottomSheetDialogFragment<T:ViewDataBinding>(@LayoutRes priva
         savedInstanceState: Bundle?
     ): View? {
         _binding = DataBindingUtil.inflate(inflater, layoutRes,container,false)
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+        dialog?.window?.apply {
+            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            requestFeature(Window.FEATURE_NO_TITLE)
+        }
         return binding.root
     }
 
@@ -31,4 +37,12 @@ abstract class BindBottomSheetDialogFragment<T:ViewDataBinding>(@LayoutRes priva
         _binding=null
         super.onDestroy()
     }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme).apply {
+            behavior.peekHeight = LayoutParamsUtils.getBottomSheetDialogDefaultHeight(93, requireActivity())
+        }
+        return dialog
+    }
+
 }

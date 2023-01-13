@@ -1,6 +1,7 @@
-package com.mate.carpool.ui.adapter.us7
+package com.mate.carpool.ui.us.reserveDriver.adapterview
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,6 +42,10 @@ class ReserveDriverViewAdapter @Inject constructor(@ActivityContext private val 
     fun setItems(ticketDetailList: ArrayList<HashMap<String,String>>){
         this.items.clear()
         this.items.addAll(ticketDetailList)
+    }
+
+    fun getPassengerIdOnSelectedItem(pos:Int) : String{
+        return this.items[pos]["passengerId"]!!
     }
 
     fun setItemClickListener(listener:OnItemClickListener){
