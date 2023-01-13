@@ -6,7 +6,9 @@ import com.mate.carpool.data.model.domain.MemberRole
 import com.mate.carpool.data.model.domain.TicketListModel
 import com.mate.carpool.data.model.domain.TicketModel
 import com.mate.carpool.data.model.response.ResponseMessage
+import com.mate.carpool.data.repository.CarpoolListRepository
 import com.mate.carpool.data.repository.CarpoolListRepositoryImpl
+import com.mate.carpool.data.repository.MemberRepository
 import com.mate.carpool.data.repository.MemberRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,17 +19,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeCarpoolListViewModel @Inject constructor(
-    private val carpoolListRepository: CarpoolListRepositoryImpl,
-    private val memberRepository: MemberRepositoryImpl
+    private val carpoolListRepository: CarpoolListRepository,
+    private val memberRepository: MemberRepository
     ) : ViewModel()
 {
     private val mutableCarpoolListState = MutableStateFlow<List<TicketListModel>>(listOf(
         TicketListModel()
     ))
     val carpoolListState get() = mutableCarpoolListState.asStateFlow()
-
-    private val mutableCarpoolTicketState = MutableStateFlow<TicketModel>(TicketModel())
-    val carpoolTicketState get() = mutableCarpoolTicketState.asStateFlow()
 
     private val mutableCarpoolExistState = MutableStateFlow(false)
     val carpoolExistState get() = mutableCarpoolExistState.asStateFlow()
@@ -36,8 +35,8 @@ class HomeCarpoolListViewModel @Inject constructor(
     val memberRoleState get() = mutableMemberRoleState.asStateFlow()
 
     init {
-        getCarpoolList()
         getMemberRole()
+        getCarpoolList()
     }
 
     fun getCarpoolList(){
@@ -56,25 +55,9 @@ class HomeCarpoolListViewModel @Inject constructor(
         }
     }
 
-    suspend fun getCarpoolTicket(id:Int){
-        viewModelScope.launch {
-            carpoolListRepository.getTicket(id).collectLatest {
-                when(it){
-                    is TicketModel ->{
-                        mutableCarpoolTicketState.emit(it)
-                    }
-                    is ResponseMessage ->{
-                    }
-                    is Throwable ->{
-                    }
-                }
-            }
-        }
-    }
-
     fun getMemberRole(){
         viewModelScope.launch {
-            memberRepository.getMemberRole().collectLatest {
+            memberRepository.getMemberInfo().collectLatest {
                 when(it){
                     is MemberRole ->{
                         mutableMemberRoleState.emit(it)

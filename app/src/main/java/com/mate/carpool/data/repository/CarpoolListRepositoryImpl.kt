@@ -1,12 +1,19 @@
 package com.mate.carpool.data.repository
 
+import androidx.databinding.ObservableField
+import com.mate.carpool.data.model.DTO.MemberResponseDTO
 import com.mate.carpool.data.model.DTO.TicketDetailResponseDTO
 import com.mate.carpool.data.model.DTO.UserTicketDTO
 import com.mate.carpool.data.model.domain.TicketListModel
 import com.mate.carpool.data.model.domain.TicketModel
+import com.mate.carpool.data.model.domain.UserModel
 import com.mate.carpool.data.model.response.ApiResponse
+import com.mate.carpool.ui.utils.StringUtils.asDayStatusToDomain
+import com.mate.carpool.ui.utils.StringUtils.asStartDayMonthToDomain
+import com.mate.carpool.ui.utils.StringUtils.asStartTimeToDomain
+import com.mate.carpool.ui.utils.StringUtils.asTicketTypeToDomain
 import com.mate.carpool.data.service.APIService
-import com.mate.carpool.data.utils.HandleFlowUtils.handleFlowApi
+import com.mate.carpool.ui.utils.HandleFlowUtils.handleFlowApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -21,9 +28,8 @@ class CarpoolListRepositoryImpl @Inject constructor(private val apiService: APIS
                 is ApiResponse.SuccessResponse->{
                     it.responseMessage.asListDomain()
                 }
-                is ApiResponse.FailResponse -> {
-                }
-                is ApiResponse.ExceptionResponse ->{
+                else -> {
+                    it
                 }
             }
         }
@@ -37,23 +43,35 @@ class CarpoolListRepositoryImpl @Inject constructor(private val apiService: APIS
                 is ApiResponse.SuccessResponse->{
                     it.responseMessage.asTicketDomain()
                 }
-                is ApiResponse.FailResponse -> {
-                }
-                is ApiResponse.ExceptionResponse ->{
+                else -> {
+                    it
                 }
             }
         }
+
+    override fun getMyTicket(): Flow<Any> = handleFlowApi {
+        apiService.getMyTicket()
+    }.map {
+        when(it){
+            is ApiResponse.SuccessResponse -> {
+                it.responseMessage.asTicketDomain()
+            }
+            else -> {
+                it
+            }
+        }
+    }
 
     private fun UserTicketDTO.asTicketListDomain() = TicketListModel(
         this.id,
         this.profileImage,
         this.startArea,
-        StringBuffer(this.startTime).insert(2,':').toString(),
+        this.startTime.asStartTimeToDomain(),
         this.recruitPerson,
         this.currentPersonCount,
-        this.ticketType,
+        this.ticketType.asTicketTypeToDomain(),
         this.ticketStatus,
-        this.dayStatus
+        this.dayStatus.asDayStatusToDomain()
     )
 
     private fun TicketDetailResponseDTO.asTicketDomain() = TicketModel(
@@ -62,14 +80,28 @@ class CarpoolListRepositoryImpl @Inject constructor(private val apiService: APIS
         this.startArea,
         this.endArea,
         this.boardingPlace,
-        StringBuffer(this.startDayMonth).insert(2,'/').toString(),
-        this.dayStatus,StringBuffer(this.startTime).insert(2,':').toString(),
+        this.startDayMonth.asStartDayMonthToDomain(),
+        this.dayStatus.asDayStatusToDomain(),
+        this.startTime.asStartTimeToDomain(),
         this.openChatUrl,
         this.recruitPerson,
-        this.ticketType,
-        this.ticketPrice
+        this.ticketType.asTicketTypeToDomain(),
+        this.ticketPrice,
+        this.passengers?.asTicketDomain()
     )
 
+    fun List<MemberResponseDTO>.asTicketDomain() = map { it.asTicketDomain() }
+
+    fun MemberResponseDTO.asTicketDomain() = UserModel(
+        this.memberName,
+        this.studentNumber,
+        this.department,
+        ObservableField(this.phoneNumber),
+        "studentType",
+        this.profileImage,
+        listOf("daycode"),
+        this.passengerId
+    )
 
     private fun List<UserTicketDTO>.asListDomain() = map { it.asTicketListDomain() }
 

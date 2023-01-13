@@ -1,4 +1,4 @@
-package com.mate.carpool.data.module
+package com.mate.carpool.data.model.module
 
 import android.content.Context
 import com.google.gson.GsonBuilder
@@ -51,13 +51,13 @@ object RetrofitModule {
 
     @Singleton
     @Provides
-    fun provideHeaderIntercepter(@ApplicationContext context:Context):HeaderInterceptor{
+    fun provideHeaderIntercepter(@ApplicationContext context:Context): HeaderInterceptor {
         return HeaderInterceptor(context)
     }
 
     @Singleton
     @Provides
-    fun provideNullOnEmptyConverterFactory():NullOnEmptyConverterFactory{
+    fun provideNullOnEmptyConverterFactory(): NullOnEmptyConverterFactory {
         return NullOnEmptyConverterFactory()
     }
 
