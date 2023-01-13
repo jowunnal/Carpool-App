@@ -7,10 +7,10 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mate.carpool.R
 import com.mate.carpool.data.model.DTO.MemberTimeTableResponseDTO
-import com.mate.carpool.data.model.item.WeekItem
-import com.mate.carpool.data.utils.SettingToolbarUtils
+import com.mate.carpool.data.model.domain.item.WeekItem
+import com.mate.carpool.ui.utils.SettingToolbarUtils
 import com.mate.carpool.databinding.FragmentRegisterSelectDayBinding
-import com.mate.carpool.ui.adapter.us2.WeekViewAdapter
+import com.mate.carpool.ui.us.register.WeekViewAdapter
 import com.mate.carpool.ui.binder.BindFragment
 import com.mate.carpool.ui.us.register.vm.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,9 +43,8 @@ class RegisterSelectDayFragment : BindFragment<FragmentRegisterSelectDayBinding>
             registerViewModel.mutableUserModel.value?.studentDayCodes = arrayListOf()
             for(item in weekViewAdapter.getItems()){
                 if(item.weekFlag){
-                    registerViewModel.mutableUserModel.value?.studentDayCodes?.add(
-                        MemberTimeTableResponseDTO((weekViewAdapter.getItems().indexOf(item)+1).toString())
-                    )
+                    registerViewModel.mutableUserModel.value?.studentDayCodes =
+                        listOf(MemberTimeTableResponseDTO((weekViewAdapter.getItems().indexOf(item)+1).toString()).dayCode)
                 }
             }
             Navigation.findNavController(view).navigate(R.id.action_RegisterSelectDayFragment_to_loginFragment)

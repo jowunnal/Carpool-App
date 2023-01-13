@@ -8,7 +8,8 @@ data class MemberRequestDTO(val studentNumber:String,
                             val phoneNumber: String,
                             var auth:String,
                             var area:String,
-                            var memberTimeTable: List<MemberTimeTableResponseDTO>?){
+                            var memberTimeTable: List<MemberTimeTableResponseDTO>?)
+{
     constructor(userModel: UserModel):this(userModel.studentID,userModel.name,userModel.studentDepartment,userModel.studentPhone.get()!!,userModel.studentType,"dd",
-    userModel.studentDayCodes)
+    listOf())
 }

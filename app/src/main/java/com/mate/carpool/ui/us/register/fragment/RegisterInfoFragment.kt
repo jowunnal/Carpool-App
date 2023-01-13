@@ -11,7 +11,7 @@ import com.mate.carpool.R
 import com.mate.carpool.data.model.domain.UserModel
 import com.mate.carpool.databinding.FragmentRegisterInfoBinding
 import com.mate.carpool.ui.activity.MainActivity
-import com.mate.carpool.ui.adapter.us2.RegisterViewAdapter
+import com.mate.carpool.ui.us.register.RegisterViewAdapter
 import com.mate.carpool.ui.binder.BindFragment
 import com.mate.carpool.ui.us.register.vm.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint

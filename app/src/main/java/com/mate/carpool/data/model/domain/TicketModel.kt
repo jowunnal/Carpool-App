@@ -16,4 +16,6 @@ data class TicketModel(
     var openChatUrl: String="",
     var recruitPerson: Int=0,
     var ticketType: String="",
-    val ticketPrice: Int=0)
+    val ticketPrice: Int=0,
+    val passenger:List<UserModel> ?= null
+)

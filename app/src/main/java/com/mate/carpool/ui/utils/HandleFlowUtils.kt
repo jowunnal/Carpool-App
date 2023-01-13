@@ -1,4 +1,4 @@
-package com.mate.carpool.data.utils
+package com.mate.carpool.ui.utils
 
 import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.model.response.ResponseMessage

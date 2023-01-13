@@ -1,4 +1,4 @@
-package com.mate.carpool.data.utils
+package com.mate.carpool.ui.utils
 
 object ButtonCheckUtils {
     /*

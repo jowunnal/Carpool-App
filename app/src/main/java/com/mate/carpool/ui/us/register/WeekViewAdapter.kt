@@ -1,10 +1,10 @@
-package com.mate.carpool.ui.adapter.us2
+package com.mate.carpool.ui.us.register
 
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.mate.carpool.data.model.item.WeekItem
+import com.mate.carpool.data.model.domain.item.WeekItem
 import com.mate.carpool.databinding.ItemviewWeekBinding
 import javax.inject.Inject
 

@@ -1,7 +1,7 @@
 package com.mate.carpool.data.model.DTO
 
 data class MemberResponseDTO(
-    val token:String,
+    val passengerId:Int,
     val email:String,
     val studentNumber:String,
     val memberName:String,
@@ -10,6 +10,5 @@ data class MemberResponseDTO(
     val auth:String,
     val profileImage:String,
     val area:String,
-    val memberTimeTable:ArrayList<MemberTimeTableResponseDTO>,
     val member:String
 )

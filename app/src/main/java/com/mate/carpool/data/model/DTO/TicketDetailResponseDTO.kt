@@ -16,4 +16,4 @@ data class TicketDetailResponseDTO(val id:Int=0,
                                    var recruitPerson: Int=0,
                                    var ticketType: String="",
                                    val ticketPrice: Int=0,
-                                   val passengers:ArrayList<MemberResponseDTO>?=null)
+                                   val passengers:List<MemberResponseDTO>?=null)

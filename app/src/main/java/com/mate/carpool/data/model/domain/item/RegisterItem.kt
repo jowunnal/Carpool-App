@@ -1,4 +1,4 @@
-package com.mate.carpool.data.model.item
+package com.mate.carpool.data.model.domain.item
 
 import androidx.databinding.ObservableField
 

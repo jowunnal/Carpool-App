@@ -34,7 +34,7 @@ class CheckDialogFragment(private val titleText:String,private val messageText:S
             when(titleText){
                 "티켓을 삭제하시겠어요?"->reserveDriverViewModel.updateTicketStatus("CANCEL")
                 "운행을 종료합니다."->reserveDriverViewModel.updateTicketStatus("AFTER")
-                "예약을 취소 하시겠어요?."->reserveDriverViewModel.updateTicketStatus("BEFORE")
+                "예약을 취소 하시겠어요?."->reserveDriverViewModel.deletePassengerToTicket()
             }
             dismiss()
         }

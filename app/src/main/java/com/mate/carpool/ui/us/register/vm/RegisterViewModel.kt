@@ -8,8 +8,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mate.carpool.data.model.DTO.MemberRequestDTO
-import com.mate.carpool.data.model.item.RegisterItem
-import com.mate.carpool.data.model.item.StudentItem
+import com.mate.carpool.data.model.domain.item.RegisterItem
+import com.mate.carpool.data.model.domain.item.StudentItem
 import com.mate.carpool.data.model.domain.UserModel
 import com.mate.carpool.data.model.response.LoginResponse
 import com.mate.carpool.data.model.response.ResponseMessage

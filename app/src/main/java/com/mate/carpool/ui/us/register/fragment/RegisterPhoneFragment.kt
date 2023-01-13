@@ -6,8 +6,8 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import com.mate.carpool.R
-import com.mate.carpool.data.utils.ButtonCheckUtils
-import com.mate.carpool.data.utils.SettingToolbarUtils.setActionBar
+import com.mate.carpool.ui.utils.ButtonCheckUtils
+import com.mate.carpool.ui.utils.SettingToolbarUtils.setActionBar
 import com.mate.carpool.databinding.FragmentRegisterPhoneBinding
 import com.mate.carpool.ui.binder.BindFragment
 import com.mate.carpool.ui.us.register.vm.RegisterViewModel

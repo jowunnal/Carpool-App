@@ -1,12 +1,12 @@
-package com.mate.carpool.ui.adapter.us2
+package com.mate.carpool.ui.us.register
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView
-import com.mate.carpool.data.model.item.RegisterItem
-import com.mate.carpool.data.utils.ButtonCheckUtils.checkRegisterInfoIsCorrect
+import com.mate.carpool.data.model.domain.item.RegisterItem
+import com.mate.carpool.ui.utils.ButtonCheckUtils.checkRegisterInfoIsCorrect
 import com.mate.carpool.databinding.FragmentRegisterInfoBinding
 import com.mate.carpool.databinding.ItemviewRegisterInfoBinding
 import dagger.hilt.android.qualifiers.ActivityContext

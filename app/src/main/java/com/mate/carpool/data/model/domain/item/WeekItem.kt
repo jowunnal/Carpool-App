@@ -1,4 +1,4 @@
-package com.mate.carpool.data.model.item
+package com.mate.carpool.data.model.domain.item
 
 /*
 월~금 버튼의 리사이클러뷰 어댑터 내의 items
