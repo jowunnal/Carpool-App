@@ -2,7 +2,6 @@ package com.mate.carpool.ui.compose
 
 import android.content.ContextWrapper
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,24 +32,21 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.activityViewModels
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.findNavController
 import com.mate.carpool.R
 import com.mate.carpool.data.model.domain.MemberRole
-import com.mate.carpool.data.model.domain.TicketModel
+import com.mate.carpool.ui.us.home.compose.NavigationGraph
 import com.mate.carpool.ui.us.home.vm.HomeCarpoolBottomSheetViewModel
 import com.mate.carpool.ui.us.home.vm.HomeCarpoolListViewModel
 import com.mate.carpool.ui.us.reserveDriver.fragment.ReserveDriverFragment
-import com.mate.carpool.ui.us.reserveDriver.vm.ReserveDriverViewModel
 import com.mate.carpool.ui.us.reservePassenger.ReservePassengerFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -67,7 +63,7 @@ class HomeFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                HomeCarpoolSheet(
+                MainView(
                     onNavigateToCreateCarpool = {findNavController().navigate(R.id.action_homeFragment_to_createTicketBoardingAreaFragment)}
                 )
             }
@@ -84,11 +80,22 @@ object Colors{
 
 }
 
+@Composable
+fun MainView(
+    onNavigateToCreateCarpool: () -> Unit
+){
+    val navController = rememberNavController()
+    NavigationGraph(
+        navController = navController,
+        onNavigateToCreateCarpool
+    )
+}
+
 @OptIn(ExperimentalLifecycleComposeApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun HomeCarpoolSheet(
     onNavigateToCreateCarpool: ()->Unit,
-    homeCarpoolBottomSheetViewModel: HomeCarpoolBottomSheetViewModel = viewModel(),
+    homeCarpoolBottomSheetViewModel: HomeCarpoolBottomSheetViewModel = hiltViewModel(),
 ) {
     val bottomSheetState = rememberModalBottomSheetState (
         initialValue = ModalBottomSheetValue.Hidden
@@ -262,7 +269,7 @@ fun HomeCarpoolSheet(
         sheetState = bottomSheetState,
         sheetShape = RoundedCornerShape(20.dp)
     ) {
-        PrevHome(
+        HomeView(
             bottomSheetState,
             coroutineScope,
             onNavigateToCreateCarpool,
@@ -274,13 +281,13 @@ fun HomeCarpoolSheet(
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalLifecycleComposeApi::class)
 @Composable
-fun PrevHome(
+fun HomeView(
     bottomSheetState:ModalBottomSheetState,
     coroutineScope:CoroutineScope,
     onNavigateToCreateCarpool:()->Unit,
     bottomSheetMemberRole:MutableState<MemberRole>,
     ticketId:MutableStateFlow<Int>,
-    homeCarpoolListViewModel: HomeCarpoolListViewModel = viewModel()
+    homeCarpoolListViewModel: HomeCarpoolListViewModel = hiltViewModel()
 ){
     val carpoolExistState by homeCarpoolListViewModel.carpoolExistState.collectAsStateWithLifecycle()
     val context = (LocalContext.current as ContextWrapper).baseContext as FragmentActivity
@@ -299,22 +306,20 @@ fun PrevHome(
             Spacer(modifier = Modifier.height(4.dp))
 
             when(memberRole.memberRole){
-                "PASSENGER"->{
-                    HomeCardView(R.drawable.ic_home_location,"지역설정",R.drawable.ic_home_rightarrow,{})
-                }
                 "DRIVER"->{
                     HomeCardView(R.drawable.ic_car,"카풀 모집하기",R.drawable.ic_home_rightarrow,onNavigateToCreateCarpool)
                 }
             }
 
             Spacer(modifier = Modifier.height(4.dp))
-            HomeCarpoolList(
-                bottomSheetState,
-                memberRole,
-                bottomSheetMemberRole,
-                ticketId
-            )
-            Spacer(modifier = Modifier.height(8.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                HomeCarpoolList(
+                    bottomSheetState,
+                    memberRole,
+                    bottomSheetMemberRole,
+                    ticketId
+                )
+            }
             Button(onClick = {
                 coroutineScope.launch {
                     if(carpoolExistState) {
@@ -333,7 +338,8 @@ fun PrevHome(
             },
                 modifier = Modifier
                     .height(50.dp)
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .background(Color.Unspecified),
                 colors =
                 if(!carpoolExistState)
                     ButtonDefaults.buttonColors(Color.Black)
@@ -405,7 +411,7 @@ fun HomeCarpoolList(
     bottomSheetMemberRole:MutableState<MemberRole>,
     ticketId:MutableStateFlow<Int>
 ){
-    Column(Modifier.height(370.dp)) {
+    Column() {
         Row(modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
@@ -450,7 +456,7 @@ fun HomeCarpoolItems(
     memberRole:MemberRole,
     bottomSheetMemberRole:MutableState<MemberRole>,
     ticketId:MutableStateFlow<Int>,
-    homeCarpoolListViewModel: HomeCarpoolListViewModel = viewModel()
+    homeCarpoolListViewModel: HomeCarpoolListViewModel = hiltViewModel()
 ){
     val carpoolList by homeCarpoolListViewModel.carpoolListState.collectAsStateWithLifecycle()
     val coroutineScope = rememberCoroutineScope()
