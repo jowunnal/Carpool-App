@@ -8,9 +8,10 @@ import kotlinx.coroutines.flow.stateIn
 
 fun <T, M> StateFlow<T>.map(
     coroutineScope : CoroutineScope,
+    started: SharingStarted = SharingStarted.WhileSubscribed(),
     mapper : (value : T) -> M
 ) : StateFlow<M> = map { mapper(it) }.stateIn(
     coroutineScope,
-    SharingStarted.Eagerly,
+    started,
     mapper(value)
 )

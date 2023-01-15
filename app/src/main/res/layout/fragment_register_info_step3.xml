@@ -5,12 +5,6 @@
 
     <data>
 
-        <import type="com.mate.carpool.R" />
-
-        <variable
-            name="navController"
-            type="androidx.navigation.NavController" />
-
         <variable
             name="viewModel"
             type="com.mate.carpool.data.vm.RegisterViewModel" />
@@ -78,7 +72,6 @@
                 app:title="@{`학번`}" />
         </FrameLayout>
 
-
         <FrameLayout
             android:id="@+id/fl_name_container"
             android:layout_width="match_parent"
@@ -98,8 +91,8 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginBottom="24dp"
+            android:enabled="@{viewModel.validDepartmentInput}"
             android:gravity="center"
-            android:onClick="@{() -> navController.navigate(R.id.action_RegisterInfoStep3Fragment_to_RegisterPhoneFragment)}"
             android:text="@string/login_confirm"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

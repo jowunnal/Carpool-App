@@ -2,121 +2,84 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
+        <import type="com.mate.carpool.R" />
+
         <variable
             name="navController"
             type="androidx.navigation.NavController" />
+
         <variable
-            name="registerViewModel"
+            name="viewModel"
             type="com.mate.carpool.data.vm.RegisterViewModel" />
-        <import type="com.mate.carpool.R"/>
+
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <Toolbar
-            android:id="@+id/appbar_back"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintHeight_percent="0.07"
-            navController="@{navController}"
-            />
+        android:layout_height="match_parent"
+        android:paddingHorizontal="16dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/login_input_number"
+            android:textColor="@color/black"
+            android:textSize="22dp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appbar_back">
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/ll_phone_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            tools:background="#33FF0000">
 
             <TextView
-                android:id="@+id/text_login_type"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="17dp"
-                android:layout_marginBottom="40dp"
-                android:text="@string/login_input_number"
-                android:textColor="@color/black"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/text_number"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent="0.04"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_confirm"
-                navController="@{navController}"
-                navi_ID="@{R.id.action_RegisterPhoneFragment_to_RegisterTypeFragment}"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_alignParentBottom="true"
-                android:height="50dp"
-                android:background="@drawable/button_select_navigate"
-                android:gravity="center"
-                android:text="@string/login_next"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/guidelineButtonPosition"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent="0.083"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:id="@+id/tv_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:text="전화번호"
+                android:textSize="13dp" />
 
             <EditText
-                android:id="@+id/edit_number"
+                android:id="@+id/et_phone"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="@drawable/round_10_gray"
-                android:hint="@string/login_number_example"
-                android:paddingStart="5dp"
-                android:text="@={registerViewModel.mutableUserModel.studentPhone}"
-                app:layout_constraintBottom_toTopOf="@+id/guidelineButtonPosition2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent="0.09"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_number" />
-
-            <TextView
-                android:id="@+id/text_number"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:text="@string/login_number"
-                android:textColor="@color/black_151515"
-                android:textSize="13sp"
-                app:layout_constraintBottom_toTopOf="@+id/edit_number"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent="0.03"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_login_type" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guidelineButtonPosition"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_end="33dp" />
+                android:layout_marginTop="2dp"
+                android:background="@drawable/bg_stoke_1dp_gray_radius_4dp"
+                android:hint="예: 010-1234-5678"
+                android:inputType="phone"
+                android:maxLength="13"
+                android:maxLines="1"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="15dp"
+                android:textSize="16dp" />
+        </LinearLayout>
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guidelineButtonPosition2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.25" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/btn_confirm"
+            style="@style/Theme.CarPool.NextButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="24dp"
+            android:enabled="@{viewModel.validPhoneInput}"
+            android:gravity="center"
+            android:onClick="@{() -> navController.navigate(R.id.action_RegisterPhoneFragment_to_RegisterTypeFragment)}"
+            android:text="@string/login_confirm"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

@@ -15,13 +15,4 @@ class RegisterInfoStep1Fragment : BaseFragment<RegisterViewModel, FragmentRegist
     override val viewModel: RegisterViewModel by activityViewModels()
 
     override fun getViewBinding() = FragmentRegisterInfoStep1Binding.inflate(layoutInflater)
-
-    override fun subscribeUI() {
-
-    }
-
-    override fun initViews() = with(binding) {
-        viewModel = this@RegisterInfoStep1Fragment.viewModel
-        navController = findNavController()
-    }
 }

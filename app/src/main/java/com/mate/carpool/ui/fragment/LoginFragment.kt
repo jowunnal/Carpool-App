@@ -19,5 +19,5 @@ class LoginFragment : BaseFragment<LoginViewModel, FragmentLoginBinding>() {
         navController = findNavController()
         tvLogin.paintFlags = Paint.UNDERLINE_TEXT_FLAG
     }
-    override fun subscribeUI() = Unit
+    override fun subscribeUi() = Unit
 }

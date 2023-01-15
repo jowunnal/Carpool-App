@@ -6,16 +6,21 @@ import android.widget.Toast
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.mate.carpool.data.Result
 import com.mate.carpool.data.model.*
+import com.mate.carpool.data.repository.MemberRepository
 import com.mate.carpool.data.service.APIService
 import com.mate.carpool.ui.base.BaseViewModel
 import com.mate.carpool.util.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -28,7 +33,8 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val apiService: APIService
+    private val apiService: APIService,
+    private val memberRepository: MemberRepository,
 ) : BaseViewModel() {
 
     val name = MutableStateFlow("")
@@ -37,12 +43,21 @@ class RegisterViewModel @Inject constructor(
     }
 
     val studentId = MutableStateFlow("")
-    val validStudentIdInput: StateFlow<Boolean> = studentId.map(viewModelScope) { input ->
+    val validStudentIdInput = studentId.map(viewModelScope) { input ->
         input.isNotEmpty() && input.matches("^[a-zA-Z0-9]+".toRegex())
     }
+    private val _studentIdErrorMessage = MutableStateFlow("")
+    val studentIdErrorMessage = _studentIdErrorMessage.asStateFlow()
 
     val department = MutableStateFlow("")
+    val validDepartmentInput = department.map(viewModelScope) { input ->
+        input.length >= 3 && input.matches("^[ㄱ-ㅎ|가-힣]+".toRegex())  // TODO 활성화 조건 확인
+    }
+
     val phone = MutableStateFlow("")
+    val validPhoneInput = phone.map(viewModelScope) { input ->
+        input.length >= 12 && input.matches("^[0-9\\-]+".toRegex())
+    }
 
 
     val mutableUserModel = MutableLiveData<UserModel>()
@@ -79,20 +94,23 @@ class RegisterViewModel @Inject constructor(
         rcvItemsMutableLiveData.value = rcvItems
     }
 
-    suspend fun checkIsStudentNumberExists(): Int {
-        return viewModelScope.async {
-            val code = apiService.checkIsStudentNumberExists(rcvItems?.get(0)!!.input.get().toString()).awaitResponse().code()
-            when (code) {
-                200 -> {
-                    studentNumberIsExistsHelperText.value = "가입 가능한 학번 입니다."
-                }
 
-                409 -> {
-                    studentNumberIsExistsHelperText.value = "이미 가입된 학번 입니다."
+    fun checkIsStudentNumberExists() {
+        memberRepository.checkIsDupStudentId(studentId = studentId.value)
+            .onEach { result ->
+                when (result) {
+                    is Result.Loading -> {
+
+                    }
+                    is Result.Success -> {
+                        _studentIdErrorMessage.update { "" }
+                        emitEvent(EVENT_MOVE_TO_NEXT_STEP)
+                    }
+                    is Result.Error -> {
+                        _studentIdErrorMessage.update { result.message }
+                    }
                 }
-            }
-            return@async code
-        }.await()
+            }.launchIn(viewModelScope)
     }
 
     fun convertInputStreamToFile(input: InputStream?): File? {
@@ -180,5 +198,9 @@ class RegisterViewModel @Inject constructor(
                 }
             })
         }
+    }
+
+    companion object {
+        const val EVENT_MOVE_TO_NEXT_STEP = "EVENT_MOVE_TO_NEXT_STEP"
     }
 }

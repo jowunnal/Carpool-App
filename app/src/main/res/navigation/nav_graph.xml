@@ -53,7 +53,9 @@
 
         <action
             android:id="@+id/action_RegisterInfoStep3Fragment_to_RegisterPhoneFragment"
-            app:destination="@id/RegisterPhoneFragment" />
+            app:destination="@id/RegisterPhoneFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="false" />
     </fragment>
 
 

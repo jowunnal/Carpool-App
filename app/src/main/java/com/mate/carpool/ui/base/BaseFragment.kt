@@ -7,10 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import com.google.android.material.internal.ViewUtils.hideKeyboard
+import androidx.navigation.fragment.findNavController
+import com.mate.carpool.BR
 
 abstract class BaseFragment<VM : BaseViewModel, VB : ViewDataBinding> : Fragment() {
 
@@ -22,12 +22,12 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewDataBinding> : Fragment
 
     open fun initState() {
         initViews()
-        subscribeUI()
+        subscribeUi()
     }
 
     open fun initViews() = Unit
 
-    abstract fun subscribeUI()
+    open fun subscribeUi() = Unit
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -37,6 +37,8 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewDataBinding> : Fragment
     ): View? {
         binding = getViewBinding()
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.setVariable(BR.viewModel, viewModel)
+        binding.setVariable(BR.navController, findNavController())
         binding.root.setOnTouchListener { v, _ ->
             if (v.hasFocus()) {
                 hideKeyboard()

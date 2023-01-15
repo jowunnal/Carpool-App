@@ -5,12 +5,6 @@
 
     <data>
 
-        <import type="com.mate.carpool.R" />
-
-        <variable
-            name="navController"
-            type="androidx.navigation.NavController" />
-
         <variable
             name="viewModel"
             type="com.mate.carpool.data.vm.RegisterViewModel" />
@@ -39,6 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
+            android:animateLayoutChanges="true"
             android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@id/tv_title"
             tools:background="#33FF0000">
@@ -64,6 +59,15 @@
                 android:paddingVertical="15dp"
                 android:text="@={viewModel.studentId}"
                 android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/tv_student_id_error_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:textColor="@color/red_E0302D"
+                android:textSize="13dp"
+                tools:text="이미 가입된 학번입니다." />
         </LinearLayout>
 
         <FrameLayout
@@ -87,7 +91,7 @@
             android:layout_marginBottom="24dp"
             android:enabled="@{viewModel.validStudentIdInput}"
             android:gravity="center"
-            android:onClick="@{() -> navController.navigate(R.id.action_RegisterInfoStep2Fragment_to_RegisterInfoStep3Fragment)}"
+            android:onClick="@{() -> viewModel.checkIsStudentNumberExists()}"
             android:text="@string/login_next"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
