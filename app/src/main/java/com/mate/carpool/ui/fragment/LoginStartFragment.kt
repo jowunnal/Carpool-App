@@ -24,13 +24,13 @@ class LoginStartFragment  : BindFragment<FragmentLoginStartBinding>(R.layout.fra
             registerViewModel.loginStudentMember(binding.editStudentNumber.text.toString(),binding.editName.text.toString(),binding.editNumber.text.toString())
         }
         mainActivity = activity as MainActivity
-
-        mainActivity.setOnBackPressedListener(object : MainActivity.OnBackPressedListener{
-            override fun onBack() {
-                mainActivity.setOnBackPressedListener(null)
-                mainActivity.onBackPressed()
-            }
-        })
+//
+//        mainActivity.setOnBackPressedListener(object : MainActivity.OnBackPressedListener{
+//            override fun onBack() {
+//                mainActivity.setOnBackPressedListener(null)
+//                mainActivity.onBackPressed()
+//            }
+//        })
 
         registerViewModel.loginFlag.observe(viewLifecycleOwner, Observer {
             if(it){

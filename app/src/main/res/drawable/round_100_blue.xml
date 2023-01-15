@@ -6,6 +6,7 @@
             <solid android:color="@color/blue" />
         </shape>
     </item>
+
     <!-- background (위로) -->
     <item android:bottom="2dp">
         <shape>
