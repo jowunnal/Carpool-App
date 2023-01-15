@@ -8,7 +8,7 @@
             type="androidx.navigation.NavController" />
         <variable
             name="registerViewModel"
-            type="com.mate.carpool.ui.us.register.vm.RegisterViewModel" />
+            type="com.mate.carpool.ui.screen.register.vm.RegisterViewModel" />
         <import type="com.mate.carpool.R"/>
     </data>
 

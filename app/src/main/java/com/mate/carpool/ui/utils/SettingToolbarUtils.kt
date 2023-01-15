@@ -3,7 +3,7 @@ package com.mate.carpool.ui.utils
 import android.widget.Toolbar
 import androidx.fragment.app.FragmentActivity
 import com.mate.carpool.R
-import com.mate.carpool.ui.us.CheckDialogFragment
+import com.mate.carpool.ui.screen.CheckDialogFragment
 
 object SettingToolbarUtils {
     /*

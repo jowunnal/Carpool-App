@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".ui.application.MateApplication"
+        android:name=".MateApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -30,7 +30,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.activity.SplashActivity"
+            android:name=".ui.screen.splash.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,7 +42,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity android:name=".ui.activity.MainActivity" />
+        <activity android:name=".ui.MainActivity" />
     </application>
 
 </manifest>
