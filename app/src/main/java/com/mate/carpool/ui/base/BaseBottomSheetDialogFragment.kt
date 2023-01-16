@@ -16,7 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.mate.carpool.R
 import com.mate.carpool.ui.utils.LayoutParamsUtils
 
-abstract class BindBottomSheetDialogFragment<T:ViewDataBinding>(@LayoutRes private val layoutRes: Int): BottomSheetDialogFragment()  {
+abstract class BaseBottomSheetDialogFragment<T:ViewDataBinding>(@LayoutRes private val layoutRes: Int): BottomSheetDialogFragment()  {
     private var _binding :T ?= null
     val binding get() = _binding!!
 
@@ -45,4 +45,7 @@ abstract class BindBottomSheetDialogFragment<T:ViewDataBinding>(@LayoutRes priva
         return dialog
     }
 
+    abstract class Renewing{
+        abstract fun onRewNew()
+    }
 }

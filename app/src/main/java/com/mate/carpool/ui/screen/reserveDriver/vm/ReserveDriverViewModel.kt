@@ -31,15 +31,18 @@ class ReserveDriverViewModel @Inject constructor(
 ) :ViewModel() {
 
     var passengerCount = MutableLiveData<String>()
-    val ticketID = MutableStateFlow(0)
-    val passengerId = MutableStateFlow(0)
+    val ticketID = MutableStateFlow(0L)
+    val passengerId = MutableStateFlow(0L)
+
+    private val mutableToastMessage = MutableStateFlow("")
+    val toastMessage get() = mutableToastMessage.asStateFlow()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val ticketDetail : StateFlow<TicketModel> = ticketID.flatMapLatest {
         carpoolListRepository.getTicket(it)
     }.transform{
-        if(it is TicketModel)
-            emit(it)
+        if(it is ApiResponse.SuccessResponse)
+            emit(it.responseMessage)
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(3000),
@@ -54,14 +57,14 @@ class ReserveDriverViewModel @Inject constructor(
         viewModelScope.launch {
             carpoolListRepository.getMyTicket().collectLatest {
                 when(it){
-                    is TicketModel -> {
-                        ticketID.value = it.id
+                    is ApiResponse.SuccessResponse -> {
+                        ticketID.value = it.responseMessage.id
                     }
                     is ApiResponse.FailResponse -> {
-                        Toast.makeText(context,"티켓정보를 가져오는데 실패했습니다. ${it.responseMessage.message}",Toast.LENGTH_SHORT).show()
+                        mutableToastMessage.emit("티켓정보를 가져오는데 실패했습니다. ${it.responseMessage.message}")
                     }
-                    is ApiResponse.ExceptionResponse ->{
-                        Toast.makeText(context,"일시적인 장애가 발생하였습니다.",Toast.LENGTH_SHORT).show()
+                    is ApiResponse.ExceptionResponse -> {
+                        mutableToastMessage.emit("일시적인 장애가 발생하였습니다.")
                     }
                 }
             }
@@ -85,6 +88,16 @@ class ReserveDriverViewModel @Inject constructor(
                         404->{
                             Toast.makeText(context,"존재하지 않는 카풀 입니다.", Toast.LENGTH_SHORT).show()
                         }
+                        /*
+                        200->{
+                            mutableToastMessage.emit("변경이 완료되었습니다.")
+                        }
+                        403->{
+                            mutableToastMessage.emit("권한이 없습니다.")
+                        }
+                        404->{
+                            mutableToastMessage.emit("존재하지 않는 카풀 입니다.")
+                        }*/
                     }
                 }
 
@@ -98,7 +111,7 @@ class ReserveDriverViewModel @Inject constructor(
 
     fun deletePassengerToTicket(){
         viewModelScope.launch {
-            passengerRepository.deletePassengerToTicket(ticketID.value,passengerId.value!!).collectLatest {
+            passengerRepository.deletePassengerToTicket(ticketID.value,passengerId.value).collectLatest {
                 Toast.makeText(context,it, Toast.LENGTH_SHORT).show()
             }
         }
@@ -109,9 +122,8 @@ class ReserveDriverViewModel @Inject constructor(
     ){
         ticketDetail.value.passenger?.forEach {
             if(it.studentID==studentNumber) {
-                passengerId.value = it.passengerId!!
+                passengerId.value = it.passengerId
             }
         }
-        passengerId.value = -1
     }
 }
