@@ -1,6 +1,7 @@
 package com.mate.carpool.ui.screen.register.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
@@ -40,13 +41,13 @@ class RegisterSelectDayFragment : BindFragment<FragmentRegisterSelectDayBinding>
         }
 
         binding.btnConfirm.setOnClickListener {
-            registerViewModel.mutableUserModel.value?.studentDayCodes = arrayListOf()
+            val mutableList = arrayListOf<String>()
             for(item in weekViewAdapter.getItems()){
                 if(item.weekFlag){
-                    registerViewModel.mutableUserModel.value?.studentDayCodes =
-                        listOf(MemberTimeTableResponseDTO((weekViewAdapter.getItems().indexOf(item)+1).toString()).dayCode)
+                    mutableList.add((weekViewAdapter.getItems().indexOf(item)+1).toString())
                 }
             }
+            registerViewModel.mutableUserModel.value!!.studentDayCodes = mutableList.toList()
             Navigation.findNavController(view).navigate(R.id.action_RegisterSelectDayFragment_to_loginFragment)
             registerViewModel.signUpStudentMember()
         }

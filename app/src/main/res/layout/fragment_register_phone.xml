@@ -81,7 +81,7 @@
                 android:background="@drawable/round_10_gray"
                 android:hint="@string/login_number_example"
                 android:paddingStart="5dp"
-                android:text="@={registerViewModel.mutableUserModel.studentPhone}"
+                android:text="@={registerViewModel.mutableUserModel.phone}"
                 app:layout_constraintBottom_toTopOf="@+id/guidelineButtonPosition2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_percent="0.09"

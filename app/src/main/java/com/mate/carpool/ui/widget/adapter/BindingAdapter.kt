@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.TextView
 import android.widget.Toolbar
 import androidx.annotation.IdRes
 import androidx.appcompat.widget.AppCompatButton
@@ -14,6 +15,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import com.google.android.material.textfield.TextInputEditText
 import com.mate.carpool.R
+import com.mate.carpool.data.model.domain.item.DayStatus
+import com.mate.carpool.data.model.domain.item.TicketType
+import com.mate.carpool.data.model.domain.item.getTicketType
 import com.mate.carpool.ui.screen.createCarpool.vm.CreateTicketViewModel
 import com.mate.carpool.ui.screen.register.vm.RegisterViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -71,11 +75,11 @@ fun setAreaItemsToStartingAreaAdapter(tv: AutoCompleteTextView,areaItems:ArrayLi
                     setTicketButtonSelected("옥", ticketViewModel.boardingAreaButtonFlag, 0)
                 }
                 "오전" -> {
-                    ticketViewModel.mutableTicketModel.value!!.dayStatus= "MORNING"
+                    ticketViewModel.mutableTicketModel.value!!.dayStatus= DayStatus.Morning
                     setTicketButtonSelected(" ", ticketViewModel.boardingTimeButtonFlag, 1)
                 }
                 "오후" -> {
-                    ticketViewModel.mutableTicketModel.value!!.dayStatus= "AFTERNOON"
+                    ticketViewModel.mutableTicketModel.value!!.dayStatus= DayStatus.Afternoon
                     setTicketButtonSelected(" ", ticketViewModel.boardingTimeButtonFlag, 1)
                 }
                 "0", "1", "2", "3" -> {
@@ -83,11 +87,11 @@ fun setAreaItemsToStartingAreaAdapter(tv: AutoCompleteTextView,areaItems:ArrayLi
                     setTicketButtonSelected(" ",ticketViewModel.openChatButtonFlag,1)
                 }
                 "유료"-> {
-                    ticketViewModel.mutableTicketModel.value!!.ticketType="COST"
+                    ticketViewModel.mutableTicketModel.value!!.ticketType=TicketType.Cost
                     setTicketButtonSelected(" ",ticketViewModel.openChatButtonFlag,2)
                 }
                 "무료"->{
-                    ticketViewModel.mutableTicketModel.value!!.ticketType="FREE"
+                    ticketViewModel.mutableTicketModel.value!!.ticketType=TicketType.Free
                     setTicketButtonSelected(" ",ticketViewModel.openChatButtonFlag,2)
                 }
             }
@@ -131,6 +135,11 @@ fun setTicketButtonSelected(text:String, buttonFlag: MutableLiveData<ArrayList<B
     else
         arrayList?.set(num, true)
     buttonFlag.value=arrayList
+}
+
+@BindingAdapter("ticketType")
+fun setTicketType(textView:TextView,ticketType: TicketType?){
+    textView.text = ticketType?.getTicketType()?:""
 }
 
 

@@ -9,6 +9,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mate.carpool.R
 import com.mate.carpool.data.model.domain.UserModel
+import com.mate.carpool.data.model.domain.item.MemberRole
 import com.mate.carpool.databinding.FragmentRegisterInfoBinding
 import com.mate.carpool.ui.MainActivity
 import com.mate.carpool.ui.screen.register.RegisterViewAdapter
@@ -43,7 +44,8 @@ class RegisterInfoFragment : BindFragment<FragmentRegisterInfoBinding>(R.layout.
             else if(it>=3){
                 val items = studentInfoAdapter.getItems()
                 registerViewModel.mutableUserModel.value=(UserModel(items[2],items[1],items[0],
-                    ObservableField(),"","",null))
+                    ObservableField(),MemberRole.Passenger,"", mutableListOf()
+                ))
                 registerViewModel.rcvFlag.value=0
                 NavHostFragment.findNavController(this).navigate(R.id.action_RegisterInfoFragment_to_RegisterPhoneFragment)
             }

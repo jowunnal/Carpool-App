@@ -31,8 +31,7 @@ class RegisterProfileFragment : BindFragment<FragmentRegisterProfileBinding>(R.l
             ActivityResultContracts.StartActivityForResult()){
             val imgUri = it.data?.data?: return@registerForActivityResult
             Glide.with(this).load(imgUri).into(binding.imgProfile)
-            registerViewModel.mutableUserModel.value?.studentProfile=absolutelyPath(imgUri,requireActivity())
-
+            registerViewModel.mutableUserModel.value?.profile=absolutelyPath(imgUri,requireActivity())
         }
 
         binding.imgProfile.setOnClickListener {

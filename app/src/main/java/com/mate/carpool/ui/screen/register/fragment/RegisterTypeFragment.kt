@@ -7,6 +7,7 @@ import android.view.animation.AnimationUtils
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import com.mate.carpool.R
+import com.mate.carpool.data.model.domain.item.MemberRole
 import com.mate.carpool.ui.utils.SettingToolbarUtils
 import com.mate.carpool.databinding.FragmentRegisterTypeBinding
 import com.mate.carpool.ui.base.BindFragment
@@ -31,10 +32,10 @@ class RegisterTypeFragment : BindFragment<FragmentRegisterTypeBinding>(R.layout.
 
         binding.btnConfirm.setOnClickListener {
             if(binding.btnDriver.isSelected){
-                registerViewModel.mutableUserModel.value?.studentType="DRIVER"
+                registerViewModel.mutableUserModel.value?.role=MemberRole.Driver
             }
             else{
-                registerViewModel.mutableUserModel.value?.studentType="PASSENGER"
+                registerViewModel.mutableUserModel.value?.role=MemberRole.Passenger
             }
             Navigation.findNavController(view).navigate(R.id.action_RegisterTypeFragment_to_RegisterProfileFragment)
         }

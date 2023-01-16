@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.databinding.ObservableField
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,13 +12,17 @@ import com.mate.carpool.data.model.DTO.MemberRequestDTO
 import com.mate.carpool.data.model.domain.item.RegisterItem
 import com.mate.carpool.data.model.domain.item.StudentItem
 import com.mate.carpool.data.model.domain.UserModel
+import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.model.response.LoginResponse
 import com.mate.carpool.data.model.response.ResponseMessage
+import com.mate.carpool.data.repository.RegisterRepository
 import com.mate.carpool.data.service.APIService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -29,9 +34,14 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class RegisterViewModel @Inject constructor(@ApplicationContext private val context:Context,private val apiService: APIService) :ViewModel() {
-    val mutableUserModel = MutableLiveData<UserModel>()
-    val userModel get() = mutableUserModel
+class RegisterViewModel @Inject constructor(
+    @ApplicationContext private val context:Context,
+    private val apiService: APIService,
+    private val registerRepository: RegisterRepository
+    ) :ViewModel()
+{
+    val mutableUserModel = MutableLiveData<UserModel>(UserModel())
+    val userModel: LiveData<UserModel> get() = mutableUserModel
     val rcvFlag = MutableLiveData<Int>(0)
     var rcvItems:ArrayList<RegisterItem> ?= null
     private val rcvItemsMutableLiveData : MutableLiveData<ArrayList<RegisterItem>> = MutableLiveData()
@@ -84,9 +94,9 @@ class RegisterViewModel @Inject constructor(@ApplicationContext private val cont
 
     fun signUpStudentMember(){
         var file: File? = null
-        when(File(userModel.value!!.studentProfile!!).mkdir()){
+        when(File(userModel.value!!.profile).mkdir()){
             true->{
-                file = File(userModel.value!!.studentProfile!!)
+                file = File(userModel.value!!.profile)
             }
             false->{
                 val inputStream = context.assets.open("defaultImg.png")
@@ -97,36 +107,32 @@ class RegisterViewModel @Inject constructor(@ApplicationContext private val cont
         val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file!!)
         val body = MultipartBody.Part.createFormData("image", file.name, requestFile)
 
-        viewModelScope.launch(Dispatchers.IO) {
-            apiService.postSingUp(
-                MemberRequestDTO(userModel.value!!),
+        viewModelScope.launch{
+            registerRepository.signUp(
+                userModel.value!!,
                 body
-                ).enqueue(object : Callback<ResponseMessage> {
-                override fun onResponse(
-                    call: Call<ResponseMessage>,
-                    response: Response<ResponseMessage>
-                ) {
-                    when(response.code()){
-                        200->{
-                            Toast.makeText(context,"회원가입이 완료되었습니다.",Toast.LENGTH_SHORT).show()
-                        }
-                        400->{
-                            Toast.makeText(context,"회원가입 실패 : 값이 잘못 입력되었습니다.",Toast.LENGTH_SHORT).show()
-                        }
-                        409->{
-                            Toast.makeText(context,"회원가입 실패 : 이미 존재하는 회원입니다.",Toast.LENGTH_SHORT).show()
+            ).collectLatest {
+                when(it){
+                    is ApiResponse.SuccessResponse -> {
+                        Toast.makeText(context,"회원가입이 완료되었습니다.",Toast.LENGTH_SHORT).show()
+                    }
+                    is ApiResponse.FailResponse -> {
+                        when(it.responseMessage.code){
+                            "400"->{
+                                Toast.makeText(context,"회원가입 실패 : 값이 잘못 입력되었습니다.",Toast.LENGTH_SHORT).show()
+                            }
+                            "409"->{
+                                Toast.makeText(context,"회원가입 실패 : 이미 존재하는 회원입니다.",Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
-
+                    is ApiResponse.ExceptionResponse -> {
+                        Toast.makeText(context,"에러 발생 : ${it.e.message}",Toast.LENGTH_SHORT).show()
+                        Log.d("test","에러 발생 : ${it.e.message}")
+                    }
                 }
-
-                override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
-                    Log.d("test","실패: "+ t.message)
-                }
-
-            })
+            }
         }
-
     }
 
     fun loginStudentMember(studentNumber:String,memberName:String,phoneNumber:String){
