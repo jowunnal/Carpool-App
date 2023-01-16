@@ -2,17 +2,19 @@ package com.mate.carpool.data.model.domain
 
 import androidx.databinding.ObservableField
 import com.mate.carpool.data.model.DTO.MemberTimeTableResponseDTO
+import com.mate.carpool.data.model.domain.item.MemberRole
 
-/*
-회원이름,학번,학과,전화번호,유형(드라이버,패신저),프로필사진,이동할요일
+/**
+ * 사용자 정보를 담는 클래스
  */
+
 data class UserModel(
     val name: String = "",
     var studentID:String = "",
-    var studentDepartment:String = "",
-    val studentPhone:ObservableField<String> = ObservableField(""),
-    var studentType:String = "",
-    var studentProfile:String? = "",
-    var studentDayCodes: List<String>? = null,
-    var passengerId:Int?=0
+    var department:String = "",
+    val phone:ObservableField<String> = ObservableField(""),
+    var role:MemberRole = MemberRole.Driver,
+    var profile:String = "",
+    var studentDayCodes: List<String> = emptyList(),
+    var passengerId:Long = 0
 )
