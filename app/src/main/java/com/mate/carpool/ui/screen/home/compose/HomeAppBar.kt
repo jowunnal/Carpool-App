@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.compose
+package com.mate.carpool.ui.screen.home.compose
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.mate.carpool.R
+import com.mate.carpool.ui.theme.Colors
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

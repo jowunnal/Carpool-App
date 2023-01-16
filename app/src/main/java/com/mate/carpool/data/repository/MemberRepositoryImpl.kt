@@ -1,36 +1,57 @@
 package com.mate.carpool.data.repository
 
+import androidx.databinding.ObservableField
 import com.mate.carpool.data.model.DTO.MemberProfileDTO
 import com.mate.carpool.data.model.DTO.UserTicketDTO
-import com.mate.carpool.data.model.domain.MemberRole
+import com.mate.carpool.data.model.domain.MemberModel
 import com.mate.carpool.data.model.domain.TicketListModel
+import com.mate.carpool.data.model.domain.UserModel
 import com.mate.carpool.data.model.response.ApiResponse
-import com.mate.carpool.ui.utils.StringUtils.asDayStatusToDomain
-import com.mate.carpool.ui.utils.StringUtils.asStartTimeToDomain
-import com.mate.carpool.ui.utils.StringUtils.asTicketTypeToDomain
 import com.mate.carpool.data.service.APIService
 import com.mate.carpool.ui.utils.HandleFlowUtils.handleFlowApi
+import com.mate.carpool.ui.utils.StringUtils.asDayStatusToDomain
+import com.mate.carpool.ui.utils.StringUtils.asMemberRoleToDomain
+import com.mate.carpool.ui.utils.StringUtils.asStartTimeToDomain
+import com.mate.carpool.ui.utils.StringUtils.asTicketStatusToDomain
+import com.mate.carpool.ui.utils.StringUtils.asTicketTypeToDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class MemberRepositoryImpl @Inject constructor(private val apiService: APIService) : MemberRepository {
-    override fun getMemberInfo(): Flow<Any> = handleFlowApi{
+    override fun getMemberInfo(): Flow<ApiResponse<MemberModel>> = handleFlowApi{
         apiService.getMemberMe()
     }.map {
         when(it){
             is ApiResponse.SuccessResponse -> {
-                it.responseMessage.asStatusDomain()
+                it.asStatusDomain()
             }
-            else -> {
-
+            is ApiResponse.FailResponse -> {
+                ApiResponse.FailResponse(it.responseMessage)
+            }
+            is ApiResponse.ExceptionResponse -> {
+                ApiResponse.ExceptionResponse(it.e)
             }
         }
     }
 
-    private fun MemberProfileDTO.asStatusDomain() = MemberRole(this.studentNumber,this.memberRole,this.tickets?.asDomain())
+    fun MemberProfileDTO.asStatusDomain() = MemberModel(
+        UserModel(
+            this.memberName,
+            this.studentNumber,
+            this.department,
+            ObservableField(this.phoneNumber),
+            this.memberRole.asMemberRoleToDomain(),
+            this.profileImage,
+            emptyList(),
+            -1
+        ),
+        this.tickets?.asTicketListDomain()
+    )
 
-    private fun UserTicketDTO.asDomain() = TicketListModel(
+    fun List<UserTicketDTO>.asTicketListDomain() = map { it.asTicketListDomain() }
+
+    fun UserTicketDTO.asTicketListDomain() = TicketListModel(
         this.id,
         this.profileImage,
         this.startArea,
@@ -38,7 +59,9 @@ class MemberRepositoryImpl @Inject constructor(private val apiService: APIServic
         this.recruitPerson,
         this.currentPersonCount,
         this.ticketType.asTicketTypeToDomain(),
+        this.ticketStatus.asTicketStatusToDomain(),
         this.dayStatus.asDayStatusToDomain()
     )
-    private fun List<UserTicketDTO>.asDomain() = map { it.asDomain() }
+
+    fun ApiResponse.SuccessResponse<MemberProfileDTO>.asStatusDomain() = ApiResponse.SuccessResponse(this.responseMessage.asStatusDomain())
 }

@@ -2,9 +2,9 @@ package com.mate.carpool.ui.screen.home.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mate.carpool.data.model.domain.MemberRole
+import com.mate.carpool.data.model.domain.MemberModel
 import com.mate.carpool.data.model.domain.TicketListModel
-import com.mate.carpool.data.model.response.ResponseMessage
+import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.repository.CarpoolListRepository
 import com.mate.carpool.data.repository.MemberRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeCarpoolListViewModel @Inject constructor(
+class CarpoolListViewModel @Inject constructor(
     private val carpoolListRepository: CarpoolListRepository,
     private val memberRepository: MemberRepository
     ) : ViewModel()
@@ -28,11 +28,11 @@ class HomeCarpoolListViewModel @Inject constructor(
     private val mutableCarpoolExistState = MutableStateFlow(false)
     val carpoolExistState get() = mutableCarpoolExistState.asStateFlow()
 
-    private val mutableMemberRoleState = MutableStateFlow(MemberRole())
-    val memberRoleState get() = mutableMemberRoleState.asStateFlow()
+    private val mutableMemberModelState = MutableStateFlow(MemberModel())
+    val memberModelState get() = mutableMemberModelState.asStateFlow()
 
     init {
-        getMemberRole()
+        getMemberModel()
         getCarpoolList()
     }
 
@@ -40,41 +40,41 @@ class HomeCarpoolListViewModel @Inject constructor(
         viewModelScope.launch {
             carpoolListRepository.getTicketList().collectLatest {
                 when(it){
-                    is List<*> ->{
-                        mutableCarpoolListState.emit(it as List<TicketListModel>)
+                    is ApiResponse.SuccessResponse ->{
+                        mutableCarpoolListState.emit(it.responseMessage)
                     }
-                    is ResponseMessage ->{
+                    is ApiResponse.FailResponse ->{
                     }
-                    is Throwable ->{
+                    is ApiResponse.ExceptionResponse ->{
                     }
                 }
             }
         }
     }
 
-    fun getMemberRole(){
+    fun getMemberModel(){
         viewModelScope.launch {
             memberRepository.getMemberInfo().collectLatest {
                 when(it){
-                    is MemberRole ->{
-                        mutableMemberRoleState.emit(it)
-                        if(it.ticketList?.size!=0)
+                    is ApiResponse.SuccessResponse ->{
+                        mutableMemberModelState.emit(it.responseMessage)
+                        if(it.responseMessage.ticketList?.size!=0)
                             mutableCarpoolExistState.emit(true)
                         else
                             mutableCarpoolExistState.emit(false)
                     }
-                    is ResponseMessage ->{
+                    is ApiResponse.FailResponse ->{
                     }
-                    is Throwable ->{
+                    is ApiResponse.ExceptionResponse ->{
                     }
                 }
             }
         }
     }
 
-    fun isTicketIsMineOrNot(id:Int) : Boolean{
-        if(memberRoleState.value.ticketList!=null){
-            for(item in memberRoleState.value.ticketList!!){
+    fun isTicketIsMineOrNot(id:Long) : Boolean{
+        if(memberModelState.value.ticketList!=null){
+            for(item in memberModelState.value.ticketList!!){
                 if(item.id==id){
                     return true
                 }
