@@ -9,10 +9,13 @@ import androidx.fragment.app.activityViewModels
 import com.mate.carpool.ui.screen.reserveDriver.vm.ReserveDriverViewModel
 import com.mate.carpool.databinding.DialogCheckBinding
 
-class CheckDialogFragment(private val titleText:String,private val messageText:String) :DialogFragment() {
+class CheckDialogFragment(
+    private val titleText:String,
+    private val messageText:String,
+    private val onDoSomething: Listener
+) :DialogFragment() {
     private var _binding:DialogCheckBinding ?= null
     private val binding get() = _binding!!
-    private val reserveDriverViewModel: ReserveDriverViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,14 +35,18 @@ class CheckDialogFragment(private val titleText:String,private val messageText:S
 
         binding.positiveButton.setOnClickListener {
             when(titleText){
-                "티켓을 삭제하시겠어요?"->reserveDriverViewModel.updateTicketStatus("CANCEL")
-                "운행을 종료합니다."->reserveDriverViewModel.updateTicketStatus("AFTER")
-                "예약을 취소 하시겠어요?."->reserveDriverViewModel.deletePassengerToTicket()
+                "티켓을 삭제하시겠어요?"-> onDoSomething.onPositiveButtonClick()
+                "운행을 종료합니다."-> onDoSomething.onPositiveButtonClick()
+                "예약을 취소 하시겠어요?."-> onDoSomething.onPositiveButtonClick()
             }
-            dismiss()
+            dismissAllowingStateLoss()
         }
         binding.negativeButton.setOnClickListener {
-            dismiss()
+            dismissAllowingStateLoss()
         }
+    }
+
+    abstract class Listener {
+        abstract fun onPositiveButtonClick()
     }
 }

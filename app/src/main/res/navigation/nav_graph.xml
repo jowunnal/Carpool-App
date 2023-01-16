@@ -81,7 +81,7 @@
         <action
             android:id="@+id/action_loginStartFragment_to_homeFragment"
             app:destination="@id/homeFragment"
-            app:popUpTo="@id/homeFragment"
+            app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true"/>
     </fragment>
     <fragment
@@ -124,7 +124,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.mate.carpool.ui.compose.HomeFragment"
+        android:name="com.mate.carpool.ui.screen.home.compose.HomeFragment"
         android:label="HomeFragment" >
         <action
             android:id="@+id/action_homeFragment_to_createTicketBoardingAreaFragment"

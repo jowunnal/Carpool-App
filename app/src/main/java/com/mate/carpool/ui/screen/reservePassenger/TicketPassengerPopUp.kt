@@ -4,10 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.mate.carpool.R
 import com.mate.carpool.databinding.ItemviewPassengerInfoPopupBinding
-import com.mate.carpool.ui.base.BindPopUpDialogFragment
+import com.mate.carpool.ui.base.BasePopUpDialogFragment
 
 class TicketPassengerPopUp(location:IntArray)
-    : BindPopUpDialogFragment<ItemviewPassengerInfoPopupBinding>(location,R.layout.itemview_passenger_info_popup) {
+    : BasePopUpDialogFragment<ItemviewPassengerInfoPopupBinding>(location,R.layout.itemview_passenger_info_popup) {
 
     override fun bindFragment(
         inflater: LayoutInflater,
@@ -16,7 +16,7 @@ class TicketPassengerPopUp(location:IntArray)
 
     override fun initView() {
         binding.tvReport.setOnClickListener {
-            dismiss()
+            dismissAllowingStateLoss()
         }
     }
 
