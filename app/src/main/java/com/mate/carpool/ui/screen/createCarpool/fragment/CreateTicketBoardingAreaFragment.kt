@@ -22,7 +22,7 @@ class CreateTicketBoardingAreaFragment : BindFragment<FragmentCreateCarpoolTicke
         binding.lifecycleOwner=viewLifecycleOwner
         binding.createCarpoolViewModel = ticketViewModel
         binding.navController=Navigation.findNavController(view)
-        binding.startingAreaList= arrayListOf("인동","옥계","대구","그 외","경운대학교")
+        binding.startingAreaList= arrayListOf("인동","옥계","대구","그 외")
 
         ticketViewModel.boardingAreaButtonFlag.observe(viewLifecycleOwner, Observer {
             binding.btnConfirm.isSelected = it[0]&&it[1]

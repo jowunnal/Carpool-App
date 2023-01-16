@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mate.carpool.data.model.DTO.CreateCarpoolRequestDTO
 import com.mate.carpool.data.model.domain.TicketModel
+import com.mate.carpool.data.model.domain.item.getTicketType
 import com.mate.carpool.data.model.response.ResponseMessage
 import com.mate.carpool.data.service.APIService
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,6 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateTicketViewModel @Inject constructor(@ApplicationContext private val context:Context, private val apiService: APIService):ViewModel() {
+
     val mutableTicketModel = MutableLiveData(TicketModel())
     val ticketModel : LiveData<TicketModel> get() = mutableTicketModel
     val boardingAreaButtonFlag:MutableLiveData<ArrayList<Boolean>> = MutableLiveData(arrayListOf(false,false))

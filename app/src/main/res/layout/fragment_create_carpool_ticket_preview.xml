@@ -387,7 +387,7 @@
                     android:id="@+id/text_charge_type"
                     android:layout_width="171dp"
                     android:layout_height="wrap_content"
-                    android:text="@{createCarpoolViewModel.ticketModel.ticketType}"
+                    ticketType="@{createCarpoolViewModel.ticketModel.ticketType}"
                     android:textColor="@color/red"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/text_charge" />
