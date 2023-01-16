@@ -1,7 +1,7 @@
 package com.mate.carpool.data.model.DTO
 
 data class TicketDeleteMemberRequestDTO(
-    val passengerId:Int,
-    val ticketId:Int,
+    val passengerId:Long,
+    val ticketId:Long,
     val isCancel:Int
 )

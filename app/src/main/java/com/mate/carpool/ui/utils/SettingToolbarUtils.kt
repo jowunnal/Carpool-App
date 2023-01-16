@@ -20,7 +20,11 @@ object SettingToolbarUtils {
     }
 
     @JvmStatic
-    fun showBottomSheetFragment(fragmentActivity:FragmentActivity, title:String, message:String, tag:String){
-        CheckDialogFragment(title,message).show(fragmentActivity.supportFragmentManager,tag)
+    fun showBottomSheetFragment(fragmentActivity:FragmentActivity, title:String, message:String, tag:String, onDoSomething: CheckDialogFragment.Listener){
+        CheckDialogFragment(
+            title,
+            message,
+            onDoSomething,
+        ).show(fragmentActivity.supportFragmentManager,tag)
     }
 }
