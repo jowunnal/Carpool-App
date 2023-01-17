@@ -3,6 +3,7 @@ package com.mate.carpool.ui.screen.reservePassenger
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -26,7 +27,7 @@ class ReservePassengerFragment(
     private val studentNumber:String,
     private val onRewNew : Renewing
     ): BaseBottomSheetDialogFragment<BottomSheetReservePassengerBinding>(R.layout.bottom_sheet_reserve_passenger) {
-    private val reserveDriverViewModel: ReserveDriverViewModel by viewModels()
+    private val reserveDriverViewModel: ReserveDriverViewModel by activityViewModels()
     @Inject lateinit var reserveDriverViewAdapter:ReserveDriverViewAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,6 +40,8 @@ class ReservePassengerFragment(
             adapter=reserveDriverViewAdapter
             layoutManager= LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL,false)
         }
+
+        reserveDriverViewModel.getMyTicket()
 
         reserveDriverViewAdapter.setItemClickListener(object : OnItemClickListener {
             override fun setOnItemClickListener(view: View, pos: Int) {
@@ -55,7 +58,8 @@ class ReservePassengerFragment(
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
                 launch {
                     reserveDriverViewModel.toastMessage.collectLatest {
-                        Toast.makeText(requireActivity(),it, Toast.LENGTH_SHORT).show()
+                        if(it!="")
+                            Toast.makeText(requireActivity(),it, Toast.LENGTH_SHORT).show()
                     }
                 }
                 launch {
@@ -90,6 +94,7 @@ class ReservePassengerFragment(
                     override fun onPositiveButtonClick() {
                         reserveDriverViewModel.deletePassengerToTicket()
                         onRewNew.onRewNew()
+                        dismissAllowingStateLoss()
                     }
                 }
             )

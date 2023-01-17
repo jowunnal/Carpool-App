@@ -1,5 +1,7 @@
 package com.mate.carpool.ui.screen.home.vm
 
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mate.carpool.data.model.domain.MemberModel
@@ -31,6 +33,7 @@ class CarpoolListViewModel @Inject constructor(
     private val mutableMemberModelState = MutableStateFlow(MemberModel())
     val memberModelState get() = mutableMemberModelState.asStateFlow()
 
+    val isRefreshState = mutableStateOf(false)
     init {
         getMemberModel()
         getCarpoolList()

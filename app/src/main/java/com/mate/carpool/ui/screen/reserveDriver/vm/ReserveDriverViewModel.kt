@@ -49,10 +49,6 @@ class ReserveDriverViewModel @Inject constructor(
         initialValue = TicketModel()
     )
 
-    init {
-        getMyTicket()
-    }
-
     fun getMyTicket(){
         viewModelScope.launch {
             carpoolListRepository.getMyTicket().collectLatest {

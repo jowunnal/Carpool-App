@@ -17,6 +17,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
@@ -58,6 +61,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import com.mate.carpool.ui.theme.Colors
+import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -89,26 +93,48 @@ fun HomePreview(){
 @Composable
 fun HomeCarpoolSheet(
     onNavigateToCreateCarpool: ()->Unit,
-    homeCarpoolBottomSheetViewModel: HomeBottomSheetViewModel = viewModel(),
-    homeCarpoolListViewModel: CarpoolListViewModel = viewModel()
+    homeCarpoolBottomSheetViewModel: HomeBottomSheetViewModel = viewModel()
 ) {
     val bottomSheetState = rememberModalBottomSheetState (
         initialValue = ModalBottomSheetValue.Hidden
     )
-
     val ticketId = homeCarpoolBottomSheetViewModel.mutableTicketId
     val bottomSheetMemberModel = homeCarpoolBottomSheetViewModel.memberModel
-
     val coroutineScope = rememberCoroutineScope()
     val ticketDetail by homeCarpoolBottomSheetViewModel.carpoolTicketState.collectAsStateWithLifecycle()
     val localContext = LocalContext.current
     val context = (localContext as ContextWrapper).baseContext as FragmentActivity
-    val newPassengerStatue by homeCarpoolBottomSheetViewModel.newPassengerStatue.collectAsStateWithLifecycle()
+    val newPassengerStatue by homeCarpoolBottomSheetViewModel.newPassengerState.collectAsStateWithLifecycle()
     val toastMessage by homeCarpoolBottomSheetViewModel.toastMessage.collectAsStateWithLifecycle()
 
-    LaunchedEffect(key1 = toastMessage){
-        if(toastMessage != ""){
-            Toast.makeText(localContext,toastMessage,Toast.LENGTH_SHORT).show()
+    val initViewState = homeCarpoolBottomSheetViewModel.initViewState
+    val reNewHomeListener = object : BaseBottomSheetDialogFragment.Renewing() {
+        override fun onRewNew() {
+            initViewState.value = true
+        }
+    }
+
+    if(toastMessage != ""){
+        LaunchedEffect(key1 = toastMessage){
+            Toast.makeText(localContext,toastMessage, Toast.LENGTH_SHORT).show()
+            homeCarpoolBottomSheetViewModel.initToastMessage()
+        }
+    }
+
+    if(newPassengerStatue){
+        LaunchedEffect(key1 = newPassengerStatue){
+            ReservePassengerFragment(
+                bottomSheetMemberModel.value.user.studentID,
+                reNewHomeListener
+            ).show(context.supportFragmentManager,"passenger reservation")
+            bottomSheetState.animateTo(ModalBottomSheetValue.Hidden)
+            homeCarpoolBottomSheetViewModel.initNewPassengerState()
+        }
+    }
+
+    LaunchedEffect(key1 = bottomSheetState.currentValue){
+        if(bottomSheetState.currentValue == ModalBottomSheetValue.Hidden){
+            initViewState.value=true
         }
     }
 
@@ -232,21 +258,7 @@ fun HomeCarpoolSheet(
                 Button(
                     onClick = {
                         if(bottomSheetMemberModel.value.user.role == MemberRole.Passenger){
-                            coroutineScope.launch {
-                                homeCarpoolBottomSheetViewModel.addNewPassengerToTicket(ticketDetail.id)
-                                if(newPassengerStatue){
-                                    ReservePassengerFragment(
-                                        bottomSheetMemberModel.value.user.studentID,
-                                        object : BaseBottomSheetDialogFragment.Renewing(){
-                                            override fun onRewNew() {
-                                                homeCarpoolListViewModel.getMemberModel()
-                                                homeCarpoolListViewModel.getCarpoolList()
-                                            }
-                                        }
-                                    ).show(context.supportFragmentManager,"passenger reservation")
-                                    bottomSheetState.animateTo(ModalBottomSheetValue.Hidden)
-                                }
-                            }
+                            homeCarpoolBottomSheetViewModel.addNewPassengerToTicket(ticketDetail.id)
                         }
                         else
                             Toast.makeText(context,"드라이버는 탑승하기를 할 수 없습니다",Toast.LENGTH_SHORT).show()
@@ -275,7 +287,9 @@ fun HomeCarpoolSheet(
             coroutineScope,
             onNavigateToCreateCarpool,
             bottomSheetMemberModel,
-            ticketId
+            ticketId,
+            reNewHomeListener,
+            initViewState
         )
     }
 }
@@ -288,16 +302,21 @@ fun PrevHome(
     onNavigateToCreateCarpool:()->Unit,
     bottomSheetMemberModel:MutableStateFlow<MemberModel>,
     ticketId:MutableStateFlow<Long>,
+    reNewHomeListener:BaseBottomSheetDialogFragment.Renewing,
+    initViewState:MutableState<Boolean>,
     homeCarpoolListViewModel: CarpoolListViewModel = viewModel()
 ){
     val carpoolExistState by homeCarpoolListViewModel.carpoolExistState.collectAsStateWithLifecycle()
     val context = (LocalContext.current as ContextWrapper).baseContext as FragmentActivity
     val memberModel by homeCarpoolListViewModel.memberModelState.collectAsStateWithLifecycle()
+    val isRefreshing = homeCarpoolListViewModel.isRefreshState
 
-    LaunchedEffect(key1 = bottomSheetState.currentValue){
-        if(bottomSheetState.currentValue == ModalBottomSheetValue.Hidden){
+    LaunchedEffect(key1 = initViewState.value){
+        if(initViewState.value){
             homeCarpoolListViewModel.getMemberModel()
             homeCarpoolListViewModel.getCarpoolList()
+            initViewState.value = false
+            isRefreshing.value = false
         }
     }
 
@@ -317,12 +336,16 @@ fun PrevHome(
             }
 
             Spacer(modifier = Modifier.height(4.dp))
-            Column(Modifier.weight(1f)) {
+            Column(Modifier
+                .weight(1f)) {
                 HomeCarpoolList(
                     bottomSheetState,
                     memberModel,
                     bottomSheetMemberModel,
-                    ticketId
+                    ticketId,
+                    reNewHomeListener,
+                    initViewState,
+                    isRefreshing
                 )
             }
             Spacer(modifier = Modifier.height(50.dp))
@@ -333,22 +356,12 @@ fun PrevHome(
                             MemberRole.Passenger->{
                                 ReservePassengerFragment(
                                     memberModel.user.studentID,
-                                    object : BaseBottomSheetDialogFragment.Renewing(){
-                                        override fun onRewNew() {
-                                            homeCarpoolListViewModel.getMemberModel()
-                                            homeCarpoolListViewModel.getCarpoolList()
-                                        }
-                                    }
+                                    reNewHomeListener
                                 ).show(context.supportFragmentManager,"passenger reservation")
                             }
                             MemberRole.Driver->{
                                 ReserveDriverFragment(
-                                    object : BaseBottomSheetDialogFragment.Renewing(){
-                                        override fun onRewNew() {
-                                            homeCarpoolListViewModel.getMemberModel()
-                                            homeCarpoolListViewModel.getCarpoolList()
-                                        }
-                                    }
+                                    reNewHomeListener
                                 ).show(context.supportFragmentManager,"driver reservation")
                             }
                         }
@@ -436,7 +449,10 @@ fun HomeCarpoolList(
     bottomSheetState:ModalBottomSheetState,
     memberModel: MemberModel,
     bottomSheetMemberModel:MutableStateFlow<MemberModel>,
-    ticketId:MutableStateFlow<Long>
+    ticketId:MutableStateFlow<Long>,
+    reNewHomeListener:BaseBottomSheetDialogFragment.Renewing,
+    initViewState:MutableState<Boolean>,
+    isRefreshing:MutableState<Boolean>
 ){
     Column() {
         Row(modifier = Modifier
@@ -464,7 +480,10 @@ fun HomeCarpoolList(
             bottomSheetState,
             memberModel,
             bottomSheetMemberModel,
-            ticketId
+            ticketId,
+            reNewHomeListener,
+            initViewState,
+            isRefreshing
         )
     }
 }
@@ -476,110 +495,121 @@ fun HomeCarpoolItems(
     memberModel: MemberModel,
     bottomSheetMemberModel:MutableStateFlow<MemberModel>,
     ticketId:MutableStateFlow<Long>,
+    reNewHomeListener:BaseBottomSheetDialogFragment.Renewing,
+    initViewState:MutableState<Boolean>,
+    isRefreshing: MutableState<Boolean>,
     homeCarpoolListViewModel: CarpoolListViewModel = viewModel()
 ){
     val carpoolList by homeCarpoolListViewModel.carpoolListState.collectAsStateWithLifecycle()
     val coroutineScope = rememberCoroutineScope()
     val context = (LocalContext.current as ContextWrapper).baseContext as FragmentActivity
 
-    LazyColumn(modifier = Modifier.shadow(1.dp)) {
-        items(carpoolList) { item ->
-            Column(Modifier.clickable {
-                if(!bottomSheetState.isVisible){
-                    coroutineScope.launch {
-                        when(memberModel.user.role){
-                            MemberRole.Driver->{
-                                if(homeCarpoolListViewModel.isTicketIsMineOrNot(item.id)){
-                                    ReserveDriverFragment(
-                                        object : BaseBottomSheetDialogFragment.Renewing(){
-                                            override fun onRewNew() {
-                                                homeCarpoolListViewModel.getMemberModel()
-                                                homeCarpoolListViewModel.getCarpoolList()
-                                            }
-                                        }
-                                    ).show(context.supportFragmentManager,"driver reservation")
-                                }
-                                else{
-                                    showBottomSheet(
-                                        ticketId,
-                                        item.id,
-                                        bottomSheetMemberModel,
-                                        memberModel,
-                                        bottomSheetState
-                                    )
-                                }
-                            }
-                            MemberRole.Passenger->{
-                                if(homeCarpoolListViewModel.isTicketIsMineOrNot(item.id)){
-                                    ReservePassengerFragment(
-                                        memberModel.user.studentID,
-                                        object : BaseBottomSheetDialogFragment.Renewing(){
-                                            override fun onRewNew() {
-                                                homeCarpoolListViewModel.getMemberModel()
-                                                homeCarpoolListViewModel.getCarpoolList()
-                                            }
-                                        }
-                                    ).show(context.supportFragmentManager,"passenger reservation")
-                                }
-                                else {
-                                    showBottomSheet(
-                                        ticketId,
-                                        item.id,
-                                        bottomSheetMemberModel,
-                                        memberModel,
-                                        bottomSheetState
-                                    )
-                                }
-                            }
-                        }
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = isRefreshing.value,
+        onRefresh = {
+            isRefreshing.value = true
+            initViewState.value = true
+        }
+    )
 
-                    }
-                }
-            }) {
-                Row(
-                    modifier = Modifier.padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                )
-                {
-                    ProfileImage(image = R.drawable.icon_main_profile, 50.dp, 47.dp)
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Row(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = item.startArea,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Text(
-                            text = " 출발,"
-                        )
-                        Text(
-                            text = item.dayStatus?.getDayStatus()?:""
-                        )
-                        Text(
-                            text = item.startTime,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                    Chip(
-                        onClick = { /*TODO*/ },
-                        colors = when (item.ticketType) {
-                            TicketType.Free -> ChipDefaults.chipColors(Colors.Blue_007AFF)
-                            TicketType.Cost -> ChipDefaults.chipColors(Colors.Red_E0302D)
-                            else -> ChipDefaults.chipColors(Colors.Gray_4E5760)
+    Box(modifier = Modifier
+        .shadow(1.dp)
+        .pullRefresh(pullRefreshState)
+    ) {
+        LazyColumn(Modifier.fillMaxSize()) {
+            items(carpoolList,key = {item -> item.id}) { item ->
+                Column(Modifier.clickable {
+                    if(!bottomSheetState.isVisible){
+                        coroutineScope.launch {
+                            when(memberModel.user.role){
+                                MemberRole.Driver->{
+                                    if(homeCarpoolListViewModel.isTicketIsMineOrNot(item.id)){
+                                        ReserveDriverFragment(
+                                            reNewHomeListener
+                                        ).show(context.supportFragmentManager,"driver reservation")
+                                    }
+                                    else{
+                                        showBottomSheet(
+                                            ticketId,
+                                            item.id,
+                                            bottomSheetMemberModel,
+                                            memberModel,
+                                            bottomSheetState
+                                        )
+                                    }
+                                }
+                                MemberRole.Passenger->{
+                                    if(homeCarpoolListViewModel.isTicketIsMineOrNot(item.id)){
+                                        ReservePassengerFragment(
+                                            memberModel.user.studentID,
+                                            reNewHomeListener
+                                        ).show(context.supportFragmentManager,"passenger reservation")
+                                    }
+                                    else {
+                                        showBottomSheet(
+                                            ticketId,
+                                            item.id,
+                                            bottomSheetMemberModel,
+                                            memberModel,
+                                            bottomSheetState
+                                        )
+                                    }
+                                }
+                            }
+
                         }
+                    }
+                }) {
+                    Row(
+                        modifier = Modifier.padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     )
                     {
-                        Text(text = "${item.currentPersonCount}/${item.recruitPerson}")
+                        ProfileImage(image = R.drawable.icon_main_profile, 50.dp, 47.dp)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Row(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = item.startArea,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                text = " 출발,"
+                            )
+                            Text(
+                                text = item.dayStatus?.getDayStatus()?:""
+                            )
+                            Text(
+                                text = item.startTime,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                        Chip(
+                            onClick = { /*TODO*/ },
+                            colors = when (item.ticketType) {
+                                TicketType.Free -> ChipDefaults.chipColors(Colors.Blue_007AFF)
+                                TicketType.Cost -> ChipDefaults.chipColors(Colors.Red_E0302D)
+                                else -> ChipDefaults.chipColors(Colors.Gray_4E5760)
+                            }
+                        )
+                        {
+                            Text(text = "${item.currentPersonCount}/${item.recruitPerson}")
+                        }
                     }
                 }
+                Text(
+                    text = "",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(1.dp)
+                        .background(Colors.Gray_DADDE1)
+                )
             }
-            Text(
-                text = "",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(1.dp)
-                    .background(Colors.Gray_DADDE1)
-            )
         }
+        PullRefreshIndicator(
+            refreshing = isRefreshing.value,
+            state = pullRefreshState,
+            modifier = Modifier.align(Alignment.TopCenter)
+        )
     }
 }
 

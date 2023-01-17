@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -30,7 +31,7 @@ import javax.inject.Inject
 class ReserveDriverFragment(
     private val onRewNew:Renewing
 ) : BaseBottomSheetDialogFragment<BottomSheetReserveDriverBinding>(R.layout.bottom_sheet_reserve_driver) {
-    private val reserveDriverViewModel: ReserveDriverViewModel  by viewModels()
+    private val reserveDriverViewModel: ReserveDriverViewModel  by activityViewModels()
     @Inject lateinit var reserveDriverViewAdapter: ReserveDriverViewAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,6 +44,8 @@ class ReserveDriverFragment(
             adapter=reserveDriverViewAdapter
             layoutManager=LinearLayoutManager(requireActivity(),LinearLayoutManager.VERTICAL,false)
         }
+
+        reserveDriverViewModel.getMyTicket()
 
         reserveDriverViewAdapter.setItemClickListener(object : OnItemClickListener {
             override fun setOnItemClickListener(view: View, pos: Int) {
@@ -59,7 +62,8 @@ class ReserveDriverFragment(
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     reserveDriverViewModel.toastMessage.collectLatest {
-                        Toast.makeText(requireActivity(),it,Toast.LENGTH_SHORT).show()
+                        if(it!="")
+                            Toast.makeText(requireActivity(),it, Toast.LENGTH_SHORT).show()
                     }
                 }
                 launch {
