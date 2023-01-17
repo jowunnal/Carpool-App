@@ -1,53 +1,23 @@
 package com.mate.carpool.ui.screen.login
 
-import android.os.Bundle
-import android.view.View
-import android.widget.Toast
+import android.graphics.Paint
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
-import com.mate.carpool.R
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import com.mate.carpool.data.vm.LoginViewModel
 import com.mate.carpool.databinding.FragmentLoginBinding
-import com.mate.carpool.ui.MainActivity
-import com.mate.carpool.ui.base.BindFragment
+import com.mate.carpool.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LoginFragment : BindFragment<FragmentLoginBinding>(R.layout.fragment_login) {
-    private var backPressedTime = 0L
-    lateinit var mainActivity: MainActivity
+class LoginFragment : BaseFragment<LoginViewModel, FragmentLoginBinding>() {
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.lifecycleOwner=viewLifecycleOwner
-        binding.navController=Navigation.findNavController(view)
-        mainActivity = activity as MainActivity
-
-        mainActivity.setOnBackPressedListener(object : MainActivity.OnBackPressedListener{
-            override fun onBack() {
-                if (backPressedTime == 0L) {
-                    Toast.makeText(
-                        requireActivity(),
-                        " 한 번 더 누르면 종료됩니다.", Toast.LENGTH_LONG
-                    ).show()
-                    backPressedTime = System.currentTimeMillis()
-                } else {
-                    val seconds = (System.currentTimeMillis() - backPressedTime)
-                    backPressedTime = if (seconds < 2000) {
-                        mainActivity.setOnBackPressedListener(null)
-                        mainActivity.onBackPressed()
-                        0L
-                    } else {
-                        0L
-                    }
-                }
-                mainActivity.setOnBackPressedListener(null)
-            }
-        })
-
-        /*binding.btnConfirm.setOnClickListener {
-            ReserveDriverFragment().show(requireActivity().supportFragmentManager,"bottom sheet")
-            reserveDriverViewModel.getTicketDetailFromId()
-        }*/
+    override val viewModel: LoginViewModel by viewModels()
+    override fun getViewBinding(): FragmentLoginBinding = FragmentLoginBinding.inflate(layoutInflater)
+    override fun initViews() = with(binding) {
+        navController = findNavController()
+        tvLogin.paintFlags = Paint.UNDERLINE_TEXT_FLAG
     }
-
+    override fun subscribeUi() = Unit
 }

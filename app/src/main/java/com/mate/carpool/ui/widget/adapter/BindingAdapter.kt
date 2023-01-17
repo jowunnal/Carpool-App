@@ -25,47 +25,27 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 
-@BindingAdapter("isSelectedAddItemToRegisterRCV")
-fun isSelectedAddItemToRegisterRCV(button:AppCompatButton,registerViewModel: RegisterViewModel){
+@BindingAdapter("navController", "navi_ID")
+fun isButtonSelectedNavigate(button: AppCompatButton, navController: NavController, @IdRes navi_ID: Int) {
     button.setOnClickListener {
-        if(button.isSelected){
-            if(registerViewModel.rcvFlag.value==1){
-                CoroutineScope(Dispatchers.Main).launch {
-                    if(registerViewModel.checkIsStudentNumberExists()!=200){
-                        registerViewModel.rcvFlag.value=1
-                    }
-                    else
-                        registerViewModel.addItemToRegisterRCV()
-                    Log.d("test",registerViewModel.studentNumberIsExistsHelperText.value.toString())
-                }
-            }
-            else
-                registerViewModel.addItemToRegisterRCV()
-        }
-    }
-}
-
-@BindingAdapter("navController","navi_ID")
-fun isButtonSelectedNavigate(button:AppCompatButton,navController:NavController,@IdRes navi_ID:Int){
-    button.setOnClickListener {
-        if(button.isSelected){
+        if (button.isSelected) {
             navController.navigate(navi_ID)
         }
     }
 }
 
 @BindingAdapter("navController")
-fun navigateBackStackOnToolbar(toolbar:Toolbar,navController: NavController){
+fun navigateBackStackOnToolbar(toolbar: Toolbar, navController: NavController) {
     toolbar.setNavigationOnClickListener {
         navController.popBackStack()
     }
 }
 
 
-@BindingAdapter("areaItems","context","ticketViewModel")
-fun setAreaItemsToStartingAreaAdapter(tv: AutoCompleteTextView,areaItems:ArrayList<String>,context:Context,ticketViewModel: CreateTicketViewModel){
-    tv.apply{
-        setAdapter(ArrayAdapter(context, R.layout.itemview_drop_down_menu,areaItems))
+@BindingAdapter("areaItems", "context", "ticketViewModel")
+fun setAreaItemsToStartingAreaAdapter(tv: AutoCompleteTextView, areaItems: ArrayList<String>, context: Context, ticketViewModel: CreateTicketViewModel) {
+    tv.apply {
+        setAdapter(ArrayAdapter(context, R.layout.itemview_drop_down_menu, areaItems))
         setOnItemClickListener { adapterView, view, i, l ->
             val selectedItem = adapterView.adapter.getItem(i).toString()
 
@@ -74,17 +54,20 @@ fun setAreaItemsToStartingAreaAdapter(tv: AutoCompleteTextView,areaItems:ArrayLi
                     ticketViewModel.mutableTicketModel.value!!.startArea = selectedItem
                     setTicketButtonSelected("옥", ticketViewModel.boardingAreaButtonFlag, 0)
                 }
+
                 "오전" -> {
                     ticketViewModel.mutableTicketModel.value!!.dayStatus= DayStatus.Morning
                     setTicketButtonSelected(" ", ticketViewModel.boardingTimeButtonFlag, 1)
                 }
+
                 "오후" -> {
                     ticketViewModel.mutableTicketModel.value!!.dayStatus= DayStatus.Afternoon
                     setTicketButtonSelected(" ", ticketViewModel.boardingTimeButtonFlag, 1)
                 }
+
                 "0", "1", "2", "3" -> {
-                    ticketViewModel.mutableTicketModel.value!!.recruitPerson=selectedItem.toInt()
-                    setTicketButtonSelected(" ",ticketViewModel.openChatButtonFlag,1)
+                    ticketViewModel.mutableTicketModel.value!!.recruitPerson = selectedItem.toInt()
+                    setTicketButtonSelected(" ", ticketViewModel.openChatButtonFlag, 1)
                 }
                 "유료"-> {
                     ticketViewModel.mutableTicketModel.value!!.ticketType=TicketType.Cost
@@ -106,20 +89,23 @@ fun setAreaItemsToStartingAreaAdapter(tv: AutoCompleteTextView,areaItems:ArrayLi
 fun setBoardingAreaTextInputListener(et: TextInputEditText, ticketViewModel: CreateTicketViewModel, buttonFlag: MutableLiveData<ArrayList<Boolean>>, context: Context){
     et.doOnTextChanged { text, start, before, count ->
 
-        when(et.hint) {
+        when (et.hint) {
             context.getString(R.string.탑승장소) -> {
                 ticketViewModel.mutableTicketModel.value?.boardingPlace = text.toString()
                 setTicketButtonSelected(text.toString(), buttonFlag, 1)
             }
+
             context.getString(R.string.출발날짜) -> {
                 ticketViewModel.mutableTicketModel.value?.startDayMonth = text.toString()
                 setTicketButtonSelected(text.toString(), buttonFlag, 0)
             }
+
             context.getString(R.string.출발시간) -> {
                 ticketViewModel.mutableTicketModel.value?.startTime = text.toString()
                 setTicketButtonSelected(text.toString(), buttonFlag, 2)
             }
-            context.getString(R.string.오픈채팅방링크)->{
+
+            context.getString(R.string.오픈채팅방링크) -> {
                 ticketViewModel.mutableTicketModel.value?.openChatUrl = text.toString()
                 setTicketButtonSelected(text.toString(), buttonFlag, 0)
             }
@@ -127,14 +113,13 @@ fun setBoardingAreaTextInputListener(et: TextInputEditText, ticketViewModel: Cre
     }
 }
 
-fun setTicketButtonSelected(text:String, buttonFlag: MutableLiveData<ArrayList<Boolean>>, num:Int){
+fun setTicketButtonSelected(text: String, buttonFlag: MutableLiveData<ArrayList<Boolean>>, num: Int) {
     val arrayList = buttonFlag.value
-    if(text==""){
+    if (text == "") {
         arrayList?.set(num, false)
-    }
-    else
+    } else
         arrayList?.set(num, true)
-    buttonFlag.value=arrayList
+    buttonFlag.value = arrayList
 }
 
 @BindingAdapter("ticketType")

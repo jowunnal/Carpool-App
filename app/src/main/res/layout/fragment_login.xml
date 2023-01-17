@@ -1,99 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
+        <import type="com.mate.carpool.R" />
+
         <variable
             name="navController"
             type="androidx.navigation.NavController" />
-        <import type="com.mate.carpool.R"/>
     </data>
-    <RelativeLayout
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="120dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:background="@color/white"
+        android:fitsSystemWindows="true"
+        android:paddingHorizontal="16dp">
 
-        <TextView
-            android:id="@+id/text_login_type"
-            android:layout_width="107dp"
-            android:layout_height="58dp"
+        <com.mate.carpool.ui.widget.customview.BaselineLastLineTextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="33dp"
+            android:fontFamily="@font/noto_sans_bold"
             android:text="@string/login_title"
-            android:textColor="@color/black"
-            android:textSize="22sp"
-            android:textStyle="bold"
+            android:textSize="22dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/img_logo_car"
-            android:layout_width="18dp"
-            android:layout_height="16dp"
-            android:layout_alignBottom="@+id/text_login_type"
-            android:layout_marginStart="7dp"
-            android:layout_toEndOf="@+id/text_login_type"
-            android:src="@drawable/ic_car"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:layout_width="180dp"
-            android:layout_height="50dp"
-            android:layout_below="@+id/img_logo_car"
-            android:layout_marginTop="20dp"
-            android:text="@string/login_content"
-            android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@+id/text_login_type" />
-
-        <LinearLayout
-            android:id="@+id/layout_login_start"
+            android:id="@+id/iv_car"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/btn_confirm"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="18dp"
-            android:orientation="vertical"
-            android:onClick="@{()->navController.navigate(R.id.action_loginFragment_to_loginStartFragment)}">
+            android:layout_marginStart="7dp"
+            android:baselineAlignBottom="true"
+            android:src="@drawable/ic_car_blue"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_title"
+            app:layout_constraintStart_toEndOf="@id/tv_title" />
 
-            <TextView
-                android:layout_width="170dp"
-                android:layout_height="20dp"
-                android:gravity="center"
-                android:text="@string/login_id_check"
-                android:textColor="@color/black_151515" />
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/noto_sans_regular"
+            android:text="@string/login_content"
+            android:textColor="@color/black_151515"
+            android:textSize="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
-            <TextView
-                android:id="@+id/text_login_start"
-                android:text="@string/로그인하기"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:textColor="@color/gray"
-                android:textStyle="bold"
-                android:textSize="14sp" />
-            <TextView
-                android:layout_width="66dp"
-                android:layout_height="1dp"
-                android:layout_gravity="center_horizontal"
-                android:background="@color/gray" />
+        <TextView
+            android:id="@+id/tv_login_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/noto_sans_regular"
+            android:text="@string/login_id_check"
+            android:textColor="@color/black_151515"
+            app:layout_constraintBottom_toTopOf="@id/tv_login"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:onClick="@{() -> navController.navigate(R.id.action_loginFragment_to_loginStartFragment)}"
+            android:paddingHorizontal="6dp"
+            android:paddingVertical="3dp"
+            android:text="@string/로그인하기"
+            android:textColor="@color/gray"
+            android:textSize="14dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/btn_start"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_confirm"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/btn_start"
+            android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="34dp"
-            android:height="50dp"
+            android:layout_marginBottom="24dp"
             android:background="@drawable/round_100_blue"
+            android:textStyle="bold"
             android:gravity="center"
+            android:onClick="@{() -> navController.navigate(R.id.action_loginFragment_to_RegisterInfoFragment)}"
             android:text="@string/login_register"
             android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:onClick="@{()->navController.navigate(R.id.action_loginFragment_to_RegisterInfoFragment)}"/>
-    </RelativeLayout>
+            android:textSize="18dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

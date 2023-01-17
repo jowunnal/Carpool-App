@@ -19,7 +19,9 @@ interface APIService {
     suspend fun postSignUp(@Part("memberRequestDTO") memberRequestDTO: MemberRequestDTO, @Part image: MultipartBody.Part?) : ResponseMessage?
 
     @GET("member/check/class/{studentNumber}")
-    fun checkIsStudentNumberExists(@Path("studentNumber") studentNumber:String) : Call<ResponseMessage>
+    suspend fun checkIsStudentNumberExists(
+        @Path("studentNumber") studentNumber: String
+    ): ResponseMessage
 
     @POST("ticket/new")
     fun postTicketNew(@Body ticket: CreateCarpoolRequestDTO) : Call<ResponseMessage>

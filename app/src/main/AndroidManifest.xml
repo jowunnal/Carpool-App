@@ -5,7 +5,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
 
     <application
         android:name=".MateApplication"
@@ -17,12 +19,14 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Commatecarpool"
+        android:theme="@style/Theme.CarPool"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
         <activity
             android:name=".ui.screen.splash.SplashActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.CarPool.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,7 +37,13 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <activity android:name=".ui.MainActivity" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
     </application>
 
 </manifest>
