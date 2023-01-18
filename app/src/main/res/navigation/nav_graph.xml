@@ -17,9 +17,6 @@
         <action
             android:id="@+id/action_loginFragment_to_loginStartFragment"
             app:destination="@id/loginStartFragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_RegisterTypeFragment"
-            app:destination="@id/RegisterTypeFragment" />
     </fragment>
 
     <!-- 회원가입 -->

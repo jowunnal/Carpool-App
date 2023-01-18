@@ -6,10 +6,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.mate.carpool.R
-import com.mate.carpool.ui.screen.register.vm.RegisterViewModel
 import com.mate.carpool.databinding.FragmentLoginStartBinding
-import com.mate.carpool.ui.MainActivity
+import com.mate.carpool.ui.activity.MainActivity
 import com.mate.carpool.ui.base.BindFragment
+import com.mate.carpool.ui.screen.register.vm.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

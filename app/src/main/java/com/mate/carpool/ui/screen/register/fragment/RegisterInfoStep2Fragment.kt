@@ -1,6 +1,5 @@
 package com.mate.carpool.ui.fragment
 
-import android.util.Log
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -8,14 +7,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.mate.carpool.R
-import com.mate.carpool.data.vm.RegisterViewModel
 import com.mate.carpool.databinding.FragmentRegisterInfoStep2Binding
 import com.mate.carpool.ui.base.BaseFragment
+import com.mate.carpool.ui.screen.register.vm.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class RegisterInfoStep2Fragment : BaseFragment<RegisterViewModel, FragmentRegisterInfoStep2Binding>() {
+class RegisterInfoStep2Fragment : BaseFragment<RegisterViewModel,FragmentRegisterInfoStep2Binding>() {
 
     override val viewModel: RegisterViewModel by activityViewModels()
 

@@ -10,7 +10,7 @@
         tools:ignore="ScopedStorage" />
 
     <application
-        android:name=".MateApplication"
+        android:name=".ui.application.MateApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -38,7 +38,7 @@
                 android:value="" />
         </activity>
 
-        <activity android:name=".ui.MainActivity" />
+        <activity android:name=".ui.activity.MainActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

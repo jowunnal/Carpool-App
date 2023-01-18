@@ -1,15 +1,8 @@
 package com.mate.carpool.ui.screen.register.fragment
 
-import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
-import android.telephony.PhoneNumberUtils
 import android.text.Editable
-import android.text.Selection
-import android.view.View
-import androidx.core.widget.addTextChangedListener
-import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.mate.carpool.R
 import com.mate.carpool.ui.utils.ButtonCheckUtils
@@ -23,7 +16,7 @@ import java.lang.Exception
 import java.util.Locale
 
 @AndroidEntryPoint
-class RegisterPhoneFragment : BaseFragment<RegisterViewModel, FragmentRegisterPhoneBinding>() {
+class RegisterPhoneFragment : BaseFragment<RegisterViewModel,FragmentRegisterPhoneBinding>() {
 
     override val viewModel: RegisterViewModel by activityViewModels()
 

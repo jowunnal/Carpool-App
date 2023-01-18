@@ -1,13 +1,11 @@
 package com.mate.carpool.ui.screen.register.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mate.carpool.R
-import com.mate.carpool.data.model.DTO.MemberTimeTableResponseDTO
 import com.mate.carpool.data.model.domain.item.WeekItem
 import com.mate.carpool.ui.utils.SettingToolbarUtils
 import com.mate.carpool.databinding.FragmentRegisterSelectDayBinding

@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import com.mate.carpool.BuildConfig
 import com.mate.carpool.R
 import com.mate.carpool.databinding.ActivitySplashBinding
+import com.mate.carpool.ui.activity.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

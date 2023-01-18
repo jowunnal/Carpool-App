@@ -11,7 +11,7 @@ import com.mate.carpool.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LoginFragment : BaseFragment<LoginViewModel, FragmentLoginBinding>() {
+class LoginFragment : BaseFragment<LoginViewModel, FragmentLoginBinding>(){
 
     override val viewModel: LoginViewModel by viewModels()
     override fun getViewBinding(): FragmentLoginBinding = FragmentLoginBinding.inflate(layoutInflater)

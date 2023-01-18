@@ -13,7 +13,7 @@
 
         <variable
             name="viewModel"
-            type="com.mate.carpool.data.vm.RegisterViewModel" />
+            type="com.mate.carpool.ui.screen.register.vm.RegisterViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -1,11 +1,7 @@
-package com.mate.carpool.ui
+package com.mate.carpool.ui.activity
 
 import android.Manifest
-import android.graphics.Rect
 import android.os.Bundle
-import android.view.MotionEvent
-import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity

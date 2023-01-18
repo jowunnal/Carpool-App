@@ -31,8 +31,8 @@ class CreateTicketViewModel @Inject constructor(@ApplicationContext private val 
 
     fun createCarpoolTicket(){
         viewModelScope.launch {
-            mutableTicketModel?.value?.startDayMonth= mutableTicketModel?.value?.startDayMonth?.replace("/","").toString()
-            mutableTicketModel?.value?.startTime = mutableTicketModel?.value?.startTime?.replace(":","").toString()
+            mutableTicketModel.value?.startDayMonth= mutableTicketModel.value?.startDayMonth?.replace("/","").toString()
+            mutableTicketModel.value?.startTime = mutableTicketModel.value?.startTime?.replace(":","").toString()
             apiService.postTicketNew(CreateCarpoolRequestDTO(ticketModel.value!!)).enqueue(object : Callback<ResponseMessage>{
                 override fun onResponse(
                     call: Call<ResponseMessage>,

@@ -16,8 +16,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.mate.carpool.R
 import com.mate.carpool.ui.utils.LayoutParamsUtils
 
-abstract class BaseBottomSheetDialogFragment<T:ViewDataBinding>(@LayoutRes private val layoutRes: Int): BottomSheetDialogFragment()  {
-    private var _binding :T ?= null
+abstract class BaseBottomSheetDialogFragment<VB:ViewDataBinding>(@LayoutRes private val layoutRes: Int): BottomSheetDialogFragment()  {
+    private var _binding :VB ?= null
     val binding get() = _binding!!
 
     override fun onCreateView(

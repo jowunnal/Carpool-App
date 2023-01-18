@@ -3,14 +3,14 @@ package com.mate.carpool.ui.fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.mate.carpool.R
-import com.mate.carpool.data.vm.RegisterViewModel
 import com.mate.carpool.databinding.FragmentRegisterInfoStep3Binding
-import com.mate.carpool.ui.base.CommonDialogFragment
 import com.mate.carpool.ui.base.BaseFragment
+import com.mate.carpool.ui.base.CommonDialogFragment
+import com.mate.carpool.ui.screen.register.vm.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class RegisterInfoStep3Fragment : BaseFragment<RegisterViewModel, FragmentRegisterInfoStep3Binding>() {
+class RegisterInfoStep3Fragment : BaseFragment<RegisterViewModel,FragmentRegisterInfoStep3Binding>() {
 
     override val viewModel: RegisterViewModel by activityViewModels()
 

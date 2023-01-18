@@ -19,7 +19,6 @@ import com.mate.carpool.data.model.domain.item.DayStatus
 import com.mate.carpool.data.model.domain.item.TicketType
 import com.mate.carpool.data.model.domain.item.getTicketType
 import com.mate.carpool.ui.screen.createCarpool.vm.CreateTicketViewModel
-import com.mate.carpool.ui.screen.register.vm.RegisterViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

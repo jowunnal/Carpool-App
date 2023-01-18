@@ -331,7 +331,7 @@ fun PrevHome(
                     //HomeCardView(R.drawable.ic_home_location,"지역설정",R.drawable.ic_home_rightarrow,{})
                 }
                 MemberRole.Driver -> {
-                    HomeCardView(R.drawable.ic_car,"카풀 모집하기",R.drawable.ic_home_rightarrow,onNavigateToCreateCarpool)
+                    HomeCardView(R.drawable.ic_car_blue,"카풀 모집하기",R.drawable.ic_home_rightarrow,onNavigateToCreateCarpool)
                 }
             }
 
