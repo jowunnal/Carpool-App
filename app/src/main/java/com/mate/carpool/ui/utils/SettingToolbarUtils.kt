@@ -3,7 +3,7 @@ package com.mate.carpool.ui.utils
 import android.widget.Toolbar
 import androidx.fragment.app.FragmentActivity
 import com.mate.carpool.R
-import com.mate.carpool.ui.us.CheckDialogFragment
+import com.mate.carpool.ui.screen.CheckDialogFragment
 
 object SettingToolbarUtils {
     /*
@@ -20,7 +20,11 @@ object SettingToolbarUtils {
     }
 
     @JvmStatic
-    fun showBottomSheetFragment(fragmentActivity:FragmentActivity, title:String, message:String, tag:String){
-        CheckDialogFragment(title,message).show(fragmentActivity.supportFragmentManager,tag)
+    fun showBottomSheetFragment(fragmentActivity:FragmentActivity, title:String, message:String, tag:String, onDoSomething: CheckDialogFragment.Listener){
+        CheckDialogFragment(
+            title,
+            message,
+            onDoSomething,
+        ).show(fragmentActivity.supportFragmentManager,tag)
     }
 }

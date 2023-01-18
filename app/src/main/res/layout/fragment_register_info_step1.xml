@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.mate.carpool.R" />
+
+        <variable
+            name="navController"
+            type="androidx.navigation.NavController" />
+
+        <variable
+            name="viewModel"
+            type="com.mate.carpool.ui.screen.register.vm.RegisterViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="16dp">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/login_input_name"
+            android:textColor="@color/black"
+            android:textSize="22dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            tools:background="#33FF0000">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:text="이름"
+                android:textSize="13dp" />
+
+            <EditText
+                android:id="@+id/et_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/bg_stoke_1dp_gray_radius_4dp"
+                android:hint="예: 메이트"
+                android:maxLength="4"
+                android:maxLines="1"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="15dp"
+                android:text="@={viewModel.name}"
+                android:textSize="16dp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/btn_confirm"
+            style="@style/Theme.CarPool.NextButton"
+            android:layout_width="0dp"
+            android:enabled="@{viewModel.validNameInput}"
+            android:layout_height="50dp"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:onClick="@{() -> navController.navigate(R.id.action_RegisterInfoStep1Fragment_to_RegisterInfoStep2Fragment)}"
+            android:text="@string/login_next"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

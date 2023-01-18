@@ -5,6 +5,6 @@ import com.mate.carpool.data.model.response.ResponseMessage
 import kotlinx.coroutines.flow.Flow
 
 interface PassengerRepository {
-    fun addNewPassengerToTicket(id:Int):Flow<ApiResponse<ResponseMessage>>
-    fun deletePassengerToTicket(ticketId:Int,passengerId:Int):Flow<String>
+    fun addNewPassengerToTicket(id:Long):Flow<ApiResponse<ResponseMessage>>
+    fun deletePassengerToTicket(ticketId:Long,passengerId:Long):Flow<String>
 }

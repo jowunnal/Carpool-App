@@ -8,7 +8,7 @@
             type="androidx.navigation.NavController" />
         <variable
             name="data"
-            type="com.mate.carpool.ui.us.register.fragment.RegisterTypeFragment" />
+            type="com.mate.carpool.ui.screen.register.fragment.RegisterTypeFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

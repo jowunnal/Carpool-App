@@ -2,7 +2,7 @@ package com.mate.carpool.data.model.DTO
 /*
  */
 data class UserCarpoolDetailDTO (
-    val id:Int=0,
+    val id:Long=0,
     val memberName:String="",
     val profileImage:String="",
     var startArea:String = "",

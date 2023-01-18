@@ -14,24 +14,23 @@ interface APIService {
     @POST("auth/login")
     fun postLogin(@Body studentInfo: StudentItem) : Call<LoginResponse>
 
-    @GET("member/me")
-    fun getMember():Call<String>
-
     @Multipart
     @POST("auth/signup")
-    fun postSingUp(@Part("memberRequestDTO") memberRequestDTO: MemberRequestDTO, @Part image: MultipartBody.Part?):Call<ResponseMessage>
+    suspend fun postSignUp(@Part("memberRequestDTO") memberRequestDTO: MemberRequestDTO, @Part image: MultipartBody.Part?) : ResponseMessage?
 
     @GET("member/check/class/{studentNumber}")
-    fun checkIsStudentNumberExists(@Path("studentNumber") studentNumber:String) : Call<ResponseMessage>
+    suspend fun checkIsStudentNumberExists(
+        @Path("studentNumber") studentNumber: String
+    ): ResponseMessage
 
     @POST("ticket/new")
     fun postTicketNew(@Body ticket: CreateCarpoolRequestDTO) : Call<ResponseMessage>
 
     @GET("ticket/read/{id}")
-    suspend fun getTicketReadId(@Path("id") id:Int):TicketDetailResponseDTO
+    suspend fun getTicketReadId(@Path("id") id:Long):TicketDetailResponseDTO
 
     @GET("ticket/update/{id}")
-    fun getTicketUpdateId(@Path("id") id:Int,@Query("status") status:String):Call<ResponseMessage>
+    fun getTicketUpdateId(@Path("id") id:Long,@Query("status") status:String):Call<ResponseMessage>
 
     @GET("ticket/list")
     suspend fun getTicketList():List<UserTicketDTO>
