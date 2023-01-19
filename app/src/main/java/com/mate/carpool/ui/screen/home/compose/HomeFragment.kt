@@ -30,12 +30,10 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -45,21 +43,21 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.findNavController
 import com.mate.carpool.R
 import com.mate.carpool.data.model.domain.MemberModel
-import com.mate.carpool.data.model.domain.TicketModel
 import com.mate.carpool.data.model.domain.item.MemberRole
 import com.mate.carpool.data.model.domain.item.TicketType
 import com.mate.carpool.data.model.domain.item.getDayStatus
 import com.mate.carpool.data.model.domain.item.getTicketType
 import com.mate.carpool.ui.base.BaseBottomSheetDialogFragment
+import com.mate.carpool.ui.navigation.NavigationGraph
+import com.mate.carpool.ui.screen.home.vm.*
 import com.mate.carpool.ui.screen.reserveDriver.fragment.ReserveDriverFragment
 import com.mate.carpool.ui.screen.reservePassenger.ReservePassengerFragment
+import com.mate.carpool.ui.theme.Colors
+import com.mate.carpool.ui.utils.IntUtils.toSp
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import com.mate.carpool.ui.theme.Colors
-import com.mate.carpool.ui.navigation.NavigationGraph
-import com.mate.carpool.ui.screen.home.vm.*
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -102,9 +100,6 @@ fun MainView(
         onNavigateToCreateCarpool
     )
 }
-
-@Composable
-fun Int.toSp() = with(LocalDensity.current) {  Dp(this@toSp.toFloat()).toSp()  }
 
 @OptIn(ExperimentalLifecycleComposeApi::class, ExperimentalMaterialApi::class)
 @Composable
