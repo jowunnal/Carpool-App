@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.us.home.compose
+package com.mate.carpool.ui.navigation
 
 sealed class NavigationModel(
     val title:String,

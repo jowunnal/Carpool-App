@@ -1,6 +1,5 @@
 package com.mate.carpool.ui.screen.home.compose
 
-import android.content.ContextWrapper
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -38,23 +37,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.findNavController
 import com.mate.carpool.R
 import com.mate.carpool.data.model.domain.MemberModel
-import com.mate.carpool.data.model.domain.TicketModel
 import com.mate.carpool.data.model.domain.item.MemberRole
 import com.mate.carpool.data.model.domain.item.TicketType
 import com.mate.carpool.data.model.domain.item.getDayStatus
 import com.mate.carpool.data.model.domain.item.getTicketType
 import com.mate.carpool.ui.base.BaseBottomSheetDialogFragment
-import com.mate.carpool.ui.screen.home.vm.HomeBottomSheetViewModel
-import com.mate.carpool.ui.screen.home.vm.CarpoolListViewModel
 import com.mate.carpool.ui.screen.reserveDriver.fragment.ReserveDriverFragment
 import com.mate.carpool.ui.screen.reservePassenger.ReservePassengerFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -62,8 +56,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import com.mate.carpool.ui.theme.Colors
-import com.mate.carpool.ui.us.home.compose.NavigationGraph
-import kotlinx.coroutines.delay
+import com.mate.carpool.ui.navigation.NavigationGraph
+import com.mate.carpool.ui.screen.home.vm.*
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -83,11 +77,16 @@ class HomeFragment : Fragment() {
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun HomePreview(){
     HomeCarpoolSheet(
-        onNavigateToCreateCarpool = {}
+        onNavigateToCreateCarpool = { /*TODO*/ },
+        homeCarpoolBottomSheetViewModel = PreviewHomeBottomSheetViewModel,
+        fragmentManager = object:FragmentManager(){
+
+        },
+        carpoolListViewModel = PreviewCarpoolListViewModel
     )
 }
 
@@ -105,8 +104,10 @@ fun MainView(
 @OptIn(ExperimentalLifecycleComposeApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun HomeCarpoolSheet(
+    fragmentManager: FragmentManager,
     onNavigateToCreateCarpool: ()->Unit,
-    homeCarpoolBottomSheetViewModel: HomeBottomSheetViewModel = hiltViewModel(),
+    homeCarpoolBottomSheetViewModel: HomeBottomSheetViewModelInterface,
+    carpoolListViewModel: CarpoolListViewModelInterface
 ) {
     val bottomSheetState = rememberModalBottomSheetState (
         initialValue = ModalBottomSheetValue.Hidden
@@ -115,8 +116,8 @@ fun HomeCarpoolSheet(
     val bottomSheetMemberModel = homeCarpoolBottomSheetViewModel.memberModel
     val coroutineScope = rememberCoroutineScope()
     val ticketDetail by homeCarpoolBottomSheetViewModel.carpoolTicketState.collectAsStateWithLifecycle()
-    val localContext = LocalContext.current
-    val context = (localContext as ContextWrapper).baseContext as FragmentActivity
+    val context = LocalContext.current
+
     val newPassengerStatue by homeCarpoolBottomSheetViewModel.newPassengerState.collectAsStateWithLifecycle()
     val toastMessage by homeCarpoolBottomSheetViewModel.toastMessage.collectAsStateWithLifecycle()
 
@@ -129,7 +130,7 @@ fun HomeCarpoolSheet(
 
     if(toastMessage != ""){
         LaunchedEffect(key1 = toastMessage){
-            Toast.makeText(localContext,toastMessage, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context,toastMessage, Toast.LENGTH_SHORT).show()
             homeCarpoolBottomSheetViewModel.initToastMessage()
         }
     }
@@ -139,7 +140,7 @@ fun HomeCarpoolSheet(
             ReservePassengerFragment(
                 bottomSheetMemberModel.value.user.studentID,
                 reNewHomeListener
-            ).show(context.supportFragmentManager,"passenger reservation")
+            ).show(fragmentManager,"passenger reservation")
             bottomSheetState.animateTo(ModalBottomSheetValue.Hidden)
             homeCarpoolBottomSheetViewModel.initNewPassengerState()
         }
@@ -302,7 +303,9 @@ fun HomeCarpoolSheet(
             bottomSheetMemberModel,
             ticketId,
             reNewHomeListener,
-            initViewState
+            initViewState,
+            fragmentManager,
+            carpoolListViewModel
         )
     }
 }
@@ -317,10 +320,11 @@ fun HomeView(
     ticketId:MutableStateFlow<Long>,
     reNewHomeListener:BaseBottomSheetDialogFragment.Renewing,
     initViewState:MutableState<Boolean>,
-    homeCarpoolListViewModel: CarpoolListViewModel = hiltViewModel()
+    fragmentManager: FragmentManager,
+    homeCarpoolListViewModel: CarpoolListViewModelInterface
 ){
     val carpoolExistState by homeCarpoolListViewModel.carpoolExistState.collectAsStateWithLifecycle()
-    val context = (LocalContext.current as ContextWrapper).baseContext as FragmentActivity
+
     val memberModel by homeCarpoolListViewModel.memberModelState.collectAsStateWithLifecycle()
     val isRefreshing = homeCarpoolListViewModel.isRefreshState
 
@@ -358,7 +362,9 @@ fun HomeView(
                     ticketId,
                     reNewHomeListener,
                     initViewState,
-                    isRefreshing
+                    isRefreshing,
+                    fragmentManager,
+                    homeCarpoolListViewModel
                 )
             }
             Spacer(modifier = Modifier.height(50.dp))
@@ -370,12 +376,12 @@ fun HomeView(
                                 ReservePassengerFragment(
                                     memberModel.user.studentID,
                                     reNewHomeListener
-                                ).show(context.supportFragmentManager,"passenger reservation")
+                                ).show(fragmentManager,"passenger reservation")
                             }
                             MemberRole.Driver->{
                                 ReserveDriverFragment(
                                     reNewHomeListener
-                                ).show(context.supportFragmentManager,"driver reservation")
+                                ).show(fragmentManager,"driver reservation")
                             }
                         }
                     }
@@ -466,7 +472,9 @@ fun HomeCarpoolList(
     ticketId:MutableStateFlow<Long>,
     reNewHomeListener:BaseBottomSheetDialogFragment.Renewing,
     initViewState:MutableState<Boolean>,
-    isRefreshing:MutableState<Boolean>
+    isRefreshing:MutableState<Boolean>,
+    fragmentManager: FragmentManager,
+    homeCarpoolListViewModel: CarpoolListViewModelInterface
 ){
     Column() {
         Row(modifier = Modifier
@@ -497,7 +505,9 @@ fun HomeCarpoolList(
             ticketId,
             reNewHomeListener,
             initViewState,
-            isRefreshing
+            isRefreshing,
+            fragmentManager,
+            homeCarpoolListViewModel
         )
     }
 }
@@ -512,11 +522,11 @@ fun HomeCarpoolItems(
     reNewHomeListener:BaseBottomSheetDialogFragment.Renewing,
     initViewState:MutableState<Boolean>,
     isRefreshing: MutableState<Boolean>,
-    homeCarpoolListViewModel: CarpoolListViewModel = hiltViewModel()
+    fragmentManager: FragmentManager,
+    homeCarpoolListViewModel: CarpoolListViewModelInterface
 ){
     val carpoolList by homeCarpoolListViewModel.carpoolListState.collectAsStateWithLifecycle()
     val coroutineScope = rememberCoroutineScope()
-    val context = (LocalContext.current as ContextWrapper).baseContext as FragmentActivity
 
     val pullRefreshState = rememberPullRefreshState(
         refreshing = isRefreshing.value,
@@ -540,7 +550,7 @@ fun HomeCarpoolItems(
                                     if(homeCarpoolListViewModel.isTicketIsMineOrNot(item.id)){
                                         ReserveDriverFragment(
                                             reNewHomeListener
-                                        ).show(context.supportFragmentManager,"driver reservation")
+                                        ).show(fragmentManager,"driver reservation")
                                     }
                                     else{
                                         showBottomSheet(
@@ -557,7 +567,7 @@ fun HomeCarpoolItems(
                                         ReservePassengerFragment(
                                             memberModel.user.studentID,
                                             reNewHomeListener
-                                        ).show(context.supportFragmentManager,"passenger reservation")
+                                        ).show(fragmentManager,"passenger reservation")
                                     }
                                     else {
                                         showBottomSheet(

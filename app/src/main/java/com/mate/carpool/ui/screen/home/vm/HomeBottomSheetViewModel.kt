@@ -21,23 +21,23 @@ import javax.inject.Inject
 class HomeBottomSheetViewModel @Inject constructor(
     private val passengerRepository:PassengerRepository,
     private val carpoolListRepository: CarpoolListRepository
-) : ViewModel() {
+) : ViewModel(),HomeBottomSheetViewModelInterface {
 
-    val mutableTicketId = MutableStateFlow(-1L)
-    val ticketId:StateFlow<Long> get() = mutableTicketId.asStateFlow()
+    override val mutableTicketId = MutableStateFlow(-1L)
+    override val ticketId:StateFlow<Long> get() = mutableTicketId.asStateFlow()
 
-    private val mutableNewPassengerState = MutableStateFlow(false)
-    val newPassengerState get() = mutableNewPassengerState.asStateFlow()
+    override val mutableNewPassengerState = MutableStateFlow(false)
+    override val newPassengerState get() = mutableNewPassengerState.asStateFlow()
 
-    val memberModel = MutableStateFlow(MemberModel())
+    override val memberModel = MutableStateFlow(MemberModel())
 
-    private val mutableToastMessage = MutableStateFlow("")
-    val toastMessage get() = mutableToastMessage.asStateFlow()
+    override val mutableToastMessage = MutableStateFlow("")
+    override val toastMessage get() = mutableToastMessage.asStateFlow()
 
-    val initViewState = mutableStateOf(false)
+    override val initViewState = mutableStateOf(false)
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val carpoolTicketState:StateFlow<TicketModel> = ticketId.flatMapLatest{
+    override val carpoolTicketState:StateFlow<TicketModel> = ticketId.flatMapLatest{
         carpoolListRepository.getTicket(it)
     }.flowOn(Dispatchers.IO)
         .transform {response->
@@ -50,7 +50,7 @@ class HomeBottomSheetViewModel @Inject constructor(
             initialValue = TicketModel()
         )
 
-    fun addNewPassengerToTicket(id:Long){
+    override fun addNewPassengerToTicket(id:Long){
         viewModelScope.launch {
             passengerRepository.addNewPassengerToTicket(id).collectLatest {
                 when(it){
@@ -75,11 +75,11 @@ class HomeBottomSheetViewModel @Inject constructor(
         }
     }
 
-    private suspend fun newPassengerResponse(message:String,statue:Boolean){
+    override suspend fun newPassengerResponse(message:String, statue:Boolean){
         mutableToastMessage.emit(message)
         mutableNewPassengerState.emit(statue)
     }
 
-    suspend fun initToastMessage() = mutableToastMessage.emit("")
-    suspend fun initNewPassengerState() = mutableNewPassengerState.emit(false)
+    override suspend fun initToastMessage() = mutableToastMessage.emit("")
+    override suspend fun initNewPassengerState() = mutableNewPassengerState.emit(false)
 }

@@ -20,26 +20,27 @@ import javax.inject.Inject
 class CarpoolListViewModel @Inject constructor(
     private val carpoolListRepository: CarpoolListRepository,
     private val memberRepository: MemberRepository
-    ) : ViewModel()
+    ) : ViewModel(),CarpoolListViewModelInterface
 {
-    private val mutableCarpoolListState = MutableStateFlow<List<TicketListModel>>(listOf(
+    override val mutableCarpoolListState = MutableStateFlow<List<TicketListModel>>(listOf(
         TicketListModel()
     ))
-    val carpoolListState get() = mutableCarpoolListState.asStateFlow()
+    override val carpoolListState get() = mutableCarpoolListState.asStateFlow()
 
-    private val mutableCarpoolExistState = MutableStateFlow(false)
-    val carpoolExistState get() = mutableCarpoolExistState.asStateFlow()
+    override val mutableCarpoolExistState = MutableStateFlow(false)
+    override val carpoolExistState get() = mutableCarpoolExistState.asStateFlow()
 
-    private val mutableMemberModelState = MutableStateFlow(MemberModel())
-    val memberModelState get() = mutableMemberModelState.asStateFlow()
+    override val mutableMemberModelState = MutableStateFlow(MemberModel())
+    override val memberModelState get() = mutableMemberModelState.asStateFlow()
 
-    val isRefreshState = mutableStateOf(false)
+    override val isRefreshState = mutableStateOf(false)
+
     init {
         getMemberModel()
         getCarpoolList()
     }
 
-    fun getCarpoolList(){
+    override fun getCarpoolList(){
         viewModelScope.launch {
             carpoolListRepository.getTicketList().collectLatest {
                 when(it){
@@ -55,7 +56,7 @@ class CarpoolListViewModel @Inject constructor(
         }
     }
 
-    fun getMemberModel(){
+    override fun getMemberModel(){
         viewModelScope.launch {
             memberRepository.getMemberInfo().collectLatest {
                 when(it){
@@ -75,7 +76,7 @@ class CarpoolListViewModel @Inject constructor(
         }
     }
 
-    fun isTicketIsMineOrNot(id:Long) : Boolean{
+    override fun isTicketIsMineOrNot(id:Long) : Boolean{
         if(memberModelState.value.ticketList!=null){
             for(item in memberModelState.value.ticketList!!){
                 if(item.id==id){
