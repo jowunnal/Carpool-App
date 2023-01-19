@@ -8,7 +8,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.mate.carpool.ui.screen.home.compose.HomeCarpoolSheet
+import com.mate.carpool.ui.screen.home.compose.HomeBottomSheetLayout
 import com.mate.carpool.ui.screen.home.vm.CarpoolListViewModel
 import com.mate.carpool.ui.screen.home.vm.CarpoolListViewModelInterface
 import com.mate.carpool.ui.screen.home.vm.HomeBottomSheetViewModel
@@ -23,7 +23,7 @@ fun NavigationGraph(
 ){
     NavHost(navController = navController, startDestination = NavigationModel.Home.route){
         composable(route = NavigationModel.Home.route){
-            HomeCarpoolSheet(
+            HomeBottomSheetLayout(
                 onNavigateToCreateCarpool = onNavigateToCreateCarpool,
                 fragmentManager = ((LocalContext.current as ContextWrapper).baseContext as FragmentActivity).supportFragmentManager,
                 homeCarpoolBottomSheetViewModel = homeCarpoolBottomSheetViewModel,

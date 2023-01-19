@@ -69,7 +69,7 @@ class HomeFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                MainView(
+                HomeMainView(
                     onNavigateToCreateCarpool = {findNavController().navigate(R.id.action_homeFragment_to_createTicketBoardingAreaFragment)}
                 )
             }
@@ -80,7 +80,7 @@ class HomeFragment : Fragment() {
 @Preview(showBackground = true)
 @Composable
 fun HomePreview(){
-    HomeCarpoolSheet(
+    HomeBottomSheetLayout(
         onNavigateToCreateCarpool = { /*TODO*/ },
         homeCarpoolBottomSheetViewModel = PreviewHomeBottomSheetViewModel,
         fragmentManager = object:FragmentManager(){
@@ -91,7 +91,7 @@ fun HomePreview(){
 }
 
 @Composable
-fun MainView(
+fun HomeMainView(
     onNavigateToCreateCarpool: () -> Unit
 ){
     val navController = rememberNavController()
@@ -101,9 +101,9 @@ fun MainView(
     )
 }
 
-@OptIn(ExperimentalLifecycleComposeApi::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun HomeCarpoolSheet(
+fun HomeBottomSheetLayout(
     fragmentManager: FragmentManager,
     onNavigateToCreateCarpool: ()->Unit,
     homeCarpoolBottomSheetViewModel: HomeBottomSheetViewModelInterface,
@@ -112,37 +112,15 @@ fun HomeCarpoolSheet(
     val bottomSheetState = rememberModalBottomSheetState (
         initialValue = ModalBottomSheetValue.Hidden
     )
+    val coroutineScope = rememberCoroutineScope()
+
     val ticketId = homeCarpoolBottomSheetViewModel.mutableTicketId
     val bottomSheetMemberModel = homeCarpoolBottomSheetViewModel.memberModel
-    val coroutineScope = rememberCoroutineScope()
-    val ticketDetail by homeCarpoolBottomSheetViewModel.carpoolTicketState.collectAsStateWithLifecycle()
-    val context = LocalContext.current
-
-    val newPassengerStatue by homeCarpoolBottomSheetViewModel.newPassengerState.collectAsStateWithLifecycle()
-    val toastMessage by homeCarpoolBottomSheetViewModel.toastMessage.collectAsStateWithLifecycle()
-
     val initViewState = homeCarpoolBottomSheetViewModel.initViewState
+
     val reNewHomeListener = object : BaseBottomSheetDialogFragment.Renewing() {
         override fun onRewNew() {
             initViewState.value = true
-        }
-    }
-
-    if(toastMessage != ""){
-        LaunchedEffect(key1 = toastMessage){
-            Toast.makeText(context,toastMessage, Toast.LENGTH_SHORT).show()
-            homeCarpoolBottomSheetViewModel.initToastMessage()
-        }
-    }
-
-    if(newPassengerStatue){
-        LaunchedEffect(key1 = newPassengerStatue){
-            ReservePassengerFragment(
-                bottomSheetMemberModel.value.user.studentID,
-                reNewHomeListener
-            ).show(fragmentManager,"passenger reservation")
-            bottomSheetState.animateTo(ModalBottomSheetValue.Hidden)
-            homeCarpoolBottomSheetViewModel.initNewPassengerState()
         }
     }
 
@@ -154,146 +132,14 @@ fun HomeCarpoolSheet(
 
     ModalBottomSheetLayout(
         sheetContent = {
-            Column(
-                Modifier
-                    .padding(
-                        start = 20.dp,
-                        end = 20.dp,
-                        top = 16.dp,
-                        bottom = 20.dp
-                    )
+            HomeBottomSheetContent(
+                bottomSheetState,
+                bottomSheetMemberModel,
+                coroutineScope,
+                homeCarpoolBottomSheetViewModel,
+                reNewHomeListener,
+                fragmentManager
             )
-            {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(24.dp),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    IconButton(onClick = {
-                        coroutineScope.launch {
-                            bottomSheetState.hide()
-                        }
-                    })
-                    {
-                        Icon(
-                            painter = painterResource(id = R.drawable.icon_x),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .height(14.dp)
-                                .width(14.dp)
-                        )
-                    }
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    Modifier
-                        .height(60.dp)
-                        .fillMaxWidth()
-                ) {
-                    Column(
-                        Modifier
-                            .width(120.dp)
-                            .fillMaxHeight()
-                            .border(1.dp, Colors.Gray_A2ABB4, RoundedCornerShape(5.dp))
-                            .padding(top = 8.dp, start = 12.dp, end = 12.dp, bottom = 8.dp)
-                    )
-                    {
-                        Text(text = "출발지", fontSize = 13.toSp(), fontWeight = FontWeight.Bold)
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(text = ticketDetail.startArea, fontSize = 18.toSp())
-                    }
-                    Spacer(modifier = Modifier.width(5.dp))
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_ticket_bluearrow),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxHeight()
-                    )
-                    Spacer(modifier = Modifier.width(5.dp))
-                    Column(
-                        Modifier
-                            .width(120.dp)
-                            .fillMaxHeight()
-                            .border(1.dp, Colors.Gray_A2ABB4, RoundedCornerShape(5.dp))
-                            .padding(top = 8.dp, start = 12.dp, end = 12.dp, bottom = 8.dp)
-                    ) {
-                        Text(text = "도착지", fontSize = 13.toSp(), fontWeight = FontWeight.Bold)
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(text = ticketDetail.endArea, fontSize = 18.toSp())
-                    }
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    Modifier
-                        .height(44.dp)
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                )
-                {
-                    ProfileImage(image = R.drawable.icon_main_profile, 44.dp, 44.dp)
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Column(Modifier.weight(1f).height(34.dp)) {
-                        Text(
-                            text = "드라이버",
-                            fontSize = 12.toSp(),
-                            color = Colors.Gray_4E5760,
-                            modifier = Modifier.fillMaxWidth().weight(1f),
-                            fontWeight = FontWeight.Bold
-                        )
-                        Text(
-                            text = ticketDetail.memberName,
-                            fontSize = 14.toSp(),
-                            modifier = Modifier.fillMaxWidth().weight(1f)
-                        )
-                    }
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_home_rightarrow),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .width(24.dp)
-                            .height(24.dp)
-                    )
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-                HomeTicketDetail(
-                    text1 = "출발 시간",
-                    text2 = "${ticketDetail.startTime},${ticketDetail.startDayMonth}",
-                    text3 = "탑승 장소",
-                    text4 = ticketDetail.boardingPlace
-                )
-                Spacer(modifier = Modifier.height(20.dp))
-                HomeTicketDetail(
-                    text1 = "탑승 인원",
-                    text2 = ticketDetail.recruitPerson.toString() + "명",
-                    text3 = "비용",
-                    text4 = ticketDetail.ticketType?.getTicketType()?:""
-                )
-                Spacer(modifier = Modifier.height(20.dp))
-                Button(
-                    onClick = {
-                        if(bottomSheetMemberModel.value.user.role == MemberRole.Passenger){
-                            homeCarpoolBottomSheetViewModel.addNewPassengerToTicket(ticketDetail.id)
-                        }
-                        else
-                            Toast.makeText(context,"드라이버는 탑승하기를 할 수 없습니다",Toast.LENGTH_SHORT).show()
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp),
-                    colors = ButtonDefaults.buttonColors(Colors.Blue_007AFF),
-                    shape = RoundedCornerShape(100.dp)
-                )
-                {
-                    Text(
-                        text = "탑승하기",
-                        color = Color.White,
-                        fontWeight = FontWeight.W900,
-                        fontSize = 18.toSp()
-                    )
-                }
-            }
         },
         sheetState = bottomSheetState,
         sheetShape = RoundedCornerShape(20.dp)
@@ -309,6 +155,187 @@ fun HomeCarpoolSheet(
             fragmentManager,
             carpoolListViewModel
         )
+    }
+}
+
+@OptIn(ExperimentalLifecycleComposeApi::class, ExperimentalMaterialApi::class)
+@Composable
+fun HomeBottomSheetContent(
+    bottomSheetState: ModalBottomSheetState,
+    bottomSheetMemberModel: MutableStateFlow<MemberModel>,
+    coroutineScope: CoroutineScope,
+    homeCarpoolBottomSheetViewModel: HomeBottomSheetViewModelInterface,
+    reNewHomeListener: BaseBottomSheetDialogFragment.Renewing,
+    fragmentManager: FragmentManager
+){
+    val ticketDetail by homeCarpoolBottomSheetViewModel.carpoolTicketState.collectAsStateWithLifecycle()
+    val newPassengerState by homeCarpoolBottomSheetViewModel.newPassengerState.collectAsStateWithLifecycle()
+    val toastMessage = homeCarpoolBottomSheetViewModel.toastMessage.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+
+    if(toastMessage.value != ""){
+        LaunchedEffect(key1 = toastMessage.value){
+            Toast.makeText(context,toastMessage.value, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    if(newPassengerState){
+        LaunchedEffect(key1 = newPassengerState){
+            ReservePassengerFragment(
+                bottomSheetMemberModel.value.user.studentID,
+                reNewHomeListener
+            ).show(fragmentManager,"passenger reservation")
+            bottomSheetState.animateTo(ModalBottomSheetValue.Hidden)
+            homeCarpoolBottomSheetViewModel.initNewPassengerState()
+        }
+    }
+
+    Column(
+        Modifier
+            .padding(
+                start = 20.dp,
+                end = 20.dp,
+                top = 16.dp,
+                bottom = 20.dp
+            )
+    )
+    {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(24.dp),
+            horizontalArrangement = Arrangement.End
+        ) {
+            IconButton(onClick = {
+                coroutineScope.launch {
+                    bottomSheetState.hide()
+                }
+            })
+            {
+                Icon(
+                    painter = painterResource(id = R.drawable.icon_x),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .height(14.dp)
+                        .width(14.dp)
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Row(
+            Modifier
+                .height(60.dp)
+                .fillMaxWidth()
+        ) {
+            Column(
+                Modifier
+                    .width(120.dp)
+                    .fillMaxHeight()
+                    .border(1.dp, Colors.Gray_A2ABB4, RoundedCornerShape(5.dp))
+                    .padding(top = 8.dp, start = 12.dp, end = 12.dp, bottom = 8.dp)
+            )
+            {
+                Text(text = "출발지", fontSize = 13.toSp(), fontWeight = FontWeight.Bold)
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(text = ticketDetail.startArea, fontSize = 18.toSp())
+            }
+            Spacer(modifier = Modifier.width(5.dp))
+            Image(
+                painter = painterResource(id = R.drawable.ic_ticket_bluearrow),
+                contentDescription = null,
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+            )
+            Spacer(modifier = Modifier.width(5.dp))
+            Column(
+                Modifier
+                    .width(120.dp)
+                    .fillMaxHeight()
+                    .border(1.dp, Colors.Gray_A2ABB4, RoundedCornerShape(5.dp))
+                    .padding(top = 8.dp, start = 12.dp, end = 12.dp, bottom = 8.dp)
+            ) {
+                Text(text = "도착지", fontSize = 13.toSp(), fontWeight = FontWeight.Bold)
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(text = ticketDetail.endArea, fontSize = 18.toSp())
+            }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Row(
+            Modifier
+                .height(44.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        )
+        {
+            ProfileImage(image = R.drawable.icon_main_profile, 44.dp, 44.dp)
+            Spacer(modifier = Modifier.width(8.dp))
+            Column(
+                Modifier
+                    .weight(1f)
+                    .height(34.dp)) {
+                Text(
+                    text = "드라이버",
+                    fontSize = 12.toSp(),
+                    color = Colors.Gray_4E5760,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = ticketDetail.memberName,
+                    fontSize = 14.toSp(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                )
+            }
+            Image(
+                painter = painterResource(id = R.drawable.ic_home_rightarrow),
+                contentDescription = null,
+                modifier = Modifier
+                    .width(24.dp)
+                    .height(24.dp)
+            )
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        HomeTicketDetail(
+            text1 = "출발 시간",
+            text2 = "${ticketDetail.startTime},${ticketDetail.startDayMonth}",
+            text3 = "탑승 장소",
+            text4 = ticketDetail.boardingPlace
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        HomeTicketDetail(
+            text1 = "탑승 인원",
+            text2 = ticketDetail.recruitPerson.toString() + "명",
+            text3 = "비용",
+            text4 = ticketDetail.ticketType?.getTicketType()?:""
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        Button(
+            onClick = {
+                if(bottomSheetMemberModel.value.user.role == MemberRole.Passenger){
+                    homeCarpoolBottomSheetViewModel.addNewPassengerToTicket(ticketDetail.id)
+                }
+                else
+                    Toast.makeText(context,"드라이버는 탑승하기를 할 수 없습니다",Toast.LENGTH_SHORT).show()
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp),
+            colors = ButtonDefaults.buttonColors(Colors.Blue_007AFF),
+            shape = RoundedCornerShape(100.dp)
+        )
+        {
+            Text(
+                text = "탑승하기",
+                color = Color.White,
+                fontWeight = FontWeight.W900,
+                fontSize = 18.toSp()
+            )
+        }
     }
 }
 
