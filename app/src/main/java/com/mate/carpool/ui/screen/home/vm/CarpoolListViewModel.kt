@@ -39,6 +39,8 @@ class CarpoolListViewModel @Inject constructor(
         viewModelScope.launch {
             carpoolListRepository.getTicketList().collectLatest {
                 when(it){
+                    is ApiResponse.Loading -> {
+                    }
                     is ApiResponse.SuccessResponse ->{
                         mutableCarpoolListState.emit(it.responseMessage)
                     }
@@ -55,6 +57,8 @@ class CarpoolListViewModel @Inject constructor(
         viewModelScope.launch {
             memberRepository.getMemberInfo().collectLatest {
                 when(it){
+                    is ApiResponse.Loading -> {
+                    }
                     is ApiResponse.SuccessResponse ->{
                         mutableMemberModelState.emit(it.responseMessage)
                         if(it.responseMessage.ticketList?.size!=0)

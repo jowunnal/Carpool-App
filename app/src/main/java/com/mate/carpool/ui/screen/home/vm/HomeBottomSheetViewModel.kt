@@ -48,6 +48,8 @@ class HomeBottomSheetViewModel @Inject constructor(
         .transform {response->
             if(response is ApiResponse.SuccessResponse)
                 emit(response.responseMessage)
+            else if(response is ApiResponse.Loading)
+                emit(TicketModel())
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(2000),
@@ -58,6 +60,9 @@ class HomeBottomSheetViewModel @Inject constructor(
         viewModelScope.launch {
             passengerRepository.addNewPassengerToTicket(id).collectLatest {
                 when(it){
+                    is ApiResponse.Loading -> {
+
+                    }
                     is ApiResponse.SuccessResponse ->{
                         newPassengerResponse("",true)
                     }

@@ -14,6 +14,7 @@ object HandleFlowUtils {
     fun <T : Any> handleFlowApi(
         execute: suspend () -> T,
     ): Flow<ApiResponse<T>> = flow {
+        emit(ApiResponse.Loading)
         try {
             emit(ApiResponse.SuccessResponse(execute()))
         } catch (e: HttpException) {

@@ -29,6 +29,9 @@ class MemberRepositoryImpl @Inject constructor(private val apiService: APIServic
         apiService.getMemberMe()
     }.map {
         when(it){
+            is ApiResponse.Loading -> {
+                ApiResponse.Loading
+            }
             is ApiResponse.SuccessResponse -> {
                 it.asStatusDomain()
             }
