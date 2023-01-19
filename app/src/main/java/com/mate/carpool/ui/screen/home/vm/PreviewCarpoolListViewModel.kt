@@ -5,24 +5,26 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.mate.carpool.data.model.domain.MemberModel
 import com.mate.carpool.data.model.domain.TicketListModel
+import com.mate.carpool.data.model.domain.TicketModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 object PreviewCarpoolListViewModel: ViewModel(),CarpoolListViewModelInterface {
-    override val mutableCarpoolListState: MutableStateFlow<List<TicketListModel>> = MutableStateFlow(
-        listOf(TicketListModel())
-    )
+
     override val carpoolListState: StateFlow<List<TicketListModel>>
-        get() = mutableCarpoolListState.asStateFlow()
-    override val mutableCarpoolExistState: MutableStateFlow<Boolean> = MutableStateFlow(false)
+        get() = MutableStateFlow<List<TicketListModel>>(
+            emptyList()
+        ).asStateFlow()
+
     override val carpoolExistState: StateFlow<Boolean>
-        get() = mutableCarpoolExistState.asStateFlow()
-    override val mutableMemberModelState: MutableStateFlow<MemberModel> = MutableStateFlow(
-        MemberModel()
-    )
+        get() = MutableStateFlow(false).asStateFlow()
+
     override val memberModelState: StateFlow<MemberModel>
-        get() = mutableMemberModelState.asStateFlow()
+        get() = MutableStateFlow(
+            MemberModel()
+        ).asStateFlow()
+
     override val isRefreshState: MutableState<Boolean> = mutableStateOf(false)
 
     override fun getCarpoolList() {

@@ -10,29 +10,24 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 object PreviewHomeBottomSheetViewModel: ViewModel(),HomeBottomSheetViewModelInterface {
-    override val mutableTicketId: MutableStateFlow<Long> = MutableStateFlow(0L)
+    override val mutableTicketId: MutableStateFlow<Long> =MutableStateFlow(0L)
     override val ticketId: StateFlow<Long> get() = mutableTicketId.asStateFlow()
-    override val mutableNewPassengerState: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    override val newPassengerState: StateFlow<Boolean> get() = mutableNewPassengerState.asStateFlow()
+    override val newPassengerState: StateFlow<Boolean> get() = MutableStateFlow(false).asStateFlow()
     override val memberModel: MutableStateFlow<MemberModel> = MutableStateFlow(MemberModel())
-    override val mutableToastMessage: MutableStateFlow<String> = MutableStateFlow("")
+    override val toastMessage: StateFlow<String>
+        get() = MutableStateFlow("").asStateFlow()
     override val initViewState: MutableState<Boolean> = mutableStateOf(false)
-    override val carpoolTicketState: StateFlow<TicketModel>
-        get() = MutableStateFlow(TicketModel()).asStateFlow()
+    override val carpoolTicketState: StateFlow<TicketModel> get() = MutableStateFlow(TicketModel()).asStateFlow()
 
     override fun addNewPassengerToTicket(id: Long) {
-
     }
 
     override suspend fun newPassengerResponse(message: String, statue: Boolean) {
-
     }
 
     override suspend fun initToastMessage() {
-
     }
 
     override suspend fun initNewPassengerState() {
-
     }
 }

@@ -12,24 +12,15 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 interface HomeBottomSheetViewModelInterface {
-    val mutableTicketId : MutableStateFlow<Long>
+    val mutableTicketId:MutableStateFlow<Long>
     val ticketId: StateFlow<Long>
-
-    val mutableNewPassengerState : MutableStateFlow<Boolean>
     val newPassengerState : StateFlow<Boolean>
-
     val memberModel : MutableStateFlow<MemberModel>
-
-    val mutableToastMessage : MutableStateFlow<String>
-    val toastMessage get() = mutableToastMessage.asStateFlow()
-
+    val toastMessage : StateFlow<String>
     val initViewState : MutableState<Boolean>
-
-
     val carpoolTicketState: StateFlow<TicketModel>
 
     fun addNewPassengerToTicket(id:Long)
-
     suspend fun newPassengerResponse(message:String,statue:Boolean)
     suspend fun initToastMessage()
     suspend fun initNewPassengerState()

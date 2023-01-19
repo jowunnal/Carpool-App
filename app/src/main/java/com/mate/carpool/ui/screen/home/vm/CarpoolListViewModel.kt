@@ -9,10 +9,12 @@ import com.mate.carpool.data.model.domain.TicketListModel
 import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.repository.CarpoolListRepository
 import com.mate.carpool.data.repository.MemberRepository
+import com.mate.carpool.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,25 +22,18 @@ import javax.inject.Inject
 class CarpoolListViewModel @Inject constructor(
     private val carpoolListRepository: CarpoolListRepository,
     private val memberRepository: MemberRepository
-    ) : ViewModel(),CarpoolListViewModelInterface
+    ) : BaseViewModel(),CarpoolListViewModelInterface
 {
-    override val mutableCarpoolListState = MutableStateFlow<List<TicketListModel>>(listOf(
-        TicketListModel()
-    ))
+    private val mutableCarpoolListState = MutableStateFlow<List<TicketListModel>>(emptyList())
     override val carpoolListState get() = mutableCarpoolListState.asStateFlow()
 
-    override val mutableCarpoolExistState = MutableStateFlow(false)
+    private val mutableCarpoolExistState = MutableStateFlow(false)
     override val carpoolExistState get() = mutableCarpoolExistState.asStateFlow()
 
-    override val mutableMemberModelState = MutableStateFlow(MemberModel())
+    private val mutableMemberModelState = MutableStateFlow(MemberModel())
     override val memberModelState get() = mutableMemberModelState.asStateFlow()
 
     override val isRefreshState = mutableStateOf(false)
-
-    init {
-        getMemberModel()
-        getCarpoolList()
-    }
 
     override fun getCarpoolList(){
         viewModelScope.launch {

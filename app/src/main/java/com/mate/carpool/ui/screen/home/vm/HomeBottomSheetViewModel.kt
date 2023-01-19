@@ -10,9 +10,11 @@ import com.mate.carpool.data.model.domain.TicketModel
 import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.repository.CarpoolListRepository
 import com.mate.carpool.data.repository.PassengerRepository
+import com.mate.carpool.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,30 +23,32 @@ import javax.inject.Inject
 class HomeBottomSheetViewModel @Inject constructor(
     private val passengerRepository:PassengerRepository,
     private val carpoolListRepository: CarpoolListRepository
-) : ViewModel(),HomeBottomSheetViewModelInterface {
+) : BaseViewModel(),HomeBottomSheetViewModelInterface {
 
     override val mutableTicketId = MutableStateFlow(-1L)
     override val ticketId:StateFlow<Long> get() = mutableTicketId.asStateFlow()
 
-    override val mutableNewPassengerState = MutableStateFlow(false)
+    private val mutableNewPassengerState = MutableStateFlow(false)
     override val newPassengerState get() = mutableNewPassengerState.asStateFlow()
 
     override val memberModel = MutableStateFlow(MemberModel())
 
-    override val mutableToastMessage = MutableStateFlow("")
+    private val mutableToastMessage = MutableStateFlow("")
     override val toastMessage get() = mutableToastMessage.asStateFlow()
 
     override val initViewState = mutableStateOf(false)
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override val carpoolTicketState:StateFlow<TicketModel> = ticketId.flatMapLatest{
-        carpoolListRepository.getTicket(it)
+    override val carpoolTicketState:StateFlow<TicketModel> = ticketId.flatMapLatest{ value->
+        if(value == -1L)
+            awaitCancellation()
+        else
+            carpoolListRepository.getTicket(value)
     }.flowOn(Dispatchers.IO)
         .transform {response->
             if(response is ApiResponse.SuccessResponse)
                 emit(response.responseMessage)
-        }
-        .stateIn(
+        }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(2000),
             initialValue = TicketModel()

@@ -44,6 +44,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.findNavController
 import com.mate.carpool.R
 import com.mate.carpool.data.model.domain.MemberModel
+import com.mate.carpool.data.model.domain.TicketModel
 import com.mate.carpool.data.model.domain.item.MemberRole
 import com.mate.carpool.data.model.domain.item.TicketType
 import com.mate.carpool.data.model.domain.item.getDayStatus
@@ -324,7 +325,6 @@ fun HomeView(
     homeCarpoolListViewModel: CarpoolListViewModelInterface
 ){
     val carpoolExistState by homeCarpoolListViewModel.carpoolExistState.collectAsStateWithLifecycle()
-
     val memberModel by homeCarpoolListViewModel.memberModelState.collectAsStateWithLifecycle()
     val isRefreshing = homeCarpoolListViewModel.isRefreshState
 
