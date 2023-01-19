@@ -44,17 +44,16 @@ class HomeBottomSheetViewModel @Inject constructor(
             awaitCancellation()
         else
             carpoolListRepository.getTicket(value)
-    }.flowOn(Dispatchers.IO)
-        .transform {response->
-            if(response is ApiResponse.SuccessResponse)
-                emit(response.responseMessage)
-            else if(response is ApiResponse.Loading)
-                emit(TicketModel())
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(2000),
-            initialValue = TicketModel()
-        )
+    }.transform {response->
+        if(response is ApiResponse.SuccessResponse)
+            emit(response.responseMessage)
+        else if(response is ApiResponse.Loading)
+            emit(TicketModel())
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(2000),
+        initialValue = TicketModel()
+    )
 
     override fun addNewPassengerToTicket(id:Long){
         viewModelScope.launch {
