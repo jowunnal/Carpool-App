@@ -108,6 +108,11 @@ class RegisterViewModel @Inject constructor(
         val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file!!)
         val body = MultipartBody.Part.createFormData("image", file.name, requestFile)
 
+        mutableUserModel.value?.studentID = studentId.value
+        mutableUserModel.value?.phone?.set(phone.value.replace("-",""))
+        mutableUserModel.value?.name = name.value
+        mutableUserModel.value?.department = department.value
+
         viewModelScope.launch {
             registerRepository.signUp(
                 userModel.value!!,
