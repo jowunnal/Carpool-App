@@ -53,6 +53,8 @@ class ReserveDriverViewModel @Inject constructor(
         viewModelScope.launch {
             carpoolListRepository.getMyTicket().collectLatest {
                 when(it){
+                    is ApiResponse.Loading -> {
+                    }
                     is ApiResponse.SuccessResponse -> {
                         ticketID.value = it.responseMessage.id
                     }

@@ -27,6 +27,9 @@ class CarpoolListRepositoryImpl @Inject constructor(private val apiService: APIS
             apiService.getTicketList()
         }.map {
             when(it){
+                is ApiResponse.Loading -> {
+                    ApiResponse.Loading
+                }
                 is ApiResponse.SuccessResponse->{
                     it.asTicketListDomain()
                 }
@@ -45,6 +48,9 @@ class CarpoolListRepositoryImpl @Inject constructor(private val apiService: APIS
             apiService.getTicketReadId(id)
         }.map {
             when(it){
+                is ApiResponse.Loading -> {
+                    ApiResponse.Loading
+                }
                 is ApiResponse.SuccessResponse->{
                     it.asTicketDomain()
                 }
@@ -62,6 +68,9 @@ class CarpoolListRepositoryImpl @Inject constructor(private val apiService: APIS
         apiService.getMyTicket()
     }.map {
         when(it){
+            is ApiResponse.Loading -> {
+                ApiResponse.Loading
+            }
             is ApiResponse.SuccessResponse -> {
                 it.asTicketDomain()
             }

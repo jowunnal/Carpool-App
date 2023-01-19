@@ -114,6 +114,8 @@ class RegisterViewModel @Inject constructor(
                 body
             ).collectLatest {
                 when (it) {
+                    is ApiResponse.Loading -> {
+                    }
                     is ApiResponse.SuccessResponse -> {
                         Toast.makeText(context, "회원가입이 완료되었습니다.", Toast.LENGTH_SHORT).show()
                     }

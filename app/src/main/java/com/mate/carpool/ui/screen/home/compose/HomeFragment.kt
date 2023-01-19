@@ -1,8 +1,6 @@
 package com.mate.carpool.ui.screen.home.compose
 
-import android.content.ContextWrapper
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,31 +35,29 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.findNavController
 import com.mate.carpool.R
 import com.mate.carpool.data.model.domain.MemberModel
-import com.mate.carpool.data.model.domain.TicketModel
 import com.mate.carpool.data.model.domain.item.MemberRole
 import com.mate.carpool.data.model.domain.item.TicketType
 import com.mate.carpool.data.model.domain.item.getDayStatus
 import com.mate.carpool.data.model.domain.item.getTicketType
 import com.mate.carpool.ui.base.BaseBottomSheetDialogFragment
-import com.mate.carpool.ui.screen.home.vm.HomeBottomSheetViewModel
-import com.mate.carpool.ui.screen.home.vm.CarpoolListViewModel
+import com.mate.carpool.ui.navigation.NavigationGraph
+import com.mate.carpool.ui.screen.home.vm.*
 import com.mate.carpool.ui.screen.reserveDriver.fragment.ReserveDriverFragment
 import com.mate.carpool.ui.screen.reservePassenger.ReservePassengerFragment
+import com.mate.carpool.ui.theme.Colors
+import com.mate.carpool.ui.utils.IntUtils.toSp
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import com.mate.carpool.ui.theme.Colors
-import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -73,7 +69,7 @@ class HomeFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                HomeCarpoolSheet(
+                MainView(
                     onNavigateToCreateCarpool = {findNavController().navigate(R.id.action_homeFragment_to_createTicketBoardingAreaFragment)}
                 )
             }
@@ -81,19 +77,37 @@ class HomeFragment : Fragment() {
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun HomePreview(){
     HomeCarpoolSheet(
-        onNavigateToCreateCarpool = {}
+        onNavigateToCreateCarpool = { /*TODO*/ },
+        homeCarpoolBottomSheetViewModel = PreviewHomeBottomSheetViewModel,
+        fragmentManager = object:FragmentManager(){
+
+        },
+        carpoolListViewModel = PreviewCarpoolListViewModel
+    )
+}
+
+@Composable
+fun MainView(
+    onNavigateToCreateCarpool: () -> Unit
+){
+    val navController = rememberNavController()
+    NavigationGraph(
+        navController = navController,
+        onNavigateToCreateCarpool
     )
 }
 
 @OptIn(ExperimentalLifecycleComposeApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun HomeCarpoolSheet(
+    fragmentManager: FragmentManager,
     onNavigateToCreateCarpool: ()->Unit,
-    homeCarpoolBottomSheetViewModel: HomeBottomSheetViewModel = viewModel()
+    homeCarpoolBottomSheetViewModel: HomeBottomSheetViewModelInterface,
+    carpoolListViewModel: CarpoolListViewModelInterface
 ) {
     val bottomSheetState = rememberModalBottomSheetState (
         initialValue = ModalBottomSheetValue.Hidden
@@ -102,8 +116,8 @@ fun HomeCarpoolSheet(
     val bottomSheetMemberModel = homeCarpoolBottomSheetViewModel.memberModel
     val coroutineScope = rememberCoroutineScope()
     val ticketDetail by homeCarpoolBottomSheetViewModel.carpoolTicketState.collectAsStateWithLifecycle()
-    val localContext = LocalContext.current
-    val context = (localContext as ContextWrapper).baseContext as FragmentActivity
+    val context = LocalContext.current
+
     val newPassengerStatue by homeCarpoolBottomSheetViewModel.newPassengerState.collectAsStateWithLifecycle()
     val toastMessage by homeCarpoolBottomSheetViewModel.toastMessage.collectAsStateWithLifecycle()
 
@@ -116,7 +130,7 @@ fun HomeCarpoolSheet(
 
     if(toastMessage != ""){
         LaunchedEffect(key1 = toastMessage){
-            Toast.makeText(localContext,toastMessage, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context,toastMessage, Toast.LENGTH_SHORT).show()
             homeCarpoolBottomSheetViewModel.initToastMessage()
         }
     }
@@ -126,7 +140,7 @@ fun HomeCarpoolSheet(
             ReservePassengerFragment(
                 bottomSheetMemberModel.value.user.studentID,
                 reNewHomeListener
-            ).show(context.supportFragmentManager,"passenger reservation")
+            ).show(fragmentManager,"passenger reservation")
             bottomSheetState.animateTo(ModalBottomSheetValue.Hidden)
             homeCarpoolBottomSheetViewModel.initNewPassengerState()
         }
@@ -174,7 +188,7 @@ fun HomeCarpoolSheet(
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(
                     Modifier
-                        .height(56.dp)
+                        .height(60.dp)
                         .fillMaxWidth()
                 ) {
                     Column(
@@ -185,9 +199,9 @@ fun HomeCarpoolSheet(
                             .padding(top = 8.dp, start = 12.dp, end = 12.dp, bottom = 8.dp)
                     )
                     {
-                        Text(text = "출발지")
+                        Text(text = "출발지", fontSize = 13.toSp(), fontWeight = FontWeight.Bold)
                         Spacer(modifier = Modifier.height(4.dp))
-                        Text(text = ticketDetail.startArea)
+                        Text(text = ticketDetail.startArea, fontSize = 18.toSp())
                     }
                     Spacer(modifier = Modifier.width(5.dp))
                     Image(
@@ -205,9 +219,9 @@ fun HomeCarpoolSheet(
                             .border(1.dp, Colors.Gray_A2ABB4, RoundedCornerShape(5.dp))
                             .padding(top = 8.dp, start = 12.dp, end = 12.dp, bottom = 8.dp)
                     ) {
-                        Text(text = "도착지")
+                        Text(text = "도착지", fontSize = 13.toSp(), fontWeight = FontWeight.Bold)
                         Spacer(modifier = Modifier.height(4.dp))
-                        Text(text = ticketDetail.endArea)
+                        Text(text = ticketDetail.endArea, fontSize = 18.toSp())
                     }
                 }
                 Spacer(modifier = Modifier.height(16.dp))
@@ -218,18 +232,20 @@ fun HomeCarpoolSheet(
                     verticalAlignment = Alignment.CenterVertically
                 )
                 {
-                    ProfileImage(image = R.drawable.icon_main_profile, 50.dp, 47.dp)
+                    ProfileImage(image = R.drawable.icon_main_profile, 44.dp, 44.dp)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Column(Modifier.weight(1f)) {
+                    Column(Modifier.weight(1f).height(34.dp)) {
                         Text(
                             text = "드라이버",
-                            fontSize = 12.sp, color = Colors.Gray_4E5760,
-                            modifier = Modifier.fillMaxWidth()
+                            fontSize = 12.toSp(),
+                            color = Colors.Gray_4E5760,
+                            modifier = Modifier.fillMaxWidth().weight(1f),
+                            fontWeight = FontWeight.Bold
                         )
-                        Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             text = ticketDetail.memberName,
-                            modifier = Modifier.fillMaxWidth()
+                            fontSize = 14.toSp(),
+                            modifier = Modifier.fillMaxWidth().weight(1f)
                         )
                     }
                     Image(
@@ -274,7 +290,7 @@ fun HomeCarpoolSheet(
                         text = "탑승하기",
                         color = Color.White,
                         fontWeight = FontWeight.W900,
-                        fontSize = 18.sp
+                        fontSize = 18.toSp()
                     )
                 }
             }
@@ -282,21 +298,23 @@ fun HomeCarpoolSheet(
         sheetState = bottomSheetState,
         sheetShape = RoundedCornerShape(20.dp)
     ) {
-        PrevHome(
+        HomeView(
             bottomSheetState,
             coroutineScope,
             onNavigateToCreateCarpool,
             bottomSheetMemberModel,
             ticketId,
             reNewHomeListener,
-            initViewState
+            initViewState,
+            fragmentManager,
+            carpoolListViewModel
         )
     }
 }
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalLifecycleComposeApi::class)
 @Composable
-fun PrevHome(
+fun HomeView(
     bottomSheetState:ModalBottomSheetState,
     coroutineScope:CoroutineScope,
     onNavigateToCreateCarpool:()->Unit,
@@ -304,10 +322,10 @@ fun PrevHome(
     ticketId:MutableStateFlow<Long>,
     reNewHomeListener:BaseBottomSheetDialogFragment.Renewing,
     initViewState:MutableState<Boolean>,
-    homeCarpoolListViewModel: CarpoolListViewModel = viewModel()
+    fragmentManager: FragmentManager,
+    homeCarpoolListViewModel: CarpoolListViewModelInterface
 ){
     val carpoolExistState by homeCarpoolListViewModel.carpoolExistState.collectAsStateWithLifecycle()
-    val context = (LocalContext.current as ContextWrapper).baseContext as FragmentActivity
     val memberModel by homeCarpoolListViewModel.memberModelState.collectAsStateWithLifecycle()
     val isRefreshing = homeCarpoolListViewModel.isRefreshState
 
@@ -345,7 +363,9 @@ fun PrevHome(
                     ticketId,
                     reNewHomeListener,
                     initViewState,
-                    isRefreshing
+                    isRefreshing,
+                    fragmentManager,
+                    homeCarpoolListViewModel
                 )
             }
             Spacer(modifier = Modifier.height(50.dp))
@@ -357,12 +377,12 @@ fun PrevHome(
                                 ReservePassengerFragment(
                                     memberModel.user.studentID,
                                     reNewHomeListener
-                                ).show(context.supportFragmentManager,"passenger reservation")
+                                ).show(fragmentManager,"passenger reservation")
                             }
                             MemberRole.Driver->{
                                 ReserveDriverFragment(
                                     reNewHomeListener
-                                ).show(context.supportFragmentManager,"driver reservation")
+                                ).show(fragmentManager,"driver reservation")
                             }
                         }
                     }
@@ -370,7 +390,8 @@ fun PrevHome(
             },
                 modifier = Modifier
                     .height(50.dp)
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .background(Color.Unspecified),
                 colors =
                     if(!carpoolExistState)
                         ButtonDefaults.buttonColors(Color.Black)
@@ -388,7 +409,7 @@ fun PrevHome(
                         }
                         else
                             "내 카풀 보기",
-                    fontSize = 18.sp,
+                    fontSize = 18.toSp(),
                     fontWeight = FontWeight.W900,
                     color = Color.White
                 )
@@ -425,7 +446,7 @@ fun HomeCardView(
                 .height(16.dp))
             Spacer(modifier = Modifier.width(8.dp))
             Text(text = text,
-                fontSize = 16.sp,
+                fontSize = 16.toSp(),
                 fontWeight = FontWeight.Bold,
                 color=Color.Black
                 ,modifier = Modifier
@@ -452,7 +473,9 @@ fun HomeCarpoolList(
     ticketId:MutableStateFlow<Long>,
     reNewHomeListener:BaseBottomSheetDialogFragment.Renewing,
     initViewState:MutableState<Boolean>,
-    isRefreshing:MutableState<Boolean>
+    isRefreshing:MutableState<Boolean>,
+    fragmentManager: FragmentManager,
+    homeCarpoolListViewModel: CarpoolListViewModelInterface
 ){
     Column() {
         Row(modifier = Modifier
@@ -483,7 +506,9 @@ fun HomeCarpoolList(
             ticketId,
             reNewHomeListener,
             initViewState,
-            isRefreshing
+            isRefreshing,
+            fragmentManager,
+            homeCarpoolListViewModel
         )
     }
 }
@@ -498,11 +523,11 @@ fun HomeCarpoolItems(
     reNewHomeListener:BaseBottomSheetDialogFragment.Renewing,
     initViewState:MutableState<Boolean>,
     isRefreshing: MutableState<Boolean>,
-    homeCarpoolListViewModel: CarpoolListViewModel = viewModel()
+    fragmentManager: FragmentManager,
+    homeCarpoolListViewModel: CarpoolListViewModelInterface
 ){
     val carpoolList by homeCarpoolListViewModel.carpoolListState.collectAsStateWithLifecycle()
     val coroutineScope = rememberCoroutineScope()
-    val context = (LocalContext.current as ContextWrapper).baseContext as FragmentActivity
 
     val pullRefreshState = rememberPullRefreshState(
         refreshing = isRefreshing.value,
@@ -526,7 +551,7 @@ fun HomeCarpoolItems(
                                     if(homeCarpoolListViewModel.isTicketIsMineOrNot(item.id)){
                                         ReserveDriverFragment(
                                             reNewHomeListener
-                                        ).show(context.supportFragmentManager,"driver reservation")
+                                        ).show(fragmentManager,"driver reservation")
                                     }
                                     else{
                                         showBottomSheet(
@@ -543,7 +568,7 @@ fun HomeCarpoolItems(
                                         ReservePassengerFragment(
                                             memberModel.user.studentID,
                                             reNewHomeListener
-                                        ).show(context.supportFragmentManager,"passenger reservation")
+                                        ).show(fragmentManager,"passenger reservation")
                                     }
                                     else {
                                         showBottomSheet(
@@ -631,11 +656,16 @@ fun HomeTicketDetail(
             Text(text = text1,
                 Modifier
                     .fillMaxWidth()
-                    .weight(1f))
+                    .weight(1f),
+                fontSize = 12.toSp(),
+                fontWeight = FontWeight.Bold
+            )
             Text(text = text2,
                 Modifier
                     .fillMaxWidth()
-                    .weight(1f))
+                    .weight(1f),
+                fontSize = 14.toSp()
+            )
         }
         Column(Modifier
             .weight(1f))
@@ -643,7 +673,10 @@ fun HomeTicketDetail(
             Text(text = text3,
                 Modifier
                     .fillMaxWidth()
-                    .weight(1f))
+                    .weight(1f),
+                fontSize = 12.toSp(),
+                fontWeight = FontWeight.Bold
+            )
             Text(
                 text = text4,
                 Modifier
@@ -653,7 +686,8 @@ fun HomeTicketDetail(
                     "무료" -> Colors.Blue_007AFF
                     "유료" -> Colors.Red_E0302D
                     else -> Color.Black
-                }
+                },
+                fontSize = 14.toSp()
             )
         }
     }

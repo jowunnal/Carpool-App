@@ -10,9 +10,11 @@ import com.mate.carpool.data.model.domain.TicketModel
 import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.repository.CarpoolListRepository
 import com.mate.carpool.data.repository.PassengerRepository
+import com.mate.carpool.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,39 +23,46 @@ import javax.inject.Inject
 class HomeBottomSheetViewModel @Inject constructor(
     private val passengerRepository:PassengerRepository,
     private val carpoolListRepository: CarpoolListRepository
-) : ViewModel() {
+) : BaseViewModel(),HomeBottomSheetViewModelInterface {
 
-    val mutableTicketId = MutableStateFlow(-1L)
-    val ticketId:StateFlow<Long> get() = mutableTicketId.asStateFlow()
+    override val mutableTicketId = MutableStateFlow(-1L)
+    override val ticketId:StateFlow<Long> get() = mutableTicketId.asStateFlow()
 
     private val mutableNewPassengerState = MutableStateFlow(false)
-    val newPassengerState get() = mutableNewPassengerState.asStateFlow()
+    override val newPassengerState get() = mutableNewPassengerState.asStateFlow()
 
-    val memberModel = MutableStateFlow(MemberModel())
+    override val memberModel = MutableStateFlow(MemberModel())
 
     private val mutableToastMessage = MutableStateFlow("")
-    val toastMessage get() = mutableToastMessage.asStateFlow()
+    override val toastMessage get() = mutableToastMessage.asStateFlow()
 
-    val initViewState = mutableStateOf(false)
+    override val initViewState = mutableStateOf(false)
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val carpoolTicketState:StateFlow<TicketModel> = ticketId.flatMapLatest{
-        carpoolListRepository.getTicket(it)
+    override val carpoolTicketState:StateFlow<TicketModel> = ticketId.flatMapLatest{ value->
+        if(value == -1L)
+            awaitCancellation()
+        else
+            carpoolListRepository.getTicket(value)
     }.flowOn(Dispatchers.IO)
         .transform {response->
             if(response is ApiResponse.SuccessResponse)
                 emit(response.responseMessage)
-        }
-        .stateIn(
+            else if(response is ApiResponse.Loading)
+                emit(TicketModel())
+        }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(2000),
             initialValue = TicketModel()
         )
 
-    fun addNewPassengerToTicket(id:Long){
+    override fun addNewPassengerToTicket(id:Long){
         viewModelScope.launch {
             passengerRepository.addNewPassengerToTicket(id).collectLatest {
                 when(it){
+                    is ApiResponse.Loading -> {
+
+                    }
                     is ApiResponse.SuccessResponse ->{
                         newPassengerResponse("",true)
                     }
@@ -75,11 +84,11 @@ class HomeBottomSheetViewModel @Inject constructor(
         }
     }
 
-    private suspend fun newPassengerResponse(message:String,statue:Boolean){
+    override suspend fun newPassengerResponse(message:String, statue:Boolean){
         mutableToastMessage.emit(message)
         mutableNewPassengerState.emit(statue)
     }
 
-    suspend fun initToastMessage() = mutableToastMessage.emit("")
-    suspend fun initNewPassengerState() = mutableNewPassengerState.emit(false)
+    override suspend fun initToastMessage() = mutableToastMessage.emit("")
+    override suspend fun initNewPassengerState() = mutableNewPassengerState.emit(false)
 }

@@ -20,6 +20,9 @@ class PassengerRepositoryImpl @Inject constructor(private val apiService: APISer
         apiService.deletePassenger(TicketDeleteMemberRequestDTO(passengerId,ticketId,0))
     }.map {
         when(it){
+            is ApiResponse.Loading -> {
+                ""
+            }
             is ApiResponse.SuccessResponse ->{
                 "티켓 삭제가 완료되었습니다."
             }
