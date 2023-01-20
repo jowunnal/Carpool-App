@@ -40,8 +40,6 @@ class RegisterTypeFragment : BindFragment<FragmentRegisterTypeBinding>(R.layout.
             Navigation.findNavController(view).navigate(R.id.action_RegisterTypeFragment_to_RegisterProfileFragment)
         }
 
-        SettingToolbarUtils.setActionBar(requireActivity(), binding.appbarBack)
-
     }
 
     fun transDriverPassenger(){

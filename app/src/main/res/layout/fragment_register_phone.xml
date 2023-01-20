@@ -73,7 +73,6 @@
             android:layout_height="50dp"
             android:layout_marginBottom="24dp"
             android:enabled="@{viewModel.validPhoneInput}"
-            android:gravity="center"
             android:onClick="@{() -> navController.navigate(R.id.action_RegisterPhoneFragment_to_RegisterTypeFragment)}"
             android:text="@string/login_confirm"
             app:layout_constraintBottom_toBottomOf="parent"

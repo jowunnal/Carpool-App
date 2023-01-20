@@ -42,11 +42,7 @@ class RegisterProfileFragment : BindFragment<FragmentRegisterProfileBinding>(R.l
             )
             getImageResultCallback.launch(intent)
         }
-        binding.btnConfirm.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_RegisterProfileFragment_to_RegisterSelectDayFragment)
-        }
 
-        SettingToolbarUtils.setActionBar(requireActivity(), binding.appbarBack)
     }
 
     fun absolutelyPath(path: Uri?, context : Context): String {
