@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/loginStartFragment">
 
     <fragment
         android:id="@+id/loginFragment"
@@ -109,6 +109,9 @@
         <action
             android:id="@+id/action_loginStartFragment_to_fragmentRegisterCarpool"
             app:destination="@id/createTicketBoardingAreaFragment" />
+        <action
+            android:id="@+id/action_loginStartFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/createTicketBoardingAreaFragment"
@@ -146,4 +149,17 @@
             android:id="@+id/action_createTicketPreviewFragment_to_createTicketBoardingAreaFragment"
             app:destination="@id/createTicketBoardingAreaFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.mate.carpool.ui.fragment.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.mate.carpool.ui.screen.profile.ProfileFragment"
+        android:label="ProfileFragment" />
 </navigation>

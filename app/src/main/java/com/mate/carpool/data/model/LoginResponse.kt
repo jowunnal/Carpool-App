@@ -11,7 +11,7 @@ data class LoginResponse(
 
 open class ResponseMessage(
     val status: Int = 0,
-    val message: String = ""
+    val message: String = "",
 ) : MessageCode()
 
 open class MessageCode(val code: String = "")

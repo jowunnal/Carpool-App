@@ -39,24 +39,21 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         checkPermissions()
-        initActionBar()
+        initTopBar()
     }
 
     private fun checkPermissions() {
         checkPermissionResultLauncher.launch(REQUIRED_PERMISSIONS)
     }
 
-    private fun initActionBar() {
-        // remove title from action bar
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-
-        // set elevation of action bar
-        supportActionBar?.elevation = 0f
+    private fun initTopBar() {
+        setSupportActionBar(binding.toolBar)
 
         // set nav controller to action bar
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
+
         setupActionBarWithNavController(navController)
     }
 

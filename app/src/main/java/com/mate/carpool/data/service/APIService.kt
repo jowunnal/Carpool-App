@@ -1,6 +1,7 @@
 package com.mate.carpool.data.service
 
 import com.mate.carpool.data.model.*
+import com.mate.carpool.data.model.dto.ProfileDto
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -25,4 +26,8 @@ interface APIService {
 
     @POST("ticket/new")
     fun postTicketNew(@Body ticket: CarpoolTicketModel): Call<ResponseMessage>
+
+
+    @GET("member/me")
+    suspend fun getMyProfile():  ProfileDto
 }
