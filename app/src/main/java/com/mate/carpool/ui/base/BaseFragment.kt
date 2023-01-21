@@ -2,7 +2,6 @@ package com.mate.carpool.ui.base
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -80,9 +79,13 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewDataBinding> : Fragment
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.snackbarMessage.collect { message ->
-                    Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show()
+                    showSnackbar(message = message)
                 }
             }
         }
+    }
+
+    protected fun showSnackbar(message: String, length: Int = Snackbar.LENGTH_SHORT) {
+        Snackbar.make(binding.root, message, length).show()
     }
 }

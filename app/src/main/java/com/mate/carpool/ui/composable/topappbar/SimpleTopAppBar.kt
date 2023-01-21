@@ -50,7 +50,7 @@ fun SimpleTopAppBar(
 
         Image(
             modifier = Modifier.align(Alignment.CenterStart).clickable(onClick = onBackClick),
-            painter = painterResource(id = R.drawable.ic_arrow_left),
+            painter = painterResource(id = R.drawable.ic_arrow_left_small),
             contentDescription = "back"
         )
         Text(
