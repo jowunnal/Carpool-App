@@ -90,7 +90,7 @@ class RegisterViewModel @Inject constructor(
     }
 
     fun signUpStudentMember() {
-        val file = when (profile.value == "") {
+        val file = when (profile.value != "") {
             true -> {
                 File(profile.value)
             }
@@ -137,7 +137,7 @@ class RegisterViewModel @Inject constructor(
                         }
                     }
 
-                    is ApiResponse.ExceptionResponse -> mutableToastMessage.emit("에러 발생 : ${it.e.message}")
+                    is ApiResponse.ExceptionResponse -> Log.d("test",it.e.message.toString())
                 }
             }
         }
@@ -161,7 +161,7 @@ class RegisterViewModel @Inject constructor(
                                 context.applicationContext.getSharedPreferences(
                                     "accessToken",
                                     Context.MODE_PRIVATE
-                                ).edit().putString("accessToken", response.body()?.accessToken)
+                                ).edit().putString("accessToken", "Bearer ${response.body()?.accessToken}")
                                     .apply()
                                 loginFlag.value = true
                             }

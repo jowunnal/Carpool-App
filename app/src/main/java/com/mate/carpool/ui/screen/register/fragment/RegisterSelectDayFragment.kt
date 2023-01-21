@@ -31,14 +31,4 @@ class RegisterSelectDayFragment : BaseFragment<RegisterViewModel,FragmentRegiste
             viewModel.signUpStudentMember()
         }
     }
-
-    override fun subscribeUi() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.toastMessage.collectLatest {
-                    Toast.makeText(requireActivity(),it,Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
 }
