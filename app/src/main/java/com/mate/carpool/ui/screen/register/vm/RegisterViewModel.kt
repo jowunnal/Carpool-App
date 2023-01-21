@@ -3,20 +3,21 @@ package com.mate.carpool.ui.screen.register.vm
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import androidx.databinding.ObservableField
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.mate.carpool.data.Result
 import com.mate.carpool.data.model.domain.UserModel
-import com.mate.carpool.data.model.domain.item.RegisterItem
+import com.mate.carpool.data.model.domain.item.MemberRole
 import com.mate.carpool.data.model.domain.item.StudentItem
+import com.mate.carpool.data.model.domain.item.WeekItem
+import com.mate.carpool.data.model.domain.item.getWeekCode
 import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.model.response.LoginResponse
 import com.mate.carpool.data.repository.MemberRepository
 import com.mate.carpool.data.repository.RegisterRepository
 import com.mate.carpool.data.service.APIService
 import com.mate.carpool.ui.base.BaseViewModel
+import com.mate.carpool.ui.utils.FileUtils.createTempFileFromInputStream
 import com.mate.carpool.util.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -29,7 +30,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
-import java.io.InputStream
 import javax.inject.Inject
 
 @HiltViewModel
@@ -62,9 +62,12 @@ class RegisterViewModel @Inject constructor(
         input.length >= 12 && input.matches("^[0-9\\-]+".toRegex())
     }
 
+    val type : MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val week : MutableStateFlow<ArrayList<WeekItem>> = MutableStateFlow(arrayListOf())
+    val profile : MutableStateFlow<String> = MutableStateFlow("")
 
-    val mutableUserModel = MutableLiveData<UserModel>(UserModel())
-    val userModel: LiveData<UserModel> get() = mutableUserModel
+    private val mutableToastMessage = MutableStateFlow("")
+    val toastMessage get() = mutableToastMessage.asStateFlow()
 
     val loginFlag: MutableLiveData<Boolean> = MutableLiveData(false)
 
@@ -86,67 +89,55 @@ class RegisterViewModel @Inject constructor(
             }.launchIn(viewModelScope)
     }
 
-    fun convertInputStreamToFile(input: InputStream?): File? {
-        val tempFile = File.createTempFile(java.lang.String.valueOf(input.hashCode()), ".tmp")
-        tempFile.deleteOnExit()
-        return tempFile
-    }
-
     fun signUpStudentMember() {
-        var file: File? = null
-        when (File(userModel.value!!.profile).mkdir()) {
+        val file = when (profile.value == "") {
             true -> {
-                file = File(userModel.value!!.profile)
+                File(profile.value)
             }
 
             false -> {
                 val inputStream = context.assets.open("defaultImg.png")
-                file = convertInputStreamToFile(inputStream)
+                createTempFileFromInputStream(
+                    "defaultImage",
+                    ".png",
+                    inputStream
+                )
             }
         }
 
         val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file!!)
         val body = MultipartBody.Part.createFormData("image", file.name, requestFile)
 
-        mutableUserModel.value?.studentID = studentId.value
-        mutableUserModel.value?.phone?.set(phone.value.replace("-",""))
-        mutableUserModel.value?.name = name.value
-        mutableUserModel.value?.department = department.value
-
         viewModelScope.launch {
             registerRepository.signUp(
-                userModel.value!!,
+                UserModel(
+                    name.value,
+                    studentId.value,
+                    department.value,
+                    phone.value,
+                    when(type.value){
+                        false -> MemberRole.Passenger
+                        true -> MemberRole.Driver
+                    },
+                    profile.value,
+                    week.value.toList().getWeekCode(),
+                    0
+                ),
                 body
             ).collectLatest {
                 when (it) {
-                    is ApiResponse.Loading -> {
-                    }
-                    is ApiResponse.SuccessResponse -> {
-                        Toast.makeText(context, "회원가입이 완료되었습니다.", Toast.LENGTH_SHORT).show()
-                    }
+                    is ApiResponse.Loading -> {}
+
+                    is ApiResponse.SuccessResponse -> mutableToastMessage.emit("회원가입이 완료되었습니다.")
+
                     is ApiResponse.FailResponse -> {
                         when (it.responseMessage.code) {
-                            "400" -> {
-                                Toast.makeText(
-                                    context,
-                                    "회원가입 실패 : 값이 잘못 입력되었습니다.",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                            "409" -> {
-                                Toast.makeText(
-                                    context,
-                                    "회원가입 실패 : 이미 존재하는 회원입니다.",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
+                            "400" -> mutableToastMessage.emit("회원가입 실패 : 값이 잘못 입력되었습니다.")
+                            "409" -> mutableToastMessage.emit("회원가입 실패 : 이미 존재하는 회원입니다.")
                         }
                     }
-                    is ApiResponse.ExceptionResponse -> {
-                        Toast.makeText(context, "에러 발생 : ${it.e.message}", Toast.LENGTH_SHORT)
-                            .show()
-                        Log.d("test", "에러 발생 : ${it.e.message}")
-                    }
+
+                    is ApiResponse.ExceptionResponse -> mutableToastMessage.emit("에러 발생 : ${it.e.message}")
                 }
             }
         }

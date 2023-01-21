@@ -8,6 +8,9 @@
         <import type="com.mate.carpool.R" />
 
         <variable
+            name="registerViewModel"
+            type="com.mate.carpool.ui.screen.register.vm.RegisterViewModel" />
+        <variable
             name="navController"
             type="androidx.navigation.NavController" />
     </data>
@@ -32,7 +35,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
-            android:layout_height="44dp"
+            android:layout_height="47dp"
             android:layout_marginTop="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -44,6 +47,7 @@
                 android:layout_height="44dp"
                 android:background="@drawable/button_select_week"
                 android:text="월"
+                viewModel="@{registerViewModel}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btnDayTues"
                 app:layout_constraintStart_toStartOf="parent"
@@ -55,6 +59,7 @@
                 android:layout_height="44dp"
                 android:background="@drawable/button_select_week"
                 android:text="화"
+                viewModel="@{registerViewModel}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btnDayWed"
                 app:layout_constraintStart_toEndOf="@id/btnDayMon"
@@ -67,6 +72,7 @@
                 android:layout_marginEnd="1dp"
                 android:background="@drawable/button_select_week"
                 android:text="수"
+                viewModel="@{registerViewModel}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btnDayThur"
                 app:layout_constraintStart_toEndOf="@id/btnDayTues"
@@ -78,6 +84,7 @@
                 android:layout_height="44dp"
                 android:background="@drawable/button_select_week"
                 android:text="목"
+                viewModel="@{registerViewModel}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btnDayFri"
                 app:layout_constraintStart_toEndOf="@id/btnDayWed"
@@ -89,6 +96,7 @@
                 android:layout_height="44dp"
                 android:background="@drawable/button_select_week"
                 android:text="금"
+                viewModel="@{registerViewModel}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/btnDayThur"

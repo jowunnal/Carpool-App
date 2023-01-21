@@ -1,34 +1,44 @@
 package com.mate.carpool.ui.screen.register.fragment
 
-import android.os.Bundle
-import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.Navigation
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.mate.carpool.R
-import com.mate.carpool.data.model.domain.item.WeekItem
 import com.mate.carpool.databinding.FragmentRegisterSelectDayBinding
-import com.mate.carpool.ui.base.BindFragment
+import com.mate.carpool.ui.base.BaseFragment
 import com.mate.carpool.ui.screen.register.vm.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class RegisterSelectDayFragment : BindFragment<FragmentRegisterSelectDayBinding>(R.layout.fragment_register_select_day) {
+class RegisterSelectDayFragment : BaseFragment<RegisterViewModel,FragmentRegisterSelectDayBinding>(){
 
-    val registerViewModel: RegisterViewModel by activityViewModels()
+    override val viewModel: RegisterViewModel by activityViewModels()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.lifecycleOwner=viewLifecycleOwner
-        binding.navController = Navigation.findNavController(view)
+    override fun getViewBinding(): FragmentRegisterSelectDayBinding = FragmentRegisterSelectDayBinding.inflate(layoutInflater)
 
-        binding.btnConfirm.setOnClickListener {
-            val mutableList = arrayListOf<String>()
-            registerViewModel.mutableUserModel.value!!.studentDayCodes = mutableList.toList()
-            Navigation.findNavController(view).navigate(R.id.action_RegisterSelectDayFragment_to_loginFragment)
-            registerViewModel.signUpStudentMember()
+    override fun initViews() = with(binding){
+        lifecycleOwner = viewLifecycleOwner
+        navController = findNavController()
+        registerViewModel = viewModel
+
+        btnConfirm.setOnClickListener {
+            findNavController().navigate(R.id.action_RegisterSelectDayFragment_to_loginFragment)
+            viewModel.signUpStudentMember()
         }
+    }
 
+    override fun subscribeUi() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.toastMessage.collectLatest {
+                    Toast.makeText(requireActivity(),it,Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 }
