@@ -1,7 +1,5 @@
 package com.mate.carpool.ui.screen.home.compose
 
-import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -19,7 +17,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
@@ -28,7 +25,7 @@ import com.mate.carpool.ui.theme.Colors
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeAppBar(){
+fun HomeAppBar(profileImage:String){
     SmallTopAppBar(
         title = { Text(text = "MATE",
             color = Colors.Blue_007AFF,
@@ -58,7 +55,15 @@ fun HomeAppBar(){
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center)
             {
-                ProfileImage(R.drawable.icon_main_profile,42.dp,42.dp)
+                if(profileImage!="preview")
+                    ProfileImage(
+                        profileImage = profileImage,
+                        modifier =  Modifier
+                            .size(42.dp)
+                            .padding(3.dp)
+                            .clip(CircleShape)
+                            .border(1.dp, Color.White, CircleShape)
+                    )
                 IconButton(
                     onClick = { /*TODO*/ },
                     Modifier
@@ -77,26 +82,8 @@ fun HomeAppBar(){
     )
 }
 
-@Composable
-fun ProfileImage(@DrawableRes image:Int,width:Dp,height:Dp){
-    IconButton(
-        onClick = { /*TODO*/ },
-        modifier = Modifier
-            .width(width)
-            .height(height)
-            .padding(3.dp)
-    ) {
-        Image(painter = painterResource(id = image),
-            contentDescription = null,
-            modifier = Modifier
-                .fillMaxSize()
-                .clip(CircleShape)
-                .border(1.dp, Color.White, CircleShape))
-    }
-}
-
 @Preview
 @Composable
 fun PrevHomeAppBar(){
-    HomeAppBar()
+    HomeAppBar("preview")
 }

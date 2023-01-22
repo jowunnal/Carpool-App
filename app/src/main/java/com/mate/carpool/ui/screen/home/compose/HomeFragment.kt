@@ -1,5 +1,6 @@
 package com.mate.carpool.ui.screen.home.compose
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
@@ -26,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
@@ -65,7 +68,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
@@ -158,6 +161,7 @@ fun HomeBottomSheetLayout(
     }
 }
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalLifecycleComposeApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun HomeBottomSheetContent(
@@ -268,7 +272,15 @@ fun HomeBottomSheetContent(
             verticalAlignment = Alignment.CenterVertically
         )
         {
-            ProfileImage(image = R.drawable.icon_main_profile, 44.dp, 44.dp)
+            ProfileImage(
+                bottomSheetMemberModel.value.user.profile,
+                Modifier
+                    .width(50.dp)
+                    .height(47.dp)
+                    .padding(3.dp)
+                    .clip(CircleShape)
+                    .border(1.dp, Color.White, CircleShape)
+            )
             Spacer(modifier = Modifier.width(8.dp))
             Column(
                 Modifier
@@ -366,7 +378,9 @@ fun HomeView(
     }
 
     Column() {
-        HomeAppBar()
+
+        HomeAppBar(memberModel.user.profile)
+
         Column(Modifier.padding(start = 16.dp, end = 16.dp,top=32.dp)) {
             HomeCardView(R.drawable.ic_home_folder,"공지사항",R.drawable.ic_home_rightarrow,{})
             Spacer(modifier = Modifier.height(4.dp))
@@ -617,7 +631,15 @@ fun HomeCarpoolItems(
                         verticalAlignment = Alignment.CenterVertically
                     )
                     {
-                        ProfileImage(image = R.drawable.icon_main_profile, 50.dp, 47.dp)
+                        ProfileImage(
+                            profileImage = item.profileImage,
+                            modifier = Modifier
+                                .width(50.dp)
+                                .height(47.dp)
+                                .padding(3.dp)
+                                .clip(CircleShape)
+                                .border(1.dp, Color.White, CircleShape)
+                        )
                         Spacer(modifier = Modifier.width(8.dp))
                         Row(modifier = Modifier.weight(1f)) {
                             Text(
@@ -731,5 +753,6 @@ private suspend fun showBottomSheet(
     ticketId.value =  itemId
     bottomSheetMemberModel.value.user.role = memberModel.user.role
     bottomSheetMemberModel.value.user.studentID = memberModel.user.studentID
+    bottomSheetMemberModel.value.user.profile = memberModel.user.profile
     bottomSheetState.animateTo(ModalBottomSheetValue.Expanded)
 }
