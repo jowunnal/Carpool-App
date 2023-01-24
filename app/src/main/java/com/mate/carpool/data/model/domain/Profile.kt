@@ -35,8 +35,7 @@ enum class StartArea(val displayName: String) {
     ETC("기타");
 
     companion object {
-
-        fun findByText(text: String) = values().first { it.displayName == text }
+        fun findByDisplayName(displayName: String) = values().first { it.displayName == displayName }
     }
 }
 

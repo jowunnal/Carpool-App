@@ -11,7 +11,6 @@ import com.mate.carpool.ui.util.hour
 import com.mate.carpool.ui.util.minute
 import com.mate.carpool.ui.util.month
 import com.mate.carpool.ui.util.year
-import java.time.DayOfWeek
 import java.util.Calendar
 
 data class ProfileDto(
@@ -57,7 +56,7 @@ data class TicketDto(
     fun toDomain() = Ticket(
         id = id,
         thumbnail = profileImage,
-        startArea = StartArea.findByText(text = startArea),
+        startArea = StartArea.findByDisplayName(displayName = startArea),
         dayStatus = when (dayStatus) {
             "MORNING" -> DayStatus.AM
             "AFTERNOON" -> DayStatus.PM
