@@ -27,7 +27,7 @@ class ProfileLookUpViewModel @Inject constructor(
                 }
 
                 is Result.Success -> {
-                    _profile.value = result.data.toDomain()
+                    _profile.value = result.data
                 }
 
                 is Result.Error -> {

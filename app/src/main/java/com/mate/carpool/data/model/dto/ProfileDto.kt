@@ -1,12 +1,10 @@
 package com.mate.carpool.data.model.dto
 
-import android.util.Log
 import com.mate.carpool.data.model.domain.DayStatus
 import com.mate.carpool.data.model.domain.Profile
 import com.mate.carpool.data.model.domain.StartArea
 import com.mate.carpool.data.model.domain.Ticket
 import com.mate.carpool.data.model.domain.UserRole
-import com.mate.carpool.data.utils.ImageUtil
 import com.mate.carpool.ui.util.date
 import com.mate.carpool.ui.util.hour
 import com.mate.carpool.ui.util.minute
@@ -27,7 +25,7 @@ data class ProfileDto(
 ) {
 
     fun toDomain() = Profile(
-        profileImage = ImageUtil.getFullImageUrl(path = profileImage),
+        profileImage = profileImage,
         name = memberName,
         studentId = studentNumber,
         department = department,
@@ -66,7 +64,7 @@ data class TicketDto(
 
     fun toDomain() = Ticket(
         id = id,
-        thumbnail = ImageUtil.getFullImageUrl(path = profileImage),
+        thumbnail = profileImage,
         startArea = StartArea.findByText(text = startArea),
         dayStatus = when (dayStatus) {
             "MORNING" -> DayStatus.AM
