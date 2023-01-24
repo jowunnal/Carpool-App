@@ -25,7 +25,7 @@ import javax.inject.Singleton
 class HeaderInterceptor @Inject constructor(@ApplicationContext private val context:Context) : Interceptor {
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
-        val token = "Bearer "+context.applicationContext.getSharedPreferences("accessToken",Context.MODE_PRIVATE).getString("accessToken","")
+        val token = context.applicationContext.getSharedPreferences("accessToken",Context.MODE_PRIVATE).getString("accessToken","")!!
         val newRequest = chain.request().newBuilder()
             .addHeader("Authorization", token)
             .build()

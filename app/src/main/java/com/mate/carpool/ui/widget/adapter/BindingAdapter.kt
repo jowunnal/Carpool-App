@@ -2,7 +2,6 @@ package com.mate.carpool.ui.widget.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.TextView
@@ -15,13 +14,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import com.google.android.material.textfield.TextInputEditText
 import com.mate.carpool.R
-import com.mate.carpool.data.model.domain.item.DayStatus
-import com.mate.carpool.data.model.domain.item.TicketType
-import com.mate.carpool.data.model.domain.item.getTicketType
+import com.mate.carpool.data.model.domain.item.*
 import com.mate.carpool.ui.screen.createCarpool.vm.CreateTicketViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.mate.carpool.ui.screen.register.vm.RegisterViewModel
 import java.util.*
 
 @BindingAdapter("navController", "navi_ID")
@@ -37,6 +32,17 @@ fun isButtonSelectedNavigate(button: AppCompatButton, navController: NavControll
 fun navigateBackStackOnToolbar(toolbar: Toolbar, navController: NavController) {
     toolbar.setNavigationOnClickListener {
         navController.popBackStack()
+    }
+}
+
+@BindingAdapter("viewModel")
+fun setOnWeekButtonClickListener(button: AppCompatButton,viewModel:RegisterViewModel){
+    button.setOnClickListener {
+        button.isEnabled = !button.isEnabled
+        if(!button.isEnabled)
+            viewModel.week.value.add(getWeekItem(button.text.toString())!!)
+        else
+            viewModel.week.value.remove(getWeekItem(button.text.toString())!!)
     }
 }
 

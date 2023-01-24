@@ -1,108 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.screen.register.fragment.RegisterProfileFragment">
+
     <data>
+        <import type="com.mate.carpool.R" />
+
         <variable
             name="navController"
             type="androidx.navigation.NavController" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingHorizontal="16dp">
 
-        <Toolbar
-            android:id="@+id/appbar_back"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        <TextView
+            android:id="@+id/text_login_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/login_input_profile"
+            android:textColor="@color/black"
+            android:textSize="22dp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintHeight_percent="0.07"
-            navController="@{navController}"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+        <TextView
+            android:id="@+id/text_number"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/login_profile_content"
+            android:textColor="@color/gray_4E5760"
+            android:textSize="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_login_type" />
+
+        <ImageView
+            android:id="@+id/img_profile"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_below="@+id/text_number"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/round_100_gray_dadde1"
+            android:padding="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_number"
+            app:srcCompat="@drawable/icon_add_profile" />
+
+        <TextView
+            android:id="@+id/btn_confirm"
+            style="@style/Theme.CarPool.NextButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="24dp"
+            android:onClick="@{() -> navController.navigate(R.id.action_RegisterProfileFragment_to_RegisterSelectDayFragment)}"
+            android:text="@string/login_confirm"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appbar_back">
-
-            <TextView
-                android:id="@+id/text_login_type"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="12dp"
-                android:text="@string/login_input_profile"
-                android:textColor="@color/black"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/text_number"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent="0.04"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0" />
-
-            <TextView
-                android:id="@+id/text_number"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="30dp"
-                android:text="@string/login_profile_content"
-                android:textColor="@color/gray_4E5760"
-                android:textSize="13sp"
-                app:layout_constraintBottom_toTopOf="@+id/img_profile"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent="0.03"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_login_type" />
-
-            <ImageView
-                android:id="@+id/img_profile"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_below="@+id/text_number"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="400dp"
-                android:padding="25dp"
-                android:background="@drawable/round_100_gray_dadde1"
-                app:layout_constraintBottom_toTopOf="@+id/btn_confirm"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent="0.1"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_number"
-                app:layout_constraintWidth_percent="0.2"
-                app:srcCompat="@drawable/icon_add_profile" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_confirm"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_alignParentBottom="true"
-                android:background="@drawable/round_100_blue"
-                android:gravity="center"
-                android:text="@string/login_next"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/guidelineButtonPosition"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent="0.083"
-                app:layout_constraintStart_toStartOf="parent" />
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guidelineButtonPosition"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.95"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

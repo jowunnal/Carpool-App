@@ -67,7 +67,7 @@ class MemberRepositoryImpl @Inject constructor(private val apiService: APIServic
             this.memberName,
             this.studentNumber,
             this.department,
-            ObservableField(this.phoneNumber),
+            this.phoneNumber,
             this.memberRole.asMemberRoleToDomain(),
             this.profileImage,
             emptyList(),

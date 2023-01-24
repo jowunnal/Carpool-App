@@ -1,89 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.screen.register.fragment.RegisterSelectDayFragment">
+
     <data>
+        <import type="com.mate.carpool.R" />
+
+        <variable
+            name="viewModel"
+            type="com.mate.carpool.ui.screen.register.vm.RegisterViewModel" />
         <variable
             name="navController"
             type="androidx.navigation.NavController" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingHorizontal="16dp">
 
-        <Toolbar
-            android:id="@+id/appbar_back"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        <TextView
+            android:id="@+id/text_login_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/login_input_day"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintHeight_percent="0.07"
-            navController="@{navController}"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="47dp"
+            android:layout_marginTop="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appbar_back">
+            app:layout_constraintTop_toBottomOf="@id/text_login_type">
 
-            <TextView
-                android:id="@+id/text_login_type"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="12dp"
-                android:text="@string/login_input_day"
-                android:textColor="@color/black"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/rcv_week"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent="0.04"
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnDayMon"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/button_select_week"
+                android:text="월"
+                viewModel="@{viewModel}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btnDayTues"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcv_week"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="300dp"
-                app:layout_constraintBottom_toTopOf="@+id/btn_confirm"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent="0.3"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_login_type" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnDayTues"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/button_select_week"
+                android:text="화"
+                viewModel="@{viewModel}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btnDayWed"
+                app:layout_constraintStart_toEndOf="@id/btnDayMon"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_confirm"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_alignParentBottom="true"
-                android:height="50dp"
-                android:background="@drawable/round_100_blue"
-                android:gravity="center"
-                android:text="@string/login_next"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/guidelineButtonPosition"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent="0.083"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:id="@+id/btnDayWed"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginEnd="1dp"
+                android:background="@drawable/button_select_week"
+                android:text="수"
+                viewModel="@{viewModel}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btnDayThur"
+                app:layout_constraintStart_toEndOf="@id/btnDayTues"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guidelineButtonPosition"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.95" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnDayThur"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/button_select_week"
+                android:text="목"
+                viewModel="@{viewModel}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btnDayFri"
+                app:layout_constraintStart_toEndOf="@id/btnDayWed"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnDayFri"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/button_select_week"
+                android:text="금"
+                viewModel="@{viewModel}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btnDayThur"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/btn_confirm"
+            style="@style/Theme.CarPool.NextButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="24dp"
+            android:text="@string/login_confirm"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
