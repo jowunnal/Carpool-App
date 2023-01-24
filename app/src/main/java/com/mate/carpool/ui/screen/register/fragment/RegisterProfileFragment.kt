@@ -3,10 +3,8 @@ package com.mate.carpool.ui.screen.register.fragment
 import android.content.Intent
 import android.provider.MediaStore
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.ui.graphics.Color
 import androidx.core.view.setPadding
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.mate.carpool.databinding.FragmentRegisterProfileBinding
 import com.mate.carpool.ui.base.BaseFragment

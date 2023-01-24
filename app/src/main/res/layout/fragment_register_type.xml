@@ -8,7 +8,7 @@
         <import type="com.mate.carpool.R" />
 
         <variable
-            name="registerViewModel"
+            name="viewModel"
             type="com.mate.carpool.ui.screen.register.vm.RegisterViewModel" />
         <variable
             name="navController"
@@ -69,7 +69,7 @@
                 android:textColor="@color/blue"
                 android:textSize="16dp"
                 android:textStyle="bold"
-                android:enabled="@{!registerViewModel.type}"
+                android:enabled="@{!viewModel.type}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btn_passenger"
                 app:layout_constraintStart_toStartOf="parent"
@@ -84,7 +84,7 @@
                 android:textColor="@color/white"
                 android:textSize="16dp"
                 android:textStyle="bold"
-                android:enabled="@{registerViewModel.type}"
+                android:enabled="@{viewModel.type}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/btn_driver"

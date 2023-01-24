@@ -1,25 +1,16 @@
 package com.mate.carpool.ui.screen.register.fragment
 
 import android.graphics.Color
-import android.os.Bundle
-import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import com.mate.carpool.R
-import com.mate.carpool.data.model.domain.item.MemberRole
-import com.mate.carpool.ui.utils.SettingToolbarUtils
 import com.mate.carpool.databinding.FragmentRegisterTypeBinding
 import com.mate.carpool.ui.base.BaseFragment
-import com.mate.carpool.ui.base.BindFragment
 import com.mate.carpool.ui.screen.register.vm.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -43,10 +34,10 @@ class RegisterTypeFragment : BaseFragment<RegisterViewModel,FragmentRegisterType
 
     override fun initViews() = with(binding){
         btnPassenger.setOnClickListener {
-            viewModel.type.value=!viewModel.type.value
+            this@RegisterTypeFragment.viewModel.type.value=!this@RegisterTypeFragment.viewModel.type.value
         }
         btnDriver.setOnClickListener {
-            viewModel.type.value=!viewModel.type.value
+            this@RegisterTypeFragment.viewModel.type.value=!this@RegisterTypeFragment.viewModel.type.value
         }
     }
 
