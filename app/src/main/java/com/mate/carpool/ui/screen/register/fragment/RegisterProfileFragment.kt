@@ -31,9 +31,6 @@ class RegisterProfileFragment : BaseFragment<RegisterViewModel,FragmentRegisterP
     override fun getViewBinding(): FragmentRegisterProfileBinding = FragmentRegisterProfileBinding.inflate(layoutInflater)
 
     override fun initViews() = with(binding){
-        lifecycleOwner = viewLifecycleOwner
-        navController = findNavController()
-
         imgProfile.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
             intent.setDataAndType(

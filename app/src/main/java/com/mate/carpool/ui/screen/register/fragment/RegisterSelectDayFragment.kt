@@ -22,10 +22,6 @@ class RegisterSelectDayFragment : BaseFragment<RegisterViewModel,FragmentRegiste
     override fun getViewBinding(): FragmentRegisterSelectDayBinding = FragmentRegisterSelectDayBinding.inflate(layoutInflater)
 
     override fun initViews() = with(binding){
-        lifecycleOwner = viewLifecycleOwner
-        navController = findNavController()
-        registerViewModel = viewModel
-
         btnConfirm.setOnClickListener {
             findNavController().navigate(R.id.action_RegisterSelectDayFragment_to_loginFragment)
             viewModel.signUpStudentMember()

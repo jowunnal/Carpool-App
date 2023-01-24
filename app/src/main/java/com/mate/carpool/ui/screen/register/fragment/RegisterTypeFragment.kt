@@ -42,10 +42,6 @@ class RegisterTypeFragment : BaseFragment<RegisterViewModel,FragmentRegisterType
     }
 
     override fun initViews() = with(binding){
-        lifecycleOwner = viewLifecycleOwner
-        navController = findNavController()
-        registerViewModel = viewModel
-
         btnPassenger.setOnClickListener {
             viewModel.type.value=!viewModel.type.value
         }
