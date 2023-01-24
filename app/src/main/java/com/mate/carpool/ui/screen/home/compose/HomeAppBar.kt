@@ -21,31 +21,36 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.mate.carpool.R
-import com.mate.carpool.ui.theme.Colors
+import com.mate.carpool.ui.theme.primary50
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+fun HomeAppBar(
 fun HomeAppBar(profileImage:String){
+) {
     SmallTopAppBar(
-        title = { Text(text = "MATE",
-            color = Colors.Blue_007AFF,
-            textAlign = TextAlign.Center,
-            fontSize = 28.sp,
-            fontWeight = FontWeight.W900,
-            modifier = Modifier
-                .wrapContentSize(),
-            style = LocalTextStyle.current.merge(
-                TextStyle(
-                    lineHeight = 1.em,
-                    platformStyle = PlatformTextStyle(
-                        includeFontPadding = false
-                    ),
-                    lineHeightStyle = LineHeightStyle(
-                        alignment = LineHeightStyle.Alignment.Center,
-                        trim = LineHeightStyle.Trim.None
+        title = {
+            Text(
+                text = "MATE",
+                color = primary50,
+                textAlign = TextAlign.Center,
+                fontSize = 28.sp,
+                fontWeight = FontWeight.W900,
+                modifier = Modifier
+                    .wrapContentSize(),
+                style = LocalTextStyle.current.merge(
+                    TextStyle(
+                        lineHeight = 1.em,
+                        platformStyle = PlatformTextStyle(
+                            includeFontPadding = false
+                        ),
+                        lineHeightStyle = LineHeightStyle(
+                            alignment = LineHeightStyle.Alignment.Center,
+                            trim = LineHeightStyle.Trim.None
+                        )
                     )
                 )
-            ))
+            )
         },
         navigationIcon = {
             /*TODO()*/
@@ -53,7 +58,8 @@ fun HomeAppBar(profileImage:String){
         actions = {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center)
+                horizontalArrangement = Arrangement.Center
+            )
             {
                 if(profileImage!="preview")
                     ProfileImage(
@@ -69,10 +75,13 @@ fun HomeAppBar(profileImage:String){
                     Modifier
                         .width(36.dp)
                         .height(36.dp)
-                        .padding(4.5.dp))
+                        .padding(4.5.dp)
+                )
                 {
-                    Icon(painter = painterResource(id = R.drawable.icon_hamburger),
-                        contentDescription = null, Modifier.fillMaxSize())
+                    Icon(
+                        painter = painterResource(id = R.drawable.icon_hamburger),
+                        contentDescription = null, Modifier.fillMaxSize()
+                    )
                 }
             }
         },

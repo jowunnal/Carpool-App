@@ -9,10 +9,10 @@ import com.mate.carpool.data.model.domain.item.MemberRole
  */
 
 data class UserModel(
-    val name: String = "",
+    var name: String = "",
     var studentID:String = "",
     var department:String = "",
-    val phone:ObservableField<String> = ObservableField(""),
+    val phone:String = "",
     var role:MemberRole = MemberRole.Driver,
     var profile:String = "",
     var studentDayCodes: List<String> = emptyList(),

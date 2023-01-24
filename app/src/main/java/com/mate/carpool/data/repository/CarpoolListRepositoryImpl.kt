@@ -117,7 +117,7 @@ class CarpoolListRepositoryImpl @Inject constructor(private val apiService: APIS
         this.memberName,
         this.studentNumber,
         this.department,
-        ObservableField(this.phoneNumber),
+        this.phoneNumber,
         this.auth.asMemberRoleToDomain(),
         this.profileImage,
         emptyList(),

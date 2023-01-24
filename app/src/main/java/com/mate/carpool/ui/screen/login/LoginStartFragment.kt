@@ -24,13 +24,6 @@ class LoginStartFragment  : BindFragment<FragmentLoginStartBinding>(R.layout.fra
             registerViewModel.loginStudentMember(binding.editStudentNumber.text.toString(),binding.editName.text.toString(),binding.editNumber.text.toString())
         }
         mainActivity = activity as MainActivity
-//
-//        mainActivity.setOnBackPressedListener(object : MainActivity.OnBackPressedListener{
-//            override fun onBack() {
-//                mainActivity.setOnBackPressedListener(null)
-//                mainActivity.onBackPressed()
-//            }
-//        })
 
         registerViewModel.loginFlag.observe(viewLifecycleOwner, Observer {
             if(it){
@@ -38,6 +31,11 @@ class LoginStartFragment  : BindFragment<FragmentLoginStartBinding>(R.layout.fra
                 registerViewModel.loginFlag.value=false
             }
         })
+
+        // TODO 테스트용. 삭제
+        binding.editName.setText("강금실")
+        binding.editStudentNumber.setText("123456")
+        binding.editNumber.setText("01012345678")
     }
 
 }

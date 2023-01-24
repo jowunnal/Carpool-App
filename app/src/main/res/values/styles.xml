@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.CarPool.Splash" parent="Theme.CarPool.NoActionBar">
+    <style name="Theme.CarPool.Splash" parent="Theme.CarPool">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:statusBarColor">@color/blue</item>
@@ -10,6 +10,17 @@
 
     <style name="Theme.CarPool.ActionBar" parent="@style/Widget.AppCompat.ActionBar">
         <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="Theme.Carpool.ToolBar" parent="@style/Widget.AppCompat.Toolbar">
+        <item name="android:contentInsetEnd">0dp</item>
+        <item name="android:contentInsetLeft">0dp</item>
+        <item name="android:contentInsetRight">0dp</item>
+        <item name="android:contentInsetStart">0dp</item>
+        <item name="contentInsetEnd">0dp</item>
+        <item name="contentInsetLeft">0dp</item>
+        <item name="contentInsetRight">0dp</item>
+        <item name="contentInsetStart">0dp</item>
     </style>
 
     <style name="Theme.CarPool.NextButton" parent="Widget.AppCompat.TextView">

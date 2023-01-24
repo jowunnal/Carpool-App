@@ -22,7 +22,7 @@ class RegisterRepositoryImpl @Inject constructor(private val apiService: APIServ
         this.studentID,
         this.name,
         this.department,
-        this.phone.get()?:"",
+        this.phone.replace("-",""),
         this.role.getMemberRoleDTO(),
         "",
         this.studentDayCodes.asTimeTableListDTO()

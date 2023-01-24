@@ -1,13 +1,16 @@
 package com.mate.carpool.data.repository
 
-import androidx.databinding.ObservableField
 import com.google.gson.Gson
 import com.mate.carpool.data.Result
+import com.mate.carpool.data.callApi
 import com.mate.carpool.data.model.DTO.MemberProfileDTO
 import com.mate.carpool.data.model.DTO.UserTicketDTO
 import com.mate.carpool.data.model.domain.MemberModel
+import com.mate.carpool.data.model.domain.Profile
 import com.mate.carpool.data.model.domain.TicketListModel
 import com.mate.carpool.data.model.domain.UserModel
+import com.mate.carpool.data.model.dto.common.UserRole
+import com.mate.carpool.data.model.dto.request.UpdateMyProfileRequest
 import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.model.response.ResponseMessage
 import com.mate.carpool.data.service.APIService
@@ -21,23 +24,29 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import retrofit2.HttpException
-import java.lang.Exception
+import java.time.DayOfWeek
 import javax.inject.Inject
 
-class MemberRepositoryImpl @Inject constructor(private val apiService: APIService) : MemberRepository {
-    override fun getMemberInfo(): Flow<ApiResponse<MemberModel>> = handleFlowApi{
+class MemberRepositoryImpl @Inject constructor(
+    private val apiService: APIService
+) : MemberRepository {
+
+    override fun getMemberInfo(): Flow<ApiResponse<MemberModel>> = handleFlowApi {
         apiService.getMemberMe()
     }.map {
-        when(it){
+        when (it) {
             is ApiResponse.Loading -> {
                 ApiResponse.Loading
             }
+
             is ApiResponse.SuccessResponse -> {
                 it.asStatusDomain()
             }
+
             is ApiResponse.FailResponse -> {
                 ApiResponse.FailResponse(it.responseMessage)
             }
+
             is ApiResponse.ExceptionResponse -> {
                 ApiResponse.ExceptionResponse(it.e)
             }
@@ -53,7 +62,10 @@ class MemberRepositoryImpl @Inject constructor(private val apiService: APIServic
 
         } catch (e: Exception) {
             if (e is HttpException && e.code() == 409) {
-                val response = Gson().fromJson(e.response()!!.errorBody()!!.string(), ResponseMessage::class.java)
+                val response = Gson().fromJson(
+                    e.response()!!.errorBody()!!.string(),
+                    ResponseMessage::class.java
+                )
                 emit(Result.Error(response.message))
 
             } else {
@@ -67,7 +79,7 @@ class MemberRepositoryImpl @Inject constructor(private val apiService: APIServic
             this.memberName,
             this.studentNumber,
             this.department,
-            ObservableField(this.phoneNumber),
+            this.phoneNumber,
             this.memberRole.asMemberRoleToDomain(),
             this.profileImage,
             emptyList(),
@@ -90,5 +102,25 @@ class MemberRepositoryImpl @Inject constructor(private val apiService: APIServic
         this.dayStatus.asDayStatusToDomain()
     )
 
-    fun ApiResponse.SuccessResponse<MemberProfileDTO>.asStatusDomain() = ApiResponse.SuccessResponse(this.responseMessage.asStatusDomain())
+
+    fun ApiResponse.SuccessResponse<MemberProfileDTO>.asStatusDomain() =
+        ApiResponse.SuccessResponse(this.responseMessage.asStatusDomain())
+
+
+    override fun getMyProfile(): Flow<Result<Profile>> = callApi {
+        apiService.getMyProfile().toDomain()
+    }
+
+    override fun updateMyProfile(
+        phone: String,
+        userRole: UserRole,
+        daysOfUse: List<DayOfWeek>
+    ): Flow<Result<ResponseMessage>> = callApi {
+        val body = UpdateMyProfileRequest.fromDomain(
+            phone = phone,
+            userRole = userRole,
+            daysOfUse = daysOfUse
+        )
+        apiService.updateMyProfile(body)
+    }
 }
