@@ -33,7 +33,7 @@ class HomeFragment : Fragment() {
 
     private fun initViews() = with(binding) {
         imgProfile.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
+            findNavController().navigate(R.id.action_homeFragment_to_profileLookUpFragment)
         }
     }
 

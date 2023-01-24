@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.screen.profile.component
+package com.mate.carpool.ui.screen.profile.lookup
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,16 +20,23 @@ import com.mate.carpool.data.model.domain.StartArea
 import com.mate.carpool.data.model.domain.Ticket
 import com.mate.carpool.data.model.domain.UserRole
 import com.mate.carpool.ui.composable.HorizontalDividerItem
+import com.mate.carpool.ui.screen.profile.lookup.component.HistoryGroup
+import com.mate.carpool.ui.screen.profile.lookup.component.HistoryHeaderItem
+import com.mate.carpool.ui.screen.profile.lookup.component.TopAppBar
+import com.mate.carpool.ui.screen.profile.lookup.component.UserBottomInfoItem
+import com.mate.carpool.ui.screen.profile.lookup.component.UserTopInfoItem
 import com.mate.carpool.ui.theme.primary10
 import com.mate.carpool.ui.theme.white
 import com.mate.carpool.ui.util.date
 import com.mate.carpool.ui.util.month
 import com.mate.carpool.ui.util.year
+import com.mate.carpool.util.MatePreview
+import java.time.DayOfWeek
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(
+fun ProfileLookUpScreen(
     profile: Profile?,
     onEditClick: () -> Unit,
     onBackClick: () -> Unit,
@@ -49,13 +56,15 @@ fun ProfileScreen(
             TopAppBar(
                 name = profile?.name ?: "",
                 onEditClick = onEditClick,
-                onBackClick = onBackClick
+                onBackClick = onBackClick,
             )
         },
     ) { paddingValues ->
         LazyColumn(
-            modifier = Modifier.background(white).padding(paddingValues),
-            contentPadding = PaddingValues(bottom = 37.dp)
+            modifier = Modifier
+                .background(white)
+                .padding(paddingValues),
+            contentPadding = PaddingValues(bottom = 36.dp)
         ) {
             UserTopInfoItem(
                 profileImageUrl = profile?.profileImage ?: "",
@@ -80,15 +89,15 @@ fun ProfileScreen(
 
 @Preview(showBackground = true)
 @Composable
-private fun ProfileScreenPreview() {
-    ProfileScreen(
+private fun ProfileScreenPreview() = MatePreview {
+    ProfileLookUpScreen(
         profile = Profile(
             profileImage = "",
             name = "강금실",
             studentId = "123a123",
             department = "미학과",
             phone = "01012345678",
-            daysOfUse = listOf("월", "수", "금"),
+            daysOfUse = listOf(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.THURSDAY),
             userRole = UserRole.DRIVER,
             recentTickets = listOf(
                 Ticket(

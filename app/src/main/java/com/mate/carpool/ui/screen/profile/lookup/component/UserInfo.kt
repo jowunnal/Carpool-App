@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.screen.profile.component
+package com.mate.carpool.ui.screen.profile.lookup.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -28,8 +28,10 @@ import com.mate.carpool.data.model.domain.UserRole
 import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.theme.black
 import com.mate.carpool.ui.theme.primary10
+import com.mate.carpool.ui.util.displayName
 import com.mate.carpool.ui.util.tu
 import com.mate.carpool.util.formatPhoneNumber
+import java.time.DayOfWeek
 
 @Suppress("FunctionName")
 fun LazyListScope.UserTopInfoItem(
@@ -54,7 +56,7 @@ fun LazyListScope.UserTopInfoItem(
 
 @Suppress("FunctionName")
 fun LazyListScope.UserBottomInfoItem(
-    daysOfUser: List<String>,
+    daysOfUser: List<DayOfWeek>,
     userRole: UserRole?,
     modifier: Modifier = Modifier
 ) {
@@ -77,7 +79,9 @@ private fun UserTopInfo(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 16.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp, vertical = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
@@ -115,17 +119,19 @@ private fun UserTopInfo(
 
 @Composable
 private fun UserBottomInfo(
-    daysOfUser: List<String>,
+    daysOfUser: List<DayOfWeek>,
     userRole: UserRole?,
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 16.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp, vertical = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        InfoText(type = "사용 요일", value = daysOfUser.joinToString(", "))
+        InfoText(type = "사용 요일", value = daysOfUser.joinToString(", ") { it.displayName })
         VerticalSpacer(10.dp)
-        InfoText(type = "사용자 유형", value = userRole?.text ?: "")
+        InfoText(type = "사용자 유형", value = userRole?.displayName ?: "")
     }
 }
 
@@ -167,7 +173,7 @@ private fun UserTopInfoPreview() {
 @Composable
 private fun UserBottomInfo() {
     UserBottomInfo(
-        daysOfUser = listOf("월", "수", "금"),
+        daysOfUser = listOf(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.THURSDAY),
         userRole = UserRole.DRIVER
     )
 }

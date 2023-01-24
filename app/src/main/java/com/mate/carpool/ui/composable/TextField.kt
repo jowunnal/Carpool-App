@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mate.carpool.R
@@ -43,11 +44,12 @@ fun DefaultTextField(
     placeholder: String? = null,
     errorMessage: String? = null,
     contentPadding: PaddingValues = PaddingValues(12.dp),
+    maxLines: Int = Int.MAX_VALUE,
     headerIcon: @Composable (() -> Unit)? = null,
     tailIcon: @Composable (() -> Unit)? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    maxLines: Int = Int.MAX_VALUE,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
 ) {
     val borderColor = when {
         !enabled -> neutral30
@@ -97,7 +99,8 @@ fun DefaultTextField(
                     readOnly = readOnly,
                     keyboardOptions = keyboardOptions,
                     keyboardActions = keyboardActions,
-                    maxLines = maxLines
+                    maxLines = maxLines,
+                    visualTransformation = visualTransformation,
                 )
             }
 
@@ -128,11 +131,12 @@ fun SmallDefaultTextField(
     readOnly: Boolean = false,
     placeholder: String? = null,
     errorMessage: String? = null,
+    maxLines: Int = Int.MAX_VALUE,
     headerIcon: @Composable (() -> Unit)? = null,
     tailIcon: @Composable (() -> Unit)? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    maxLines: Int = Int.MAX_VALUE,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
 ) {
     DefaultTextField(
         modifier = modifier,
@@ -143,12 +147,13 @@ fun SmallDefaultTextField(
         readOnly = readOnly,
         placeholder = placeholder,
         errorMessage = errorMessage,
+        maxLines = maxLines,
         contentPadding = PaddingValues(12.dp),
         headerIcon = headerIcon,
         tailIcon = tailIcon,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
-        maxLines = maxLines
+        visualTransformation = visualTransformation,
     )
 }
 
@@ -162,11 +167,12 @@ fun LargeDefaultTextField(
     readOnly: Boolean = false,
     placeholder: String? = null,
     errorMessage: String? = null,
+    maxLines: Int = Int.MAX_VALUE,
     headerIcon: @Composable (() -> Unit)? = null,
     tailIcon: @Composable (() -> Unit)? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    maxLines: Int = Int.MAX_VALUE,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
 ) {
     DefaultTextField(
         modifier = modifier,
@@ -177,12 +183,13 @@ fun LargeDefaultTextField(
         readOnly = readOnly,
         placeholder = placeholder,
         errorMessage = errorMessage,
+        maxLines = maxLines,
         contentPadding = PaddingValues(vertical = 15.dp, horizontal = 12.dp),
         headerIcon = headerIcon,
         tailIcon = tailIcon,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
-        maxLines = maxLines
+        visualTransformation = visualTransformation,
     )
 }
 

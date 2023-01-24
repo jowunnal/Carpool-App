@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.screen.profile.component
+package com.mate.carpool.ui.screen.profile.lookup.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -124,8 +124,8 @@ private fun HistoryCell(
             text = buildAnnotatedString {
                 val cal = Calendar.getInstance()
                 cal.timeInMillis = startTime
-                appendBoldText(startArea.text)
-                append(" 출발, ${dayStatus.text} ")
+                appendBoldText(startArea.displayName)
+                append(" 출발, ${dayStatus.displayName} ")
                 appendBoldText("${cal.hour}:${cal.minute}")
             },
             color = gray,

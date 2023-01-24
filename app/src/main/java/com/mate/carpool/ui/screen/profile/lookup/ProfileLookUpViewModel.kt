@@ -1,6 +1,5 @@
-package com.mate.carpool.ui.screen.profile
+package com.mate.carpool.ui.screen.profile.lookup
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.mate.carpool.data.Result
 import com.mate.carpool.data.model.domain.Profile
@@ -14,13 +13,12 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfileViewModel @Inject constructor(
+class ProfileLookUpViewModel @Inject constructor(
     private val memberRepository: MemberRepository
 ) : BaseViewModel() {
 
     private val _profile = MutableStateFlow<Profile?>(null)
     val profile = _profile.asStateFlow()
-
 
     init {
         memberRepository.getMyProfile().onEach { result ->
