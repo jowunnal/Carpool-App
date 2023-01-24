@@ -39,4 +39,9 @@ class RegisterProfileFragment : BaseFragment<RegisterViewModel,FragmentRegisterP
         }
     }
 
+    override fun onDestroyView() {
+        activity?.viewModelStore?.clear()
+        super.onDestroyView()
+    }
+
 }
