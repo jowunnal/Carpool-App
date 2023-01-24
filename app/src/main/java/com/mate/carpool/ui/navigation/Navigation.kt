@@ -18,6 +18,7 @@ import com.mate.carpool.ui.screen.home.vm.HomeBottomSheetViewModelInterface
 fun NavigationGraph(
     navController:NavHostController,
     onNavigateToCreateCarpool: () -> Unit,
+    onNavigateToProfileView: () -> Unit,
     homeCarpoolListViewModel: CarpoolListViewModelInterface = hiltViewModel<CarpoolListViewModel>(),
     homeCarpoolBottomSheetViewModel: HomeBottomSheetViewModelInterface = hiltViewModel<HomeBottomSheetViewModel>()
 ){
@@ -25,6 +26,7 @@ fun NavigationGraph(
         composable(route = NavigationModel.Home.route){
             HomeBottomSheetLayout(
                 onNavigateToCreateCarpool = onNavigateToCreateCarpool,
+                onNavigateToProfileView = onNavigateToProfileView,
                 fragmentManager = ((LocalContext.current as ContextWrapper).baseContext as FragmentActivity).supportFragmentManager,
                 homeCarpoolBottomSheetViewModel = homeCarpoolBottomSheetViewModel,
                 carpoolListViewModel = homeCarpoolListViewModel

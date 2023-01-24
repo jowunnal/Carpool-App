@@ -32,7 +32,8 @@ class HomeFragment : Fragment() {
             setContent {
                 MateTheme() {
                     MainView(
-                        onNavigateToCreateCarpool = { findNavController().navigate(R.id.action_homeFragment_to_createTicketBoardingAreaFragment) }
+                        onNavigateToCreateCarpool = { findNavController().navigate(R.id.action_homeFragment_to_createTicketBoardingAreaFragment) },
+                        onNavigateToProfileView = { findNavController().navigate(R.id.action_homeFragment_to_profileLookUpFragment) }
                     )
                 }
             }

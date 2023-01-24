@@ -38,12 +38,14 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun MainView(
-    onNavigateToCreateCarpool: () -> Unit
+    onNavigateToCreateCarpool: () -> Unit,
+    onNavigateToProfileView: () -> Unit
 ) {
     val navController = rememberNavController()
     NavigationGraph(
         navController = navController,
-        onNavigateToCreateCarpool
+        onNavigateToCreateCarpool,
+        onNavigateToProfileView
     )
 }
 
@@ -52,6 +54,7 @@ fun MainView(
 fun HomeBottomSheetLayout(
     fragmentManager: FragmentManager,
     onNavigateToCreateCarpool: () -> Unit,
+    onNavigateToProfileView: () -> Unit,
     homeCarpoolBottomSheetViewModel: HomeBottomSheetViewModelInterface,
     carpoolListViewModel: CarpoolListViewModelInterface
 ) {
@@ -93,6 +96,7 @@ fun HomeBottomSheetLayout(
             bottomSheetState = bottomSheetState,
             coroutineScope = coroutineScope,
             onNavigateToCreateCarpool = onNavigateToCreateCarpool,
+            onNavigateToProfileView = onNavigateToProfileView,
             bottomSheetMemberModel = bottomSheetMemberModel,
             ticketId = ticketId,
             reNewHomeListener = reNewHomeListener,
@@ -110,6 +114,7 @@ fun HomeView(
     bottomSheetState: ModalBottomSheetState,
     coroutineScope: CoroutineScope,
     onNavigateToCreateCarpool: () -> Unit,
+    onNavigateToProfileView: () -> Unit,
     bottomSheetMemberModel: MutableStateFlow<MemberModel>,
     ticketId: MutableStateFlow<Long>,
     reNewHomeListener: BaseBottomSheetDialogFragment.Renewing,
@@ -133,9 +138,10 @@ fun HomeView(
 
 
     Column {
-        HomeAppBar(memberModel.user.profile) {
-
-        }
+        HomeAppBar(
+            profileImage = memberModel.user.profile,
+            goToProfileScreen = onNavigateToProfileView
+        )
         Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 32.dp)) {
             HomeCardView(R.drawable.ic_home_folder, "공지사항", R.drawable.ic_home_rightarrow, {})
             Spacer(modifier = Modifier.height(4.dp))
@@ -155,7 +161,8 @@ fun HomeView(
                 }
             }
 
-            Spacer(modifier = Modifier.height(4.dp))
+            VerticalSpacer(height = 4.dp)
+
             Column(
                 Modifier
                     .weight(1f)
@@ -221,7 +228,8 @@ fun HomeView(
                     color = Color.White
                 )
             }
-            Spacer(modifier = Modifier.height(22.dp))
+
+            VerticalSpacer(height = 22.dp)
         }
     }
 
@@ -232,7 +240,8 @@ fun HomeView(
 fun HomePreview() {
     MateTheme() {
         HomeBottomSheetLayout(
-            onNavigateToCreateCarpool = { /*TODO*/ },
+            onNavigateToCreateCarpool = {},
+            onNavigateToProfileView = {},
             homeCarpoolBottomSheetViewModel = PreviewHomeBottomSheetViewModel,
             fragmentManager = object : FragmentManager() {
 
