@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.screen.home.compose
+package com.mate.carpool.ui.screen.home.compose.component
 
 import android.content.Context
 import androidx.compose.foundation.Image

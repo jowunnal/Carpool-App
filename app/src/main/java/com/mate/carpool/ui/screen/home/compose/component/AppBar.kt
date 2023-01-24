@@ -1,6 +1,7 @@
-package com.mate.carpool.ui.screen.home.compose
+package com.mate.carpool.ui.screen.home.compose.component
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
@@ -26,8 +27,9 @@ import com.mate.carpool.ui.theme.primary50
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeAppBar(
-fun HomeAppBar(profileImage:String){
-) {
+    profileImage:String,
+    goToProfileScreen: () -> Unit
+){
     SmallTopAppBar(
         title = {
             Text(
@@ -61,15 +63,15 @@ fun HomeAppBar(profileImage:String){
                 horizontalArrangement = Arrangement.Center
             )
             {
-                if(profileImage!="preview")
-                    ProfileImage(
-                        profileImage = profileImage,
-                        modifier =  Modifier
-                            .size(42.dp)
-                            .padding(3.dp)
-                            .clip(CircleShape)
-                            .border(1.dp, Color.White, CircleShape)
-                    )
+                ProfileImage(
+                    profileImage = profileImage,
+                    modifier =  Modifier
+                        .size(42.dp)
+                        .padding(3.dp)
+                        .clip(CircleShape)
+                        .border(1.dp, Color.White, CircleShape)
+                        .clickable(onClick = goToProfileScreen)
+                )
                 IconButton(
                     onClick = { /*TODO*/ },
                     Modifier
@@ -94,5 +96,5 @@ fun HomeAppBar(profileImage:String){
 @Preview
 @Composable
 fun PrevHomeAppBar(){
-    HomeAppBar("preview")
+    HomeAppBar(""){}
 }
