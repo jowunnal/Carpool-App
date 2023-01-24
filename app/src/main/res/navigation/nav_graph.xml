@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/loginStartFragment">
 
     <fragment
         android:id="@+id/loginFragment"
@@ -19,7 +19,6 @@
             app:destination="@id/loginStartFragment" />
     </fragment>
 
-    <!-- 회원가입 -->
     <fragment
         android:id="@+id/RegisterInfoStep1Fragment"
         android:name="com.mate.carpool.ui.fragment.RegisterInfoStep1Fragment"
@@ -55,7 +54,6 @@
             app:popUpToInclusive="false" />
     </fragment>
 
-
     <fragment
         android:id="@+id/RegisterPhoneFragment"
         android:name="com.mate.carpool.ui.screen.register.fragment.RegisterPhoneFragment"
@@ -66,6 +64,7 @@
             android:id="@+id/action_RegisterPhoneFragment_to_RegisterTypeFragment"
             app:destination="@id/RegisterTypeFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/RegisterTypeFragment"
         android:name="com.mate.carpool.ui.screen.register.fragment.RegisterTypeFragment"
@@ -76,6 +75,7 @@
             android:id="@+id/action_RegisterTypeFragment_to_RegisterProfileFragment"
             app:destination="@id/RegisterProfileFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/RegisterProfileFragment"
         android:name="com.mate.carpool.ui.screen.register.fragment.RegisterProfileFragment"
@@ -86,6 +86,7 @@
             android:id="@+id/action_RegisterProfileFragment_to_RegisterSelectDayFragment"
             app:destination="@id/RegisterSelectDayFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/RegisterSelectDayFragment"
         android:name="com.mate.carpool.ui.screen.register.fragment.RegisterSelectDayFragment"
@@ -109,6 +110,7 @@
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true"/>
     </fragment>
+
     <fragment
         android:id="@+id/createTicketBoardingAreaFragment"
         android:name="com.mate.carpool.ui.screen.createCarpool.fragment.CreateTicketBoardingAreaFragment"
@@ -118,6 +120,7 @@
             android:id="@+id/action_createTicketBoardingAreaFragment_to_createTicketBoardingTimeFragment"
             app:destination="@id/createTicketBoardingTimeFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/createTicketBoardingTimeFragment"
         android:name="com.mate.carpool.ui.screen.createCarpool.fragment.CreateTicketBoardingTimeFragment"
@@ -127,6 +130,7 @@
             android:id="@+id/action_createTicketBoardingTimeFragment_to_createTicketOpenChatFragment"
             app:destination="@id/createTicketOpenChatFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/createTicketOpenChatFragment"
         android:name="com.mate.carpool.ui.screen.createCarpool.fragment.CreateTicketOpenChatFragment"
@@ -136,6 +140,7 @@
             android:id="@+id/action_createTicketOpenChatFragment_to_createTicketPreviewFragment"
             app:destination="@id/createTicketPreviewFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/createTicketPreviewFragment"
         android:name="com.mate.carpool.ui.screen.createCarpool.fragment.CreateTicketPreviewFragment"
@@ -151,8 +156,41 @@
         android:id="@+id/homeFragment"
         android:name="com.mate.carpool.ui.screen.home.compose.HomeFragment"
         android:label="HomeFragment" >
+
         <action
             android:id="@+id/action_homeFragment_to_createTicketBoardingAreaFragment"
             app:destination="@id/createTicketBoardingAreaFragment" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_profileLookUpFragment"
+            app:destination="@id/profileLookUpFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/profileLookUpFragment"
+        android:name="com.mate.carpool.ui.screen.profile.lookup.ProfileLookUpFragment"
+        android:label="ProfileFragment">
+        <action
+            android:id="@+id/action_profileLookUpFragment_to_profileModifyFragment"
+            app:destination="@id/profileModifyFragment" />
+        <argument
+            android:name="needRefresh"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/profileModifyFragment"
+        android:name="com.mate.carpool.ui.screen.profile.modify.ProfileModifyFragment"
+        android:label="ProfileModifyFragment">
+        <argument
+            android:name="profile"
+            app:argType="com.mate.carpool.data.model.domain.Profile" />
+        <action
+            android:id="@+id/action_profileModifyFragment_to_profileLookUpFragment"
+            app:destination="@id/profileLookUpFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/profileModifyFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

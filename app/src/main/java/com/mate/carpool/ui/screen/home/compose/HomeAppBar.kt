@@ -24,31 +24,36 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.mate.carpool.R
-import com.mate.carpool.ui.theme.Colors
+import com.mate.carpool.ui.theme.primary50
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeAppBar(){
+fun HomeAppBar(
+    goToProfileScreen: () -> Unit
+) {
     SmallTopAppBar(
-        title = { Text(text = "MATE",
-            color = Colors.Blue_007AFF,
-            textAlign = TextAlign.Center,
-            fontSize = 28.sp,
-            fontWeight = FontWeight.W900,
-            modifier = Modifier
-                .wrapContentSize(),
-            style = LocalTextStyle.current.merge(
-                TextStyle(
-                    lineHeight = 1.em,
-                    platformStyle = PlatformTextStyle(
-                        includeFontPadding = false
-                    ),
-                    lineHeightStyle = LineHeightStyle(
-                        alignment = LineHeightStyle.Alignment.Center,
-                        trim = LineHeightStyle.Trim.None
+        title = {
+            Text(
+                text = "MATE",
+                color = primary50,
+                textAlign = TextAlign.Center,
+                fontSize = 28.sp,
+                fontWeight = FontWeight.W900,
+                modifier = Modifier
+                    .wrapContentSize(),
+                style = LocalTextStyle.current.merge(
+                    TextStyle(
+                        lineHeight = 1.em,
+                        platformStyle = PlatformTextStyle(
+                            includeFontPadding = false
+                        ),
+                        lineHeightStyle = LineHeightStyle(
+                            alignment = LineHeightStyle.Alignment.Center,
+                            trim = LineHeightStyle.Trim.None
+                        )
                     )
                 )
-            ))
+            )
         },
         navigationIcon = {
             /*TODO()*/
@@ -56,18 +61,22 @@ fun HomeAppBar(){
         actions = {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center)
+                horizontalArrangement = Arrangement.Center
+            )
             {
-                ProfileImage(R.drawable.icon_main_profile,42.dp,42.dp)
+                ProfileImage(R.drawable.icon_main_profile, 42.dp, 42.dp, goToProfileScreen)
                 IconButton(
                     onClick = { /*TODO*/ },
                     Modifier
                         .width(36.dp)
                         .height(36.dp)
-                        .padding(4.5.dp))
+                        .padding(4.5.dp)
+                )
                 {
-                    Icon(painter = painterResource(id = R.drawable.icon_hamburger),
-                        contentDescription = null, Modifier.fillMaxSize())
+                    Icon(
+                        painter = painterResource(id = R.drawable.icon_hamburger),
+                        contentDescription = null, Modifier.fillMaxSize()
+                    )
                 }
             }
         },
@@ -78,25 +87,27 @@ fun HomeAppBar(){
 }
 
 @Composable
-fun ProfileImage(@DrawableRes image:Int,width:Dp,height:Dp){
+fun ProfileImage(@DrawableRes image: Int, width: Dp, height: Dp, onClick: () -> Unit = { }) { // TODO
     IconButton(
-        onClick = { /*TODO*/ },
+        onClick = onClick,
         modifier = Modifier
             .width(width)
             .height(height)
             .padding(3.dp)
     ) {
-        Image(painter = painterResource(id = image),
+        Image(
+            painter = painterResource(id = image),
             contentDescription = null,
             modifier = Modifier
                 .fillMaxSize()
                 .clip(CircleShape)
-                .border(1.dp, Color.White, CircleShape))
+                .border(1.dp, Color.White, CircleShape)
+        )
     }
 }
 
 @Preview
 @Composable
-fun PrevHomeAppBar(){
-    HomeAppBar()
+fun PrevHomeAppBar() {
+    HomeAppBar() {}
 }

@@ -1,6 +1,6 @@
 package com.mate.carpool.data.repository
 
-import com.mate.carpool.data.model.DTO.TicketDeleteMemberRequestDTO
+import com.mate.carpool.data.model.dto.TicketDeleteMemberRequestDTO
 import com.mate.carpool.data.model.DTO.TicketNewMemberRequestDTO
 import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.model.response.ResponseMessage
