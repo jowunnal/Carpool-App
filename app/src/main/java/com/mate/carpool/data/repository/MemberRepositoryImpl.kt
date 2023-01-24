@@ -80,7 +80,7 @@ class MemberRepositoryImpl @Inject constructor(
             this.memberName,
             this.studentNumber,
             this.department,
-            ObservableField(this.phoneNumber),
+            this.phoneNumber,
             this.memberRole.asMemberRoleToDomain(),
             this.profileImage,
             emptyList(),
