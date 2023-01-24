@@ -1,12 +1,11 @@
 package com.mate.carpool.ui.screen.profile.modify
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.mate.carpool.data.Result
 import com.mate.carpool.data.model.domain.Profile
-import com.mate.carpool.data.model.domain.UserRole
+import com.mate.carpool.data.model.dto.common.UserRole
 import com.mate.carpool.data.repository.MemberRepository
 import com.mate.carpool.ui.base.BaseViewModel
 import com.mate.carpool.util.map

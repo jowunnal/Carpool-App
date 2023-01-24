@@ -23,7 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mate.carpool.R
-import com.mate.carpool.data.model.domain.UserRole
+import com.mate.carpool.data.model.dto.common.UserRole
 import com.mate.carpool.ui.composable.RemoteImage
 import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.theme.black

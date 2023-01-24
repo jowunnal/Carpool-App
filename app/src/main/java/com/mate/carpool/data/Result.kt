@@ -35,7 +35,6 @@ fun <T> callApi(action: suspend () -> T) = flow {
         e.printStackTrace()
 
         if (e is HttpException) {
-            Log.d("gumsil", e.response().toString())
             val response = try {
                 Gson().fromJson(e.response()!!.errorBody()!!.string(), ResponseMessage::class.java)
             } catch (e: HttpException) {

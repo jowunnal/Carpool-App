@@ -14,11 +14,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mate.carpool.data.model.domain.TicketCostType
 import com.mate.carpool.data.model.domain.DayStatus
 import com.mate.carpool.data.model.domain.Profile
 import com.mate.carpool.data.model.domain.StartArea
 import com.mate.carpool.data.model.domain.Ticket
-import com.mate.carpool.data.model.domain.UserRole
+import com.mate.carpool.data.model.domain.TicketStatus
+import com.mate.carpool.data.model.dto.common.UserRole
 import com.mate.carpool.ui.composable.HorizontalDividerItem
 import com.mate.carpool.ui.screen.profile.lookup.component.HistoryGroup
 import com.mate.carpool.ui.screen.profile.lookup.component.HistoryHeaderItem
@@ -109,8 +111,8 @@ private fun ProfileScreenPreview() = MatePreview {
                     startTime = System.currentTimeMillis(),
                     maximumNumber = 4,
                     currentNumber = 3,
-                    status = Ticket.Status.AFTER,
-                    costType = Ticket.CostType.COST
+                    status = TicketStatus.AFTER,
+                    costType = TicketCostType.COST
                 ),
                 Ticket(
                     id = 2L,
@@ -120,8 +122,8 @@ private fun ProfileScreenPreview() = MatePreview {
                     startTime = System.currentTimeMillis() - 10000,
                     maximumNumber = 4,
                     currentNumber = 3,
-                    status = Ticket.Status.AFTER,
-                    costType = Ticket.CostType.FREE
+                    status = TicketStatus.AFTER,
+                    costType = TicketCostType.FREE
                 ),
                 Ticket(
                     id = 3L,
@@ -131,8 +133,8 @@ private fun ProfileScreenPreview() = MatePreview {
                     startTime = System.currentTimeMillis() - 20000,
                     maximumNumber = 4,
                     currentNumber = 3,
-                    status = Ticket.Status.AFTER,
-                    costType = Ticket.CostType.FREE
+                    status = TicketStatus.AFTER,
+                    costType = TicketCostType.FREE
                 ),
                 Ticket(
                     id = 4L,
@@ -142,8 +144,8 @@ private fun ProfileScreenPreview() = MatePreview {
                     startTime = System.currentTimeMillis() - 11110000,
                     maximumNumber = 4,
                     currentNumber = 3,
-                    status = Ticket.Status.AFTER,
-                    costType = Ticket.CostType.FREE
+                    status = TicketStatus.AFTER,
+                    costType = TicketCostType.FREE
                 ),
                 Ticket(
                     id = 5L,
@@ -153,8 +155,8 @@ private fun ProfileScreenPreview() = MatePreview {
                     startTime = System.currentTimeMillis() - 11120000,
                     maximumNumber = 4,
                     currentNumber = 3,
-                    status = Ticket.Status.AFTER,
-                    costType = Ticket.CostType.COST
+                    status = TicketStatus.AFTER,
+                    costType = TicketCostType.COST
                 ),
             )
         ),

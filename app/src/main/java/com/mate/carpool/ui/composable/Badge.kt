@@ -11,7 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mate.carpool.data.model.domain.Ticket
+import com.mate.carpool.data.model.domain.TicketCostType
+import com.mate.carpool.data.model.domain.TicketStatus
 import com.mate.carpool.ui.theme.neutral30
 import com.mate.carpool.ui.theme.primary60
 import com.mate.carpool.ui.theme.red60
@@ -22,14 +23,14 @@ import com.mate.carpool.ui.util.tu
 fun Badge(
     maximumNumber: Int,   // 정원
     currentNumber: Int,   // 현재 카풀에 참여한 인원 수
-    status: Ticket.Status,
-    costType: Ticket.CostType,
+    status: TicketStatus,
+    costType: TicketCostType,
     modifier: Modifier = Modifier
 ) {
     // TODO 정확한 조건 확인 필요
     val backgroundColor = when {
-        status != Ticket.Status.AFTER && costType == Ticket.CostType.COST -> primary60
-        status != Ticket.Status.AFTER && costType == Ticket.CostType.FREE -> red60
+        status != TicketStatus.AFTER && costType == TicketCostType.COST -> primary60
+        status != TicketStatus.AFTER && costType == TicketCostType.FREE -> red60
         else -> neutral30
     }
 
@@ -52,8 +53,8 @@ private fun BadgePreview1() {
     Badge(
         maximumNumber = 4,
         currentNumber = 1,
-        status = Ticket.Status.BEFORE,
-        costType = Ticket.CostType.FREE
+        status = TicketStatus.BEFORE,
+        costType = TicketCostType.FREE
     )
 }
 
@@ -63,8 +64,8 @@ private fun BadgePreview2() {
     Badge(
         maximumNumber = 4,
         currentNumber = 1,
-        status = Ticket.Status.BEFORE,
-        costType = Ticket.CostType.COST
+        status = TicketStatus.BEFORE,
+        costType = TicketCostType.COST
     )
 }
 
@@ -74,7 +75,7 @@ private fun BadgePreview3() {
     Badge(
         maximumNumber = 4,
         currentNumber = 1,
-        status = Ticket.Status.AFTER,
-        costType = Ticket.CostType.FREE
+        status = TicketStatus.AFTER,
+        costType = TicketCostType.FREE
     )
 }

@@ -16,9 +16,11 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mate.carpool.data.model.domain.TicketCostType
 import com.mate.carpool.data.model.domain.DayStatus
 import com.mate.carpool.data.model.domain.StartArea
 import com.mate.carpool.data.model.domain.Ticket
+import com.mate.carpool.data.model.domain.TicketStatus
 import com.mate.carpool.ui.composable.Badge
 import com.mate.carpool.ui.composable.Circle
 import com.mate.carpool.ui.composable.HorizontalDivider
@@ -99,8 +101,8 @@ private fun HistoryCell(
     startTime: Long,
     maximumNumber: Int,
     currentNumber: Int,
-    status: Ticket.Status,
-    costType: Ticket.CostType,
+    status: TicketStatus,
+    costType: TicketCostType,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -133,8 +135,8 @@ private fun HistoryCell(
         Circle(
             size = 8.dp,
             color = when (costType) {
-                Ticket.CostType.FREE -> primary60
-                Ticket.CostType.COST -> red60
+                TicketCostType.FREE -> primary60
+                TicketCostType.COST -> red60
             }
         )
         HorizontalSpacer(8.dp)
@@ -165,8 +167,8 @@ private fun HistoryGroupPreview() {
             startTime = System.currentTimeMillis(),
             maximumNumber = 3,
             currentNumber = 1,
-            status = Ticket.Status.AFTER,
-            costType = Ticket.CostType.COST
+            status = TicketStatus.AFTER,
+            costType = TicketCostType.COST
         )
     }
     HistoryGroup(group = Pair(Triple(2023, 1, 3), histories))

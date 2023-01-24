@@ -1,6 +1,5 @@
 package com.mate.carpool.data.repository
 
-import androidx.databinding.ObservableField
 import com.google.gson.Gson
 import com.mate.carpool.data.Result
 import com.mate.carpool.data.callApi
@@ -10,7 +9,7 @@ import com.mate.carpool.data.model.domain.MemberModel
 import com.mate.carpool.data.model.domain.Profile
 import com.mate.carpool.data.model.domain.TicketListModel
 import com.mate.carpool.data.model.domain.UserModel
-import com.mate.carpool.data.model.domain.UserRole
+import com.mate.carpool.data.model.dto.common.UserRole
 import com.mate.carpool.data.model.dto.request.UpdateMyProfileRequest
 import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.model.response.ResponseMessage

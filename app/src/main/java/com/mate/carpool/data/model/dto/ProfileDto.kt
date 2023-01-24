@@ -1,10 +1,12 @@
 package com.mate.carpool.data.model.dto
 
+import com.mate.carpool.data.model.domain.TicketCostType
 import com.mate.carpool.data.model.domain.DayStatus
 import com.mate.carpool.data.model.domain.Profile
 import com.mate.carpool.data.model.domain.StartArea
 import com.mate.carpool.data.model.domain.Ticket
-import com.mate.carpool.data.model.domain.UserRole
+import com.mate.carpool.data.model.domain.TicketStatus
+import com.mate.carpool.data.model.dto.common.UserRole
 import com.mate.carpool.data.model.dto.common.TimeOfUseDto
 import com.mate.carpool.ui.util.date
 import com.mate.carpool.ui.util.hour
@@ -74,15 +76,15 @@ data class TicketDto(
         maximumNumber = recruitPerson,
         currentNumber = currentPersonCount,
         status = when (ticketStatus) {
-            "BEFORE" -> Ticket.Status.BEFORE
-            "ING" -> Ticket.Status.ING
-            "CANCEL" -> Ticket.Status.CANCEL
-            "AFTER" -> Ticket.Status.AFTER
+            "BEFORE" -> TicketStatus.BEFORE
+            "ING" -> TicketStatus.ING
+            "CANCEL" -> TicketStatus.CANCEL
+            "AFTER" -> TicketStatus.AFTER
             else -> throw IllegalStateException("[TicketDto.toDomain] ticketStatus = $ticketStatus")
         },
         costType = when (ticketType) {
-            "FREE" -> Ticket.CostType.FREE
-            "COST" -> Ticket.CostType.COST
+            "FREE" -> TicketCostType.FREE
+            "COST" -> TicketCostType.COST
             else -> throw IllegalStateException("[TicketDto.toDomain] ticketType = $ticketType")
         }
     )
