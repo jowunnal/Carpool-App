@@ -3,7 +3,6 @@ package com.mate.carpool.ui.screen.profile.lookup.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListScope
@@ -17,7 +16,6 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import com.mate.carpool.data.model.domain.DayStatus
 import com.mate.carpool.data.model.domain.StartArea
 import com.mate.carpool.data.model.domain.Ticket
@@ -25,6 +23,7 @@ import com.mate.carpool.ui.composable.Badge
 import com.mate.carpool.ui.composable.Circle
 import com.mate.carpool.ui.composable.HorizontalDivider
 import com.mate.carpool.ui.composable.HorizontalSpacer
+import com.mate.carpool.ui.composable.RemoteImage
 import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.theme.black
 import com.mate.carpool.ui.theme.gray
@@ -108,17 +107,16 @@ private fun HistoryCell(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        AsyncImage(
+        RemoteImage(
             modifier = Modifier
                 .size(42.dp)
                 .padding(3.dp)
                 .clip(CircleShape)
-                .offset(x = (-3).dp)
                 .background(primary10),
-            model = thumbnail,
+            url = thumbnail,
             contentDescription = "driver profile image"
         )
-        VerticalSpacer(5.dp)
+        HorizontalSpacer(5.dp)
         Text(
             modifier = Modifier.weight(1f),
             text = buildAnnotatedString {

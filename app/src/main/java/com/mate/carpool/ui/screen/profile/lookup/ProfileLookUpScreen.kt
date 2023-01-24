@@ -52,6 +52,7 @@ fun ProfileLookUpScreen(
     }
 
     Scaffold(
+        containerColor = white,
         topBar = {
             TopAppBar(
                 name = profile?.name ?: "",

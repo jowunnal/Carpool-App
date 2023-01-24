@@ -34,8 +34,8 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewDataBinding> : Fragment
 
     open fun subscribeUi() = Unit
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onResume() {
+        super.onResume()
 
         (requireActivity() as AppCompatActivity).supportActionBar?.run {
             if (useActionBar) show() else hide()
@@ -79,7 +79,9 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewDataBinding> : Fragment
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.snackbarMessage.collect { message ->
-                    showSnackbar(message = message)
+                    if (message.isNotBlank()) {
+                        showSnackbar(message = message)
+                    }
                 }
             }
         }

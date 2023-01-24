@@ -1,10 +1,15 @@
 package com.mate.carpool.ui.screen.profile.lookup
 
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.mate.carpool.ui.base.BaseComposeFragment
 import com.mate.carpool.ui.composable.rememberLambda
 import dagger.hilt.android.AndroidEntryPoint
@@ -12,8 +17,18 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ProfileLookUpFragment : BaseComposeFragment<ProfileLookUpViewModel>() {
 
+    private val args: ProfileLookUpFragmentArgs by navArgs()
+
     override val viewModel: ProfileLookUpViewModel by viewModels()
     override val useActionBar: Boolean = false
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        if (args.needRefresh) {
+            viewModel.fetch()
+        }
+    }
 
     @Composable
     override fun Content() {
@@ -27,7 +42,7 @@ class ProfileLookUpFragment : BaseComposeFragment<ProfileLookUpViewModel>() {
                     return@rememberLambda
                 }
                 val action = ProfileLookUpFragmentDirections
-                    .actionProfileLookUpFragmentToProfileModifyFragment(profile!!)
+                    .actionProfileLookUpFragmentToProfileModifyFragment(profile = profile!!)
                 findNavController().navigate(action)
             },
             onBackClick = rememberLambda { findNavController().popBackStack() },

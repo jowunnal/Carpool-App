@@ -22,9 +22,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import com.mate.carpool.R
 import com.mate.carpool.data.model.domain.UserRole
+import com.mate.carpool.ui.composable.RemoteImage
 import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.theme.black
 import com.mate.carpool.ui.theme.primary10
@@ -88,12 +88,12 @@ private fun UserTopInfo(
             modifier = Modifier.size(80.dp),
             contentAlignment = Alignment.BottomEnd
         ) {
-            AsyncImage(
+            RemoteImage(
                 modifier = Modifier
                     .clip(CircleShape)
                     .fillMaxSize()
                     .background(primary10),
-                model = profileImageUrl,
+                url = profileImageUrl,
                 contentDescription = "profile image"
             )
             Image(

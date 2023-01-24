@@ -21,6 +21,10 @@ class ProfileLookUpViewModel @Inject constructor(
     val profile = _profile.asStateFlow()
 
     init {
+        fetch()
+    }
+
+    fun fetch() {
         memberRepository.getMyProfile().onEach { result ->
             when (result) {
                 is Result.Loading -> {
@@ -36,4 +40,5 @@ class ProfileLookUpViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
+
 }

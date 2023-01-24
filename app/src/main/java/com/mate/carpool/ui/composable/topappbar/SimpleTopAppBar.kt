@@ -3,6 +3,7 @@ package com.mate.carpool.ui.composable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -49,7 +51,13 @@ fun SimpleTopAppBar(
         var paddingEnd by remember { mutableStateOf(32.dp) }
 
         Image(
-            modifier = Modifier.align(Alignment.CenterStart).clickable(onClick = onBackClick),
+            modifier = Modifier
+                .align(Alignment.CenterStart)
+                .clickable(
+                    onClick = onBackClick,
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = rememberRipple(bounded = false, radius = 18.dp)
+                ),
             painter = painterResource(id = R.drawable.ic_arrow_left_small),
             contentDescription = "back"
         )

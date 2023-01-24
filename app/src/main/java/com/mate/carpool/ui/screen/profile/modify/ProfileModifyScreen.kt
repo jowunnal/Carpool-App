@@ -2,6 +2,7 @@ package com.mate.carpool.ui.screen.profile.modify
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -9,14 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mate.carpool.data.model.domain.DayStatus
-import com.mate.carpool.data.model.domain.Profile
-import com.mate.carpool.data.model.domain.StartArea
-import com.mate.carpool.data.model.domain.Ticket
 import com.mate.carpool.data.model.domain.UserRole
 import com.mate.carpool.ui.composable.SimpleTopAppBar
 import com.mate.carpool.ui.composable.VerticalSpacer
-import com.mate.carpool.ui.screen.profile.lookup.ProfileLookUpScreen
+import com.mate.carpool.ui.screen.profile.modify.component.ConfirmButton
 import com.mate.carpool.ui.screen.profile.modify.component.DaysOfUseSelector
 import com.mate.carpool.ui.screen.profile.modify.component.PhoneTextField
 import com.mate.carpool.ui.screen.profile.modify.component.UserRoleSelector
@@ -30,6 +27,7 @@ fun ProfileModifyScreen(
     phone: String,
     userRole: UserRole,
     daysOfUse: List<DayOfWeek>,
+    enableConfirm: Boolean,
     onEditPhone: (String) -> Unit,
     onUserRoleChange: (UserRole) -> Unit,
     onDayOfUseSelect: (DayOfWeek) -> Unit,
@@ -38,6 +36,7 @@ fun ProfileModifyScreen(
     onBackClick: () -> Unit,
 ) {
     Scaffold(
+        containerColor = white,
         topBar = {
             SimpleTopAppBar(
                 title = "내 정보 수정",
@@ -66,6 +65,11 @@ fun ProfileModifyScreen(
                 onDayOfUseSelect = onDayOfUseSelect,
                 onDayOfUseDeselect = onDayOfUseDeselect,
             )
+            Spacer(modifier = Modifier.weight(1f))
+            ConfirmButton(
+                enabled = enableConfirm,
+                onClick = onConfirmClick
+            )
         }
     }
 
@@ -78,6 +82,7 @@ private fun ProfileModifyScreenPreview() = MatePreview {
         phone = "010123456789",
         userRole = UserRole.PASSENGER,
         daysOfUse = listOf(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.THURSDAY),
+        enableConfirm = true,
         onEditPhone = {},
         onUserRoleChange = {},
         onDayOfUseSelect = {},

@@ -8,3 +8,6 @@ fun String.formatPhoneNumber(): String = try {
 } catch (e: NullPointerException) {
     this
 }
+
+fun String.substring(maxLength: Int) =
+    if (length <= maxLength) this else substring(0 until maxLength)

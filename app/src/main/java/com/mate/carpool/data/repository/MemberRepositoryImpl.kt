@@ -10,6 +10,8 @@ import com.mate.carpool.data.model.domain.MemberModel
 import com.mate.carpool.data.model.domain.Profile
 import com.mate.carpool.data.model.domain.TicketListModel
 import com.mate.carpool.data.model.domain.UserModel
+import com.mate.carpool.data.model.domain.UserRole
+import com.mate.carpool.data.model.dto.request.UpdateMyProfileRequest
 import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.model.response.ResponseMessage
 import com.mate.carpool.data.service.APIService
@@ -23,6 +25,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import retrofit2.HttpException
+import java.time.DayOfWeek
 import javax.inject.Inject
 
 class MemberRepositoryImpl @Inject constructor(
@@ -100,11 +103,25 @@ class MemberRepositoryImpl @Inject constructor(
         this.dayStatus.asDayStatusToDomain()
     )
 
+
+    fun ApiResponse.SuccessResponse<MemberProfileDTO>.asStatusDomain() =
+        ApiResponse.SuccessResponse(this.responseMessage.asStatusDomain())
+
+
     override fun getMyProfile(): Flow<Result<Profile>> = callApi {
         apiService.getMyProfile().toDomain()
     }
 
-
-    fun ApiResponse.SuccessResponse<MemberProfileDTO>.asStatusDomain() =
-        ApiResponse.SuccessResponse(this.responseMessage.asStatusDomain())
+    override fun updateMyProfile(
+        phone: String,
+        userRole: UserRole,
+        daysOfUse: List<DayOfWeek>
+    ): Flow<Result<ResponseMessage>> = callApi {
+        val body = UpdateMyProfileRequest.fromDomain(
+            phone = phone,
+            userRole = userRole,
+            daysOfUse = daysOfUse
+        )
+        apiService.updateMyProfile(body)
+    }
 }

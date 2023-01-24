@@ -28,7 +28,9 @@ import com.mate.carpool.ui.theme.primary50
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeAppBar() {
+fun HomeAppBar(
+    goToProfileScreen: () -> Unit
+) {
     SmallTopAppBar(
         title = {
             Text(
@@ -62,7 +64,7 @@ fun HomeAppBar() {
                 horizontalArrangement = Arrangement.Center
             )
             {
-                ProfileImage(R.drawable.icon_main_profile, 42.dp, 42.dp)
+                ProfileImage(R.drawable.icon_main_profile, 42.dp, 42.dp, goToProfileScreen)
                 IconButton(
                     onClick = { /*TODO*/ },
                     Modifier
@@ -85,9 +87,9 @@ fun HomeAppBar() {
 }
 
 @Composable
-fun ProfileImage(@DrawableRes image: Int, width: Dp, height: Dp) {
+fun ProfileImage(@DrawableRes image: Int, width: Dp, height: Dp, onClick: () -> Unit = { }) { // TODO
     IconButton(
-        onClick = { /*TODO*/ },
+        onClick = onClick,
         modifier = Modifier
             .width(width)
             .height(height)
@@ -107,5 +109,5 @@ fun ProfileImage(@DrawableRes image: Int, width: Dp, height: Dp) {
 @Preview
 @Composable
 fun PrevHomeAppBar() {
-    HomeAppBar()
+    HomeAppBar() {}
 }

@@ -5,6 +5,7 @@ import com.mate.carpool.data.model.domain.Profile
 import com.mate.carpool.data.model.domain.StartArea
 import com.mate.carpool.data.model.domain.Ticket
 import com.mate.carpool.data.model.domain.UserRole
+import com.mate.carpool.data.model.dto.common.TimeOfUseDto
 import com.mate.carpool.ui.util.date
 import com.mate.carpool.ui.util.hour
 import com.mate.carpool.ui.util.minute
@@ -30,16 +31,7 @@ data class ProfileDto(
         studentId = studentNumber,
         department = department,
         phone = phoneNumber,
-        daysOfUse = memberTimeTable.map {
-            when (it.dayCode) {
-                "1" -> DayOfWeek.MONDAY
-                "2" -> DayOfWeek.TUESDAY
-                "3" -> DayOfWeek.WEDNESDAY
-                "4" -> DayOfWeek.THURSDAY
-                "5" -> DayOfWeek.FRIDAY
-                else -> throw IllegalStateException("카풀 서비스는 평일에만 이용할 수 있습니다. daycode = ${it.dayCode}")
-            }
-        },
+        daysOfUse = memberTimeTable.map { it.toDomain() },
         userRole = when (memberRole) {
             "DRIVER" -> UserRole.DRIVER
             "PASSENGER" -> UserRole.PASSENGER
@@ -96,7 +88,3 @@ data class TicketDto(
         }
     )
 }
-
-data class TimeOfUseDto(
-    val dayCode: String
-)

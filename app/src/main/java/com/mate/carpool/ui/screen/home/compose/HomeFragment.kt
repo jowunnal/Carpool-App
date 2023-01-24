@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.DrawableRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -30,6 +31,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -65,6 +67,13 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        (requireActivity() as AppCompatActivity).supportActionBar?.hide()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -340,6 +349,7 @@ fun HomeView(
     val carpoolExistState by homeCarpoolListViewModel.carpoolExistState.collectAsStateWithLifecycle()
     val memberModel by homeCarpoolListViewModel.memberModelState.collectAsStateWithLifecycle()
     val isRefreshing = homeCarpoolListViewModel.isRefreshState
+    val navController = LocalView.current.findNavController()  // TODO 매개변수 받는 형식으로 수정
 
     LaunchedEffect(key1 = initViewState.value) {
         if (initViewState.value) {
@@ -350,8 +360,11 @@ fun HomeView(
         }
     }
 
-    Column() {
-        HomeAppBar()
+
+    Column {
+        HomeAppBar {
+            navController.navigate(R.id.action_homeFragment_to_profileLookUpFragment)
+        }
         Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 32.dp)) {
             HomeCardView(R.drawable.ic_home_folder, "공지사항", R.drawable.ic_home_rightarrow, {})
             Spacer(modifier = Modifier.height(4.dp))

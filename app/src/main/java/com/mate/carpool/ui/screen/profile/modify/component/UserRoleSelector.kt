@@ -24,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -73,6 +74,7 @@ fun UserRoleSelector(
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxSize()
+                        .clip(RoundedCornerShape(100.dp))
                         .clickable { onUserRoleChange(UserRole.DRIVER) },
                     contentAlignment = Alignment.Center
                 ) {
@@ -87,6 +89,7 @@ fun UserRoleSelector(
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxSize()
+                        .clip(RoundedCornerShape(100.dp))
                         .clickable { onUserRoleChange(UserRole.PASSENGER) },
                     contentAlignment = Alignment.Center
                 ) {
@@ -117,11 +120,12 @@ fun UserRoleSelector(
                 )
             }
         }
+        VerticalSpacer(height = 8.dp)
         Text(
             text = "드라이버는 자차보유자를, 패신저는 승객(이용자)를 뜻합니다.\n추후에 변경 가능합니다.",
             color = neutral50,
             fontWeight = FontWeight.Normal,
-            fontSize = 13.tu
+            fontSize = 13.tu,
         )
     }
 }
