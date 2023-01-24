@@ -31,11 +31,6 @@ class LoginStartFragment  : BindFragment<FragmentLoginStartBinding>(R.layout.fra
                 registerViewModel.loginFlag.value=false
             }
         })
-
-        // TODO 테스트용. 삭제
-        binding.editName.setText("강금실")
-        binding.editStudentNumber.setText("123456")
-        binding.editNumber.setText("01012345678")
     }
 
 }
