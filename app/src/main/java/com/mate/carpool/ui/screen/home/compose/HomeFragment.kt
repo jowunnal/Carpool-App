@@ -136,27 +136,27 @@ fun HomeBottomSheetLayout(
     ModalBottomSheetLayout(
         sheetContent = {
             HomeBottomSheetContent(
-                bottomSheetState,
-                bottomSheetMemberModel,
-                coroutineScope,
-                homeCarpoolBottomSheetViewModel,
-                reNewHomeListener,
-                fragmentManager
+                bottomSheetState = bottomSheetState,
+                bottomSheetMemberModel = bottomSheetMemberModel,
+                coroutineScope = coroutineScope,
+                homeCarpoolBottomSheetViewModel = homeCarpoolBottomSheetViewModel,
+                reNewHomeListener = reNewHomeListener,
+                fragmentManager = fragmentManager
             )
         },
         sheetState = bottomSheetState,
         sheetShape = RoundedCornerShape(20.dp)
     ) {
         HomeView(
-            bottomSheetState,
-            coroutineScope,
-            onNavigateToCreateCarpool,
-            bottomSheetMemberModel,
-            ticketId,
-            reNewHomeListener,
-            initViewState,
-            fragmentManager,
-            carpoolListViewModel
+            bottomSheetState = bottomSheetState,
+            coroutineScope = coroutineScope,
+            onNavigateToCreateCarpool = onNavigateToCreateCarpool,
+            bottomSheetMemberModel = bottomSheetMemberModel,
+            ticketId = ticketId,
+            reNewHomeListener = reNewHomeListener,
+            initViewState = initViewState,
+            fragmentManager = fragmentManager,
+            carpoolListViewModel = carpoolListViewModel
         )
     }
 }
@@ -362,16 +362,16 @@ fun HomeView(
     reNewHomeListener:BaseBottomSheetDialogFragment.Renewing,
     initViewState:MutableState<Boolean>,
     fragmentManager: FragmentManager,
-    homeCarpoolListViewModel: CarpoolListViewModelInterface
+    carpoolListViewModel: CarpoolListViewModelInterface
 ){
-    val carpoolExistState by homeCarpoolListViewModel.carpoolExistState.collectAsStateWithLifecycle()
-    val memberModel by homeCarpoolListViewModel.memberModelState.collectAsStateWithLifecycle()
-    val isRefreshing = homeCarpoolListViewModel.isRefreshState
+    val carpoolExistState by carpoolListViewModel.carpoolExistState.collectAsStateWithLifecycle()
+    val memberModel by carpoolListViewModel.memberModelState.collectAsStateWithLifecycle()
+    val isRefreshing = carpoolListViewModel.isRefreshState
 
     LaunchedEffect(key1 = initViewState.value){
         if(initViewState.value){
-            homeCarpoolListViewModel.getMemberModel()
-            homeCarpoolListViewModel.getCarpoolList()
+            carpoolListViewModel.getMemberModel()
+            carpoolListViewModel.getCarpoolList()
             initViewState.value = false
             isRefreshing.value = false
         }
@@ -406,7 +406,7 @@ fun HomeView(
                     initViewState,
                     isRefreshing,
                     fragmentManager,
-                    homeCarpoolListViewModel
+                    carpoolListViewModel
                 )
             }
             Spacer(modifier = Modifier.height(50.dp))
@@ -516,7 +516,7 @@ fun HomeCarpoolList(
     initViewState:MutableState<Boolean>,
     isRefreshing:MutableState<Boolean>,
     fragmentManager: FragmentManager,
-    homeCarpoolListViewModel: CarpoolListViewModelInterface
+    carpoolListViewModel: CarpoolListViewModelInterface
 ){
     Column() {
         Row(modifier = Modifier
@@ -549,7 +549,7 @@ fun HomeCarpoolList(
             initViewState,
             isRefreshing,
             fragmentManager,
-            homeCarpoolListViewModel
+            carpoolListViewModel
         )
     }
 }
@@ -565,9 +565,9 @@ fun HomeCarpoolItems(
     initViewState:MutableState<Boolean>,
     isRefreshing: MutableState<Boolean>,
     fragmentManager: FragmentManager,
-    homeCarpoolListViewModel: CarpoolListViewModelInterface
+    carpoolListViewModel: CarpoolListViewModelInterface
 ){
-    val carpoolList by homeCarpoolListViewModel.carpoolListState.collectAsStateWithLifecycle()
+    val carpoolList by carpoolListViewModel.carpoolListState.collectAsStateWithLifecycle()
     val coroutineScope = rememberCoroutineScope()
 
     val pullRefreshState = rememberPullRefreshState(
@@ -589,7 +589,7 @@ fun HomeCarpoolItems(
                         coroutineScope.launch {
                             when(memberModel.user.role){
                                 MemberRole.Driver->{
-                                    if(homeCarpoolListViewModel.isTicketIsMineOrNot(item.id)){
+                                    if(carpoolListViewModel.isTicketIsMineOrNot(item.id)){
                                         ReserveDriverFragment(
                                             reNewHomeListener
                                         ).show(fragmentManager,"driver reservation")
@@ -605,7 +605,7 @@ fun HomeCarpoolItems(
                                     }
                                 }
                                 MemberRole.Passenger->{
-                                    if(homeCarpoolListViewModel.isTicketIsMineOrNot(item.id)){
+                                    if(carpoolListViewModel.isTicketIsMineOrNot(item.id)){
                                         ReservePassengerFragment(
                                             memberModel.user.studentID,
                                             reNewHomeListener
