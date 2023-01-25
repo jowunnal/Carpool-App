@@ -1,9 +1,6 @@
 package com.mate.carpool.data.repository.impl
 
-import com.mate.carpool.data.model.DTO.MemberRequestDTO
-import com.mate.carpool.data.model.DTO.MemberTimeTableRequestDTO
 import com.mate.carpool.data.model.domain.UserModel
-import com.mate.carpool.data.model.domain.item.getMemberRoleDTO
 import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.model.response.ResponseMessage
 import com.mate.carpool.data.repository.RegisterRepository
@@ -20,17 +17,4 @@ class RegisterRepositoryImpl @Inject constructor(private val apiService: APIServ
         apiService.postSignUp(userModel.asMemberRequestDTO(),image)?: ResponseMessage()
     }
 
-    fun UserModel.asMemberRequestDTO() = MemberRequestDTO(
-        this.studentID,
-        this.name,
-        this.department,
-        this.phone.replace("-",""),
-        this.role.getMemberRoleDTO(),
-        "",
-        this.studentDayCodes.asTimeTableListDTO()
-    )
-
-    fun List<String>.asTimeTableListDTO() = List<MemberTimeTableRequestDTO>(this.size){
-        MemberTimeTableRequestDTO(this[it])
-    }
 }
