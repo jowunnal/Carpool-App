@@ -19,6 +19,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:paddingHorizontal="16dp">
 
         <TextView
@@ -69,9 +70,9 @@
             android:id="@+id/btn_confirm"
             style="@style/Theme.CarPool.NextButton"
             android:layout_width="0dp"
-            android:enabled="@{viewModel.validNameInput}"
             android:layout_height="50dp"
             android:layout_marginBottom="24dp"
+            android:enabled="@{viewModel.validNameInput}"
             android:gravity="center"
             android:onClick="@{() -> navController.navigate(R.id.action_RegisterInfoStep1Fragment_to_RegisterInfoStep2Fragment)}"
             android:text="@string/login_next"
