@@ -36,11 +36,11 @@ fun ProfileImage(
         },
         failure = {
             Image(
-                painter = painterResource(id = R.drawable.icon_main_profile),
+                painter = painterResource(id = R.drawable.ic_profile),
                 contentDescription = null
             )
         },
-        previewPlaceholder = R.drawable.icon_main_profile
+        previewPlaceholder = R.drawable.ic_profile
     )
 }
 

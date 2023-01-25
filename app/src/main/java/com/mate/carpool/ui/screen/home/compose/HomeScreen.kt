@@ -1,13 +1,16 @@
 package com.mate.carpool.ui.screen.home.compose
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -17,8 +20,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import com.mate.carpool.R
 import com.mate.carpool.data.model.domain.MemberModel
+import com.mate.carpool.data.model.domain.Ticket
 import com.mate.carpool.data.model.domain.item.MemberRole
 import com.mate.carpool.ui.base.BaseBottomSheetDialogFragment
+import com.mate.carpool.ui.composable.HorizontalDivider
 import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.navigation.NavigationGraph
 import com.mate.carpool.ui.screen.home.compose.component.*
@@ -167,7 +172,11 @@ fun HomeView(
                 Modifier
                     .weight(1f)
             ) {
-                HomeCarpoolList(
+                TicketHeader()
+
+                HorizontalDivider()
+
+                HomeCarpoolItems(
                     bottomSheetState = bottomSheetState,
                     memberModel = memberModel,
                     bottomSheetMemberModel = bottomSheetMemberModel,
@@ -178,6 +187,8 @@ fun HomeView(
                     fragmentManager = fragmentManager,
                     carpoolListViewModel = carpoolListViewModel
                 )
+
+                HorizontalDivider()
             }
 
             VerticalSpacer(height = 50.dp)
@@ -232,7 +243,6 @@ fun HomeView(
             VerticalSpacer(height = 22.dp)
         }
     }
-
 }
 
 @Preview(showBackground = true)

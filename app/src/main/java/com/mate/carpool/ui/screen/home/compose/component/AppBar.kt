@@ -1,5 +1,6 @@
 package com.mate.carpool.ui.screen.home.compose.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -32,26 +33,9 @@ fun HomeAppBar(
 ){
     SmallTopAppBar(
         title = {
-            Text(
-                text = "MATE",
-                color = primary50,
-                textAlign = TextAlign.Center,
-                fontSize = 28.sp,
-                fontWeight = FontWeight.W900,
-                modifier = Modifier
-                    .wrapContentSize(),
-                style = LocalTextStyle.current.merge(
-                    TextStyle(
-                        lineHeight = 1.em,
-                        platformStyle = PlatformTextStyle(
-                            includeFontPadding = false
-                        ),
-                        lineHeightStyle = LineHeightStyle(
-                            alignment = LineHeightStyle.Alignment.Center,
-                            trim = LineHeightStyle.Trim.None
-                        )
-                    )
-                )
+            Image(
+                painter = painterResource(id = R.drawable.ic_logo_mate),
+                contentDescription = null
             )
         },
         navigationIcon = {
@@ -65,7 +49,7 @@ fun HomeAppBar(
             {
                 ProfileImage(
                     profileImage = profileImage,
-                    modifier =  Modifier
+                    modifier = Modifier
                         .size(42.dp)
                         .padding(3.dp)
                         .clip(CircleShape)

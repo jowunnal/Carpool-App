@@ -1,7 +1,6 @@
 package com.mate.carpool.ui.screen.home.compose.component
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -18,16 +17,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.mate.carpool.R
 import com.mate.carpool.data.model.domain.MemberModel
 import com.mate.carpool.data.model.domain.item.MemberRole
 import com.mate.carpool.data.model.domain.item.TicketType
@@ -44,65 +40,6 @@ import com.mate.carpool.ui.theme.primary50
 import com.mate.carpool.ui.theme.red50
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun HomeCarpoolList(
-    bottomSheetState: ModalBottomSheetState,
-    memberModel: MemberModel,
-    bottomSheetMemberModel: MutableStateFlow<MemberModel>,
-    ticketId: MutableStateFlow<Long>,
-    reNewHomeListener: BaseBottomSheetDialogFragment.Renewing,
-    initViewState: MutableState<Boolean>,
-    isRefreshing: MutableState<Boolean>,
-    fragmentManager: FragmentManager,
-    carpoolListViewModel: CarpoolListViewModelInterface
-){
-    Column() {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .height(44.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_home_list),
-                contentDescription = null,
-                Modifier
-                    .width(24.dp)
-                    .height(24.dp)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = "카풀 목록",
-                modifier = Modifier.weight(1f)
-            )
-            Image(
-                painter = painterResource(id = R.drawable.ic_home_reddot),
-                contentDescription = null
-            )
-            Text(text = "유료")
-            Spacer(modifier = Modifier.width(6.dp))
-            Image(
-                painter = painterResource(id = R.drawable.ic_home_bluedot),
-                contentDescription = null
-            )
-            Text(text = "무료")
-        }
-        HomeCarpoolItems(
-            bottomSheetState,
-            memberModel,
-            bottomSheetMemberModel,
-            ticketId,
-            reNewHomeListener,
-            initViewState,
-            isRefreshing,
-            fragmentManager,
-            carpoolListViewModel
-        )
-    }
-}
 
 @OptIn(ExperimentalLifecycleComposeApi::class, ExperimentalMaterialApi::class)
 @Composable
@@ -130,7 +67,7 @@ fun HomeCarpoolItems(
 
     Box(
         modifier = Modifier
-            .shadow(1.dp)
+            .fillMaxSize()
             .pullRefresh(pullRefreshState)
     ) {
         LazyColumn(Modifier.fillMaxSize()) {
