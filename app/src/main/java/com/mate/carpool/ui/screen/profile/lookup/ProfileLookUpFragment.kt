@@ -1,9 +1,7 @@
 package com.mate.carpool.ui.screen.profile.lookup
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -36,6 +34,7 @@ class ProfileLookUpFragment : BaseComposeFragment<ProfileLookUpViewModel>() {
 
         ProfileLookUpScreen(
             profile = profile,
+            setProfileImage = viewModel::setProfileImage,
             onEditClick = rememberLambda {
                 profile ?: kotlin.run {
                     showSnackbar("로딩중입니다. 잠시만 기다려주세요.")

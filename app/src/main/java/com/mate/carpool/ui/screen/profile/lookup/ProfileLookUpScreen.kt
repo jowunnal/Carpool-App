@@ -1,5 +1,6 @@
 package com.mate.carpool.ui.screen.profile.lookup
 
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -20,7 +21,7 @@ import com.mate.carpool.data.model.domain.Profile
 import com.mate.carpool.data.model.domain.StartArea
 import com.mate.carpool.data.model.domain.Ticket
 import com.mate.carpool.data.model.domain.TicketStatus
-import com.mate.carpool.data.model.dto.common.UserRole
+import com.mate.carpool.data.model.domain.UserRole
 import com.mate.carpool.ui.composable.HorizontalDividerItem
 import com.mate.carpool.ui.screen.profile.lookup.component.HistoryGroup
 import com.mate.carpool.ui.screen.profile.lookup.component.HistoryHeaderItem
@@ -40,6 +41,7 @@ import java.util.Calendar
 @Composable
 fun ProfileLookUpScreen(
     profile: Profile?,
+    setProfileImage: (Uri) -> Unit,
     onEditClick: () -> Unit,
     onBackClick: () -> Unit,
 ) {
@@ -75,6 +77,7 @@ fun ProfileLookUpScreen(
                 studentId = profile?.studentId ?: "",
                 department = profile?.department ?: "",
                 phone = profile?.phone ?: "",
+                setProfileImage = setProfileImage,
             )
             HorizontalDividerItem(thickness = 12.dp, color = primary10)
             UserBottomInfoItem(
@@ -160,6 +163,7 @@ private fun ProfileScreenPreview() = MatePreview {
                 ),
             )
         ),
+        setProfileImage = {},
         onEditClick = {},
         onBackClick = {},
     )

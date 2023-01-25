@@ -61,7 +61,11 @@ interface APIService {
     suspend fun getMyProfile(): ProfileDto
 
     @PUT("member/update/profile")
-    suspend fun updateMyProfile(@Body body: UpdateMyProfileRequest): ResponseMessage
+    suspend fun updateProfile(@Body body: UpdateMyProfileRequest): ResponseMessage
+
+    @Multipart
+    @PUT("member/update/image")
+    suspend fun updateProfileImage(@Part image: MultipartBody.Part?): ResponseMessage
 
     @POST("report/new")
     suspend fun report(@Body body: ReportRequest): ResponseMessage

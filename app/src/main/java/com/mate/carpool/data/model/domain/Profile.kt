@@ -2,7 +2,6 @@ package com.mate.carpool.data.model.domain
 
 import android.os.Parcelable
 import androidx.compose.runtime.Stable
-import com.mate.carpool.data.model.dto.common.UserRole
 import kotlinx.parcelize.Parcelize
 import java.time.DayOfWeek
 

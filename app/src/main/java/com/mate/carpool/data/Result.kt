@@ -1,5 +1,6 @@
 package com.mate.carpool.data
 
+import android.util.Log
 import com.google.gson.Gson
 import com.mate.carpool.data.model.response.ResponseMessage
 import kotlinx.coroutines.flow.flow
@@ -37,13 +38,17 @@ fun <T> callApi(action: suspend () -> T) = flow {
         when (e) {
             is HttpException -> {
                 try {
-                    val response = Gson().fromJson(
+                    val response: ResponseMessage = Gson().fromJson(
                         e.response()!!.errorBody()!!.string(),
                         ResponseMessage::class.java
                     )
                     emit(Result.Error(response.message))
                 } catch (e: HttpException) {
                     emit(Result.Error(e.message()))
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    Log.e("Result", e.message, e)
+                    emit(Result.Error(e.message ?: "알 수 없는 에러가 발생했습니다."))
                 }
             }
 

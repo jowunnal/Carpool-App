@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.mate.carpool.data.Result
 import com.mate.carpool.data.model.domain.Profile
-import com.mate.carpool.data.model.dto.common.UserRole
+import com.mate.carpool.data.model.domain.UserRole
 import com.mate.carpool.data.repository.MemberRepository
 import com.mate.carpool.ui.base.BaseViewModel
 import com.mate.carpool.ui.util.map
@@ -58,7 +58,7 @@ class ProfileModifyViewModel @AssistedInject constructor(
     }
 
     fun save() {
-        memberRepository.updateMyProfile(
+        memberRepository.updateProfile(
             phone = profile.value.phone,
             userRole = profile.value.userRole,
             daysOfUse = profile.value.daysOfUse
