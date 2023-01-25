@@ -13,7 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mate.carpool.ui.theme.primary50
 import com.mate.carpool.ui.theme.red50
-import com.mate.carpool.ui.utils.IntUtils.toSp
+import com.mate.carpool.ui.util.tu
 
 @Composable
 fun HomeTicketDetail(
@@ -38,7 +38,7 @@ fun HomeTicketDetail(
                 Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                fontSize = 12.toSp(),
+                fontSize = 12.tu,
                 fontWeight = FontWeight.Bold
             )
             Text(
@@ -46,7 +46,7 @@ fun HomeTicketDetail(
                 Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                fontSize = 14.toSp()
+                fontSize = 14.tu
             )
         }
         Column(
@@ -59,7 +59,7 @@ fun HomeTicketDetail(
                 Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                fontSize = 12.toSp(),
+                fontSize = 12.tu,
                 fontWeight = FontWeight.Bold
             )
             Text(
@@ -72,7 +72,7 @@ fun HomeTicketDetail(
                     "유료" -> red50
                     else -> Color.Black
                 },
-                fontSize = 14.toSp()
+                fontSize = 14.tu
             )
         }
     }
@@ -80,7 +80,7 @@ fun HomeTicketDetail(
 
 @Preview
 @Composable
-fun PreviewHomeTicketDetail(){
+fun PreviewHomeTicketDetail() {
     HomeTicketDetail(
         text1 = "출발 시간",
         text2 = "오전 11시,1월 21일",

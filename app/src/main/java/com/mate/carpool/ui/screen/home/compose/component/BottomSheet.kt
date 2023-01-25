@@ -38,7 +38,7 @@ import com.mate.carpool.ui.screen.reservePassenger.ReservePassengerFragment
 import com.mate.carpool.ui.theme.neutral30
 import com.mate.carpool.ui.theme.neutral50
 import com.mate.carpool.ui.theme.primary50
-import com.mate.carpool.ui.utils.IntUtils.toSp
+import com.mate.carpool.ui.util.tu
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
@@ -120,9 +120,9 @@ fun HomeBottomSheetContent(
                     .padding(top = 8.dp, start = 12.dp, end = 12.dp, bottom = 8.dp)
             )
             {
-                Text(text = "출발지", fontSize = 13.toSp(), fontWeight = FontWeight.Bold)
+                Text(text = "출발지", fontSize = 13.tu, fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.height(4.dp))
-                Text(text = ticketDetail.startArea, fontSize = 18.toSp())
+                Text(text = ticketDetail.startArea, fontSize = 18.tu)
             }
             Spacer(modifier = Modifier.width(5.dp))
             Image(
@@ -140,9 +140,9 @@ fun HomeBottomSheetContent(
                     .border(1.dp, neutral30, RoundedCornerShape(5.dp))
                     .padding(top = 8.dp, start = 12.dp, end = 12.dp, bottom = 8.dp)
             ) {
-                Text(text = "도착지", fontSize = 13.toSp(), fontWeight = FontWeight.Bold)
+                Text(text = "도착지", fontSize = 13.tu, fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.height(4.dp))
-                Text(text = ticketDetail.endArea, fontSize = 18.toSp())
+                Text(text = ticketDetail.endArea, fontSize = 18.tu)
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
@@ -169,7 +169,7 @@ fun HomeBottomSheetContent(
                     .height(34.dp)) {
                 Text(
                     text = "드라이버",
-                    fontSize = 12.toSp(),
+                    fontSize = 12.tu,
                     color = neutral50,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -178,7 +178,7 @@ fun HomeBottomSheetContent(
                 )
                 Text(
                     text = ticketDetail.memberName,
-                    fontSize = 14.toSp(),
+                    fontSize = 14.tu,
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f)
@@ -226,7 +226,7 @@ fun HomeBottomSheetContent(
                 text = "탑승하기",
                 color = Color.White,
                 fontWeight = FontWeight.W900,
-                fontSize = 18.toSp()
+                fontSize = 18.tu
             )
         }
     }

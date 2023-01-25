@@ -2,9 +2,19 @@ package com.mate.carpool.ui.screen.home.compose.component
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,7 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mate.carpool.R
-import com.mate.carpool.ui.utils.IntUtils.toSp
+import com.mate.carpool.ui.util.tu
 
 @Composable
 fun HomeCardView(
@@ -48,7 +58,7 @@ fun HomeCardView(
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = text,
-                fontSize = 16.toSp(),
+                fontSize = 16.tu,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black, modifier = Modifier
                     .weight(1f)
@@ -70,10 +80,11 @@ fun HomeCardView(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewHomeMenu(){
+fun PreviewHomeMenu() {
     HomeCardView(
         imageId = R.drawable.ic_home_folder,
         text = "공지사항",
-        icon = R.drawable.ic_home_rightarrow) {
+        icon = R.drawable.ic_home_rightarrow
+    ) {
     }
 }

@@ -30,7 +30,7 @@ import com.mate.carpool.ui.screen.reserveDriver.fragment.ReserveDriverFragment
 import com.mate.carpool.ui.screen.reservePassenger.ReservePassengerFragment
 import com.mate.carpool.ui.theme.MateTheme
 import com.mate.carpool.ui.theme.primary50
-import com.mate.carpool.ui.utils.IntUtils.toSp
+import com.mate.carpool.ui.util.tu
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -73,9 +73,9 @@ fun HomeBottomSheetLayout(
         }
     }
 
-    LaunchedEffect(key1 = bottomSheetState.currentValue){
-        if(bottomSheetState.currentValue == ModalBottomSheetValue.Hidden){
-            initViewState.value=true
+    LaunchedEffect(key1 = bottomSheetState.currentValue) {
+        if (bottomSheetState.currentValue == ModalBottomSheetValue.Hidden) {
+            initViewState.value = true
         }
     }
 
@@ -223,7 +223,7 @@ fun HomeView(
                         }
                     } else
                         "내 카풀 보기",
-                    fontSize = 18.toSp(),
+                    fontSize = 18.tu,
                     fontWeight = FontWeight.W900,
                     color = Color.White
                 )
