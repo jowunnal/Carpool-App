@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:background="#007AFF"
         android:fitsSystemWindows="true"
-        tools:context=".ui.activity.MainActivity">
+        tools:context=".ui.screen.MainActivity">
 
         <ImageView
             android:id="@+id/iv_logo"

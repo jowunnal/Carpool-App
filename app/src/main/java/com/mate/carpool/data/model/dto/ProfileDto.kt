@@ -6,7 +6,7 @@ import com.mate.carpool.data.model.domain.Profile
 import com.mate.carpool.data.model.domain.StartArea
 import com.mate.carpool.data.model.domain.Ticket
 import com.mate.carpool.data.model.domain.TicketStatus
-import com.mate.carpool.data.model.dto.common.UserRole
+import com.mate.carpool.data.model.domain.UserRole
 import com.mate.carpool.data.model.dto.common.TimeOfUseDto
 import com.mate.carpool.ui.util.date
 import com.mate.carpool.ui.util.hour

@@ -7,7 +7,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.mate.carpool.R
 import com.mate.carpool.databinding.FragmentLoginStartBinding
-import com.mate.carpool.ui.activity.MainActivity
+import com.mate.carpool.ui.screen.MainActivity
 import com.mate.carpool.ui.base.BindFragment
 import com.mate.carpool.ui.screen.register.vm.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,11 +31,6 @@ class LoginStartFragment  : BindFragment<FragmentLoginStartBinding>(R.layout.fra
                 registerViewModel.loginFlag.value=false
             }
         })
-
-        // TODO 테스트용. 삭제
-        binding.editName.setText("강금실")
-        binding.editStudentNumber.setText("123456")
-        binding.editNumber.setText("01012345678")
     }
 
 }

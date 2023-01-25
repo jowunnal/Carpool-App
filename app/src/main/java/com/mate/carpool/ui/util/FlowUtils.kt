@@ -1,4 +1,4 @@
-package com.mate.carpool.util
+package com.mate.carpool.ui.util
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted

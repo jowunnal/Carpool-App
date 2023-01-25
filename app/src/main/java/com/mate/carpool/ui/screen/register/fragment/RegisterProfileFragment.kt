@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.mate.carpool.databinding.FragmentRegisterProfileBinding
 import com.mate.carpool.ui.base.BaseFragment
 import com.mate.carpool.ui.screen.register.vm.RegisterViewModel
-import com.mate.carpool.ui.utils.FileUtils.getAbsolutelyFilePath
+import com.mate.carpool.ui.util.FileUtils.getAbsolutelyFilePath
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

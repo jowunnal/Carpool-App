@@ -1,6 +1,6 @@
 package com.mate.carpool.data.model.dto.request
 
-import com.mate.carpool.data.model.dto.common.UserRole
+import com.mate.carpool.data.model.domain.UserRole
 import com.mate.carpool.data.model.dto.common.TimeOfUseDto
 import java.time.DayOfWeek
 

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loginStartFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/loginFragment"
@@ -164,6 +164,9 @@
         <action
             android:id="@+id/action_homeFragment_to_profileLookUpFragment"
             app:destination="@id/profileLookUpFragment"/>
+        <action
+            android:id="@+id/action_homeFragment_to_reportFragment"
+            app:destination="@id/reportFragment" />
     </fragment>
 
     <fragment
@@ -192,5 +195,13 @@
             app:launchSingleTop="true"
             app:popUpTo="@id/profileModifyFragment"
             app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/reportFragment"
+        android:name="com.mate.carpool.ui.screen.report.ReportFragment"
+        android:label="ReportFragment" >
+        <argument
+            android:name="studentId"
+            app:argType="long" />
     </fragment>
 </navigation>

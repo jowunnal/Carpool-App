@@ -5,7 +5,7 @@ import android.view.*
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.DialogFragment
 import androidx.viewbinding.ViewBinding
-import com.mate.carpool.ui.utils.LayoutParamsUtils
+import com.mate.carpool.ui.util.LayoutParamsUtils
 
 abstract class BasePopUpDialogFragment<VB: ViewBinding>(private val location:IntArray, @LayoutRes private val layoutRes:Int) : DialogFragment() {
     private var _binding : VB ?= null

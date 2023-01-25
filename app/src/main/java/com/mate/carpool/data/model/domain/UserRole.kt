@@ -1,4 +1,4 @@
-package com.mate.carpool.data.model.dto.common
+package com.mate.carpool.data.model.domain
 
 import androidx.compose.runtime.Stable
 

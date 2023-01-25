@@ -5,6 +5,7 @@ import com.mate.carpool.data.model.DTO.*
 import com.mate.carpool.data.model.domain.item.StudentItem
 import com.mate.carpool.data.model.dto.ProfileDto
 import com.mate.carpool.data.model.dto.TicketDeleteMemberRequestDTO
+import com.mate.carpool.data.model.dto.request.ReportRequest
 import com.mate.carpool.data.model.dto.request.UpdateMyProfileRequest
 import com.mate.carpool.data.model.response.LoginResponse
 import com.mate.carpool.data.model.response.ResponseMessage
@@ -60,5 +61,12 @@ interface APIService {
     suspend fun getMyProfile(): ProfileDto
 
     @PUT("member/update/profile")
-    suspend fun updateMyProfile(@Body body: UpdateMyProfileRequest): ResponseMessage
+    suspend fun updateProfile(@Body body: UpdateMyProfileRequest): ResponseMessage
+
+    @Multipart
+    @PUT("member/update/image")
+    suspend fun updateProfileImage(@Part image: MultipartBody.Part?): ResponseMessage
+
+    @POST("report/new")
+    suspend fun report(@Body body: ReportRequest): ResponseMessage
 }

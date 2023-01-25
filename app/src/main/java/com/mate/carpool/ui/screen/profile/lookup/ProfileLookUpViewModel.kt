@@ -1,5 +1,6 @@
 package com.mate.carpool.ui.screen.profile.lookup
 
+import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.mate.carpool.data.Result
 import com.mate.carpool.data.model.domain.Profile
@@ -32,6 +33,24 @@ class ProfileLookUpViewModel @Inject constructor(
 
                 is Result.Success -> {
                     _profile.value = result.data
+                }
+
+                is Result.Error -> {
+                    emitSnackbar(result.message)
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    fun setProfileImage(uri: Uri) {
+        memberRepository.updateProfileImage(uri).onEach { result ->
+            when (result) {
+                is Result.Loading -> {
+                }
+
+                is Result.Success -> {
+                    emitSnackbar(result.data.message)
+                    fetch()
                 }
 
                 is Result.Error -> {

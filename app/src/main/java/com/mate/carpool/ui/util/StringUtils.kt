@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.utils
+package com.mate.carpool.ui.util
 
 import com.mate.carpool.data.model.domain.item.DayStatus
 import com.mate.carpool.data.model.domain.item.MemberRole

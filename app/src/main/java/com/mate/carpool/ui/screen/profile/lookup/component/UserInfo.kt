@@ -1,7 +1,11 @@
 package com.mate.carpool.ui.screen.profile.lookup.component
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,7 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mate.carpool.R
-import com.mate.carpool.data.model.dto.common.UserRole
+import com.mate.carpool.data.model.domain.UserRole
 import com.mate.carpool.ui.composable.RemoteImage
 import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.theme.black
@@ -40,7 +44,8 @@ fun LazyListScope.UserTopInfoItem(
     studentId: String,
     department: String,
     phone: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    setProfileImage: (Uri) -> Unit,
 ) {
     item {
         UserTopInfo(
@@ -50,6 +55,7 @@ fun LazyListScope.UserTopInfoItem(
             studentId = studentId,
             department = department,
             phone = phone,
+            setProfileImage = setProfileImage
         )
     }
 }
@@ -76,8 +82,18 @@ private fun UserTopInfo(
     studentId: String,
     department: String,
     phone: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    setProfileImage: (Uri) -> Unit,
 ) {
+    val galleryLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { uri ->
+
+        if (uri != null) {
+            setProfileImage(uri)
+        }
+    }
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -92,6 +108,7 @@ private fun UserTopInfo(
                 modifier = Modifier
                     .clip(CircleShape)
                     .fillMaxSize()
+                    .clickable { galleryLauncher.launch("image/*") }
                     .background(primary10),
                 url = profileImageUrl,
                 contentDescription = "profile image"
@@ -166,6 +183,7 @@ private fun UserTopInfoPreview() {
         studentId = "111111",
         department = "미학과",
         phone = "01011112222",
+        setProfileImage = {},
     )
 }
 

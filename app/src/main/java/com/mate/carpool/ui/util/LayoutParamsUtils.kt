@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.utils
+package com.mate.carpool.ui.util
 
 import android.util.DisplayMetrics
 import androidx.fragment.app.FragmentActivity

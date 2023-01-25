@@ -5,7 +5,7 @@ import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import com.mate.carpool.R
-import com.mate.carpool.ui.utils.SettingToolbarUtils
+import com.mate.carpool.ui.util.SettingToolbarUtils
 import com.mate.carpool.ui.screen.createCarpool.vm.CreateTicketViewModel
 import com.mate.carpool.databinding.FragmentCreateCarpoolTicketPreviewBinding
 import com.mate.carpool.ui.base.BindFragment

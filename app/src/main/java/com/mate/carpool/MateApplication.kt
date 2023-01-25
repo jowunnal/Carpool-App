@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.application
+package com.mate.carpool
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

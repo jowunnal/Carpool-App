@@ -13,6 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import coil.request.ImageRequest
+import com.mate.carpool.util.ImageUtil
 
 @Composable
 fun RemoteImage(
@@ -32,11 +33,15 @@ fun RemoteImage(
         .getSharedPreferences("accessToken", Context.MODE_PRIVATE)
         .getString("accessToken", "")
 
+    val processedUrl = if (!url.startsWith("http")) {
+        ImageUtil.getImageUrl(path = url)
+    } else url
+
     AsyncImage(
         modifier = modifier,
         model = ImageRequest.Builder(context)
-            .data(url)
-            .addHeader("Authorization", "Bearer $token")
+            .data(processedUrl)
+            .addHeader("Authorization", token!!)
             .build(),
         contentDescription = contentDescription,
         transform = transform,
