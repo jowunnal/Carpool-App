@@ -1,6 +1,5 @@
-package com.mate.carpool.data.repository
+package com.mate.carpool.data.repository.impl
 
-import androidx.databinding.ObservableField
 import com.mate.carpool.data.model.DTO.MemberResponseDTO
 import com.mate.carpool.data.model.DTO.TicketDetailResponseDTO
 import com.mate.carpool.data.model.DTO.UserTicketDTO
@@ -8,19 +7,21 @@ import com.mate.carpool.data.model.domain.TicketListModel
 import com.mate.carpool.data.model.domain.TicketModel
 import com.mate.carpool.data.model.domain.UserModel
 import com.mate.carpool.data.model.response.ApiResponse
+import com.mate.carpool.data.repository.CarpoolListRepository
 import com.mate.carpool.data.service.APIService
-import com.mate.carpool.ui.utils.HandleFlowUtils.handleFlowApi
-import com.mate.carpool.ui.utils.StringUtils.asDayStatusToDomain
-import com.mate.carpool.ui.utils.StringUtils.asMemberRoleToDomain
-import com.mate.carpool.ui.utils.StringUtils.asStartDayMonthToDomain
-import com.mate.carpool.ui.utils.StringUtils.asStartTimeToDomain
-import com.mate.carpool.ui.utils.StringUtils.asTicketStatusToDomain
-import com.mate.carpool.ui.utils.StringUtils.asTicketTypeToDomain
+import com.mate.carpool.ui.util.HandleFlowUtils.handleFlowApi
+import com.mate.carpool.ui.util.StringUtils.asDayStatusToDomain
+import com.mate.carpool.ui.util.StringUtils.asMemberRoleToDomain
+import com.mate.carpool.ui.util.StringUtils.asStartDayMonthToDomain
+import com.mate.carpool.ui.util.StringUtils.asStartTimeToDomain
+import com.mate.carpool.ui.util.StringUtils.asTicketStatusToDomain
+import com.mate.carpool.ui.util.StringUtils.asTicketTypeToDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class CarpoolListRepositoryImpl @Inject constructor(private val apiService: APIService) :CarpoolListRepository {
+class CarpoolListRepositoryImpl @Inject constructor(private val apiService: APIService) :
+    CarpoolListRepository {
 
     override fun getTicketList() : Flow<ApiResponse<List<TicketListModel>>> =
         handleFlowApi {

@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.utils
+package com.mate.carpool.ui.util
 
 import android.content.Context
 import android.database.Cursor

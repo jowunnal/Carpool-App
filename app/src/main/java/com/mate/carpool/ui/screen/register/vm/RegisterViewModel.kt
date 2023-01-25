@@ -17,8 +17,8 @@ import com.mate.carpool.data.repository.MemberRepository
 import com.mate.carpool.data.repository.RegisterRepository
 import com.mate.carpool.data.service.APIService
 import com.mate.carpool.ui.base.BaseViewModel
-import com.mate.carpool.ui.utils.FileUtils.createTempFileFromInputStream
-import com.mate.carpool.util.map
+import com.mate.carpool.ui.util.FileUtils.createTempFileFromInputStream
+import com.mate.carpool.ui.util.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.*

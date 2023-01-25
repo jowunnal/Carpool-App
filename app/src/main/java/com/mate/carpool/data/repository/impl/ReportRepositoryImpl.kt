@@ -1,7 +1,8 @@
-package com.mate.carpool.data.repository
+package com.mate.carpool.data.repository.impl
 
 import com.mate.carpool.data.callApi
 import com.mate.carpool.data.model.dto.request.ReportRequest
+import com.mate.carpool.data.repository.ReportRepository
 import com.mate.carpool.data.service.APIService
 import javax.inject.Inject
 

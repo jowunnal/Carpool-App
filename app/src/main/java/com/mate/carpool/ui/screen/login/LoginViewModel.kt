@@ -1,4 +1,4 @@
-package com.mate.carpool.data.vm
+package com.mate.carpool.ui.screen.login
 
 import com.mate.carpool.ui.base.BaseViewModel
 

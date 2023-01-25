@@ -2,8 +2,6 @@ package com.mate.carpool.ui.screen.login
 
 import android.graphics.Paint
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import com.mate.carpool.data.vm.LoginViewModel
 import com.mate.carpool.databinding.FragmentLoginBinding
 import com.mate.carpool.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint

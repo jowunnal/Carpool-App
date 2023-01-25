@@ -8,7 +8,7 @@ import com.mate.carpool.data.model.domain.Profile
 import com.mate.carpool.data.model.dto.common.UserRole
 import com.mate.carpool.data.repository.MemberRepository
 import com.mate.carpool.ui.base.BaseViewModel
-import com.mate.carpool.util.map
+import com.mate.carpool.ui.util.map
 import com.mate.carpool.util.substring
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory

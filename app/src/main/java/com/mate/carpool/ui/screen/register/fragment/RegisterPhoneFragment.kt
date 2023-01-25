@@ -3,17 +3,11 @@ package com.mate.carpool.ui.screen.register.fragment
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
-import com.mate.carpool.R
-import com.mate.carpool.ui.utils.ButtonCheckUtils
-import com.mate.carpool.ui.utils.SettingToolbarUtils.setActionBar
 import com.mate.carpool.databinding.FragmentRegisterPhoneBinding
 import com.mate.carpool.ui.base.BaseFragment
 import com.mate.carpool.ui.screen.register.vm.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.update
-import java.lang.Exception
-import java.util.Locale
 
 @AndroidEntryPoint
 class RegisterPhoneFragment : BaseFragment<RegisterViewModel,FragmentRegisterPhoneBinding>() {

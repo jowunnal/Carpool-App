@@ -1,4 +1,4 @@
-package com.mate.carpool.data.repository
+package com.mate.carpool.data.repository.impl
 
 import com.google.gson.Gson
 import com.mate.carpool.data.Result
@@ -13,13 +13,14 @@ import com.mate.carpool.data.model.dto.common.UserRole
 import com.mate.carpool.data.model.dto.request.UpdateMyProfileRequest
 import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.model.response.ResponseMessage
+import com.mate.carpool.data.repository.MemberRepository
 import com.mate.carpool.data.service.APIService
-import com.mate.carpool.ui.utils.HandleFlowUtils.handleFlowApi
-import com.mate.carpool.ui.utils.StringUtils.asDayStatusToDomain
-import com.mate.carpool.ui.utils.StringUtils.asMemberRoleToDomain
-import com.mate.carpool.ui.utils.StringUtils.asStartTimeToDomain
-import com.mate.carpool.ui.utils.StringUtils.asTicketStatusToDomain
-import com.mate.carpool.ui.utils.StringUtils.asTicketTypeToDomain
+import com.mate.carpool.ui.util.HandleFlowUtils.handleFlowApi
+import com.mate.carpool.ui.util.StringUtils.asDayStatusToDomain
+import com.mate.carpool.ui.util.StringUtils.asMemberRoleToDomain
+import com.mate.carpool.ui.util.StringUtils.asStartTimeToDomain
+import com.mate.carpool.ui.util.StringUtils.asTicketStatusToDomain
+import com.mate.carpool.ui.util.StringUtils.asTicketTypeToDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map

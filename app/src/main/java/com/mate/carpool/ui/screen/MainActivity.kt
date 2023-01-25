@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.activity
+package com.mate.carpool.ui.screen
 
 import android.Manifest
 import android.os.Bundle

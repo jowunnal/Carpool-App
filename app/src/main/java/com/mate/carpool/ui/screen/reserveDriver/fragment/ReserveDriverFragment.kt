@@ -20,7 +20,7 @@ import com.mate.carpool.ui.screen.CheckDialogFragment
 import com.mate.carpool.ui.screen.home.compose.HomeFragmentDirections
 import com.mate.carpool.ui.screen.reserveDriver.adapterview.ReserveDriverViewAdapter
 import com.mate.carpool.ui.screen.reserveDriver.vm.ReserveDriverViewModel
-import com.mate.carpool.ui.utils.SettingToolbarUtils
+import com.mate.carpool.ui.util.SettingToolbarUtils
 import com.mate.carpool.ui.widget.listener.OnItemClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest

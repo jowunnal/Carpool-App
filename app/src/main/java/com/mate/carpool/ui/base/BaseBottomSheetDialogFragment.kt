@@ -14,7 +14,7 @@ import androidx.databinding.ViewDataBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.mate.carpool.R
-import com.mate.carpool.ui.utils.LayoutParamsUtils
+import com.mate.carpool.ui.util.LayoutParamsUtils
 
 abstract class BaseBottomSheetDialogFragment<VB:ViewDataBinding>(@LayoutRes private val layoutRes: Int): BottomSheetDialogFragment()  {
     private var _binding :VB ?= null

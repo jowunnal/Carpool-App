@@ -59,7 +59,7 @@ import com.mate.carpool.ui.theme.neutral30
 import com.mate.carpool.ui.theme.neutral50
 import com.mate.carpool.ui.theme.primary50
 import com.mate.carpool.ui.theme.red50
-import com.mate.carpool.ui.utils.IntUtils.toSp
+import com.mate.carpool.ui.util.IntUtils.toSp
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow

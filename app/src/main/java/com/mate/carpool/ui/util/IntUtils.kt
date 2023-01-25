@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.utils
+package com.mate.carpool.ui.util
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalDensity

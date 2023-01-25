@@ -1,16 +1,18 @@
-package com.mate.carpool.data.repository
+package com.mate.carpool.data.repository.impl
 
 import com.mate.carpool.data.model.dto.TicketDeleteMemberRequestDTO
 import com.mate.carpool.data.model.DTO.TicketNewMemberRequestDTO
 import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.model.response.ResponseMessage
+import com.mate.carpool.data.repository.PassengerRepository
 import com.mate.carpool.data.service.APIService
-import com.mate.carpool.ui.utils.HandleFlowUtils.handleFlowApi
+import com.mate.carpool.ui.util.HandleFlowUtils.handleFlowApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class PassengerRepositoryImpl @Inject constructor(private val apiService: APIService) : PassengerRepository {
+class PassengerRepositoryImpl @Inject constructor(private val apiService: APIService) :
+    PassengerRepository {
 
     override fun addNewPassengerToTicket(id:Long): Flow<ApiResponse<ResponseMessage>> = handleFlowApi{
         apiService.postPassengerNew(TicketNewMemberRequestDTO(id))
