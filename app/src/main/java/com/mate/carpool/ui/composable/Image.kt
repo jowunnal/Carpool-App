@@ -36,7 +36,7 @@ fun RemoteImage(
         modifier = modifier,
         model = ImageRequest.Builder(context)
             .data(url)
-            .addHeader("Authorization", "Bearer $token")
+            .addHeader("Authorization", token!!)
             .build(),
         contentDescription = contentDescription,
         transform = transform,

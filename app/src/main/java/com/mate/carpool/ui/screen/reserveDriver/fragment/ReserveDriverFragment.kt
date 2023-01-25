@@ -6,10 +6,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mate.carpool.R
 import com.mate.carpool.data.model.domain.item.TicketStatus
@@ -17,6 +17,7 @@ import com.mate.carpool.data.model.domain.item.getTicketStatusDTO
 import com.mate.carpool.databinding.BottomSheetReserveDriverBinding
 import com.mate.carpool.ui.base.BaseBottomSheetDialogFragment
 import com.mate.carpool.ui.screen.CheckDialogFragment
+import com.mate.carpool.ui.screen.home.compose.HomeFragmentDirections
 import com.mate.carpool.ui.screen.reserveDriver.adapterview.ReserveDriverViewAdapter
 import com.mate.carpool.ui.screen.reserveDriver.vm.ReserveDriverViewModel
 import com.mate.carpool.ui.utils.SettingToolbarUtils
@@ -29,31 +30,41 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class ReserveDriverFragment(
-    private val onRewNew:Renewing
+    private val onRewNew: Renewing
 ) : BaseBottomSheetDialogFragment<BottomSheetReserveDriverBinding>(R.layout.bottom_sheet_reserve_driver) {
-    private val reserveDriverViewModel: ReserveDriverViewModel  by activityViewModels()
-    @Inject lateinit var reserveDriverViewAdapter: ReserveDriverViewAdapter
+    private val reserveDriverViewModel: ReserveDriverViewModel by activityViewModels()
+
+    @Inject
+    lateinit var reserveDriverViewAdapter: ReserveDriverViewAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.reserveDriverViewModel=reserveDriverViewModel
-        binding.lifecycleOwner=viewLifecycleOwner
+        binding.reserveDriverViewModel = reserveDriverViewModel
+        binding.lifecycleOwner = viewLifecycleOwner
 
         binding.recyclerviewPassengers.apply {
-            adapter=reserveDriverViewAdapter
-            layoutManager=LinearLayoutManager(requireActivity(),LinearLayoutManager.VERTICAL,false)
+            adapter = reserveDriverViewAdapter
+            layoutManager =
+                LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         }
 
         reserveDriverViewModel.getMyTicket()
 
         reserveDriverViewAdapter.setItemClickListener(object : OnItemClickListener {
             override fun setOnItemClickListener(view: View, pos: Int) {
-                if(!requireActivity().isFinishing){
+                if (!requireActivity().isFinishing) {
                     val location = IntArray(2)
                     view.getLocationOnScreen(location)
-                    reserveDriverViewModel.passengerId.value = reserveDriverViewAdapter.getPassengerIdOnSelectedItem(pos).toLong()
-                    TicketDriverPopUp(location).show(requireActivity().supportFragmentManager,"popup")
+                    reserveDriverViewModel.passengerId.value =
+                        reserveDriverViewAdapter.getPassengerIdOnSelectedItem(pos).toLong()
+                    TicketDriverPopUp(location) {
+                        val action = HomeFragmentDirections.actionHomeFragmentToReportFragment(
+                            reserveDriverViewAdapter.getStudentIdOnSelectedItem(pos)
+                        )
+                        findNavController().navigate(action)
+                        dismissAllowingStateLoss()
+                    }.show(requireActivity().supportFragmentManager, "popup")
                 }
             }
         })
@@ -62,8 +73,8 @@ class ReserveDriverFragment(
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     reserveDriverViewModel.toastMessage.collectLatest {
-                        if(it!="")
-                            Toast.makeText(requireActivity(),it, Toast.LENGTH_SHORT).show()
+                        if (it != "")
+                            Toast.makeText(requireActivity(), it, Toast.LENGTH_SHORT).show()
                     }
                 }
                 launch {
@@ -91,8 +102,8 @@ class ReserveDriverFragment(
                 requireActivity(),
                 "티켓을 삭제하시겠어요?",
                 "패신저에게 고지하셨나요? 이미 입금을 받으셨다면 환불처리를 진행해 주세요.\n" +
-                    "패신저가 있는 상태에서 2회 이상 취소시, 추후 서비스를 더이상 이용하실 수 없습니다.\n" +
-                    "그래도 삭제하시겠습니까?",
+                        "패신저가 있는 상태에서 2회 이상 취소시, 추후 서비스를 더이상 이용하실 수 없습니다.\n" +
+                        "그래도 삭제하시겠습니까?",
                 "티켓삭제",
                 onDoSomething = object : CheckDialogFragment.Listener() {
                     override fun onPositiveButtonClick() {
@@ -122,7 +133,10 @@ class ReserveDriverFragment(
             dismissAllowingStateLoss()
         }
         binding.imgTicketRightarrow.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(reserveDriverViewModel.ticketDetail.value.openChatUrl))
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(reserveDriverViewModel.ticketDetail.value.openChatUrl)
+            )
             startActivity(intent)
         }
     }

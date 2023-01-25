@@ -1,10 +1,10 @@
 package com.mate.carpool.data
 
-import android.util.Log
 import com.google.gson.Gson
 import com.mate.carpool.data.model.response.ResponseMessage
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
+import java.io.IOException
 
 
 sealed class Result<out R> {
@@ -34,16 +34,27 @@ fun <T> callApi(action: suspend () -> T) = flow {
     } catch (e: Exception) {
         e.printStackTrace()
 
-        if (e is HttpException) {
-            val response = try {
-                Gson().fromJson(e.response()!!.errorBody()!!.string(), ResponseMessage::class.java)
-            } catch (e: HttpException) {
-                ResponseMessage(message = "알 수 없는 오류가 발생했습니다.", code = e.code().toString())
+        when (e) {
+            is HttpException -> {
+                try {
+                    val response = Gson().fromJson(
+                        e.response()!!.errorBody()!!.string(),
+                        ResponseMessage::class.java
+                    )
+                    emit(Result.Error(response.message))
+                } catch (e: HttpException) {
+                    emit(Result.Error(e.message()))
+                }
             }
-            emit(Result.Error(response.message))
 
-        } else {
-            throw e
+            is IOException -> {
+                emit(Result.Error("네트워크 확인 후 다시 시도해주세요."))
+            }
+
+            else -> {
+                emit(Result.Error(e.message ?: "알 수 없는 에러가 발생했습니다."))
+            }
         }
+
     }
 }

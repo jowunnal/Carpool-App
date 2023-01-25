@@ -27,4 +27,8 @@ abstract class RepositoryModule {
     @Singleton
     abstract fun bindsRegisterRepository(registerRepositoryImpl: RegisterRepositoryImpl) : RegisterRepository
 
+
+    @Binds
+    @Singleton
+    abstract fun bindsReportRepository(impl: ReportRepositoryImpl) : ReportRepository
 }

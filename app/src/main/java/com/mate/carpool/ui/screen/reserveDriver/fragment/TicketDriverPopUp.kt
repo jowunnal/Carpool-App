@@ -8,19 +8,28 @@ import com.mate.carpool.databinding.ItemviewDriverInfoPopupBinding
 import com.mate.carpool.ui.base.BasePopUpDialogFragment
 import com.mate.carpool.ui.screen.reserveDriver.vm.ReserveDriverViewModel
 
-class TicketDriverPopUp(location:IntArray) : BasePopUpDialogFragment<ItemviewDriverInfoPopupBinding>(location, R.layout.itemview_driver_info_popup) {
-    private val reserveDriverViewModel:ReserveDriverViewModel by activityViewModels()
+class TicketDriverPopUp(
+    location: IntArray,
+    private val onReportClick: () -> Unit,
+) : BasePopUpDialogFragment<ItemviewDriverInfoPopupBinding>(
+    location,
+    R.layout.itemview_driver_info_popup
+) {
+
+    private val reserveDriverViewModel: ReserveDriverViewModel by activityViewModels()
 
     override fun bindFragment(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): ItemviewDriverInfoPopupBinding = ItemviewDriverInfoPopupBinding.inflate(inflater,container,false)
+    ): ItemviewDriverInfoPopupBinding =
+        ItemviewDriverInfoPopupBinding.inflate(inflater, container, false)
 
-    override fun initView() = with(binding){
+    override fun initView() = with(binding) {
         tvFire.setOnClickListener {
             reserveDriverViewModel.deletePassengerToTicket()
         }
         tvReport.setOnClickListener {
+            onReportClick()
             dismissAllowingStateLoss()
         }
     }

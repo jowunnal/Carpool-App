@@ -14,6 +14,7 @@ import javax.inject.Inject
 class ReserveDriverViewAdapter @Inject constructor(@ActivityContext private val context: Context):RecyclerView.Adapter<ReserveDriverViewAdapter.ViewHolder>(), OnItemClickListener {
     private val items = ArrayList<HashMap<String,String>>()
     private var mListener : OnItemClickListener?= null
+
     inner class ViewHolder(private val binding:ItemviewPassengerInfoBinding) :RecyclerView.ViewHolder(binding.root) {
         init {
             binding.iconTripleCircle.setOnClickListener {
@@ -46,6 +47,8 @@ class ReserveDriverViewAdapter @Inject constructor(@ActivityContext private val 
     fun getPassengerIdOnSelectedItem(pos:Int) : String{
         return this.items[pos]["passengerId"]!!
     }
+
+    fun getStudentIdOnSelectedItem(pos: Int): Long = items[pos]["id"]!!.toLong()
 
     fun setItemClickListener(listener: OnItemClickListener){
         this.mListener=listener
