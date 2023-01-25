@@ -2,13 +2,7 @@ package com.mate.carpool.ui.screen.home.compose.component
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
@@ -50,28 +44,28 @@ fun HomeCardView(
         ) {
             Image(
                 painter = painterResource(id = imageId),
-                contentDescription = null,
-                modifier = Modifier
-                    .width(20.dp)
-                    .height(16.dp)
+                contentDescription = null
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = text,
                 fontSize = 16.tu,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.ExtraBold,
                 color = Color.Black, modifier = Modifier
                     .weight(1f)
                     .height(22.dp)
             )
 
-            IconButton(onClick = onNavigateCallBack) {
+            IconButton(
+                onClick = onNavigateCallBack,
+                modifier = Modifier
+                    .width(24.dp)
+                    .height(24.dp)
+            ) {
                 Icon(
                     painter = painterResource(id = icon),
                     contentDescription = null,
-                    modifier = Modifier
-                        .width(24.dp)
-                        .height(24.dp)
+                    modifier = Modifier.fillMaxSize()
                 )
             }
         }
@@ -84,7 +78,7 @@ fun PreviewHomeMenu() {
     HomeCardView(
         imageId = R.drawable.ic_home_folder,
         text = "공지사항",
-        icon = R.drawable.ic_home_rightarrow
+        icon = R.drawable.ic_navigate_next_small
     ) {
     }
 }

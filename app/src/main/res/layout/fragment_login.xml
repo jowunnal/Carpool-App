@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="7dp"
             android:baselineAlignBottom="true"
-            android:src="@drawable/ic_car_blue"
+            android:src="@drawable/ic_home_car"
             app:layout_constraintBaseline_toBaselineOf="@id/tv_title"
             app:layout_constraintStart_toEndOf="@id/tv_title" />
 

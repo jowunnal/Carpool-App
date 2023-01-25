@@ -1,16 +1,13 @@
 package com.mate.carpool.ui.screen.home.compose
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -20,7 +17,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import com.mate.carpool.R
 import com.mate.carpool.data.model.domain.MemberModel
-import com.mate.carpool.data.model.domain.Ticket
 import com.mate.carpool.data.model.domain.item.MemberRole
 import com.mate.carpool.ui.base.BaseBottomSheetDialogFragment
 import com.mate.carpool.ui.composable.HorizontalDivider
@@ -148,33 +144,30 @@ fun HomeView(
             goToProfileScreen = onNavigateToProfileView
         )
         Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 32.dp)) {
-            HomeCardView(R.drawable.ic_home_folder, "공지사항", R.drawable.ic_home_rightarrow, {})
+            HomeCardView(R.drawable.ic_home_folder, "공지사항", R.drawable.ic_navigate_next_small, {})
             Spacer(modifier = Modifier.height(4.dp))
 
             when (memberModel.user.role) {
                 MemberRole.Passenger -> {
-                    //HomeCardView(R.drawable.ic_home_location,"지역설정",R.drawable.ic_home_rightarrow,{})
+                    //HomeCardView(R.drawable.ic_home_location,"지역설정",R.drawable.ic_navigate_next,{})
                 }
 
                 MemberRole.Driver -> {
                     HomeCardView(
-                        R.drawable.ic_car_blue,
+                        R.drawable.ic_home_car,
                         "카풀 모집하기",
-                        R.drawable.ic_home_rightarrow,
+                        R.drawable.ic_add_small,
                         onNavigateToCreateCarpool
                     )
                 }
             }
 
             VerticalSpacer(height = 4.dp)
-
             Column(
                 Modifier
                     .weight(1f)
             ) {
                 TicketHeader()
-
-                HorizontalDivider()
 
                 HomeCarpoolItems(
                     bottomSheetState = bottomSheetState,
@@ -187,8 +180,6 @@ fun HomeView(
                     fragmentManager = fragmentManager,
                     carpoolListViewModel = carpoolListViewModel
                 )
-
-                HorizontalDivider()
             }
 
             VerticalSpacer(height = 50.dp)

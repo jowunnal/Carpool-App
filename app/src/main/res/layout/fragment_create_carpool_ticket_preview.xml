@@ -151,7 +151,7 @@
                     app:layout_constraintStart_toEndOf="@+id/text_driver"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintWidth_percent="0.12"
-                    app:srcCompat="@drawable/ic_home_rightarrow" />
+                    app:srcCompat="@drawable/ic_navigate_next_small" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.Guideline

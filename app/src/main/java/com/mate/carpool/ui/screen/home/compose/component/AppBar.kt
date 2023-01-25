@@ -51,7 +51,6 @@ fun HomeAppBar(
                     profileImage = profileImage,
                     modifier = Modifier
                         .size(42.dp)
-                        .padding(3.dp)
                         .clip(CircleShape)
                         .border(1.dp, Color.White, CircleShape)
                         .clickable(onClick = goToProfileScreen)
@@ -61,12 +60,12 @@ fun HomeAppBar(
                     Modifier
                         .width(36.dp)
                         .height(36.dp)
-                        .padding(4.5.dp)
                 )
                 {
                     Icon(
-                        painter = painterResource(id = R.drawable.icon_hamburger),
-                        contentDescription = null, Modifier.fillMaxSize()
+                        painter = painterResource(id = R.drawable.ic_hamburger),
+                        contentDescription = null,
+                        Modifier.fillMaxSize()
                     )
                 }
             }

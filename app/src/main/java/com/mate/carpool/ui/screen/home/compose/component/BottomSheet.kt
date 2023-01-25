@@ -185,7 +185,7 @@ fun HomeBottomSheetContent(
                 )
             }
             Image(
-                painter = painterResource(id = R.drawable.ic_home_rightarrow),
+                painter = painterResource(id = R.drawable.ic_navigate_next_small),
                 contentDescription = null,
                 modifier = Modifier
                     .width(24.dp)

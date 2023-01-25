@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
@@ -29,15 +30,17 @@ import com.mate.carpool.data.model.domain.item.MemberRole
 import com.mate.carpool.data.model.domain.item.TicketType
 import com.mate.carpool.data.model.domain.item.getDayStatus
 import com.mate.carpool.ui.base.BaseBottomSheetDialogFragment
+import com.mate.carpool.ui.composable.HorizontalDivider
+import com.mate.carpool.ui.composable.HorizontalDividerItem
+import com.mate.carpool.ui.composable.HorizontalSpacer
+import com.mate.carpool.ui.composable.VerticalDividerItem
 import com.mate.carpool.ui.screen.home.vm.CarpoolListViewModelInterface
 import com.mate.carpool.ui.screen.home.vm.PreviewCarpoolListViewModel
 import com.mate.carpool.ui.screen.home.vm.PreviewHomeBottomSheetViewModel
 import com.mate.carpool.ui.screen.reserveDriver.fragment.ReserveDriverFragment
 import com.mate.carpool.ui.screen.reservePassenger.ReservePassengerFragment
-import com.mate.carpool.ui.theme.neutral20
-import com.mate.carpool.ui.theme.neutral50
-import com.mate.carpool.ui.theme.primary50
-import com.mate.carpool.ui.theme.red50
+import com.mate.carpool.ui.theme.*
+import com.mate.carpool.ui.util.tu
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
@@ -71,78 +74,85 @@ fun HomeCarpoolItems(
             .pullRefresh(pullRefreshState)
     ) {
         LazyColumn(Modifier.fillMaxSize()) {
-            items(items = carpoolList, key = { item -> item.id }) { item ->
-                Column(Modifier.clickable {
-                    if (!bottomSheetState.isVisible) {
-                        coroutineScope.launch {
-                            when(memberModel.user.role){
-                                MemberRole.Driver->{
-                                    if(carpoolListViewModel.isTicketIsMineOrNot(item.id)){
-                                        ReserveDriverFragment(
-                                            reNewHomeListener
-                                        ).show(fragmentManager, "driver reservation")
-                                    } else {
-                                        showBottomSheet(
-                                            ticketId,
-                                            item.id,
-                                            bottomSheetMemberModel,
-                                            memberModel,
-                                            bottomSheetState
-                                        )
+            HorizontalDividerItem()
+
+            itemsIndexed(items = carpoolList, key = { _, item -> item.id }) { index, item ->
+                Column(modifier = Modifier
+                    .padding(16.dp)
+                    .clickable {
+                        if (!bottomSheetState.isVisible) {
+                            coroutineScope.launch {
+                                when (memberModel.user.role) {
+                                    MemberRole.Driver -> {
+                                        if (carpoolListViewModel.isTicketIsMineOrNot(item.id)) {
+                                            ReserveDriverFragment(
+                                                reNewHomeListener
+                                            ).show(fragmentManager, "driver reservation")
+                                        } else {
+                                            showBottomSheet(
+                                                ticketId,
+                                                item.id,
+                                                bottomSheetMemberModel,
+                                                memberModel,
+                                                bottomSheetState
+                                            )
+                                        }
                                     }
-                                }
-                                MemberRole.Passenger->{
-                                    if(carpoolListViewModel.isTicketIsMineOrNot(item.id)){
-                                        ReservePassengerFragment(
-                                            memberModel.user.studentID,
-                                            reNewHomeListener
-                                        ).show(fragmentManager, "passenger reservation")
-                                    } else {
-                                        showBottomSheet(
-                                            ticketId,
-                                            item.id,
-                                            bottomSheetMemberModel,
-                                            memberModel,
-                                            bottomSheetState
-                                        )
+                                    MemberRole.Passenger -> {
+                                        if (carpoolListViewModel.isTicketIsMineOrNot(item.id)) {
+                                            ReservePassengerFragment(
+                                                memberModel.user.studentID,
+                                                reNewHomeListener
+                                            ).show(fragmentManager, "passenger reservation")
+                                        } else {
+                                            showBottomSheet(
+                                                ticketId,
+                                                item.id,
+                                                bottomSheetMemberModel,
+                                                memberModel,
+                                                bottomSheetState
+                                            )
+                                        }
                                     }
                                 }
                             }
-
                         }
                     }
-                }) {
-                    Row(
-                        modifier = Modifier.padding(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    )
+                ) {
+                    Row ( verticalAlignment = Alignment.CenterVertically )
                     {
                         ProfileImage(
                             profileImage = item.profileImage,
                             modifier = Modifier
                                 .width(50.dp)
                                 .height(47.dp)
-                                .padding(3.dp)
                                 .clip(CircleShape)
                                 .border(1.dp, Color.White, CircleShape)
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
+
+                        HorizontalSpacer(width = 8.dp)
+
                         Row(modifier = Modifier.weight(1f)) {
                             Text(
                                 text = item.startArea,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.ExtraBold,
+                                fontSize = 16.tu
                             )
                             Text(
-                                text = " 출발,"
+                                text = " 출발,",
+                                fontSize = 16.tu
                             )
                             Text(
-                                text = item.dayStatus?.getDayStatus() ?: ""
+                                text = item.dayStatus?.getDayStatus() ?: "",
+                                fontSize = 16.tu
                             )
                             Text(
-                                text = item.startTime,
-                                fontWeight = FontWeight.Bold
+                                text = " ${item.startTime}",
+                                fontWeight = FontWeight.ExtraBold,
+                                fontSize = 16.tu
                             )
                         }
+
                         Chip(
                             onClick = { /*TODO*/ },
                             colors = when (item.ticketType) {
@@ -156,14 +166,10 @@ fun HomeCarpoolItems(
                         }
                     }
                 }
-                Text(
-                    text = "",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(1.dp)
-                        .background(neutral20)
-                )
+                if(index != carpoolList.lastIndex)
+                    HorizontalDivider()
             }
+            HorizontalDividerItem()
         }
         PullRefreshIndicator(
             refreshing = isRefreshing.value,
@@ -190,7 +196,7 @@ private suspend fun showBottomSheet(
 
 @SuppressLint("StateFlowValueCalledInComposition", "UnrememberedMutableState")
 @OptIn(ExperimentalMaterialApi::class)
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun PreviewHomeCarpoolItems(){
     HomeCarpoolItems(
