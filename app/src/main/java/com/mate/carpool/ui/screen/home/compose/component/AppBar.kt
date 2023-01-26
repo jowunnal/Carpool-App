@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.mate.carpool.R
+import com.mate.carpool.ui.theme.MateTheme
 import com.mate.carpool.ui.theme.primary50
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -78,6 +79,10 @@ fun HomeAppBar(
 
 @Preview
 @Composable
-fun PrevHomeAppBar(){
-    HomeAppBar(""){}
-}
+private fun PrevHomeAppBar() =
+    MateTheme {
+        HomeAppBar(
+            "",
+            goToProfileScreen = {}
+        )
+    }

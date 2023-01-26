@@ -12,6 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mate.carpool.R
 import com.mate.carpool.ui.composable.HorizontalSpacer
+import com.mate.carpool.ui.theme.MateTheme
 import com.mate.carpool.ui.util.tu
 
 @Composable
@@ -66,6 +67,7 @@ fun TicketHeader(){
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewTicketHeader(){
-    TicketHeader()
-}
+private fun PreviewTicketHeader() =
+    MateTheme {
+        TicketHeader()
+    }

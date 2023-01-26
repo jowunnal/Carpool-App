@@ -35,6 +35,7 @@ import com.mate.carpool.ui.base.BaseBottomSheetDialogFragment
 import com.mate.carpool.ui.screen.home.vm.HomeBottomSheetViewModelInterface
 import com.mate.carpool.ui.screen.home.vm.PreviewHomeBottomSheetViewModel
 import com.mate.carpool.ui.screen.reservePassenger.ReservePassengerFragment
+import com.mate.carpool.ui.theme.MateTheme
 import com.mate.carpool.ui.theme.neutral30
 import com.mate.carpool.ui.theme.neutral50
 import com.mate.carpool.ui.theme.primary50
@@ -235,12 +236,13 @@ fun HomeBottomSheetContent(
 @OptIn(ExperimentalMaterialApi::class)
 @Preview(showBackground = true)
 @Composable
-private fun PreviewBottomSheet(){
-    HomeBottomSheetContent(
-        bottomSheetState = ModalBottomSheetState(ModalBottomSheetValue.Expanded),
-        bottomSheetMemberModel = PreviewHomeBottomSheetViewModel.memberModel,
-        homeCarpoolBottomSheetViewModel = PreviewHomeBottomSheetViewModel,
-        reNewHomeListener = object : BaseBottomSheetDialogFragment.Renewing(){ override fun onRewNew() {} },
-        fragmentManager = object : FragmentManager(){}
-    )
-}
+private fun PreviewBottomSheet() =
+    MateTheme {
+        HomeBottomSheetContent(
+            bottomSheetState = ModalBottomSheetState(ModalBottomSheetValue.Expanded),
+            bottomSheetMemberModel = PreviewHomeBottomSheetViewModel.memberModel,
+            homeCarpoolBottomSheetViewModel = PreviewHomeBottomSheetViewModel,
+            reNewHomeListener = object : BaseBottomSheetDialogFragment.Renewing(){ override fun onRewNew() {} },
+            fragmentManager = object : FragmentManager(){}
+        )
+    }

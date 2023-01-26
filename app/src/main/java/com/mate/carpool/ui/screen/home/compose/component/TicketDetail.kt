@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mate.carpool.ui.theme.MateTheme
 import com.mate.carpool.ui.theme.primary50
 import com.mate.carpool.ui.theme.red50
 import com.mate.carpool.ui.util.tu
@@ -80,11 +81,12 @@ fun HomeTicketDetail(
 
 @Preview
 @Composable
-fun PreviewHomeTicketDetail() {
-    HomeTicketDetail(
-        text1 = "출발 시간",
-        text2 = "오전 11시,1월 21일",
-        text3 = "탑승 장소",
-        text4 = "인동"
-    )
-}
+private fun PreviewHomeTicketDetail() =
+    MateTheme {
+        HomeTicketDetail(
+            text1 = "출발 시간",
+            text2 = "오전 11시,1월 21일",
+            text3 = "탑승 장소",
+            text4 = "인동"
+        )
+    }

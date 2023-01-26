@@ -32,6 +32,7 @@ import com.mate.carpool.ui.screen.reservePassenger.ReservePassengerFragment
 import com.mate.carpool.ui.theme.MateTheme
 import com.mate.carpool.ui.theme.primary50
 import com.mate.carpool.ui.util.tu
+import com.mate.carpool.util.MatePreview
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -62,9 +63,9 @@ fun HomeBottomSheetLayout(
     val bottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden
     )
-    val coroutineScope = rememberCoroutineScope()
 
     val ticketId = homeCarpoolBottomSheetViewModel.mutableTicketId
+
     val bottomSheetMemberModel = homeCarpoolBottomSheetViewModel.memberModel
     val initViewState = homeCarpoolBottomSheetViewModel.initViewState
 
@@ -95,7 +96,6 @@ fun HomeBottomSheetLayout(
     ) {
         HomeView(
             bottomSheetState = bottomSheetState,
-            coroutineScope = coroutineScope,
             onNavigateToCreateCarpool = onNavigateToCreateCarpool,
             onNavigateToProfileView = onNavigateToProfileView,
             bottomSheetMemberModel = bottomSheetMemberModel,
@@ -113,7 +113,6 @@ fun HomeBottomSheetLayout(
 @Composable
 fun HomeView(
     bottomSheetState: ModalBottomSheetState,
-    coroutineScope: CoroutineScope,
     onNavigateToCreateCarpool: () -> Unit,
     onNavigateToProfileView: () -> Unit,
     bottomSheetMemberModel: MutableStateFlow<MemberModel>,
@@ -186,21 +185,19 @@ fun HomeView(
 
             Button(
                 onClick = {
-                    coroutineScope.launch {
-                        if (carpoolExistState) {
-                            when (memberModel.user.role) {
-                                MemberRole.Passenger -> {
-                                    ReservePassengerFragment(
-                                        memberModel.user.studentID,
-                                        reNewHomeListener
-                                    ).show(fragmentManager, "passenger reservation")
-                                }
+                    if (carpoolExistState) {
+                        when (memberModel.user.role) {
+                            MemberRole.Passenger -> {
+                                ReservePassengerFragment(
+                                    memberModel.user.studentID,
+                                    reNewHomeListener
+                                ).show(fragmentManager, "passenger reservation")
+                            }
 
-                                MemberRole.Driver -> {
-                                    ReserveDriverFragment(
-                                        reNewHomeListener
-                                    ).show(fragmentManager, "driver reservation")
-                                }
+                            MemberRole.Driver -> {
+                                ReserveDriverFragment(
+                                    reNewHomeListener
+                                ).show(fragmentManager, "driver reservation")
                             }
                         }
                     }
@@ -238,16 +235,13 @@ fun HomeView(
 
 @Preview(showBackground = true)
 @Composable
-fun HomePreview() {
-    MateTheme() {
+private fun HomePreview() =
+    MateTheme {
         HomeBottomSheetLayout(
             onNavigateToCreateCarpool = {},
             onNavigateToProfileView = {},
             homeCarpoolBottomSheetViewModel = PreviewHomeBottomSheetViewModel,
-            fragmentManager = object : FragmentManager() {
-
-            },
+            fragmentManager = object : FragmentManager() {},
             carpoolListViewModel = PreviewCarpoolListViewModel
         )
     }
-}

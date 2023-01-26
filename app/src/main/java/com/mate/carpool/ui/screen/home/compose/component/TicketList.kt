@@ -198,16 +198,18 @@ private suspend fun showBottomSheet(
 @OptIn(ExperimentalMaterialApi::class)
 @Preview(showBackground = true)
 @Composable
-fun PreviewHomeCarpoolItems(){
-    HomeCarpoolItems(
-        bottomSheetState = ModalBottomSheetState(ModalBottomSheetValue.Expanded),
-        memberModel = PreviewHomeBottomSheetViewModel.memberModel.value,
-        bottomSheetMemberModel = PreviewHomeBottomSheetViewModel.memberModel,
-        ticketId = MutableStateFlow(0L),
-        reNewHomeListener = object : BaseBottomSheetDialogFragment.Renewing(){ override fun onRewNew() { } },
-        initViewState = mutableStateOf(false),
-        isRefreshing = mutableStateOf(false),
-        fragmentManager = object : FragmentManager(){},
-        carpoolListViewModel = PreviewCarpoolListViewModel
-    )
-}
+private fun PreviewHomeCarpoolItems() =
+    MateTheme {
+        HomeCarpoolItems(
+            bottomSheetState = ModalBottomSheetState(ModalBottomSheetValue.Expanded),
+            memberModel = PreviewHomeBottomSheetViewModel.memberModel.value,
+            bottomSheetMemberModel = PreviewHomeBottomSheetViewModel.memberModel,
+            ticketId = MutableStateFlow(0L),
+            reNewHomeListener = object : BaseBottomSheetDialogFragment.Renewing(){ override fun onRewNew() { } },
+            initViewState = mutableStateOf(false),
+            isRefreshing = mutableStateOf(false),
+            fragmentManager = object : FragmentManager(){},
+            carpoolListViewModel = PreviewCarpoolListViewModel
+        )
+    }
+

@@ -23,6 +23,7 @@ fun NavigationGraph(
     homeCarpoolBottomSheetViewModel: HomeBottomSheetViewModelInterface = hiltViewModel<HomeBottomSheetViewModel>()
 ){
     NavHost(navController = navController, startDestination = NavigationModel.Home.route){
+
         composable(route = NavigationModel.Home.route){
             HomeBottomSheetLayout(
                 onNavigateToCreateCarpool = onNavigateToCreateCarpool,
@@ -32,7 +33,9 @@ fun NavigationGraph(
                 carpoolListViewModel = homeCarpoolListViewModel
             )
         }
+
         composable(route = NavigationModel.Announcement.route){
         }
+
     }
 }

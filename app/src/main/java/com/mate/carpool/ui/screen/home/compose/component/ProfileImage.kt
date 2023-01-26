@@ -12,6 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import com.mate.carpool.R
+import com.mate.carpool.ui.theme.MateTheme
 import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
@@ -46,6 +47,7 @@ fun ProfileImage(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewProfileImage(){
-    ProfileImage(profileImage = "", modifier = Modifier)
-}
+private fun PreviewProfileImage() =
+    MateTheme {
+        ProfileImage(profileImage = "", modifier = Modifier)
+    }

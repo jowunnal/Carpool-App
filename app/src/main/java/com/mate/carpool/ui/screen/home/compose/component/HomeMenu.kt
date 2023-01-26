@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mate.carpool.R
+import com.mate.carpool.ui.theme.MateTheme
 import com.mate.carpool.ui.util.tu
 
 @Composable
@@ -74,11 +75,12 @@ fun HomeCardView(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewHomeMenu() {
-    HomeCardView(
-        imageId = R.drawable.ic_home_folder,
-        text = "공지사항",
-        icon = R.drawable.ic_navigate_next_small
-    ) {
+private fun PreviewHomeMenu() =
+    MateTheme {
+        HomeCardView(
+            imageId = R.drawable.ic_home_folder,
+            text = "공지사항",
+            icon = R.drawable.ic_navigate_next_small,
+            onNavigateCallBack = {}
+        )
     }
-}
