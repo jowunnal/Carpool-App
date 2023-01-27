@@ -1,6 +1,5 @@
 package com.mate.carpool.ui.screen.profile.lookup.component
 
-import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -18,10 +17,12 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,6 +36,12 @@ import com.mate.carpool.ui.theme.primary10
 import com.mate.carpool.ui.util.displayName
 import com.mate.carpool.ui.util.tu
 import com.mate.carpool.util.formatPhoneNumber
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 import java.time.DayOfWeek
 
 @Suppress("FunctionName")
@@ -45,7 +52,7 @@ fun LazyListScope.UserTopInfoItem(
     department: String,
     phone: String,
     modifier: Modifier = Modifier,
-    setProfileImage: (Uri) -> Unit,
+    setProfileImage: (MultipartBody.Part) -> Unit,
 ) {
     item {
         UserTopInfo(
@@ -83,14 +90,28 @@ private fun UserTopInfo(
     department: String,
     phone: String,
     modifier: Modifier = Modifier,
-    setProfileImage: (Uri) -> Unit,
+    setProfileImage: (MultipartBody.Part) -> Unit,
 ) {
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
     val galleryLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.GetContent()
     ) { uri ->
 
         if (uri != null) {
-            setProfileImage(uri)
+            coroutineScope.launch(Dispatchers.IO) {
+                val inputStream = context.contentResolver.openInputStream(uri)
+                val file = File.createTempFile("temp", ".jpg")
+                file.deleteOnExit()
+                inputStream?.copyTo(file.outputStream())
+                inputStream?.close()
+                val part = MultipartBody.Part.createFormData(
+                    name = "image",
+                    filename = file.name,
+                    body = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+                )
+                setProfileImage(part)
+            }
         }
     }
 

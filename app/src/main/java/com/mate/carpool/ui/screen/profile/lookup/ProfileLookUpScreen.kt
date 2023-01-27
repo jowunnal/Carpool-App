@@ -34,6 +34,7 @@ import com.mate.carpool.ui.util.date
 import com.mate.carpool.ui.util.month
 import com.mate.carpool.ui.util.year
 import com.mate.carpool.util.MatePreview
+import okhttp3.MultipartBody
 import java.time.DayOfWeek
 import java.util.Calendar
 
@@ -41,7 +42,7 @@ import java.util.Calendar
 @Composable
 fun ProfileLookUpScreen(
     profile: Profile?,
-    setProfileImage: (Uri) -> Unit,
+    setProfileImage: (MultipartBody.Part) -> Unit,
     onEditClick: () -> Unit,
     onBackClick: () -> Unit,
 ) {

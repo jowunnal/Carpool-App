@@ -1,7 +1,6 @@
 package com.mate.carpool.data.repository.impl
 
 import android.content.Context
-import android.net.Uri
 import com.google.gson.Gson
 import com.mate.carpool.data.Result
 import com.mate.carpool.data.callApi
@@ -13,16 +12,17 @@ import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.model.response.ResponseMessage
 import com.mate.carpool.data.repository.MemberRepository
 import com.mate.carpool.data.service.APIService
-import com.mate.carpool.util.EncapsulationUtil.asStatusDomain
 import com.mate.carpool.ui.util.HandleFlowUtils.handleFlowApi
-import com.mate.carpool.util.asMultipart
+import com.mate.carpool.util.EncapsulationUtil.asStatusDomain
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import okhttp3.MultipartBody
 import retrofit2.HttpException
 import java.time.DayOfWeek
 import javax.inject.Inject
+
 
 class MemberRepositoryImpl @Inject constructor(
     private val apiService: APIService,
@@ -89,11 +89,7 @@ class MemberRepositoryImpl @Inject constructor(
         apiService.updateProfile(body)
     }
 
-    override fun updateProfileImage(uri: Uri): Flow<Result<ResponseMessage>> = callApi {
-        val image = uri.asMultipart(
-            name = "image",
-            contentResolver = applicationContext.contentResolver
-        )
-        apiService.updateProfileImage(image = image)
+    override fun updateProfileImage(part: MultipartBody.Part) = callApi {
+        apiService.updateProfileImage(body = part)
     }
 }

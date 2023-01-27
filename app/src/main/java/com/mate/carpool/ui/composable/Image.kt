@@ -28,12 +28,12 @@ fun RemoteImage(
     colorFilter: ColorFilter? = null,
     filterQuality: FilterQuality = DrawScope.DefaultFilterQuality,
 ) {
-    val context = LocalContext.current
-    val token = context.applicationContext
+    val context = LocalContext.current.applicationContext
+    val token = context
         .getSharedPreferences("accessToken", Context.MODE_PRIVATE)
-        .getString("accessToken", "")
+        .getString("accessToken", "")!!
 
-    val processedUrl = if (!url.startsWith("http")) {
+    val processedUrl = if (url.isNotEmpty() && !url.startsWith("http")) {
         ImageUtil.getImageUrl(path = url)
     } else url
 
@@ -41,7 +41,7 @@ fun RemoteImage(
         modifier = modifier,
         model = ImageRequest.Builder(context)
             .data(processedUrl)
-            .addHeader("Authorization", token!!)
+            .addHeader("Authorization", token)
             .build(),
         contentDescription = contentDescription,
         transform = transform,

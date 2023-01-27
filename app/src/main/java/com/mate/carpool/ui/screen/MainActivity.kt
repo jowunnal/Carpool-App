@@ -1,6 +1,7 @@
 package com.mate.carpool.ui.screen
 
 import android.Manifest
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -42,7 +43,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkPermissions() {
-        checkPermissionResultLauncher.launch(REQUIRED_PERMISSIONS)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            checkPermissionResultLauncher.launch(REQUIRED_PERMISSIONS)
+        }
     }
 
     private fun initTopBar() {
@@ -59,20 +62,6 @@ class MainActivity : AppCompatActivity() {
             binding.btnBack.isVisible = navHostFragment.childFragmentManager.backStackEntryCount > 0
         }
     }
-
-//        override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
-//            val focusView: View? = currentFocus
-//            if (focusView != null) {
-//                val rect = Rect()
-//                focusView.getGlobalVisibleRect(rect)
-//                val x = ev.x.toInt()
-//                val y = ev.y.toInt()
-//                if (!rect.contains(x, y)) {
-//                    hideKeyboard()
-//                }
-//            }
-//            return super.dispatchTouchEvent(ev)
-//        }
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
@@ -102,7 +91,6 @@ class MainActivity : AppCompatActivity() {
 
         val REQUIRED_PERMISSIONS = arrayOf(
             Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
     }
 }

@@ -65,7 +65,7 @@ interface APIService {
 
     @Multipart
     @PUT("member/update/image")
-    suspend fun updateProfileImage(@Part image: MultipartBody.Part?): ResponseMessage
+    suspend fun updateProfileImage(@Part body: MultipartBody.Part?): ResponseMessage
 
     @POST("report/new")
     suspend fun report(@Body body: ReportRequest): ResponseMessage

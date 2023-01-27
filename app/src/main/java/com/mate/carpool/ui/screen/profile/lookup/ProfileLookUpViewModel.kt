@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 @HiltViewModel
@@ -42,8 +43,8 @@ class ProfileLookUpViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun setProfileImage(uri: Uri) {
-        memberRepository.updateProfileImage(uri).onEach { result ->
+    fun setProfileImage(part: MultipartBody.Part) {
+        memberRepository.updateProfileImage(part).onEach { result ->
             when (result) {
                 is Result.Loading -> {
                 }
