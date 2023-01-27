@@ -2,35 +2,44 @@ package com.mate.carpool.ui.navigation
 
 import android.content.ContextWrapper
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.mate.carpool.ui.screen.home.compose.HomeCarpoolSheet
+import com.mate.carpool.ui.screen.home.compose.HomeBottomSheetLayout
 import com.mate.carpool.ui.screen.home.vm.CarpoolListViewModel
-import com.mate.carpool.ui.screen.home.vm.CarpoolListViewModelInterface
 import com.mate.carpool.ui.screen.home.vm.HomeBottomSheetViewModel
-import com.mate.carpool.ui.screen.home.vm.HomeBottomSheetViewModelInterface
 
 @Composable
 fun NavigationGraph(
+    modifier : Modifier,
     navController:NavHostController,
     onNavigateToCreateCarpool: () -> Unit,
-    homeCarpoolListViewModel: CarpoolListViewModelInterface = hiltViewModel<CarpoolListViewModel>(),
-    homeCarpoolBottomSheetViewModel: HomeBottomSheetViewModelInterface = hiltViewModel<HomeBottomSheetViewModel>()
+    onNavigateToProfileView: () -> Unit,
+    carpoolListViewModel: CarpoolListViewModel = hiltViewModel(),
+    homeCarpoolBottomSheetViewModel: HomeBottomSheetViewModel = hiltViewModel()
 ){
-    NavHost(navController = navController, startDestination = NavigationModel.Home.route){
+    NavHost(
+        navController = navController,
+        startDestination = NavigationModel.Home.route,
+        modifier = modifier
+    ){
+
         composable(route = NavigationModel.Home.route){
-            HomeCarpoolSheet(
+            HomeBottomSheetLayout(
                 onNavigateToCreateCarpool = onNavigateToCreateCarpool,
+                onNavigateToProfileView = onNavigateToProfileView,
                 fragmentManager = ((LocalContext.current as ContextWrapper).baseContext as FragmentActivity).supportFragmentManager,
                 homeCarpoolBottomSheetViewModel = homeCarpoolBottomSheetViewModel,
-                carpoolListViewModel = homeCarpoolListViewModel
+                carpoolListViewModel = carpoolListViewModel
             )
         }
+
         composable(route = NavigationModel.Announcement.route){
         }
+
     }
 }
