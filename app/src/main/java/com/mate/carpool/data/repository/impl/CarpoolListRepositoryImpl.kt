@@ -1,21 +1,13 @@
 package com.mate.carpool.data.repository.impl
 
-import com.mate.carpool.data.model.DTO.MemberResponseDTO
-import com.mate.carpool.data.model.DTO.TicketDetailResponseDTO
-import com.mate.carpool.data.model.DTO.UserTicketDTO
 import com.mate.carpool.data.model.domain.TicketListModel
 import com.mate.carpool.data.model.domain.TicketModel
-import com.mate.carpool.data.model.domain.UserModel
 import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.repository.CarpoolListRepository
 import com.mate.carpool.data.service.APIService
+import com.mate.carpool.util.EncapsulationUtil.asTicketDomain
+import com.mate.carpool.util.EncapsulationUtil.asTicketListDomain
 import com.mate.carpool.ui.util.HandleFlowUtils.handleFlowApi
-import com.mate.carpool.ui.util.StringUtils.asDayStatusToDomain
-import com.mate.carpool.ui.util.StringUtils.asMemberRoleToDomain
-import com.mate.carpool.ui.util.StringUtils.asStartDayMonthToDomain
-import com.mate.carpool.ui.util.StringUtils.asStartTimeToDomain
-import com.mate.carpool.ui.util.StringUtils.asTicketStatusToDomain
-import com.mate.carpool.ui.util.StringUtils.asTicketTypeToDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -83,50 +75,4 @@ class CarpoolListRepositoryImpl @Inject constructor(private val apiService: APIS
             }
         }
     }
-
-    fun UserTicketDTO.asTicketListDomain() = TicketListModel(
-        this.id,
-        this.profileImage,
-        this.startArea,
-        this.startTime.asStartTimeToDomain(),
-        this.recruitPerson,
-        this.currentPersonCount,
-        this.ticketType.asTicketTypeToDomain(),
-        this.ticketStatus.asTicketStatusToDomain(),
-        this.dayStatus.asDayStatusToDomain()
-    )
-
-    fun TicketDetailResponseDTO.asTicketDomain() = TicketModel(
-        this.id,
-        this.memberName,
-        this.startArea,
-        this.endArea,
-        this.boardingPlace,
-        this.startDayMonth.asStartDayMonthToDomain(),
-        this.dayStatus.asDayStatusToDomain(),
-        this.startTime.asStartTimeToDomain(),
-        this.openChatUrl,
-        this.recruitPerson,
-        this.ticketType.asTicketTypeToDomain(),
-        this.ticketPrice,
-        this.passengers?.asUserDomain()
-    )
-
-    fun List<MemberResponseDTO>.asUserDomain() = map { it.asUserDomain() }
-
-    fun MemberResponseDTO.asUserDomain() = UserModel(
-        this.memberName,
-        this.studentNumber,
-        this.department,
-        this.phoneNumber,
-        this.auth.asMemberRoleToDomain(),
-        this.profileImage,
-        emptyList(),
-        this.passengerId
-    )
-
-    fun List<UserTicketDTO>.asTicketListDomain() = map { it.asTicketListDomain() }
-
-    fun ApiResponse.SuccessResponse<List<UserTicketDTO>>.asTicketListDomain() = ApiResponse.SuccessResponse(this.responseMessage.asTicketListDomain())
-    fun ApiResponse.SuccessResponse<TicketDetailResponseDTO>.asTicketDomain() = ApiResponse.SuccessResponse(this.responseMessage.asTicketDomain())
 }

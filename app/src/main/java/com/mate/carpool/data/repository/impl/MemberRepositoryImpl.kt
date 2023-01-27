@@ -5,24 +5,16 @@ import android.net.Uri
 import com.google.gson.Gson
 import com.mate.carpool.data.Result
 import com.mate.carpool.data.callApi
-import com.mate.carpool.data.model.DTO.MemberProfileDTO
-import com.mate.carpool.data.model.DTO.UserTicketDTO
 import com.mate.carpool.data.model.domain.MemberModel
 import com.mate.carpool.data.model.domain.Profile
-import com.mate.carpool.data.model.domain.TicketListModel
-import com.mate.carpool.data.model.domain.UserModel
 import com.mate.carpool.data.model.domain.UserRole
 import com.mate.carpool.data.model.dto.request.UpdateMyProfileRequest
 import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.model.response.ResponseMessage
 import com.mate.carpool.data.repository.MemberRepository
 import com.mate.carpool.data.service.APIService
+import com.mate.carpool.util.EncapsulationUtil.asStatusDomain
 import com.mate.carpool.ui.util.HandleFlowUtils.handleFlowApi
-import com.mate.carpool.ui.util.StringUtils.asDayStatusToDomain
-import com.mate.carpool.ui.util.StringUtils.asMemberRoleToDomain
-import com.mate.carpool.ui.util.StringUtils.asStartTimeToDomain
-import com.mate.carpool.ui.util.StringUtils.asTicketStatusToDomain
-import com.mate.carpool.ui.util.StringUtils.asTicketTypeToDomain
 import com.mate.carpool.util.asMultipart
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
@@ -79,39 +71,6 @@ class MemberRepositoryImpl @Inject constructor(
             }
         }
     }
-
-    fun MemberProfileDTO.asStatusDomain() = MemberModel(
-        UserModel(
-            this.memberName,
-            this.studentNumber,
-            this.department,
-            this.phoneNumber,
-            this.memberRole.asMemberRoleToDomain(),
-            this.profileImage,
-            emptyList(),
-            -1
-        ),
-        this.tickets?.asTicketListDomain()
-    )
-
-    fun List<UserTicketDTO>.asTicketListDomain() = map { it.asTicketListDomain() }
-
-    fun UserTicketDTO.asTicketListDomain() = TicketListModel(
-        this.id,
-        this.profileImage,
-        this.startArea,
-        this.startTime.asStartTimeToDomain(),
-        this.recruitPerson,
-        this.currentPersonCount,
-        this.ticketType.asTicketTypeToDomain(),
-        this.ticketStatus.asTicketStatusToDomain(),
-        this.dayStatus.asDayStatusToDomain()
-    )
-
-
-    fun ApiResponse.SuccessResponse<MemberProfileDTO>.asStatusDomain() =
-        ApiResponse.SuccessResponse(this.responseMessage.asStatusDomain())
-
 
     override fun getMyProfile(): Flow<Result<Profile>> = callApi {
         apiService.getMyProfile().toDomain()
