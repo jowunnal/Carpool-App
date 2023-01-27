@@ -29,6 +29,11 @@ class CarpoolListViewModel @Inject constructor(
     private val mutableMemberModelState = MutableStateFlow(MemberModel())
     val memberModelState get() = mutableMemberModelState.asStateFlow()
 
+    init {
+        getCarpoolList()
+        getMemberModel()
+    }
+
     fun getCarpoolList(){
         viewModelScope.launch {
             carpoolListRepository.getTicketList().collectLatest {
