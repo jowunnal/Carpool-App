@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.mate.carpool.R
 import com.mate.carpool.databinding.BottomSheetReservePassengerBinding
 import com.mate.carpool.ui.base.BaseBottomSheetDialogFragment
+import com.mate.carpool.ui.navigation.NavigationFragmentDirections
 import com.mate.carpool.ui.screen.CheckDialogFragment
-import com.mate.carpool.ui.screen.home.compose.HomeFragmentDirections
 import com.mate.carpool.ui.screen.reserveDriver.adapterview.ReserveDriverViewAdapter
 import com.mate.carpool.ui.screen.reserveDriver.vm.ReserveDriverViewModel
 import com.mate.carpool.ui.util.SettingToolbarUtils.showBottomSheetFragment
@@ -53,7 +53,7 @@ class ReservePassengerFragment(
                     view.getLocationOnScreen(location)
                     //reserveDriverViewModel.passengerId.value = reserveDriverViewAdapter.getPassengerIdOnSelectedItem(pos).toLong()
                     TicketPassengerPopUp(location) {
-                        val action = HomeFragmentDirections.actionHomeFragmentToReportFragment(
+                        val action = NavigationFragmentDirections.actionHomeFragmentToReportFragment(
                             reserveDriverViewAdapter.getStudentIdOnSelectedItem(pos)
                         )
                         findNavController().navigate(action)
@@ -118,7 +118,7 @@ class ReservePassengerFragment(
                 val location = IntArray(2)
                 it.getLocationOnScreen(location)
                 TicketPassengerPopUp(location) {
-                    val action = HomeFragmentDirections.actionHomeFragmentToReportFragment(
+                    val action = NavigationFragmentDirections.actionHomeFragmentToReportFragment(
                         -1 // TODO
                     )
                     findNavController().navigate(action)
