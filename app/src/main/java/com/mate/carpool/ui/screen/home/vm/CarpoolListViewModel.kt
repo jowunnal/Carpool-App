@@ -1,8 +1,5 @@
 package com.mate.carpool.ui.screen.home.vm
 
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mate.carpool.data.model.domain.MemberModel
 import com.mate.carpool.data.model.domain.TicketListModel
@@ -14,7 +11,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,20 +18,18 @@ import javax.inject.Inject
 class CarpoolListViewModel @Inject constructor(
     private val carpoolListRepository: CarpoolListRepository,
     private val memberRepository: MemberRepository
-    ) : BaseViewModel(),CarpoolListViewModelInterface
+    ) : BaseViewModel()
 {
     private val mutableCarpoolListState = MutableStateFlow<List<TicketListModel>>(emptyList())
-    override val carpoolListState get() = mutableCarpoolListState.asStateFlow()
+    val carpoolListState get() = mutableCarpoolListState.asStateFlow()
 
     private val mutableCarpoolExistState = MutableStateFlow(false)
-    override val carpoolExistState get() = mutableCarpoolExistState.asStateFlow()
+    val carpoolExistState get() = mutableCarpoolExistState.asStateFlow()
 
     private val mutableMemberModelState = MutableStateFlow(MemberModel())
-    override val memberModelState get() = mutableMemberModelState.asStateFlow()
+    val memberModelState get() = mutableMemberModelState.asStateFlow()
 
-    override val isRefreshState = mutableStateOf(false)
-
-    override fun getCarpoolList(){
+    fun getCarpoolList(){
         viewModelScope.launch {
             carpoolListRepository.getTicketList().collectLatest {
                 when(it){
@@ -53,7 +47,7 @@ class CarpoolListViewModel @Inject constructor(
         }
     }
 
-    override fun getMemberModel(){
+    fun getMemberModel(){
         viewModelScope.launch {
             memberRepository.getMemberInfo().collectLatest {
                 when(it){
@@ -75,7 +69,7 @@ class CarpoolListViewModel @Inject constructor(
         }
     }
 
-    override fun isTicketIsMineOrNot(id:Long) : Boolean{
+    fun isTicketIsMineOrNot(id:Long) : Boolean{
         if(memberModelState.value.ticketList!=null){
             for(item in memberModelState.value.ticketList!!){
                 if(item.id==id){

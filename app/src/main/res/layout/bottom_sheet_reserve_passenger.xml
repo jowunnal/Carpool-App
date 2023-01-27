@@ -100,7 +100,7 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/icon_x" />
+            app:srcCompat="@drawable/ic_x" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_startingArea"
@@ -161,7 +161,7 @@
             app:layout_constraintStart_toEndOf="@+id/layout_startingArea"
             app:layout_constraintTop_toBottomOf="@+id/image_x"
             app:layout_constraintWidth_percent="0.3"
-            app:srcCompat="@drawable/ic_ticket_bluearrow" />
+            app:srcCompat="@drawable/ic_car_ticket" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_boardingArea"

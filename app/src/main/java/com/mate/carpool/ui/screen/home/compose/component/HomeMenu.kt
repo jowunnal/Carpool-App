@@ -18,11 +18,50 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mate.carpool.R
+import com.mate.carpool.data.model.domain.item.MemberRole
+import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.theme.MateTheme
 import com.mate.carpool.ui.util.tu
 
 @Composable
-fun HomeCardView(
+fun HomeMenu(
+    userRole: MemberRole,
+    onNavigateToCreateCarpool: () -> Unit
+){
+    Column() {
+        HomeCardView(
+            imageId = R.drawable.ic_home_folder,
+            text = "공지사항",
+            icon = R.drawable.ic_navigate_next_small,
+            onNavigateCallBack = {}
+        )
+
+        VerticalSpacer(height = 4.dp)
+
+        when (userRole) {
+            MemberRole.Passenger -> {
+                HomeCardView(
+                    imageId = R.drawable.ic_home_car,
+                    text = "드라이버 등록",
+                    icon = R.drawable.ic_add_small,
+                    onNavigateCallBack = {}
+                )
+            }
+
+            MemberRole.Driver -> {
+                HomeCardView(
+                    imageId = R.drawable.ic_home_car,
+                    text = "카풀 모집하기",
+                    icon = R.drawable.ic_add_small,
+                    onNavigateCallBack = onNavigateToCreateCarpool
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun HomeCardView(
     @DrawableRes imageId: Int,
     text: String,
     @DrawableRes icon: Int,
@@ -75,12 +114,22 @@ fun HomeCardView(
 
 @Preview(showBackground = true)
 @Composable
-private fun PreviewHomeMenu() =
+private fun PreviewHomeCardView() =
     MateTheme {
         HomeCardView(
             imageId = R.drawable.ic_home_folder,
             text = "공지사항",
             icon = R.drawable.ic_navigate_next_small,
             onNavigateCallBack = {}
+        )
+    }
+
+@Preview(showBackground = true)
+@Composable
+private fun PreviewHomeMenu() =
+    MateTheme {
+        HomeMenu(
+            userRole = MemberRole.Driver,
+            onNavigateToCreateCarpool = {}
         )
     }

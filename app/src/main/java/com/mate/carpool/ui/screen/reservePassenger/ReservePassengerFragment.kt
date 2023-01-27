@@ -26,7 +26,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class ReservePassengerFragment(
     private val studentNumber: String,
-    private val onRewNew: Renewing
+    private val onRewNew: () -> Unit
 ) : BaseBottomSheetDialogFragment<BottomSheetReservePassengerBinding>(R.layout.bottom_sheet_reserve_passenger) {
     private val reserveDriverViewModel: ReserveDriverViewModel by activityViewModels()
     @Inject
@@ -102,7 +102,7 @@ class ReservePassengerFragment(
                 onDoSomething = object : CheckDialogFragment.Listener() {
                     override fun onPositiveButtonClick() {
                         reserveDriverViewModel.deletePassengerToTicket()
-                        onRewNew.onRewNew()
+                        onRewNew()
                         dismissAllowingStateLoss()
                     }
                 }

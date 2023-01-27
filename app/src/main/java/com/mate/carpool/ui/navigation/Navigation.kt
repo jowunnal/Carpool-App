@@ -10,17 +10,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.mate.carpool.ui.screen.home.compose.HomeBottomSheetLayout
 import com.mate.carpool.ui.screen.home.vm.CarpoolListViewModel
-import com.mate.carpool.ui.screen.home.vm.CarpoolListViewModelInterface
 import com.mate.carpool.ui.screen.home.vm.HomeBottomSheetViewModel
-import com.mate.carpool.ui.screen.home.vm.HomeBottomSheetViewModelInterface
 
 @Composable
 fun NavigationGraph(
     navController:NavHostController,
     onNavigateToCreateCarpool: () -> Unit,
     onNavigateToProfileView: () -> Unit,
-    homeCarpoolListViewModel: CarpoolListViewModelInterface = hiltViewModel<CarpoolListViewModel>(),
-    homeCarpoolBottomSheetViewModel: HomeBottomSheetViewModelInterface = hiltViewModel<HomeBottomSheetViewModel>()
+    carpoolListViewModel: CarpoolListViewModel = hiltViewModel(),
+    homeCarpoolBottomSheetViewModel: HomeBottomSheetViewModel = hiltViewModel()
 ){
     NavHost(navController = navController, startDestination = NavigationModel.Home.route){
 
@@ -30,7 +28,7 @@ fun NavigationGraph(
                 onNavigateToProfileView = onNavigateToProfileView,
                 fragmentManager = ((LocalContext.current as ContextWrapper).baseContext as FragmentActivity).supportFragmentManager,
                 homeCarpoolBottomSheetViewModel = homeCarpoolBottomSheetViewModel,
-                carpoolListViewModel = homeCarpoolListViewModel
+                carpoolListViewModel = carpoolListViewModel
             )
         }
 

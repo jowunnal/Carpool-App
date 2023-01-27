@@ -23,14 +23,7 @@ fun ProfileImage(
     val context = LocalContext.current
 
     GlideImage(
-        imageModel = {
-            GlideUrl(
-            "http://13.209.43.209:8080/member/profile$profileImage",
-            LazyHeaders.Builder().addHeader(
-                "Authorization",
-                context.getSharedPreferences("accessToken", Context.MODE_PRIVATE).getString("accessToken","")!!
-            ).build()
-        )},
+        imageModel = { "http://13.209.43.209:8080/member/profile$profileImage" },
         modifier = modifier,
         loading = {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))

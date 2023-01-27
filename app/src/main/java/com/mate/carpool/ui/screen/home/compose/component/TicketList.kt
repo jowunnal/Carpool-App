@@ -1,12 +1,9 @@
 package com.mate.carpool.ui.screen.home.compose.component
 
-import android.annotation.SuppressLint
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
@@ -23,47 +20,35 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.mate.carpool.data.model.domain.MemberModel
-import com.mate.carpool.data.model.domain.item.MemberRole
-import com.mate.carpool.data.model.domain.item.TicketType
-import com.mate.carpool.data.model.domain.item.getDayStatus
-import com.mate.carpool.ui.base.BaseBottomSheetDialogFragment
+import com.mate.carpool.data.model.domain.TicketListModel
+import com.mate.carpool.data.model.domain.item.*
 import com.mate.carpool.ui.composable.HorizontalDivider
 import com.mate.carpool.ui.composable.HorizontalDividerItem
 import com.mate.carpool.ui.composable.HorizontalSpacer
-import com.mate.carpool.ui.composable.VerticalDividerItem
-import com.mate.carpool.ui.screen.home.vm.CarpoolListViewModelInterface
-import com.mate.carpool.ui.screen.home.vm.PreviewCarpoolListViewModel
-import com.mate.carpool.ui.screen.home.vm.PreviewHomeBottomSheetViewModel
 import com.mate.carpool.ui.screen.reserveDriver.fragment.ReserveDriverFragment
 import com.mate.carpool.ui.screen.reservePassenger.ReservePassengerFragment
 import com.mate.carpool.ui.theme.*
 import com.mate.carpool.ui.util.tu
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalLifecycleComposeApi::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun HomeCarpoolItems(
+fun TicketList(
     bottomSheetState: ModalBottomSheetState,
-    memberModel: MemberModel,
-    bottomSheetMemberModel: MutableStateFlow<MemberModel>,
-    ticketId: MutableStateFlow<Long>,
-    reNewHomeListener: BaseBottomSheetDialogFragment.Renewing,
+    userRole: MemberRole,
+    userStudentID: String,
     initViewState: MutableState<Boolean>,
-    isRefreshing: MutableState<Boolean>,
     fragmentManager: FragmentManager,
-    carpoolListViewModel: CarpoolListViewModelInterface
+    carpoolList : List<TicketListModel>,
+    reNewHomeListener: () -> Unit,
+    setTicketId: (Long) -> Unit,
+    isTicketMineOrNot : (Long) -> Boolean
 ){
-    val carpoolList by carpoolListViewModel.carpoolListState.collectAsStateWithLifecycle()
     val coroutineScope = rememberCoroutineScope()
 
     val pullRefreshState = rememberPullRefreshState(
-        refreshing = isRefreshing.value,
+        refreshing = initViewState.value,
         onRefresh = {
-            isRefreshing.value = true
             initViewState.value = true
         }
     )
@@ -82,35 +67,31 @@ fun HomeCarpoolItems(
                     .clickable {
                         if (!bottomSheetState.isVisible) {
                             coroutineScope.launch {
-                                when (memberModel.user.role) {
+                                when (userRole) {
                                     MemberRole.Driver -> {
-                                        if (carpoolListViewModel.isTicketIsMineOrNot(item.id)) {
+                                        if (isTicketMineOrNot(item.id)) {
                                             ReserveDriverFragment(
                                                 reNewHomeListener
                                             ).show(fragmentManager, "driver reservation")
                                         } else {
                                             showBottomSheet(
-                                                ticketId,
-                                                item.id,
-                                                bottomSheetMemberModel,
-                                                memberModel,
-                                                bottomSheetState
+                                                setTicketId = setTicketId,
+                                                itemId = item.id,
+                                                bottomSheetState = bottomSheetState
                                             )
                                         }
                                     }
                                     MemberRole.Passenger -> {
-                                        if (carpoolListViewModel.isTicketIsMineOrNot(item.id)) {
+                                        if (isTicketMineOrNot(item.id)) {
                                             ReservePassengerFragment(
-                                                memberModel.user.studentID,
+                                                userStudentID,
                                                 reNewHomeListener
                                             ).show(fragmentManager, "passenger reservation")
                                         } else {
                                             showBottomSheet(
-                                                ticketId,
-                                                item.id,
-                                                bottomSheetMemberModel,
-                                                memberModel,
-                                                bottomSheetState
+                                                setTicketId = setTicketId,
+                                                itemId = item.id,
+                                                bottomSheetState = bottomSheetState
                                             )
                                         }
                                     }
@@ -172,7 +153,7 @@ fun HomeCarpoolItems(
             HorizontalDividerItem()
         }
         PullRefreshIndicator(
-            refreshing = isRefreshing.value,
+            refreshing = initViewState.value,
             state = pullRefreshState,
             modifier = Modifier.align(Alignment.TopCenter)
         )
@@ -181,35 +162,76 @@ fun HomeCarpoolItems(
 
 @OptIn(ExperimentalMaterialApi::class)
 private suspend fun showBottomSheet(
-    ticketId: MutableStateFlow<Long>,
+    setTicketId: (Long) -> Unit,
     itemId: Long,
-    bottomSheetMemberModel: MutableStateFlow<MemberModel>,
-    memberModel: MemberModel,
     bottomSheetState: ModalBottomSheetState
 ) {
-    ticketId.value = itemId
-    bottomSheetMemberModel.value.user.role = memberModel.user.role
-    bottomSheetMemberModel.value.user.studentID = memberModel.user.studentID
-    bottomSheetMemberModel.value.user.profile = memberModel.user.profile
+    setTicketId(itemId)
     bottomSheetState.animateTo(ModalBottomSheetValue.Expanded)
 }
 
-@SuppressLint("StateFlowValueCalledInComposition", "UnrememberedMutableState")
-@OptIn(ExperimentalMaterialApi::class)
 @Preview(showBackground = true)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun PreviewHomeCarpoolItems() =
+private fun PreviewTicketList() {
     MateTheme {
-        HomeCarpoolItems(
+        TicketList(
             bottomSheetState = ModalBottomSheetState(ModalBottomSheetValue.Expanded),
-            memberModel = PreviewHomeBottomSheetViewModel.memberModel.value,
-            bottomSheetMemberModel = PreviewHomeBottomSheetViewModel.memberModel,
-            ticketId = MutableStateFlow(0L),
-            reNewHomeListener = object : BaseBottomSheetDialogFragment.Renewing(){ override fun onRewNew() { } },
-            initViewState = mutableStateOf(false),
-            isRefreshing = mutableStateOf(false),
+            userRole = MemberRole.Driver,
+            userStudentID = "",
+            setTicketId = {},
+            reNewHomeListener = {},
+            initViewState = remember{ mutableStateOf(false) },
             fragmentManager = object : FragmentManager(){},
-            carpoolListViewModel = PreviewCarpoolListViewModel
+            isTicketMineOrNot = {false},
+            carpoolList =
+            listOf(
+                TicketListModel(
+                    1,
+                    "",
+                    "인동",
+                    "08:00",
+                    3,
+                    1,
+                    TicketType.Cost,
+                    TicketStatus.Before,
+                    DayStatus.Morning
+                ),
+                TicketListModel(
+                    2,
+                    "",
+                    "인동",
+                    "07:00",
+                    3,
+                    1,
+                    TicketType.Cost,
+                    TicketStatus.Before,
+                    DayStatus.Morning
+                ),
+                TicketListModel(
+                    3,
+                    "",
+                    "인동",
+                    "08:00",
+                    3,
+                    1,
+                    TicketType.Free,
+                    TicketStatus.Before,
+                    DayStatus.Morning
+                ),
+                TicketListModel(
+                    4,
+                    "",
+                    "인동",
+                    "09:00",
+                    3,
+                    1,
+                    TicketType.Free,
+                    TicketStatus.Before,
+                    DayStatus.Morning
+                )
+            )
         )
     }
+}
 

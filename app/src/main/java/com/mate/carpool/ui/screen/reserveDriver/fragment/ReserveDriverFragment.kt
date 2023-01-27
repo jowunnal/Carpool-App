@@ -30,7 +30,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class ReserveDriverFragment(
-    private val onRewNew: Renewing
+    private val onRewNew: () -> Unit
 ) : BaseBottomSheetDialogFragment<BottomSheetReserveDriverBinding>(R.layout.bottom_sheet_reserve_driver) {
     private val reserveDriverViewModel: ReserveDriverViewModel by activityViewModels()
 
@@ -108,7 +108,7 @@ class ReserveDriverFragment(
                 onDoSomething = object : CheckDialogFragment.Listener() {
                     override fun onPositiveButtonClick() {
                         reserveDriverViewModel.updateTicketStatus(TicketStatus.Cancel.getTicketStatusDTO())
-                        onRewNew.onRewNew()
+                        onRewNew()
                     }
                 }
             )
@@ -123,7 +123,7 @@ class ReserveDriverFragment(
                 onDoSomething = object : CheckDialogFragment.Listener() {
                     override fun onPositiveButtonClick() {
                         reserveDriverViewModel.updateTicketStatus(TicketStatus.After.getTicketStatusDTO())
-                        onRewNew.onRewNew()
+                        onRewNew()
                     }
                 }
             )

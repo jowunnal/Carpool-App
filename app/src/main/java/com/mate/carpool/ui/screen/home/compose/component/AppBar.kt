@@ -72,7 +72,9 @@ fun HomeAppBar(
             }
         },
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .height(56.dp)
+            .wrapContentHeight(),
         colors = TopAppBarDefaults.smallTopAppBarColors(Color.White)
     )
 }
