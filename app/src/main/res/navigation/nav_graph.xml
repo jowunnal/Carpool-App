@@ -154,7 +154,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.mate.carpool.ui.screen.home.compose.HomeFragment"
+        android:name="com.mate.carpool.ui.navigation.NavigationFragment"
         android:label="HomeFragment" >
 
         <action

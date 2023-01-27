@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.screen.home.compose
+package com.mate.carpool.ui.navigation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,20 +12,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.fragment.findNavController
 import com.mate.carpool.R
 import com.mate.carpool.ui.composable.rememberLambda
-import com.mate.carpool.ui.navigation.NavigationGraph
 import com.mate.carpool.ui.theme.MateTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class NavigationFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +37,7 @@ class HomeFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 MateTheme() {
-                    this@HomeFragment.Content()
+                    this@NavigationFragment.Content()
                 }
             }
         }
