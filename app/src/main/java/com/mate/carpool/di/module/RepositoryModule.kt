@@ -1,6 +1,7 @@
 package com.mate.carpool.di.module
 
 import com.mate.carpool.data.repository.*
+import com.mate.carpool.data.repository.impl.AuthRepositoryImpl
 import com.mate.carpool.data.repository.impl.CarpoolListRepositoryImpl
 import com.mate.carpool.data.repository.impl.MemberRepositoryImpl
 import com.mate.carpool.data.repository.impl.PassengerRepositoryImpl
@@ -18,22 +19,27 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindsCarpoolListRepository(carpoolListRepositoryImpl: CarpoolListRepositoryImpl) : CarpoolListRepository
+    abstract fun bindsCarpoolListRepository(carpoolListRepositoryImpl: CarpoolListRepositoryImpl): CarpoolListRepository
 
     @Binds
     @Singleton
-    abstract fun bindsMemberRepository(memberRepositoryImpl: MemberRepositoryImpl) : MemberRepository
+    abstract fun bindsMemberRepository(memberRepositoryImpl: MemberRepositoryImpl): MemberRepository
 
     @Binds
     @Singleton
-    abstract fun bindsPassengerRepository(passengerRepositoryImpl: PassengerRepositoryImpl) : PassengerRepository
+    abstract fun bindsPassengerRepository(passengerRepositoryImpl: PassengerRepositoryImpl): PassengerRepository
 
     @Binds
     @Singleton
-    abstract fun bindsRegisterRepository(registerRepositoryImpl: RegisterRepositoryImpl) : RegisterRepository
+    abstract fun bindsRegisterRepository(registerRepositoryImpl: RegisterRepositoryImpl): RegisterRepository
 
 
     @Binds
     @Singleton
-    abstract fun bindsReportRepository(impl: ReportRepositoryImpl) : ReportRepository
+    abstract fun bindsReportRepository(impl: ReportRepositoryImpl): ReportRepository
+
+
+    @Binds
+    @Singleton
+    abstract fun bindsAuthRepository(impl: AuthRepositoryImpl): AuthRepository
 }

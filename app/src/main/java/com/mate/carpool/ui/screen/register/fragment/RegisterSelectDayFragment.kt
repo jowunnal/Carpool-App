@@ -17,7 +17,7 @@ class RegisterSelectDayFragment : BaseFragment<RegisterViewModel,FragmentRegiste
 
     override fun initViews() = with(binding){
         btnConfirm.setOnClickListener {
-            findNavController().navigate(R.id.action_RegisterSelectDayFragment_to_loginFragment)
+            findNavController().navigate(R.id.action_RegisterSelectDayFragment_to_onboardingFragment)
             this@RegisterSelectDayFragment.viewModel.signUpStudentMember()
         }
     }

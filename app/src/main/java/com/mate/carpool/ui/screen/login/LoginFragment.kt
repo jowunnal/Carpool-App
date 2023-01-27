@@ -1,19 +1,44 @@
 package com.mate.carpool.ui.screen.login
 
-import android.graphics.Paint
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.fragment.app.viewModels
-import com.mate.carpool.databinding.FragmentLoginBinding
-import com.mate.carpool.ui.base.BaseFragment
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.fragment.findNavController
+import com.mate.carpool.R
+import com.mate.carpool.ui.base.BaseComposeFragment
+import com.mate.carpool.ui.composable.rememberLambda
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LoginFragment : BaseFragment<LoginViewModel, FragmentLoginBinding>(){
+class LoginFragment : BaseComposeFragment<LoginViewModel>() {
 
     override val viewModel: LoginViewModel by viewModels()
 
-    override fun getViewBinding(): FragmentLoginBinding = FragmentLoginBinding.inflate(layoutInflater)
+    @OptIn(ExperimentalLifecycleComposeApi::class)
+    @Composable
+    override fun Content() {
+        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    override fun initViews() = with(binding) {
-        tvLogin.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+        LoginScreen(
+            uiState = uiState,
+            onEmailEdit = viewModel::setEmail,
+            onPasswordEdit = viewModel::setPassword,
+            onShowPasswordClick = rememberLambda {
+                if (uiState.showPassword) {
+                    viewModel.setShowPassword(false)
+                } else {
+                    viewModel.setShowPassword(true)
+                }
+            },
+            onLoginClick = viewModel::login,
+            onBackClick = rememberLambda {
+                findNavController().popBackStack()
+            },
+            moveToHomeScreen = rememberLambda {
+                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+            }
+        )
     }
 }

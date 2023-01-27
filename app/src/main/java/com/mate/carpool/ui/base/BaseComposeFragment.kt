@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 abstract class BaseComposeFragment<VM : BaseViewModel> : Fragment() {
 
     abstract val viewModel: VM
-    open val useActionBar: Boolean = true
+    open val useActionBar: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
