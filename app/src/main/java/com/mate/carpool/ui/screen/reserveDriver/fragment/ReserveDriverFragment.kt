@@ -16,8 +16,8 @@ import com.mate.carpool.data.model.domain.item.TicketStatus
 import com.mate.carpool.data.model.domain.item.getTicketStatusDTO
 import com.mate.carpool.databinding.BottomSheetReserveDriverBinding
 import com.mate.carpool.ui.base.BaseBottomSheetDialogFragment
+import com.mate.carpool.ui.navigation.NavigationFragmentDirections
 import com.mate.carpool.ui.screen.CheckDialogFragment
-import com.mate.carpool.ui.screen.home.compose.HomeFragmentDirections
 import com.mate.carpool.ui.screen.reserveDriver.adapterview.ReserveDriverViewAdapter
 import com.mate.carpool.ui.screen.reserveDriver.vm.ReserveDriverViewModel
 import com.mate.carpool.ui.util.SettingToolbarUtils
@@ -59,7 +59,7 @@ class ReserveDriverFragment(
                     reserveDriverViewModel.passengerId.value =
                         reserveDriverViewAdapter.getPassengerIdOnSelectedItem(pos).toLong()
                     TicketDriverPopUp(location) {
-                        val action = HomeFragmentDirections.actionHomeFragmentToReportFragment(
+                        val action = NavigationFragmentDirections.actionHomeFragmentToReportFragment(
                             reserveDriverViewAdapter.getStudentIdOnSelectedItem(pos)
                         )
                         findNavController().navigate(action)
