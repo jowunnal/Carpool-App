@@ -16,7 +16,6 @@ import com.google.android.material.textfield.TextInputEditText
 import com.mate.carpool.R
 import com.mate.carpool.data.model.domain.item.*
 import com.mate.carpool.ui.screen.createCarpool.vm.CreateTicketViewModel
-import com.mate.carpool.ui.screen.register.vm.RegisterViewModel
 import java.util.*
 
 @BindingAdapter("navController", "navi_ID")
@@ -34,18 +33,6 @@ fun navigateBackStackOnToolbar(toolbar: Toolbar, navController: NavController) {
         navController.popBackStack()
     }
 }
-
-@BindingAdapter("viewModel")
-fun setOnWeekButtonClickListener(button: AppCompatButton,viewModel:RegisterViewModel){
-    button.setOnClickListener {
-        button.isEnabled = !button.isEnabled
-        if(!button.isEnabled)
-            viewModel.week.value.add(getWeekItem(button.text.toString())!!)
-        else
-            viewModel.week.value.remove(getWeekItem(button.text.toString())!!)
-    }
-}
-
 
 @BindingAdapter("areaItems", "context", "ticketViewModel")
 fun setAreaItemsToStartingAreaAdapter(tv: AutoCompleteTextView, areaItems: ArrayList<String>, context: Context, ticketViewModel: CreateTicketViewModel) {

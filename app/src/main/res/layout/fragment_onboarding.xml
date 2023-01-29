@@ -88,7 +88,7 @@
             android:background="@drawable/round_100_blue"
             android:textStyle="bold"
             android:gravity="center"
-            android:onClick="@{() -> navController.navigate(R.id.action_onboardingFragment_to_RegisterInfoStep1Fragment)}"
+            android:onClick="@{() -> navController.navigate(R.id.action_onboardingFragment_to_signUpFragment)}"
             android:text="@string/login_register"
             android:textColor="@color/white"
             android:textSize="18dp"

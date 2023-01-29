@@ -8,4 +8,5 @@ import kotlinx.coroutines.flow.Flow
 interface AuthRepository {
     val autoLoginInfo: Flow<AutoLoginPreferences>
     fun login(email: String, password: String): Flow<Result<ResponseMessage>>
+    fun signUp(name: String, email: String, password: String): Flow<Result<ResponseMessage>>
 }

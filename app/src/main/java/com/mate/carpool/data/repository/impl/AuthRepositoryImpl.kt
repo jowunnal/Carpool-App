@@ -15,14 +15,36 @@ class AuthRepositoryImpl @Inject constructor(
     private val autoLoginDataStore: DataStore<AutoLoginPreferences>,
 ) : AuthRepository {
 
-    override val autoLoginInfo: Flow<AutoLoginPreferences> = autoLoginDataStore.data  // TODO 비밀번호 복호화
-        .catch { exception ->
-            if (exception is IOException) {
-                emit(AutoLoginPreferences.getDefaultInstance())
-            } else {
-                throw exception
+    override val autoLoginInfo: Flow<AutoLoginPreferences> =
+        autoLoginDataStore.data  // TODO 비밀번호 복호화
+            .catch { exception ->
+                if (exception is IOException) {
+                    emit(AutoLoginPreferences.getDefaultInstance())
+                } else {
+                    throw exception
+                }
+            }
+
+
+    override fun signUp(name: String, email: String, password: String) = flow {
+        when {
+            name == "실패" -> {
+                emit(Result.Error("invalidName"))
+            }
+
+            email == "fail@mate.com" -> {
+                emit(Result.Error("invalidEmail"))
+            }
+
+            password == "fail" -> {
+                emit(Result.Error("invalidPassword"))
+            }
+
+            else -> {
+                emit(Result.Success(ResponseMessage()))
             }
         }
+    }
 
     override fun login(email: String, password: String) = flow {
         when {
@@ -48,4 +70,5 @@ class AuthRepositoryImpl @Inject constructor(
             preferences.toBuilder().setEmail(email).setPassword(password).build()
         }
     }
+
 }
