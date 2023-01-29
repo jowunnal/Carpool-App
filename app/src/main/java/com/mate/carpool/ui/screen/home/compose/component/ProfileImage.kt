@@ -1,6 +1,5 @@
 package com.mate.carpool.ui.screen.home.compose.component
 
-import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
@@ -9,8 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.bumptech.glide.load.model.GlideUrl
-import com.bumptech.glide.load.model.LazyHeaders
 import com.mate.carpool.R
 import com.mate.carpool.ui.theme.MateTheme
 import com.skydoves.landscapist.glide.GlideImage

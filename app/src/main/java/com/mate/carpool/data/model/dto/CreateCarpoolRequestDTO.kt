@@ -1,4 +1,4 @@
-package com.mate.carpool.data.model.DTO
+package com.mate.carpool.data.model.dto
 
 import com.mate.carpool.data.model.domain.TicketModel
 import com.mate.carpool.data.model.domain.item.DayStatus

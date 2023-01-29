@@ -16,7 +16,7 @@ import com.mate.carpool.ui.base.BaseComposeFragment
 import com.mate.carpool.ui.composable.rememberLambda
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-
+/*
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @AndroidEntryPoint
 class ReportFragment : BaseComposeFragment<ReportViewModel>() {
@@ -65,4 +65,4 @@ class ReportFragment : BaseComposeFragment<ReportViewModel>() {
             }
         }
     }
-}
+}*/

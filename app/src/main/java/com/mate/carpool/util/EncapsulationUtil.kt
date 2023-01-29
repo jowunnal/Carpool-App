@@ -1,9 +1,9 @@
 package com.mate.carpool.util
 
-import com.mate.carpool.data.model.DTO.MemberProfileDTO
-import com.mate.carpool.data.model.DTO.MemberResponseDTO
-import com.mate.carpool.data.model.DTO.TicketDetailResponseDTO
-import com.mate.carpool.data.model.DTO.UserTicketDTO
+import com.mate.carpool.data.model.dto.MemberProfileDTO
+import com.mate.carpool.data.model.dto.MemberResponseDTO
+import com.mate.carpool.data.model.dto.TicketDetailResponseDTO
+import com.mate.carpool.data.model.dto.UserTicketDTO
 import com.mate.carpool.data.model.response.ApiResponse
 
 object EncapsulationUtil {

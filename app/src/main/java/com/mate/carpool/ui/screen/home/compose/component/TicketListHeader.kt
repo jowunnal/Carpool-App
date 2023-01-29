@@ -16,7 +16,7 @@ import com.mate.carpool.ui.theme.MateTheme
 import com.mate.carpool.ui.util.tu
 
 @Composable
-fun TicketHeader(){
+fun TicketListHeader(){
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -72,5 +72,5 @@ fun TicketHeader(){
 @Composable
 private fun PreviewTicketHeader() =
     MateTheme {
-        TicketHeader()
+        TicketListHeader()
     }
