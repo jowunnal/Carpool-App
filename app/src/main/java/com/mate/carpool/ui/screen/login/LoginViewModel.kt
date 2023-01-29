@@ -43,6 +43,24 @@ class LoginViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(LoginUiState.getInitialValue())
     val uiState = _uiState.asStateFlow()
 
+    fun setEmail(value: String) = _uiState.update { state ->
+        val pattern = Regex("[.@a-zA-Z0-9]")
+        val result = value.filter { pattern.matches(it.toString()) }
+        state.copy(email = result, invalidEmail = false)
+    }
+
+    fun setPassword(value: String) {
+        _uiState.update {
+            it.copy(
+                password = value,
+                invalidPassword = false
+            )
+        }
+    }
+
+    fun setShowPassword(value: Boolean) {
+        _uiState.update { it.copy(showPassword = value) }
+    }
 
     // TODO 로그인 성공 시, 홈화면 이동 후 성공 메시지 출력
     fun login() {
@@ -68,27 +86,5 @@ class LoginViewModel @Inject constructor(
                     }
                 }
             }.launchIn(viewModelScope)
-    }
-
-    fun setEmail(value: String) {
-        _uiState.update {
-            it.copy(
-                email = value,
-                invalidEmail = false,
-            )
-        }
-    }
-
-    fun setPassword(value: String) {
-        _uiState.update {
-            it.copy(
-                password = value,
-                invalidPassword = false
-            )
-        }
-    }
-
-    fun setShowPassword(value: Boolean) {
-        _uiState.update { it.copy(showPassword = value) }
     }
 }
