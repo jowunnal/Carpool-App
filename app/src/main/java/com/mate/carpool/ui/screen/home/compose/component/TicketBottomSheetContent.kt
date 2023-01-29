@@ -1,12 +1,10 @@
 package com.mate.carpool.ui.screen.home.compose.component
 
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -16,12 +14,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.FragmentManager
 import com.mate.carpool.R
 import com.mate.carpool.data.model.domain.TicketModel
 import com.mate.carpool.data.model.domain.UserModel
@@ -32,24 +28,20 @@ import com.mate.carpool.data.model.domain.item.getTicketType
 import com.mate.carpool.ui.composable.HorizontalSpacer
 import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.composable.button.PrimaryButton
-import com.mate.carpool.ui.screen.reservePassenger.ReservePassengerFragment
 import com.mate.carpool.ui.theme.*
 import com.mate.carpool.ui.util.tu
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BottomSheetContent(
-    bottomSheetState: ModalBottomSheetState,
     ticketDetail: TicketModel,
-    fragmentManager: FragmentManager,
     userProfile: String,
     userRole: MemberRole,
-    userStudentID: String,
-    addNewPassengerToTicket: (Long) -> Unit,
-    reNewHomeListener: () -> Unit,
+    addNewPassengerToTicket: () -> Unit,
+    onRefresh: () -> Unit,
+    onCloseBottomSheet: suspend () -> Unit,
+    emitSnackBarMessage: (String) -> Unit
 ){
-    val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
 
     Column(
@@ -70,7 +62,7 @@ fun BottomSheetContent(
                 onClick =
                 {
                     coroutineScope.launch {
-                        bottomSheetState.hide()
+                        onCloseBottomSheet()
                     }
                 },
                 modifier = Modifier
@@ -84,7 +76,7 @@ fun BottomSheetContent(
             }
         }
         VerticalSpacer(height = 16.dp)
-        Header(
+        TicketHeader(
             ticketDetail.startArea,
             ticketDetail.endArea
         )
@@ -116,16 +108,13 @@ fun BottomSheetContent(
             onClick = {
                 if(userRole == MemberRole.Passenger){
                     coroutineScope.launch {
-                        addNewPassengerToTicket(ticketDetail.id)
-                        ReservePassengerFragment(
-                            userStudentID,
-                            reNewHomeListener
-                        ).show(fragmentManager, "passenger reservation")
-                        bottomSheetState.animateTo(ModalBottomSheetValue.Hidden)
+                        addNewPassengerToTicket()
+                        onCloseBottomSheet()
+                        onRefresh()
                     }
                 }
                 else
-                    Toast.makeText(context,"드라이버는 탑승하기를 할 수 없습니다", Toast.LENGTH_SHORT).show()
+                    emitSnackBarMessage("드라이버는 탑승하기를 할 수 없습니다.")
             },
             modifier = Modifier
                 .height(50.dp)
@@ -135,7 +124,7 @@ fun BottomSheetContent(
 }
 
 @Composable
-private fun Header(
+fun TicketHeader(
     startArea: String,
     endArea: String
 ) {
@@ -202,8 +191,7 @@ private fun Driver(
             .height(44.dp)
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
-    )
-    {
+    ) {
         ProfileImage(
             userProfile,
             Modifier
@@ -228,6 +216,7 @@ private fun Driver(
             Text(
                 text = memberName,
                 fontSize = 14.tu,
+                fontWeight = FontWeight.W400,
                 modifier = Modifier
             )
         }
@@ -242,7 +231,7 @@ private fun Driver(
 }
 
 @Composable
-private fun TicketDetail(
+fun TicketDetail(
     text1: String,
     text2: String,
     text3: String,
@@ -308,15 +297,14 @@ private fun TicketDetail(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Preview(showBackground = true)
 @Composable
 private fun PreviewBottomSheetContent() =
     MateTheme {
         BottomSheetContent(
-            bottomSheetState = ModalBottomSheetState(ModalBottomSheetValue.Expanded),
             ticketDetail = TicketModel(
                 1,
+                "",
                 "황진호",
                 "인동",
                 "경운대학교",
@@ -343,8 +331,8 @@ private fun PreviewBottomSheetContent() =
             addNewPassengerToTicket = {},
             userRole = MemberRole.Driver,
             userProfile = "",
-            userStudentID = "",
-            reNewHomeListener = {},
-            fragmentManager = object : FragmentManager(){}
+            onRefresh = {},
+            onCloseBottomSheet = {},
+            emitSnackBarMessage = {}
         )
     }

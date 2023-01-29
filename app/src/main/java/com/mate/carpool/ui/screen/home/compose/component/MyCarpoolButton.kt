@@ -3,44 +3,31 @@ package com.mate.carpool.ui.screen.home.compose.component
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.FragmentManager
-import com.mate.carpool.data.model.domain.UserRole
-import com.mate.carpool.data.model.domain.item.MemberRole
 import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.composable.button.PrimaryButton
-import com.mate.carpool.ui.screen.reserveDriver.fragment.ReserveDriverFragment
-import com.mate.carpool.ui.screen.reservePassenger.ReservePassengerFragment
 import com.mate.carpool.util.MatePreview
+import kotlinx.coroutines.launch
 
 @Composable
 fun MyCarpoolButton(
     carpoolExistState: Boolean ,
-    userRole: MemberRole,
-    fragmentManager: FragmentManager,
-    userStudentID: String,
-    reNewHomeListener: () -> Unit
+    setTicketId: (Long) -> Unit,
+    setTicketIdFromMyTicket: ((Long) -> Unit) -> Unit,
+    onOpenBottomSheet: suspend () -> Unit
 ) {
+    val coroutineScope = rememberCoroutineScope()
     if(carpoolExistState) {
         VerticalSpacer(height = 50.dp)
         PrimaryButton(
             text = "내 카풀 보기",
             onClick = {
-                when (userRole) {
-                    MemberRole.Passenger -> {
-                        ReservePassengerFragment(
-                            userStudentID,
-                            reNewHomeListener
-                        ).show(fragmentManager, "passenger reservation")
-                    }
-
-                    MemberRole.Driver -> {
-                        ReserveDriverFragment(
-                            reNewHomeListener
-                        ).show(fragmentManager, "driver reservation")
-                    }
+                coroutineScope.launch {
+                    setTicketIdFromMyTicket(setTicketId)
+                    onOpenBottomSheet()
                 }
             },
             modifier = Modifier
@@ -57,9 +44,8 @@ private fun PreviewMyCarpoolButton() =
     MatePreview {
         MyCarpoolButton(
             carpoolExistState = true,
-            userRole = MemberRole.Driver,
-            fragmentManager = object : FragmentManager(){},
-            "",
-            reNewHomeListener = {}
+            onOpenBottomSheet = {},
+            setTicketId = {},
+            setTicketIdFromMyTicket = {}
         )
     }

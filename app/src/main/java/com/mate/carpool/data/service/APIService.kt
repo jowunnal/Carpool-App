@@ -1,7 +1,7 @@
 package com.mate.carpool.data.service
 
 import com.mate.carpool.data.model.*
-import com.mate.carpool.data.model.DTO.*
+import com.mate.carpool.data.model.dto.*
 import com.mate.carpool.data.model.domain.item.StudentItem
 import com.mate.carpool.data.model.dto.ProfileDto
 import com.mate.carpool.data.model.dto.TicketDeleteMemberRequestDTO
@@ -37,10 +37,10 @@ interface APIService {
     suspend fun getTicketReadId(@Path("id") id: Long): TicketDetailResponseDTO
 
     @GET("ticket/update/{id}")
-    fun getTicketUpdateId(
+    suspend fun getTicketUpdateId(
         @Path("id") id: Long,
         @Query("status") status: String
-    ): Call<ResponseMessage>
+    ): ResponseMessage
 
     @GET("ticket/list")
     suspend fun getTicketList(): List<UserTicketDTO>
