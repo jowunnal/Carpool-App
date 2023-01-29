@@ -5,8 +5,6 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.activityViewModels
-import com.mate.carpool.ui.screen.reserveDriver.vm.ReserveDriverViewModel
 import com.mate.carpool.databinding.DialogCheckBinding
 
 class CheckDialogFragment(

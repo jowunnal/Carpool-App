@@ -1,9 +1,7 @@
 package com.mate.carpool.data.model.domain
 
-import androidx.databinding.ObservableField
-import com.mate.carpool.data.model.DTO.MemberRequestDTO
-import com.mate.carpool.data.model.DTO.MemberTimeTableRequestDTO
-import com.mate.carpool.data.model.DTO.MemberTimeTableResponseDTO
+import com.mate.carpool.data.model.dto.MemberRequestDTO
+import com.mate.carpool.data.model.dto.MemberTimeTableRequestDTO
 import com.mate.carpool.data.model.domain.item.MemberRole
 import com.mate.carpool.data.model.domain.item.getMemberRoleDTO
 

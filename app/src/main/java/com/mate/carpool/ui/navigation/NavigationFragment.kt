@@ -5,10 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
@@ -45,17 +42,14 @@ class NavigationFragment : Fragment() {
 
     @Composable
     private fun Content() {
-        Scaffold() {
-            NavigationGraph(
-                modifier = Modifier.padding(it),
-                navController = rememberNavController(),
-                onNavigateToCreateCarpool = rememberLambda {
-                    findNavController().navigate(R.id.action_homeFragment_to_createTicketBoardingAreaFragment)
-                },
-                onNavigateToProfileView = rememberLambda {
-                    findNavController().navigate(R.id.action_homeFragment_to_profileLookUpFragment)
-                }
-            )
-        }
+        NavigationGraph(
+            navController = rememberNavController(),
+            onNavigateToCreateCarpool = rememberLambda {
+                findNavController().navigate(R.id.action_homeFragment_to_createTicketBoardingAreaFragment)
+            },
+            onNavigateToProfileView = rememberLambda {
+                findNavController().navigate(R.id.action_homeFragment_to_profileLookUpFragment)
+            }
+        )
     }
 }

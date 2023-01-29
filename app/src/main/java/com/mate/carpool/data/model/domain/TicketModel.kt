@@ -9,6 +9,7 @@ import com.mate.carpool.data.model.domain.item.TicketType
 
 data class TicketModel(
     var id:Long = 0,
+    var studentNumber: String = "",
     var memberName:String = "",
     var startArea:String = "",
     val endArea:String = "경운대학교",

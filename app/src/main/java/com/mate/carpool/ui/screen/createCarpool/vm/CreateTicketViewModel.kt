@@ -7,9 +7,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mate.carpool.data.model.DTO.CreateCarpoolRequestDTO
+import com.mate.carpool.data.model.dto.CreateCarpoolRequestDTO
 import com.mate.carpool.data.model.domain.TicketModel
-import com.mate.carpool.data.model.domain.item.getTicketType
 import com.mate.carpool.data.model.response.ResponseMessage
 import com.mate.carpool.data.service.APIService
 import dagger.hilt.android.lifecycle.HiltViewModel

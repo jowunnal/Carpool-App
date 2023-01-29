@@ -1,4 +1,4 @@
-package com.mate.carpool.data.model.DTO
+package com.mate.carpool.data.model.dto
 
 import com.mate.carpool.data.model.domain.MemberModel
 import com.mate.carpool.data.model.domain.UserModel
