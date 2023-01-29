@@ -3,112 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/onboardingFragment">
+
+    <fragment
+        android:id="@+id/onboardingFragment"
+        android:name="com.mate.carpool.ui.screen.onboarding.OnBoardingFragment"
+        android:label="OnboardingFragment"
+        tools:layout="@layout/fragment_onboarding">
+        <action
+            android:id="@+id/action_onboardingFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_onboardingFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/onboardingFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_onboardingFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.mate.carpool.ui.screen.login.LoginFragment"
-        android:label="LoginFragment"
-        tools:layout="@layout/fragment_login">
-
+        android:label="LoginFragment">
         <action
-            android:id="@+id/action_loginFragment_to_RegisterInfoFragment"
-            app:destination="@id/RegisterInfoStep1Fragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_loginStartFragment"
-            app:destination="@id/loginStartFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/RegisterInfoStep1Fragment"
-        android:name="com.mate.carpool.ui.fragment.RegisterInfoStep1Fragment"
-        android:label="RegisterFragmentStep1"
-        tools:layout="@layout/fragment_register_info_step1">
-
-        <action
-            android:id="@+id/action_RegisterInfoStep1Fragment_to_RegisterInfoStep2Fragment"
-            app:destination="@id/RegisterInfoStep2Fragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/RegisterInfoStep2Fragment"
-        android:name="com.mate.carpool.ui.fragment.RegisterInfoStep2Fragment"
-        android:label="RegisterFragmentStep2"
-        tools:layout="@layout/fragment_register_info_step2">
-
-        <action
-            android:id="@+id/action_RegisterInfoStep2Fragment_to_RegisterInfoStep3Fragment"
-            app:destination="@id/RegisterInfoStep3Fragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/RegisterInfoStep3Fragment"
-        android:name="com.mate.carpool.ui.fragment.RegisterInfoStep3Fragment"
-        android:label="RegisterFragmentStep3"
-        tools:layout="@layout/fragment_register_info_step3">
-
-        <action
-            android:id="@+id/action_RegisterInfoStep3Fragment_to_RegisterPhoneFragment"
-            app:destination="@id/RegisterPhoneFragment"
-            app:popUpTo="@id/loginFragment"
-            app:popUpToInclusive="false" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/RegisterPhoneFragment"
-        android:name="com.mate.carpool.ui.screen.register.fragment.RegisterPhoneFragment"
-        android:label="RegisterFragment4"
-        tools:layout="@layout/fragment_register_phone">
-
-        <action
-            android:id="@+id/action_RegisterPhoneFragment_to_RegisterTypeFragment"
-            app:destination="@id/RegisterTypeFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/RegisterTypeFragment"
-        android:name="com.mate.carpool.ui.screen.register.fragment.RegisterTypeFragment"
-        android:label="LoginTypeFragment"
-        tools:layout="@layout/fragment_register_type">
-
-        <action
-            android:id="@+id/action_RegisterTypeFragment_to_RegisterProfileFragment"
-            app:destination="@id/RegisterProfileFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/RegisterProfileFragment"
-        android:name="com.mate.carpool.ui.screen.register.fragment.RegisterProfileFragment"
-        android:label="RegisterProfileFragment"
-        tools:layout="@layout/fragment_register_profile">
-
-        <action
-            android:id="@+id/action_RegisterProfileFragment_to_RegisterSelectDayFragment"
-            app:destination="@id/RegisterSelectDayFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/RegisterSelectDayFragment"
-        android:name="com.mate.carpool.ui.screen.register.fragment.RegisterSelectDayFragment"
-        android:label="LoginSelectDayFragment"
-        tools:layout="@layout/fragment_register_select_day">
-        <action
-            android:id="@+id/action_RegisterSelectDayFragment_to_loginFragment"
-            app:destination="@id/loginFragment"
-            app:popUpTo="@id/loginFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/loginStartFragment"
-        android:name="com.mate.carpool.ui.screen.login.LoginStartFragment"
-        android:label="LoginStartFragment"
-        tools:layout="@layout/fragment_login_start">
-        <action
-            android:id="@+id/action_loginStartFragment_to_homeFragment"
+            android:id="@+id/action_loginFragment_to_homeFragment"
             app:destination="@id/homeFragment"
-            app:popUpTo="@id/loginFragment"
-            app:popUpToInclusive="true"/>
+            app:popUpTo="@id/onboardingFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -150,12 +73,13 @@
             android:id="@+id/action_createTicketPreviewFragment_to_homeFragment"
             app:destination="@id/homeFragment"
             app:popUpTo="@id/homeFragment"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </fragment>
+
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.mate.carpool.ui.navigation.NavigationFragment"
-        android:label="HomeFragment" >
+        android:label="HomeFragment">
 
         <action
             android:id="@+id/action_homeFragment_to_createTicketBoardingAreaFragment"
@@ -163,7 +87,7 @@
 
         <action
             android:id="@+id/action_homeFragment_to_profileLookUpFragment"
-            app:destination="@id/profileLookUpFragment"/>
+            app:destination="@id/profileLookUpFragment" />
         <action
             android:id="@+id/action_homeFragment_to_reportFragment"
             app:destination="@id/reportFragment" />
@@ -178,8 +102,8 @@
             app:destination="@id/profileModifyFragment" />
         <argument
             android:name="needRefresh"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            app:argType="boolean" />
     </fragment>
 
     <fragment
@@ -196,12 +120,24 @@
             app:popUpTo="@id/profileModifyFragment"
             app:popUpToInclusive="true" />
     </fragment>
+
     <fragment
         android:id="@+id/reportFragment"
         android:name="com.mate.carpool.ui.screen.report.ReportFragment"
-        android:label="ReportFragment" >
+        android:label="ReportFragment">
         <argument
             android:name="studentId"
             app:argType="long" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.mate.carpool.ui.screen.signup.SignUpFragment"
+        android:label="SignUpFragment">
+        <action
+            android:id="@+id/action_signUpFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/signUpFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

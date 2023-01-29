@@ -46,8 +46,6 @@ fun PrimaryButton(
             .clickable(
                 onClick = onClick,
                 enabled = enabled,
-                interactionSource = interactionSource,
-                indication = null
             ),
         contentAlignment = Alignment.Center,
     ) {
@@ -97,7 +95,7 @@ fun MediumPrimaryButton(
         onClick = onClick,
         modifier = modifier,
         fontSize = 16.tu,
-        contentPadding = PaddingValues(horizontal = 20.dp, vertical = 1.dp),
+        contentPadding = PaddingValues(horizontal = 20.dp, vertical = 10.dp),
         enabled = enabled,
         enabledBackgroundColor = enabledBackgroundColor,
         interactionSource = interactionSource

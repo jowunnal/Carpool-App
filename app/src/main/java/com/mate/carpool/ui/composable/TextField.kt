@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -18,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -51,6 +51,7 @@ fun DefaultTextField(
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     visualTransformation: VisualTransformation = VisualTransformation.None,
 ) {
+    val focusManager = LocalFocusManager.current
     val borderColor = when {
         !enabled -> neutral30
         errorMessage != null -> red50
@@ -66,6 +67,7 @@ fun DefaultTextField(
             fontWeight = FontWeight.Normal,
             fontSize = 13.tu
         )
+        VerticalSpacer(height = 1.dp)
         Row(
             modifier = Modifier
                 .border(1.dp, borderColor, RoundedCornerShape(4.dp))
@@ -98,7 +100,13 @@ fun DefaultTextField(
                     enabled = enabled,
                     readOnly = readOnly,
                     keyboardOptions = keyboardOptions,
-                    keyboardActions = keyboardActions,
+                    keyboardActions = if (keyboardActions == KeyboardActions.Default) {
+                        KeyboardActions(
+                            onDone = {
+                                focusManager.clearFocus()
+                            }
+                        )
+                    } else keyboardActions,
                     maxLines = maxLines,
                     visualTransformation = visualTransformation,
                 )
@@ -111,7 +119,7 @@ fun DefaultTextField(
         }
         if (errorMessage != null) {
             Text(
-                modifier = Modifier.offset(y = (-2).dp),
+                modifier = Modifier,
                 text = errorMessage,
                 color = red50,
                 fontWeight = FontWeight.Normal,

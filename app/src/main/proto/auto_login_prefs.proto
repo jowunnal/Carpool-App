@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+option java_package = "com.mate.carpool";
+option java_multiple_files = true;
+
+message AutoLoginPreferences {
+  string email = 1;
+  string password = 2;
+}

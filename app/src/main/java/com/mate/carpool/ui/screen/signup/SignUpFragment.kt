@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.screen.login
+package com.mate.carpool.ui.screen.signup
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -12,17 +12,18 @@ import com.mate.carpool.ui.composable.rememberLambda
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LoginFragment : BaseComposeFragment<LoginViewModel>() {
+class SignUpFragment : BaseComposeFragment<SignUpViewModel>() {
 
-    override val viewModel: LoginViewModel by viewModels()
+    override val viewModel: SignUpViewModel by viewModels()
 
     @OptIn(ExperimentalLifecycleComposeApi::class)
     @Composable
     override fun Content() {
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-        LoginScreen(
+        SignUpScreen(
             uiState = uiState,
+            onNameEdit = viewModel::setName,
             onEmailEdit = viewModel::setEmail,
             onPasswordEdit = viewModel::setPassword,
             onShowPasswordClick = rememberLambda {
@@ -32,12 +33,12 @@ class LoginFragment : BaseComposeFragment<LoginViewModel>() {
                     viewModel.setShowPassword(true)
                 }
             },
-            onLoginClick = viewModel::login,
+            onSignUpClick = viewModel::signUp,
             onBackClick = rememberLambda {
                 findNavController().popBackStack()
             },
             moveToHomeScreen = rememberLambda {
-                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                findNavController().navigate(R.id.action_signUpFragment_to_homeFragment)
             }
         )
     }

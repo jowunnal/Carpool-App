@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         checkPermissions()
         initTopBar()
+        skipLoginScreenIfNeed()
     }
 
     private fun checkPermissions() {
@@ -62,6 +63,15 @@ class MainActivity : AppCompatActivity() {
             binding.btnBack.isVisible = navHostFragment.childFragmentManager.backStackEntryCount > 0
         }
     }
+
+    private fun skipLoginScreenIfNeed() {
+        val skipLoginScreen = intent.getBooleanExtra(KEY_SUCCESS_AUTO_LOGIN, false)
+        if (skipLoginScreen) {
+            navController.navigate(R.id.action_onboardingFragment_to_homeFragment)
+            Snackbar.make(binding.root, "로그인 성공 어쩌구", Snackbar.LENGTH_SHORT).show()
+        }
+    }
+
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
@@ -87,6 +97,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val TAG = "MainActivity"
+        const val KEY_SUCCESS_AUTO_LOGIN = "KEY_SUCCESS_AUTO_LOGIN"
         const val EXIT_INTERVAL = 2000L
 
         val REQUIRED_PERMISSIONS = arrayOf(

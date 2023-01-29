@@ -50,7 +50,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewDataBinding> : Fragment
     ): View? {
         binding = getViewBinding()
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.setVariable(BR.viewModel, viewModel)
+        // binding.setVariable(BR.viewModel, viewModel)
         binding.setVariable(BR.navController, findNavController())
         binding.root.setOnTouchListener { v, _ ->
             if (v.hasFocus()) {
