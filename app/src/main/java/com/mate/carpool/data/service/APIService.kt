@@ -2,7 +2,7 @@ package com.mate.carpool.data.service
 
 import com.mate.carpool.data.model.*
 import com.mate.carpool.data.model.dto.*
-import com.mate.carpool.data.model.domain.item.StudentItem
+import com.mate.carpool.data.model.item.StudentItem
 import com.mate.carpool.data.model.dto.ProfileDto
 import com.mate.carpool.data.model.dto.TicketDeleteMemberRequestDTO
 import com.mate.carpool.data.model.dto.request.ReportRequest
@@ -15,8 +15,11 @@ import retrofit2.http.*
 
 interface APIService {
 
+    @GET("auth/test")
+    suspend fun checkAccessTokenIsExpired(): String
+
     @POST("auth/login")
-    fun postLogin(@Body studentInfo: StudentItem): Call<LoginResponse>
+    suspend fun postLogin(@Body studentInfo: StudentItem): LoginResponse
 
     @Multipart
     @POST("auth/signup")

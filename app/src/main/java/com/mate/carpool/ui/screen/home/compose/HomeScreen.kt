@@ -18,10 +18,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mate.carpool.data.model.domain.TicketListModel
-import com.mate.carpool.data.model.domain.item.DayStatus
-import com.mate.carpool.data.model.domain.item.MemberRole
-import com.mate.carpool.data.model.domain.item.TicketStatus
-import com.mate.carpool.data.model.domain.item.TicketType
+import com.mate.carpool.data.model.item.DayStatus
+import com.mate.carpool.data.model.item.MemberRole
+import com.mate.carpool.data.model.item.TicketStatus
+import com.mate.carpool.data.model.item.TicketType
 import com.mate.carpool.ui.base.Event
 import com.mate.carpool.ui.composable.SnackBarHost
 import com.mate.carpool.ui.composable.VerticalSpacer
@@ -36,6 +36,7 @@ fun HomeBottomSheetLayout(
     onNavigateToCreateCarpool: () -> Unit,
     onNavigateToProfileView: () -> Unit,
     onNavigateToReportView: (String) -> Unit,
+    onNavigateToRegisterDriver: () -> Unit,
     homeCarpoolBottomSheetViewModel: HomeBottomSheetViewModel,
     carpoolListViewModel: CarpoolListViewModel
 ) {
@@ -142,6 +143,7 @@ fun HomeBottomSheetLayout(
                 setTicketIdFromMyTicket = carpoolListViewModel::getMyTicket,
                 onNavigateToCreateCarpool = onNavigateToCreateCarpool,
                 onNavigateToProfileView = onNavigateToProfileView,
+                onNavigateToRegisterDriver = onNavigateToRegisterDriver,
                 onRefresh = carpoolListViewModel::onRefresh,
                 onOpenBottomSheet = { bottomSheetState.animateTo(ModalBottomSheetValue.Expanded) }
             )
@@ -160,6 +162,7 @@ fun HomeView(
     setTicketIdFromMyTicket: ((Long) -> Unit) -> Unit,
     onNavigateToCreateCarpool: () -> Unit,
     onNavigateToProfileView: () -> Unit,
+    onNavigateToRegisterDriver: () -> Unit,
     onRefresh: () -> Unit,
     onOpenBottomSheet: suspend () -> Unit
 ) {
@@ -174,7 +177,8 @@ fun HomeView(
         ) {
             HomeMenu(
                 userRole = userRole,
-                onNavigateToCreateCarpool = onNavigateToCreateCarpool
+                onNavigateToCreateCarpool = onNavigateToCreateCarpool,
+                onNavigateToRegisterDriver = onNavigateToRegisterDriver
             )
 
             TicketListHeader()
@@ -262,7 +266,8 @@ private fun HomePreview() {
             onNavigateToCreateCarpool = {},
             onNavigateToProfileView = {},
             onRefresh = {},
-            onOpenBottomSheet = {}
+            onOpenBottomSheet = {},
+            onNavigateToRegisterDriver = {}
         )
     }
 }

@@ -21,10 +21,9 @@ import androidx.compose.ui.unit.dp
 import com.mate.carpool.R
 import com.mate.carpool.data.model.domain.TicketModel
 import com.mate.carpool.data.model.domain.UserModel
-import com.mate.carpool.data.model.domain.item.DayStatus
-import com.mate.carpool.data.model.domain.item.MemberRole
-import com.mate.carpool.data.model.domain.item.TicketType
-import com.mate.carpool.data.model.domain.item.getTicketType
+import com.mate.carpool.data.model.item.DayStatus
+import com.mate.carpool.data.model.item.MemberRole
+import com.mate.carpool.data.model.item.TicketType
 import com.mate.carpool.ui.composable.HorizontalSpacer
 import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.composable.button.PrimaryButton
@@ -99,7 +98,7 @@ fun BottomSheetContent(
             text1 = "탑승 인원",
             text2 = ticketDetail.recruitPerson.toString() + "명",
             text3 = "비용",
-            text4 = ticketDetail.ticketType?.getTicketType()?:""
+            text4 = ticketDetail.ticketType?.displayName?:""
         )
         VerticalSpacer(height = 20.dp)
 
@@ -304,6 +303,7 @@ private fun PreviewBottomSheetContent() =
         BottomSheetContent(
             ticketDetail = TicketModel(
                 1,
+                "",
                 "",
                 "황진호",
                 "인동",

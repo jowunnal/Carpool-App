@@ -20,7 +20,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mate.carpool.data.model.domain.TicketListModel
-import com.mate.carpool.data.model.domain.item.*
+import com.mate.carpool.data.model.item.*
+import com.mate.carpool.data.model.item.TicketStatus
+import com.mate.carpool.data.model.item.TicketType
 import com.mate.carpool.ui.composable.HorizontalDivider
 import com.mate.carpool.ui.composable.HorizontalDividerItem
 import com.mate.carpool.ui.composable.HorizontalSpacer
@@ -96,17 +98,12 @@ fun TicketList(
                                 )
                             }
 
-                            Chip(
-                                onClick = { /*TODO*/ },
-                                colors = when (item.ticketType) {
-                                    TicketType.Free -> ChipDefaults.chipColors(primary50)
-                                    TicketType.Cost -> ChipDefaults.chipColors(red50)
-                                    else -> ChipDefaults.chipColors(neutral50)
-                                }
+                            com.mate.carpool.ui.composable.Badge(
+                                maximumNumber = item.recruitPerson,
+                                currentNumber = item.currentPersonCount,
+                                status = item.ticketStatus,
+                                costType = item.ticketType
                             )
-                            {
-                                Text(text = "${item.currentPersonCount}/${item.recruitPerson}")
-                            }
                         }
                     }
                     if(index != carpoolList.lastIndex)

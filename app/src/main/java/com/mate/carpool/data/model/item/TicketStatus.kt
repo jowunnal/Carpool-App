@@ -1,5 +1,8 @@
-package com.mate.carpool.data.model.domain.item
+package com.mate.carpool.data.model.item
 
+import androidx.compose.runtime.Stable
+
+@Stable
 enum class TicketStatus {
     Cancel,
     Before,

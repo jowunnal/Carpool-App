@@ -3,7 +3,7 @@ package com.mate.carpool.di.module
 import android.content.Context
 import androidx.datastore.core.DataStore
 import com.mate.carpool.AutoLoginPreferences
-import com.mate.carpool.data.datastore.autoLoginPreferencesStore
+import com.mate.carpool.data.model.datastore.autoLoginPreferencesStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

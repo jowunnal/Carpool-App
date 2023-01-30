@@ -43,6 +43,7 @@ class ProfileLookUpViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+    // TODO 프로필 이미지 압축
     fun setProfileImage(part: MultipartBody.Part) {
         memberRepository.updateProfileImage(part).onEach { result ->
             when (result) {

@@ -1,30 +1,29 @@
 package com.mate.carpool.data.repository.impl
 
+import android.content.Context
 import androidx.datastore.core.DataStore
 import com.mate.carpool.AutoLoginPreferences
 import com.mate.carpool.data.Result
+import com.mate.carpool.data.callApi
+import com.mate.carpool.data.datasource.AutoLoginDataSource
+import com.mate.carpool.data.model.item.StudentItem
 import com.mate.carpool.data.model.response.ResponseMessage
 import com.mate.carpool.data.repository.AuthRepository
+import com.mate.carpool.data.service.APIService
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import java.io.IOException
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
-    private val autoLoginDataStore: DataStore<AutoLoginPreferences>,
+    private val apiService: APIService,
+    private val autoLoginDataSource: AutoLoginDataSource
 ) : AuthRepository {
 
-    override val autoLoginInfo: Flow<AutoLoginPreferences> =
-        autoLoginDataStore.data  // TODO 비밀번호 복호화
-            .catch { exception ->
-                if (exception is IOException) {
-                    emit(AutoLoginPreferences.getDefaultInstance())
-                } else {
-                    throw exception
-                }
-            }
-
+    override val autoLoginInfo: Flow<AutoLoginPreferences> = autoLoginDataSource.autoLoginInfo
 
     override fun signUp(name: String, email: String, password: String) = flow {
         when {
@@ -46,7 +45,9 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun login(email: String, password: String) = flow {
+    override fun login(email: String, password: String): Flow<Result<ResponseMessage>> = flow {
+        emit(Result.Loading)
+
         when {
             email == "fail" -> {
                 emit(Result.Error("invalidEmail"))
@@ -58,17 +59,64 @@ class AuthRepositoryImpl @Inject constructor(
 
             else -> {
                 // TODO 토큰 저장
-                updateAutoLoginInfo(email = email, password = password)
+                //autoLoginDataSource.updateAutoLoginInfo(token = "")
                 emit(Result.Success(ResponseMessage()))
             }
         }
     }
 
-    private suspend fun updateAutoLoginInfo(email: String, password: String) {
-        autoLoginDataStore.updateData { preferences ->
-            // TODO 비밀번호 암호화
-            preferences.toBuilder().setEmail(email).setPassword(password).build()
+    override fun temporaryLogin(): Flow<Result<ResponseMessage>> = callApi {
+        apiService.postLogin(
+            StudentItem(
+                "282838",
+                "테스트",
+                "01028282838"
+            )
+        )
+    }.map {
+        when(it){
+            is Result.Success -> {
+                Result.Success(
+                    ResponseMessage(
+                        status = it.data.hashCode(),
+                        message = it.data.accessToken,
+                        code = it.data.refreshTokenExpiresIn
+                    )
+                )
+            }
+            is Result.Loading -> {
+                Result.Loading
+            }
+            is Result.Error -> {
+                Result.Error(
+                    it.message
+                )
+            }
         }
     }
 
+    override fun checkAccessTokenIsExpired(): Flow<Result<ResponseMessage>> = callApi {
+        apiService.checkAccessTokenIsExpired()
+    }.map {
+        when(it){
+            is Result.Loading -> {
+                Result.Loading
+            }
+
+            is Result.Success -> {
+                Result.Success(
+                    ResponseMessage(
+                        status = it.data.hashCode(),
+                        message = it.data,
+                        code = it.data
+                    )
+                )
+            }
+            is Result.Error -> {
+                Result.Error(
+                    it.message
+                )
+            }
+        }
+    }
 }

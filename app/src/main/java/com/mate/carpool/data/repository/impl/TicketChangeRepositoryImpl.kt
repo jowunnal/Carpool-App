@@ -2,7 +2,8 @@ package com.mate.carpool.data.repository.impl
 
 import com.mate.carpool.data.model.dto.TicketDeleteMemberRequestDTO
 import com.mate.carpool.data.model.dto.TicketNewMemberRequestDTO
-import com.mate.carpool.data.model.domain.TicketStatus
+import com.mate.carpool.data.model.item.TicketStatus
+import com.mate.carpool.data.model.item.getTicketStatusDTO
 import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.model.response.ResponseMessage
 import com.mate.carpool.data.repository.TicketChangeRepository
@@ -19,7 +20,7 @@ class TicketChangeRepositoryImpl @Inject constructor(private val apiService: API
     }
 
     override fun updateTicketStatus(ticketId: Long, status: TicketStatus): Flow<ApiResponse<ResponseMessage>> = handleFlowApi {
-        apiService.getTicketUpdateId(ticketId,status.displayName)
+        apiService.getTicketUpdateId(ticketId,status.getTicketStatusDTO())
     }
 
     override fun deletePassengerToTicket(ticketId:Long,passengerId:Long): Flow<ApiResponse<ResponseMessage>> = handleFlowApi {

@@ -16,4 +16,8 @@ sealed class NavigationItem(
         title = "신고",
         route = "report/{studentId}"
     )
+    object RegisterDriver: NavigationItem(
+        title = "드라이버 등록",
+        route = "registerDriver"
+    )
 }

@@ -28,21 +28,9 @@ fun RemoteImage(
     colorFilter: ColorFilter? = null,
     filterQuality: FilterQuality = DrawScope.DefaultFilterQuality,
 ) {
-    val context = LocalContext.current.applicationContext
-    val token = context
-        .getSharedPreferences("accessToken", Context.MODE_PRIVATE)
-        .getString("accessToken", "")!!
-
-    val processedUrl = if (url.isNotEmpty() && !url.startsWith("http")) {
-        ImageUtil.getImageUrl(path = url)
-    } else url
-
     AsyncImage(
         modifier = modifier,
-        model = ImageRequest.Builder(context)
-            .data(processedUrl)
-            .addHeader("Authorization", token)
-            .build(),
+        model = url,
         contentDescription = contentDescription,
         transform = transform,
         onState = onState,

@@ -17,10 +17,8 @@ fun ProfileImage(
     profileImage:String,
     modifier: Modifier
 ){
-    val context = LocalContext.current
-
     GlideImage(
-        imageModel = { "http://13.209.43.209:8080/member/profile$profileImage" },
+        imageModel = { profileImage },
         modifier = modifier,
         loading = {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))

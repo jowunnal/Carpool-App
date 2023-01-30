@@ -1,9 +1,9 @@
 package com.mate.carpool.ui.util
 
-import com.mate.carpool.data.model.domain.item.DayStatus
-import com.mate.carpool.data.model.domain.item.MemberRole
-import com.mate.carpool.data.model.domain.item.TicketStatus
-import com.mate.carpool.data.model.domain.item.TicketType
+import com.mate.carpool.data.model.item.DayStatus
+import com.mate.carpool.data.model.item.MemberRole
+import com.mate.carpool.data.model.item.TicketStatus
+import com.mate.carpool.data.model.item.TicketType
 
 object StringUtils {
 
