@@ -11,10 +11,8 @@ import com.mate.carpool.data.model.response.ResponseMessage
 import com.mate.carpool.data.repository.AuthRepository
 import com.mate.carpool.data.service.APIService
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.*
 import java.io.IOException
 import javax.inject.Inject
 
@@ -61,6 +59,35 @@ class AuthRepositoryImpl @Inject constructor(
                 // TODO 토큰 저장
                 //autoLoginDataSource.updateAutoLoginInfo(token = "")
                 emit(Result.Success(ResponseMessage()))
+            }
+        }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override fun logout(): Flow<Result<ResponseMessage>> {
+        return autoLoginDataSource.autoLoginInfo.flatMapLatest {
+            callApi {
+                apiService.postLogout(it.token)
+            }
+        }.map {
+            when(it){
+                is Result.Success -> {
+                    Result.Success(
+                        ResponseMessage(
+                            status = it.data.hashCode(),
+                            message = it.data,
+                            code = it.data
+                        )
+                    )
+                }
+                is Result.Loading -> {
+                    Result.Loading
+                }
+                is Result.Error -> {
+                    Result.Error(
+                        it.message
+                    )
+                }
             }
         }
     }

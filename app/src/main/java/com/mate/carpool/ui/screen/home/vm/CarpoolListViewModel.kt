@@ -8,6 +8,7 @@ import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.repository.CarpoolListRepository
 import com.mate.carpool.data.repository.MemberRepository
 import com.mate.carpool.ui.base.BaseViewModel
+import com.mate.carpool.ui.base.SnackBarMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,7 +41,7 @@ class CarpoolListViewModel @Inject constructor(
         getMemberModel()
     }
 
-    fun onRefresh(event:String = "EVENT_READY") {
+    fun onRefresh(event:String) {
         viewModelScope.launch {
             _refreshState.update { true }
             delay(1000)
@@ -52,7 +53,7 @@ class CarpoolListViewModel @Inject constructor(
         }
     }
 
-    fun getCarpoolList(){
+    private fun getCarpoolList(){
         viewModelScope.launch {
             carpoolListRepository.getTicketList().collectLatest {
                 when(it){
@@ -70,7 +71,7 @@ class CarpoolListViewModel @Inject constructor(
         }
     }
 
-    fun getMemberModel(){
+    private fun getMemberModel(){
         viewModelScope.launch {
             memberRepository.getMemberInfo().collectLatest {
                 when(it){
@@ -102,10 +103,18 @@ class CarpoolListViewModel @Inject constructor(
                         setTicketId(it.responseMessage.id)
                     }
                     is ApiResponse.FailResponse -> {
-                        emitSnackbar("티켓정보를 가져오는데 실패했습니다. ${it.responseMessage.message}")
+                        emitSnackbar(SnackBarMessage(
+                            headerMessage = "티켓정보를 가져오는데 실패했습니다. ${it.responseMessage.message}",
+                            contentMessage = "다시 시도해 주세요."
+                        ))
                     }
                     is ApiResponse.ExceptionResponse -> {
-                        emitSnackbar("일시적인 장애가 발생하였습니다.")
+                        emitSnackbar(
+                            SnackBarMessage(
+                                headerMessage = "일시적인 장애가 발생하였습니다.",
+                                contentMessage = "다시 시도해 주세요."
+                            )
+                        )
                     }
                 }
             }

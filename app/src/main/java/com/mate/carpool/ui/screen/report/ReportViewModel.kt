@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.mate.carpool.data.Result
 import com.mate.carpool.data.repository.ReportRepository
 import com.mate.carpool.ui.base.BaseViewModel
+import com.mate.carpool.ui.base.SnackBarMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -71,12 +72,12 @@ class ReportViewModel @Inject constructor(
                 }
 
                 is Result.Success -> {
-                    emitSnackbar("신고가 접수되었습니다.")
+                    emitSnackbar(SnackBarMessage(headerMessage = "신고가 접수되었습니다."))
                     emitEvent(EVENT_FINISH)
                 }
 
                 is Result.Error -> {
-                    emitSnackbar(result.message)
+                    emitSnackbar(SnackBarMessage(headerMessage = result.message))
                 }
             }
         }.launchIn(viewModelScope)

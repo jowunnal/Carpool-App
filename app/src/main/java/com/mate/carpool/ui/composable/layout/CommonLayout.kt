@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -18,16 +19,18 @@ import com.mate.carpool.ui.theme.white
 fun CommonLayout(
     title: String?,
     onBackClick: () -> Unit,
+    snackBarHost: @Composable (SnackbarHostState) -> Unit = {},
     content: @Composable ColumnScope.() -> Unit
 ) {
-    Scaffold(
-        containerColor = white,
+    androidx.compose.material.Scaffold(
+        backgroundColor = white,
         topBar = {
             SimpleTopAppBar(
                 title = title ?: "",
                 onBackClick = onBackClick,
             )
         },
+        snackbarHost = snackBarHost
     ) { paddingValues ->
         Column(
             modifier = Modifier

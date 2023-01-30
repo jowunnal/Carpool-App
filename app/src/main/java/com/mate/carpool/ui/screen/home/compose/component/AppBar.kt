@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -16,13 +17,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mate.carpool.R
 import com.mate.carpool.ui.theme.MateTheme
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeAppBar(
     profileImage:String,
-    goToProfileScreen: () -> Unit
+    goToProfileScreen: () -> Unit,
+    onOpenDrawer: suspend () -> Unit
 ){
+    val coroutineScope = rememberCoroutineScope()
     SmallTopAppBar(
         title = {
             Image(
@@ -48,7 +52,11 @@ fun HomeAppBar(
                         .clickable(onClick = goToProfileScreen)
                 )
                 IconButton(
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                        coroutineScope.launch {
+                            onOpenDrawer()
+                        }
+                    },
                     Modifier
                         .width(36.dp)
                         .height(36.dp)
@@ -76,6 +84,7 @@ private fun PrevHomeAppBar() =
     MateTheme {
         HomeAppBar(
             "",
-            goToProfileScreen = {}
+            goToProfileScreen = {},
+            onOpenDrawer = {}
         )
     }

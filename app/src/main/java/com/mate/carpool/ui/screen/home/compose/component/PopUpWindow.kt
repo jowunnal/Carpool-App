@@ -16,6 +16,7 @@ import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
 import androidx.compose.ui.window.PopupProperties
 import com.mate.carpool.data.model.item.MemberRole
+import com.mate.carpool.ui.base.BaseViewModel
 import com.mate.carpool.ui.theme.black
 import com.mate.carpool.ui.util.tu
 
@@ -26,7 +27,7 @@ fun PopupWindow(
     userRole: MemberRole,
     deletePassengerFromTicket: () -> Unit,
     onNavigateToReportView: () -> Unit,
-    onRefresh: () -> Unit
+    onRefresh: (String) -> Unit
 ) {
     if (dialogState) {
         Popup(
@@ -67,7 +68,7 @@ fun PopupWindow(
                             )
                             .clickable {
                                 deletePassengerFromTicket()
-                                onRefresh()
+                                onRefresh(BaseViewModel.EVENT_READY)
                             }
                     )
 
@@ -82,7 +83,7 @@ fun PopupWindow(
                         )
                         .clickable {
                             onNavigateToReportView()
-                            onRefresh()
+                            onRefresh(BaseViewModel.EVENT_READY)
                         }
                 )
             }

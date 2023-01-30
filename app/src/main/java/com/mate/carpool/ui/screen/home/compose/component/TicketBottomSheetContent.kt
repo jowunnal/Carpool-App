@@ -24,9 +24,11 @@ import com.mate.carpool.data.model.domain.UserModel
 import com.mate.carpool.data.model.item.DayStatus
 import com.mate.carpool.data.model.item.MemberRole
 import com.mate.carpool.data.model.item.TicketType
+import com.mate.carpool.ui.base.SnackBarMessage
 import com.mate.carpool.ui.composable.HorizontalSpacer
 import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.composable.button.PrimaryButton
+import com.mate.carpool.ui.screen.home.vm.HomeBottomSheetViewModel
 import com.mate.carpool.ui.theme.*
 import com.mate.carpool.ui.util.tu
 import com.mate.carpool.util.formatStartDayMonthToDTO
@@ -34,14 +36,14 @@ import com.mate.carpool.util.formatStartTimeToDTO
 import kotlinx.coroutines.launch
 
 @Composable
-fun BottomSheetContent(
+fun TicketBottomSheetContent(
     ticketDetail: TicketModel,
     userProfile: String,
     userRole: MemberRole,
     addNewPassengerToTicket: () -> Unit,
-    onRefresh: () -> Unit,
+    onRefresh: (String) -> Unit,
     onCloseBottomSheet: suspend () -> Unit,
-    emitSnackBarMessage: (String) -> Unit
+    emitSnackBarMessage: (SnackBarMessage) -> Unit
 ){
     val coroutineScope = rememberCoroutineScope()
 
@@ -111,11 +113,16 @@ fun BottomSheetContent(
                     coroutineScope.launch {
                         addNewPassengerToTicket()
                         onCloseBottomSheet()
-                        onRefresh()
+                        onRefresh(HomeBottomSheetViewModel.EVENT_ADDED_PASSENGER_TO_TICKET)
                     }
                 }
                 else
-                    emitSnackBarMessage("드라이버는 탑승하기를 할 수 없습니다.")
+                    emitSnackBarMessage(
+                        SnackBarMessage(
+                            headerMessage = "드라이버는 탑승하기를 할 수 없습니다.",
+                            contentMessage = ""
+                        )
+                    )
             },
             modifier = Modifier
                 .height(50.dp)
@@ -302,7 +309,7 @@ fun TicketDetail(
 @Composable
 private fun PreviewBottomSheetContent() =
     MateTheme {
-        BottomSheetContent(
+        TicketBottomSheetContent(
             ticketDetail = TicketModel(
                 1,
                 "",

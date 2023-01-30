@@ -26,6 +26,7 @@ import com.mate.carpool.data.model.item.TicketType
 import com.mate.carpool.ui.composable.HorizontalDivider
 import com.mate.carpool.ui.composable.HorizontalDividerItem
 import com.mate.carpool.ui.composable.HorizontalSpacer
+import com.mate.carpool.ui.screen.home.vm.HomeBottomSheetViewModel
 import com.mate.carpool.ui.theme.*
 import com.mate.carpool.ui.util.tu
 import com.mate.carpool.util.formatStartTimeToDTO
@@ -37,14 +38,14 @@ fun TicketList(
     refreshState: Boolean,
     carpoolList : List<TicketListModel>,
     setTicketId: (Long) -> Unit,
-    onRefresh: () -> Unit,
+    onRefresh: (String) -> Unit,
     onOpenBottomSheet: suspend () -> Unit
 ){
     val coroutineScope = rememberCoroutineScope()
 
     val pullRefreshState = rememberPullRefreshState(
         refreshing = refreshState,
-        onRefresh = onRefresh
+        onRefresh = { onRefresh(HomeBottomSheetViewModel.EVENT_ADDED_PASSENGER_TO_TICKET) }
     )
 
     Box(
