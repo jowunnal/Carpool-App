@@ -8,6 +8,7 @@ import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.repository.CarpoolListRepository
 import com.mate.carpool.data.repository.TicketChangeRepository
 import com.mate.carpool.ui.base.BaseViewModel
+import com.mate.carpool.ui.base.SnackBarMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.awaitCancellation
@@ -63,20 +64,26 @@ class HomeBottomSheetViewModel @Inject constructor(
 
                     }
                     is ApiResponse.SuccessResponse ->{
-                        emitSnackbar("티켓 탑승이 완료되었습니다.")
+                        emitSnackbar(
+                            SnackBarMessage(headerMessage = "티켓 탑승이 완료되었습니다."))
                     }
                     is ApiResponse.FailResponse -> {
                         when(it.responseMessage.code){
                             "400"-> {
-                                emitSnackbar("자리가 만석이거나, 이미 탑승중입니다.")
+                                emitSnackbar(SnackBarMessage(headerMessage = "자리가 만석이거나, 이미 탑승중입니다."))
                             }
                             "404"-> {
-                                emitSnackbar("해당 카풀을 찾을 수 없습니다.")
+                                emitSnackbar(SnackBarMessage(headerMessage = "해당 카풀을 찾을 수 없습니다."))
                             }
                         }
                     }
                     else ->{
-                        emitSnackbar("일시적인 장애가 발생하였습니다. 재시도 해주세요.")
+                        emitSnackbar(
+                            SnackBarMessage(
+                                headerMessage = "일시적인 장애가 발생하였습니다.",
+                                contentMessage = "다시 시도해 주세요."
+                            )
+                        )
                     }
                 }
             }
@@ -94,21 +101,26 @@ class HomeBottomSheetViewModel @Inject constructor(
 
                     }
                     is ApiResponse.SuccessResponse ->{
-                        emitSnackbar("")
+
                     }
                     is ApiResponse.FailResponse -> {
                         when(it.responseMessage.code){
                             "403"->{
-                                emitSnackbar("권한이 없습니다.")
+                                emitSnackbar(SnackBarMessage(headerMessage = "권한이 없습니다."))
                             }
                             "404"->{
-                                emitSnackbar("존재하지 않는 카풀 입니다.")
+                                emitSnackbar(SnackBarMessage(headerMessage = "존재하지 않는 카풀 입니다."))
                             }
 
                         }
                     }
                     else ->{
-                        emitSnackbar("일시적인 장애가 발생하였습니다. 재시도 해주세요.")
+                        emitSnackbar(
+                            SnackBarMessage(
+                                headerMessage = "일시적인 장애가 발생하였습니다.",
+                                contentMessage = "다시 시도해 주세요."
+                            )
+                        )
                     }
                 }
             }
@@ -123,19 +135,28 @@ class HomeBottomSheetViewModel @Inject constructor(
             ).collectLatest {
                 when(it){
                     is ApiResponse.Loading -> {
-                        emitSnackbar("")
+
                     }
                     is ApiResponse.SuccessResponse ->{
-                        emitSnackbar("티켓 삭제가 완료되었습니다.")
+                        emitSnackbar(SnackBarMessage(headerMessage = "티켓 삭제가 완료되었습니다."))
                     }
                     is ApiResponse.FailResponse -> {
                         when(it.responseMessage.code){
-                            "404"-> emitSnackbar("해당 티켓을 찾을 수 없습니다.")
-                            else -> {emitSnackbar(it.responseMessage.message)}
+                            "404"-> {
+                                emitSnackbar(SnackBarMessage(headerMessage = "해당 티켓을 찾을 수 없습니다."))
+                            }
+                            else -> {
+                                emitSnackbar(SnackBarMessage(headerMessage = "일시적인 장애가 발생하였습니다."))
+                            }
                         }
                     }
                     is ApiResponse.ExceptionResponse ->{
-                        emitSnackbar("일시적인 장애가 발생하였습니다. 재시도 해주세요. ${it.e.message}")
+                        emitSnackbar(
+                            SnackBarMessage(
+                                headerMessage = "일시적인 장애가 발생하였습니다.",
+                                contentMessage = "다시 시도해 주세요."
+                            )
+                        )
                     }
                 }
             }

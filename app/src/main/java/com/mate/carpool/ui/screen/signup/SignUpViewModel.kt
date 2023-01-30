@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.mate.carpool.data.Result
 import com.mate.carpool.data.repository.AuthRepository
 import com.mate.carpool.ui.base.BaseViewModel
+import com.mate.carpool.ui.base.SnackBarMessage
 import com.mate.carpool.util.substring
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -86,7 +87,7 @@ class SignUpViewModel @Inject constructor(
                 is Result.Success -> {
                     // TODO 회원가입 성공 시, 서버에서 로그인까지 처리해달라고 요청?
                     _uiState.update { it.copy(signUpSuccess = true) }
-                    emitSnackbar("회원가입 성공 어쩌구")
+                    //emitSnackbar(SnackBarMessage(headerMessage = "회원가입 성공 어쩌구"))
                 }
 
                 is Result.Error -> {

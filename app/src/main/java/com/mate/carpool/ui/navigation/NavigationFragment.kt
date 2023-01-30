@@ -6,18 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.mate.carpool.R
 import com.mate.carpool.ui.composable.rememberLambda
+import com.mate.carpool.ui.screen.onboarding.OnBoardingFragment
 import com.mate.carpool.ui.theme.MateTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class NavigationFragment : Fragment() {
+    private val args: NavigationFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +47,7 @@ class NavigationFragment : Fragment() {
     @Composable
     private fun Content() {
         NavigationGraph(
+            navArgs = args,
             navController = rememberNavController(),
             onNavigateToCreateCarpool = rememberLambda {
                 findNavController().navigate(R.id.action_homeFragment_to_createTicketBoardingAreaFragment)

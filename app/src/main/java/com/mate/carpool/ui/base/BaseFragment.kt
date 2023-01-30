@@ -79,8 +79,8 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewDataBinding> : Fragment
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.snackbarMessage.collect { message ->
-                    if (message.isNotBlank()) {
-                        showSnackbar(message = message)
+                    if (message.contentMessage.isNotBlank()) {
+                        showSnackbar(message = message.contentMessage)
                     }
                 }
             }

@@ -52,8 +52,10 @@ abstract class BaseComposeFragment<VM : BaseViewModel> : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.snackbarMessage.collect { message ->
-                    showSnackbar(message = message)
+                viewModel.snackbarMessage.collect {
+                    showSnackbar(
+                        message = it.contentMessage
+                    )
                 }
             }
         }

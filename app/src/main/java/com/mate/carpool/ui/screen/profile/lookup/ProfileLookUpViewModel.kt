@@ -6,6 +6,7 @@ import com.mate.carpool.data.Result
 import com.mate.carpool.data.model.domain.Profile
 import com.mate.carpool.data.repository.MemberRepository
 import com.mate.carpool.ui.base.BaseViewModel
+import com.mate.carpool.ui.base.SnackBarMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -37,7 +38,7 @@ class ProfileLookUpViewModel @Inject constructor(
                 }
 
                 is Result.Error -> {
-                    emitSnackbar(result.message)
+                    emitSnackbar(SnackBarMessage(headerMessage = result.message))
                 }
             }
         }.launchIn(viewModelScope)
@@ -51,12 +52,12 @@ class ProfileLookUpViewModel @Inject constructor(
                 }
 
                 is Result.Success -> {
-                    emitSnackbar(result.data.message)
+                    emitSnackbar(SnackBarMessage(headerMessage = result.data.message))
                     fetch()
                 }
 
                 is Result.Error -> {
-                    emitSnackbar(result.message)
+                    emitSnackbar(SnackBarMessage(headerMessage = result.message))
                 }
             }
         }.launchIn(viewModelScope)

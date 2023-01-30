@@ -5,6 +5,7 @@ import com.mate.carpool.AutoLoginPreferences
 import com.mate.carpool.data.Result
 import com.mate.carpool.data.repository.AuthRepository
 import com.mate.carpool.ui.base.BaseViewModel
+import com.mate.carpool.ui.base.SnackBarMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
@@ -48,7 +49,7 @@ class SplashViewModel @Inject constructor(
                 }
 
                 is Result.Error -> {
-                    emitSnackbar(result.message)
+                    emitSnackbar(SnackBarMessage(headerMessage = result.message))
                     delayIfNeed()
                     emitEvent(EVENT_GO_TO_LOGIN_SCREEN)
                 }

@@ -8,6 +8,7 @@ import com.mate.carpool.data.model.domain.Profile
 import com.mate.carpool.data.model.domain.UserRole
 import com.mate.carpool.data.repository.MemberRepository
 import com.mate.carpool.ui.base.BaseViewModel
+import com.mate.carpool.ui.base.SnackBarMessage
 import com.mate.carpool.ui.util.map
 import com.mate.carpool.util.substring
 import dagger.assisted.Assisted
@@ -69,12 +70,12 @@ class ProfileModifyViewModel @AssistedInject constructor(
                 }
 
                 is Result.Success -> {
-                    emitSnackbar("수정되었습니다.")
+                    emitSnackbar(SnackBarMessage(headerMessage = "수정되었습니다."))
                     emitEvent(EVENT_FINISH)
                 }
 
                 is Result.Error -> {
-                    emitSnackbar(result.message)
+                    emitSnackbar(SnackBarMessage(headerMessage = result.message))
                 }
             }
         }.launchIn(viewModelScope)

@@ -80,6 +80,10 @@
         android:id="@+id/homeFragment"
         android:name="com.mate.carpool.ui.navigation.NavigationFragment"
         android:label="HomeFragment">
+        <argument
+            android:name="event"
+            app:argType="string"
+            android:defaultValue=""/>
 
         <action
             android:id="@+id/action_homeFragment_to_createTicketBoardingAreaFragment"
@@ -88,9 +92,7 @@
         <action
             android:id="@+id/action_homeFragment_to_profileLookUpFragment"
             app:destination="@id/profileLookUpFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_reportFragment"
-            app:destination="@id/reportFragment" />
+
     </fragment>
 
     <fragment
@@ -119,15 +121,6 @@
             app:launchSingleTop="true"
             app:popUpTo="@id/profileModifyFragment"
             app:popUpToInclusive="true" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/reportFragment"
-        android:name="com.mate.carpool.ui.screen.report.ReportFragment"
-        android:label="ReportFragment">
-        <argument
-            android:name="studentId"
-            app:argType="long" />
     </fragment>
 
     <fragment

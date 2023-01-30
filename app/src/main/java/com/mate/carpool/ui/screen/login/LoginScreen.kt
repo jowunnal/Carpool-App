@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -13,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -21,8 +24,11 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mate.carpool.R
+import com.mate.carpool.ui.base.SnackBarMessage
 import com.mate.carpool.ui.composable.LargeDefaultTextField
+import com.mate.carpool.ui.composable.SnackBarHostCustom
 import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.composable.button.LargePrimaryButton
 import com.mate.carpool.ui.composable.layout.CommonLayout
@@ -32,6 +38,7 @@ import com.mate.carpool.ui.util.tu
 @Composable
 fun LoginScreen(
     uiState: LoginUiState,
+    snackBarMessage: SnackBarMessage,
     onEmailEdit: (String) -> Unit,
     onPasswordEdit: (String) -> Unit,
     onShowPasswordClick: () -> Unit,
@@ -41,9 +48,30 @@ fun LoginScreen(
 ) {
     val passwordTextFieldFocusRequest = remember { FocusRequester() }
 
+    val snackBarHostState = remember {
+        SnackbarHostState()
+    }
+
+    if(snackBarMessage.contentMessage.isNotBlank())
+        LaunchedEffect(key1 = snackBarMessage.contentMessage){
+            snackBarHostState.showSnackbar(
+                message = snackBarMessage.contentMessage,
+                duration = SnackbarDuration.Indefinite,
+                actionLabel = snackBarMessage.headerMessage
+            )
+        }
+
     CommonLayout(
         title = null,
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
+        snackBarHost = {
+            SnackBarHostCustom(
+                headerMessage = it.currentSnackbarData?.message ?: "",
+                contentMessage = it.currentSnackbarData?.actionLabel ?: "",
+                snackBarHostState = snackBarHostState,
+                disMissSnackBar = { snackBarHostState.currentSnackbarData?.dismiss() }
+            )
+        }
     ) {
         Text(
             text = "로그인하기",
@@ -117,6 +145,7 @@ private fun LoginScreenPreview1() {
     val uiState = LoginUiState.getInitialValue()
     LoginScreen(
         uiState = uiState,
+        snackBarMessage = SnackBarMessage.getInitValues(),
         onEmailEdit = {},
         onPasswordEdit = {},
         onShowPasswordClick = {},
@@ -132,6 +161,7 @@ private fun LoginScreenPreview2() {
     val uiState = LoginUiState.getInitialValue().copy(password = "password")
     LoginScreen(
         uiState = uiState,
+        snackBarMessage = SnackBarMessage.getInitValues(),
         onEmailEdit = {},
         onPasswordEdit = {},
         onShowPasswordClick = {},
@@ -149,6 +179,7 @@ private fun LoginScreenPreview3() {
     )
     LoginScreen(
         uiState = uiState,
+        snackBarMessage = SnackBarMessage.getInitValues(),
         onEmailEdit = {},
         onPasswordEdit = {},
         onShowPasswordClick = {},
@@ -166,6 +197,7 @@ private fun LoginScreenPreview4() {
     )
     LoginScreen(
         uiState = uiState,
+        snackBarMessage = SnackBarMessage.getInitValues(),
         onEmailEdit = {},
         onPasswordEdit = {},
         onShowPasswordClick = {},
@@ -184,6 +216,7 @@ private fun LoginScreenPreview5() {
     )
     LoginScreen(
         uiState = uiState,
+        snackBarMessage = SnackBarMessage.getInitValues(),
         onEmailEdit = {},
         onPasswordEdit = {},
         onShowPasswordClick = {},

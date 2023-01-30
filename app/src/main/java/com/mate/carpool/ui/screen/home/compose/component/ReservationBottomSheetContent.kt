@@ -30,6 +30,7 @@ import com.mate.carpool.data.model.domain.UserModel
 import com.mate.carpool.data.model.item.DayStatus
 import com.mate.carpool.data.model.item.MemberRole
 import com.mate.carpool.data.model.item.TicketType
+import com.mate.carpool.ui.base.BaseViewModel
 import com.mate.carpool.ui.composable.HorizontalSpacer
 import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.composable.button.LargePrimaryButton
@@ -52,7 +53,7 @@ fun ReservationBottomSheetContent(
     onCloseBottomSheet: suspend () -> Unit,
     onBrowseOpenChatLink: () -> Unit,
     onNavigateToReportView: () -> Unit,
-    onRefresh: () -> Unit,
+    onRefresh: (String) -> Unit,
     setPassengerId: (Long) -> Unit,
     setStudentId: (String) -> Unit,
     deletePassengerFromTicket: () -> Unit,
@@ -326,7 +327,7 @@ private fun TicketButton(
     setPassengerId: (Long) -> Unit,
     updateTicketStatus: (TicketStatus) -> Unit,
     deletePassengerFromTicket: () -> Unit,
-    onRefresh: () -> Unit,
+    onRefresh: (String) -> Unit,
     onCloseBottomSheet: suspend () -> Unit
 ){
     val coroutineScope = rememberCoroutineScope()
@@ -353,7 +354,7 @@ private fun TicketButton(
                             setPassengerId(userPassengerId?:-1L)
                             deletePassengerFromTicket()
                             onCloseBottomSheet()
-                            onRefresh()
+                            onRefresh(BaseViewModel.EVENT_READY)
                         }
                     },
                     modifier = Modifier.fillMaxWidth()

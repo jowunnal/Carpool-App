@@ -65,7 +65,6 @@ class LoginViewModel @Inject constructor(
         _uiState.update { it.copy(showPassword = value) }
     }
 
-    // TODO 로그인 성공 시, 홈화면 이동 후 성공 메시지 출력
     fun login() {
         authRepository.login(email = uiState.value.email, password = uiState.value.password)
             .onEach { result ->

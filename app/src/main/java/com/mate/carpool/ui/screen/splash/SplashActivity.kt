@@ -46,11 +46,6 @@ class SplashActivity : AppCompatActivity() {
                     }
                 }
             }
-            launch {
-                viewModel.snackbarMessage.collect{
-                    Toast.makeText(this@SplashActivity,it,Toast.LENGTH_LONG).show()
-                }
-            }
         }
     }
 

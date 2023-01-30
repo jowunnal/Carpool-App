@@ -7,15 +7,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mate.carpool.R
 import com.mate.carpool.ui.theme.black
 import com.mate.carpool.ui.theme.gray
 import com.mate.carpool.ui.theme.primary20
 import com.mate.carpool.ui.util.tu
+import com.mate.carpool.util.MatePreview
 
 @Composable
-fun SnackBarHost(
+fun SnackBarHostCustom(
     headerMessage: String,
     contentMessage: String,
     snackBarHostState: SnackbarHostState,
@@ -88,5 +90,17 @@ private fun SnackBarCustom(
                 color = black
             )
         }
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewSnackBarCustom(){
+    MatePreview {
+        SnackBarCustom(
+            headerMessage = "헤더메세지는 이렇게 보입니다.",
+            contentMessage = "컨텐트메세지는 이렇게 보입니다.",
+            disMissSnackBar = {}
+        )
     }
 }

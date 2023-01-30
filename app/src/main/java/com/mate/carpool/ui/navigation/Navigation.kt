@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.mate.carpool.ui.base.Event
+import com.mate.carpool.ui.base.SnackBarMessage
 import com.mate.carpool.ui.composable.rememberLambda
 import com.mate.carpool.ui.screen.home.compose.HomeBottomSheetLayout
 import com.mate.carpool.ui.screen.home.vm.CarpoolListViewModel
@@ -23,6 +24,7 @@ import com.mate.carpool.ui.screen.report.ReportViewModel
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun NavigationGraph(
+    navArgs: NavigationFragmentArgs,
     navController:NavHostController,
     onNavigateToCreateCarpool: () -> Unit,
     onNavigateToProfileView: () -> Unit,
@@ -36,13 +38,48 @@ fun NavigationGraph(
     ){
 
         composable(route = NavigationItem.Home.route) {
+            val refreshState by carpoolListViewModel.refreshState.collectAsStateWithLifecycle()
+
+            val userInfo by carpoolListViewModel.memberModelState.collectAsStateWithLifecycle()
+            val carpoolExistState by carpoolListViewModel.carpoolExistState.collectAsStateWithLifecycle()
+            val carpoolList by carpoolListViewModel.carpoolListState.collectAsStateWithLifecycle()
+
+            val studentId by homeCarpoolBottomSheetViewModel.studentId.collectAsStateWithLifecycle()
+            val ticketDetail by homeCarpoolBottomSheetViewModel.carpoolTicketState.collectAsStateWithLifecycle()
+
+            val event by carpoolListViewModel.event.collectAsStateWithLifecycle(
+                initialValue = Event(navArgs.event),
+                lifecycleOwner = LocalLifecycleOwner.current
+            )
+            val snackBarMessage by homeCarpoolBottomSheetViewModel.snackbarMessage.collectAsStateWithLifecycle(
+                initialValue = SnackBarMessage.getInitValues(),
+                lifecycleOwner = LocalLifecycleOwner.current
+            )
+
             HomeBottomSheetLayout(
+                refreshState = refreshState,
+                userInfo = userInfo,
+                carpoolExistState = carpoolExistState,
+                studentId = studentId,
+                carpoolList = carpoolList,
+                ticketDetail = ticketDetail,
+                event = event,
+                snackBarMessage = snackBarMessage,
                 onNavigateToCreateCarpool = onNavigateToCreateCarpool,
                 onNavigateToProfileView = onNavigateToProfileView,
                 onNavigateToRegisterDriver = { navController.navigate("RegisterDriver") },
                 onNavigateToReportView = fun(studentId:String){ navController.navigate("report/${studentId.toLong()}") },
-                homeCarpoolBottomSheetViewModel = homeCarpoolBottomSheetViewModel,
-                carpoolListViewModel = carpoolListViewModel
+                isTicketIsMineOrNot = homeCarpoolBottomSheetViewModel::isTicketIsMineOrNot,
+                getMyPassengerId = homeCarpoolBottomSheetViewModel::getMyPassengerId,
+                onRefresh = carpoolListViewModel::onRefresh,
+                setPassengerId = homeCarpoolBottomSheetViewModel::setPassengerId,
+                setStudentId = homeCarpoolBottomSheetViewModel::setStudentId,
+                setTicketId = homeCarpoolBottomSheetViewModel::setTicketId,
+                setTicketIdFromMyTicket = carpoolListViewModel::getMyTicket,
+                addNewPassengerToTicket = homeCarpoolBottomSheetViewModel::addNewPassengerToTicket,
+                updateTicketStatus = homeCarpoolBottomSheetViewModel::updateTicketStatus,
+                deletePassengerToTicket = homeCarpoolBottomSheetViewModel::deletePassengerToTicket,
+                emitSnackBar = homeCarpoolBottomSheetViewModel::emitSnackbar,
             )
         }
 

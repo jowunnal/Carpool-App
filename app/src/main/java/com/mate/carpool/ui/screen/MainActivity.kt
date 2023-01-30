@@ -13,6 +13,10 @@ import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.snackbar.Snackbar
 import com.mate.carpool.R
 import com.mate.carpool.databinding.ActivityMainBinding
+import com.mate.carpool.ui.navigation.NavigationFragmentDirections
+import com.mate.carpool.ui.screen.onboarding.OnBoardingFragment
+import com.mate.carpool.ui.screen.onboarding.OnBoardingFragmentDirections
+import com.mate.carpool.ui.screen.splash.SplashViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.system.exitProcess
 
@@ -67,8 +71,8 @@ class MainActivity : AppCompatActivity() {
     private fun skipLoginScreenIfNeed() {
         val skipLoginScreen = intent.getBooleanExtra(KEY_SUCCESS_AUTO_LOGIN, false)
         if (skipLoginScreen) {
-            navController.navigate(R.id.action_onboardingFragment_to_homeFragment)
-            Snackbar.make(binding.root, "로그인 성공 어쩌구", Snackbar.LENGTH_SHORT).show()
+            val action = OnBoardingFragmentDirections.actionOnboardingFragmentToHomeFragment(SplashViewModel.EVENT_GO_TO_HOME_SCREEN)
+            navController.navigate(action)
         }
     }
 

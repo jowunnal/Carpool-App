@@ -21,6 +21,9 @@ interface APIService {
     @POST("auth/login")
     suspend fun postLogin(@Body studentInfo: StudentItem): LoginResponse
 
+    @POST("auth/logout")
+    suspend fun postLogout(accessToken: String): String
+
     @Multipart
     @POST("auth/signup")
     suspend fun postSignUp(
