@@ -35,14 +35,19 @@ fun NavigationGraph(
         startDestination = NavigationItem.Home.route
     ){
 
-        composable(route = NavigationItem.Home.route){
+        composable(route = NavigationItem.Home.route) {
             HomeBottomSheetLayout(
                 onNavigateToCreateCarpool = onNavigateToCreateCarpool,
                 onNavigateToProfileView = onNavigateToProfileView,
-                onNavigateToReportView = fun(studentId:String){navController.navigate("report/${studentId.toLong()}")},
+                onNavigateToRegisterDriver = { navController.navigate("RegisterDriver") },
+                onNavigateToReportView = fun(studentId:String){ navController.navigate("report/${studentId.toLong()}") },
                 homeCarpoolBottomSheetViewModel = homeCarpoolBottomSheetViewModel,
                 carpoolListViewModel = carpoolListViewModel
             )
+        }
+
+        composable(route = NavigationItem.RegisterDriver.route) {
+
         }
 
         composable(route = NavigationItem.Announcement.route){
@@ -81,6 +86,5 @@ fun NavigationGraph(
                 onBackClick = rememberLambda { navController.popBackStack() }
             )
         }
-
     }
 }

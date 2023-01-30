@@ -31,6 +31,7 @@ import com.mate.carpool.R
 import com.mate.carpool.data.model.domain.UserRole
 import com.mate.carpool.ui.composable.RemoteImage
 import com.mate.carpool.ui.composable.VerticalSpacer
+import com.mate.carpool.ui.screen.home.compose.component.ProfileImage
 import com.mate.carpool.ui.theme.black
 import com.mate.carpool.ui.theme.primary10
 import com.mate.carpool.ui.util.displayName
@@ -125,14 +126,13 @@ private fun UserTopInfo(
             modifier = Modifier.size(80.dp),
             contentAlignment = Alignment.BottomEnd
         ) {
-            RemoteImage(
+            ProfileImage(
+                profileImage = profileImageUrl,
                 modifier = Modifier
                     .clip(CircleShape)
                     .fillMaxSize()
                     .clickable { galleryLauncher.launch("image/*") }
-                    .background(primary10),
-                url = profileImageUrl,
-                contentDescription = "profile image"
+                    .background(primary10)
             )
             Image(
                 modifier = Modifier

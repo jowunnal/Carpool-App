@@ -1,4 +1,4 @@
-package com.mate.carpool.data.model.domain.item
+package com.mate.carpool.data.model.item
 
 /**
  * 월~금 enum class

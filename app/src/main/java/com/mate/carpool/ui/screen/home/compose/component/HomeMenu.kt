@@ -18,7 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mate.carpool.R
-import com.mate.carpool.data.model.domain.item.MemberRole
+import com.mate.carpool.data.model.item.MemberRole
 import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.theme.MateTheme
 import com.mate.carpool.ui.util.tu
@@ -26,7 +26,8 @@ import com.mate.carpool.ui.util.tu
 @Composable
 fun HomeMenu(
     userRole: MemberRole,
-    onNavigateToCreateCarpool: () -> Unit
+    onNavigateToCreateCarpool: () -> Unit,
+    onNavigateToRegisterDriver: () -> Unit
 ){
     Column() {
         HomeCardView(
@@ -42,9 +43,9 @@ fun HomeMenu(
             MemberRole.Passenger -> {
                 HomeCardView(
                     imageId = R.drawable.ic_home_car,
-                    text = "드라이버 등록",
+                    text = "드라이버 등록하기",
                     icon = R.drawable.ic_add_small,
-                    onNavigateCallBack = {}
+                    onNavigateCallBack = onNavigateToRegisterDriver
                 )
             }
 
@@ -130,6 +131,7 @@ private fun PreviewHomeMenu() =
     MateTheme {
         HomeMenu(
             userRole = MemberRole.Driver,
-            onNavigateToCreateCarpool = {}
+            onNavigateToCreateCarpool = {},
+            onNavigateToRegisterDriver = {}
         )
     }

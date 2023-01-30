@@ -27,6 +27,7 @@ data class TicketDetailResponseDTO(
     fun asTicketDomain() = TicketModel(
         this.id,
         this.studentNumber,
+        this.profileImage,
         this.memberName,
         this.startArea,
         this.endArea,

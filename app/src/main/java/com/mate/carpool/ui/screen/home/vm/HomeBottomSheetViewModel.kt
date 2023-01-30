@@ -3,7 +3,7 @@ package com.mate.carpool.ui.screen.home.vm
 import androidx.lifecycle.viewModelScope
 import com.mate.carpool.data.model.domain.TicketListModel
 import com.mate.carpool.data.model.domain.TicketModel
-import com.mate.carpool.data.model.domain.TicketStatus
+import com.mate.carpool.data.model.item.TicketStatus
 import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.repository.CarpoolListRepository
 import com.mate.carpool.data.repository.TicketChangeRepository
@@ -83,7 +83,7 @@ class HomeBottomSheetViewModel @Inject constructor(
         }
     }
 
-    fun updateTicketStatus(status:TicketStatus){
+    fun updateTicketStatus(status: TicketStatus){
         viewModelScope.launch {
             ticketChangeRepository.updateTicketStatus(
                 ticketId = ticketId.value,

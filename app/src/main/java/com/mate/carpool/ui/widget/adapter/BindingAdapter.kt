@@ -14,7 +14,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import com.google.android.material.textfield.TextInputEditText
 import com.mate.carpool.R
-import com.mate.carpool.data.model.domain.item.*
+import com.mate.carpool.data.model.item.*
+import com.mate.carpool.data.model.item.TicketType
 import com.mate.carpool.ui.screen.createCarpool.vm.CreateTicketViewModel
 import java.util.*
 
@@ -62,11 +63,11 @@ fun setAreaItemsToStartingAreaAdapter(tv: AutoCompleteTextView, areaItems: Array
                     setTicketButtonSelected(" ", ticketViewModel.openChatButtonFlag, 1)
                 }
                 "유료"-> {
-                    ticketViewModel.mutableTicketModel.value!!.ticketType=TicketType.Cost
+                    ticketViewModel.mutableTicketModel.value!!.ticketType= TicketType.Cost
                     setTicketButtonSelected(" ",ticketViewModel.openChatButtonFlag,2)
                 }
                 "무료"->{
-                    ticketViewModel.mutableTicketModel.value!!.ticketType=TicketType.Free
+                    ticketViewModel.mutableTicketModel.value!!.ticketType= TicketType.Free
                     setTicketButtonSelected(" ",ticketViewModel.openChatButtonFlag,2)
                 }
             }
@@ -116,7 +117,7 @@ fun setTicketButtonSelected(text: String, buttonFlag: MutableLiveData<ArrayList<
 
 @BindingAdapter("ticketType")
 fun setTicketType(textView:TextView,ticketType: TicketType?){
-    textView.text = ticketType?.getTicketType()?:""
+    textView.text = ticketType?.displayName?:""
 }
 
 

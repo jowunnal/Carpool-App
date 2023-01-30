@@ -1,12 +1,7 @@
 package com.mate.carpool.di.module
 
 import com.mate.carpool.data.repository.*
-import com.mate.carpool.data.repository.impl.AuthRepositoryImpl
-import com.mate.carpool.data.repository.impl.CarpoolListRepositoryImpl
-import com.mate.carpool.data.repository.impl.MemberRepositoryImpl
-import com.mate.carpool.data.repository.impl.TicketChangeRepositoryImpl
-import com.mate.carpool.data.repository.impl.RegisterRepositoryImpl
-import com.mate.carpool.data.repository.impl.ReportRepositoryImpl
+import com.mate.carpool.data.repository.impl.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

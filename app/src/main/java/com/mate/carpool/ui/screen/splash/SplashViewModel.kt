@@ -24,21 +24,18 @@ class SplashViewModel @Inject constructor(
 
     private fun autoLogin() {
         authRepository.autoLoginInfo.onEach { info ->
-            if (info.email.isEmpty() || info.password.isEmpty()) {
+            if (info.token.isEmpty()) {
                 delay(MIN_DELAY_TIME)
                 emitEvent(EVENT_GO_TO_LOGIN_SCREEN)
 
             } else {
-                login(info = info)
+                login()
             }
         }.launchIn(viewModelScope)
     }
 
-    private fun login(info: AutoLoginPreferences) {
-        authRepository.login(
-            email = info.email,
-            password = info.password
-        ).onEach { result ->
+    private fun login() {
+        authRepository.checkAccessTokenIsExpired().onEach { result ->
             when (result) {
                 is Result.Loading -> {
 
@@ -50,6 +47,7 @@ class SplashViewModel @Inject constructor(
                 }
 
                 is Result.Error -> {
+                    emitSnackbar(result.message)
                     delayIfNeed()
                     emitEvent(EVENT_GO_TO_LOGIN_SCREEN)
                 }

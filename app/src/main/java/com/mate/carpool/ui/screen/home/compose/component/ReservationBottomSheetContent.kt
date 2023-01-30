@@ -25,12 +25,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mate.carpool.R
 import com.mate.carpool.data.model.domain.TicketModel
-import com.mate.carpool.data.model.domain.TicketStatus
+import com.mate.carpool.data.model.item.TicketStatus
 import com.mate.carpool.data.model.domain.UserModel
-import com.mate.carpool.data.model.domain.item.DayStatus
-import com.mate.carpool.data.model.domain.item.MemberRole
-import com.mate.carpool.data.model.domain.item.TicketType
-import com.mate.carpool.data.model.domain.item.getTicketType
+import com.mate.carpool.data.model.item.DayStatus
+import com.mate.carpool.data.model.item.MemberRole
+import com.mate.carpool.data.model.item.TicketType
 import com.mate.carpool.ui.composable.HorizontalSpacer
 import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.composable.button.LargePrimaryButton
@@ -116,7 +115,7 @@ fun ReservationBottomSheetContent(
             text1 = "탑승 인원",
             text2 = ticketDetail.recruitPerson.toString() + "명",
             text3 = "비용",
-            text4 = ticketDetail.ticketType?.getTicketType()?:""
+            text4 = ticketDetail.ticketType?.displayName?:""
         )
         VerticalSpacer(height = 20.dp)
 
@@ -133,7 +132,7 @@ fun ReservationBottomSheetContent(
             color = neutral50
         )
         MemberInfo(
-            userProfile = userProfile,
+            userProfile = ticketDetail.profileImage,
             memberName = ticketDetail.memberName,
             studentId = ticketDetail.studentNumber,
             iconDrawable = R.drawable.ic_navigate_next_small,
@@ -291,7 +290,7 @@ private fun TicketOpenChat(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            painter = painterResource(id = R.drawable.icon_kakao),
+            painter = painterResource(id = R.drawable.ic_kakao),
             contentDescription = null,
             modifier = Modifier
                 .width(38.dp)
@@ -334,13 +333,13 @@ private fun TicketButton(
             MemberRole.Driver -> {
                 LargeSecondaryButton(
                     text = "티켓 삭제",
-                    onClick = { updateTicketStatus(TicketStatus.CANCEL) },
+                    onClick = { updateTicketStatus(TicketStatus.Cancel) },
                     modifier = Modifier.weight(1f)
                 )
                 HorizontalSpacer(width = 8.dp)
                 LargePrimaryButton(
                     text = "운행 종료",
-                    onClick = { updateTicketStatus(TicketStatus.AFTER) },
+                    onClick = { updateTicketStatus(TicketStatus.After) },
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -370,6 +369,7 @@ fun PreviewReservationBottomSheetContent() {
         ReservationBottomSheetContent(
             ticketDetail = TicketModel(
                 1,
+                "",
                 "",
                 "황진호",
                 "인동",

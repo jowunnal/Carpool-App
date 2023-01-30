@@ -39,9 +39,9 @@ fun <T> callApi(action: suspend () -> T) = flow {
             is HttpException -> {
                 try {
                     val response: ResponseMessage = Gson().fromJson(
-                        e.response()!!.errorBody()!!.string(),
+                        e.response()?.errorBody()?.string()?:"",
                         ResponseMessage::class.java
-                    )
+                    )?: ResponseMessage(message = "NullMessage")
                     emit(Result.Error(response.message))
                 } catch (e: HttpException) {
                     emit(Result.Error(e.message()))

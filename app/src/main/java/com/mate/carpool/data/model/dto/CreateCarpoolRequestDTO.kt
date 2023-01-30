@@ -1,8 +1,8 @@
 package com.mate.carpool.data.model.dto
 
 import com.mate.carpool.data.model.domain.TicketModel
-import com.mate.carpool.data.model.domain.item.DayStatus
-import com.mate.carpool.data.model.domain.item.TicketType
+import com.mate.carpool.data.model.item.DayStatus
+import com.mate.carpool.data.model.item.TicketType
 
 data class CreateCarpoolRequestDTO(
     var startArea:String = "",
@@ -13,7 +13,7 @@ data class CreateCarpoolRequestDTO(
     var startTime:String="",
     var openChatUrl: String="",
     var recruitPerson: Int=0,
-    var ticketType: TicketType ?= null,
+    var ticketType: TicketType?= null,
     val ticketPrice: Int=0
 ){
     constructor(ticketModel: TicketModel):this(

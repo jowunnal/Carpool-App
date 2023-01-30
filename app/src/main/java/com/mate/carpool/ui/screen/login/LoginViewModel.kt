@@ -1,15 +1,17 @@
 package com.mate.carpool.ui.screen.login
 
+import android.content.Context
+import androidx.datastore.core.DataStore
 import androidx.lifecycle.viewModelScope
+import com.mate.carpool.AutoLoginPreferences
 import com.mate.carpool.data.Result
 import com.mate.carpool.data.repository.AuthRepository
 import com.mate.carpool.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.update
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
+import java.io.IOException
 import javax.inject.Inject
 
 data class LoginUiState(
@@ -38,6 +40,7 @@ data class LoginUiState(
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val authRepository: AuthRepository,
+    @ApplicationContext private val context:Context
 ) : BaseViewModel() {
 
     private val _uiState = MutableStateFlow(LoginUiState.getInitialValue())
@@ -68,10 +71,10 @@ class LoginViewModel @Inject constructor(
             .onEach { result ->
                 when (result) {
                     is Result.Loading -> {
-
                     }
 
                     is Result.Success -> {
+                        checkAccessTokenIsExpired()
                         _uiState.update { it.copy(loginSuccess = true) }
                     }
 
@@ -86,6 +89,41 @@ class LoginViewModel @Inject constructor(
                     }
                 }
             }.launchIn(viewModelScope)
+    }
+
+    suspend fun checkAccessTokenIsExpired(){
+        authRepository.checkAccessTokenIsExpired().collectLatest {
+            when (it) {
+                is Result.Loading -> {
+
+                }
+
+                is Result.Success -> {
+                }
+
+                is Result.Error -> {
+                    temporaryLogin()
+                }
+            }
+        }
+    }
+
+    suspend fun temporaryLogin(){
+        authRepository.temporaryLogin().collectLatest {
+            when (it) {
+                is Result.Loading -> {
+
+                }
+
+                is Result.Success -> {
+                    context.applicationContext.getSharedPreferences("accessToken", Context.MODE_PRIVATE).edit().putString("accessToken","Bearer ${it.data.message}").apply()
+                }
+
+                is Result.Error -> {
+
+                }
+            }
+        }
     }
 }
 

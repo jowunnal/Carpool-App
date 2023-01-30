@@ -1,6 +1,7 @@
 package com.mate.carpool.di.module
 
 import android.content.Context
+import android.util.Log
 import com.google.gson.GsonBuilder
 import com.mate.carpool.data.service.APIService
 import dagger.Module
@@ -16,6 +17,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.io.IOException
 import java.lang.reflect.Type
 import javax.inject.Inject
@@ -26,6 +28,7 @@ class HeaderInterceptor @Inject constructor(@ApplicationContext private val cont
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         val token = context.applicationContext.getSharedPreferences("accessToken",Context.MODE_PRIVATE).getString("accessToken","")!!
+        Log.d("test",token)
         val newRequest = chain.request().newBuilder()
             .addHeader("Authorization", token)
             .build()
@@ -41,7 +44,7 @@ class NullOnEmptyConverterFactory : Converter.Factory() {
     ): Converter<ResponseBody, *> {
         val delegate: Converter<ResponseBody, *> =
             retrofit.nextResponseBodyConverter<Any>(this, type, annotations)
-        return Converter { body -> if (body.contentLength() == 0L) null else delegate.convert(body) }
+        return Converter { body -> if (body.contentLength() == 0L) "" else delegate.convert(body) }
     }
 }
 
@@ -78,6 +81,7 @@ object RetrofitModule {
     fun provideRetrofit(okHttpClient: OkHttpClient,nullOnEmptyConverterFactory: NullOnEmptyConverterFactory):Retrofit{
         return Retrofit.Builder()
             .addConverterFactory(nullOnEmptyConverterFactory)
+            .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
             .baseUrl("http://13.209.43.209:8080/")
             .client(okHttpClient)

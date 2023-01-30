@@ -1,6 +1,6 @@
 package com.mate.carpool.data.model.domain
 
-import com.mate.carpool.data.model.domain.item.MemberRole
+import com.mate.carpool.data.model.item.MemberRole
 
 /**
  * 사용자 정보를 담는 클래스
