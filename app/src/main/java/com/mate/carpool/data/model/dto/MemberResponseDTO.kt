@@ -1,7 +1,7 @@
 package com.mate.carpool.data.model.dto
 
 import com.mate.carpool.data.model.domain.UserModel
-import com.mate.carpool.ui.util.StringUtils.asMemberRoleToDomain
+import com.mate.carpool.util.asMemberRoleToDomain
 
 data class MemberResponseDTO(
     val passengerId:Long,

@@ -29,6 +29,8 @@ import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.composable.button.PrimaryButton
 import com.mate.carpool.ui.theme.*
 import com.mate.carpool.ui.util.tu
+import com.mate.carpool.util.formatStartDayMonthToDTO
+import com.mate.carpool.util.formatStartTimeToDTO
 import kotlinx.coroutines.launch
 
 @Composable
@@ -89,7 +91,7 @@ fun BottomSheetContent(
         VerticalSpacer(height = 20.dp)
         TicketDetail(
             text1 = "출발 시간",
-            text2 = "${ticketDetail.startTime},${ticketDetail.startDayMonth}",
+            text2 = "${ticketDetail.startTime.formatStartTimeToDTO()},${ticketDetail.startTime.formatStartDayMonthToDTO()}",
             text3 = "탑승 장소",
             text4 = ticketDetail.boardingPlace
         )
@@ -309,9 +311,8 @@ private fun PreviewBottomSheetContent() =
                 "인동",
                 "경운대학교",
                 "경운대학교앞",
-                "01/21",
                 DayStatus.Morning,
-                "08:00",
+                25200L,
                 "link",
                 3,
                 TicketType.Cost,

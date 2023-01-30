@@ -301,7 +301,7 @@
                     android:id="@+id/text_time_departure_detail"
                     android:layout_width="171dp"
                     android:layout_height="wrap_content"
-                    android:text="@{createCarpoolViewModel.ticketModel.startTime}"
+                    android:text="@{createCarpoolViewModel.ticketStartTime}"
                     android:textColor="@color/black"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/text_time_departure" />

@@ -1,11 +1,8 @@
 package com.mate.carpool.data.model.dto
 
 import com.mate.carpool.data.model.domain.TicketModel
+import com.mate.carpool.util.*
 import com.mate.carpool.util.EncapsulationUtil.asUserDomain
-import com.mate.carpool.ui.util.StringUtils.asDayStatusToDomain
-import com.mate.carpool.ui.util.StringUtils.asStartDayMonthToDomain
-import com.mate.carpool.ui.util.StringUtils.asStartTimeToDomain
-import com.mate.carpool.ui.util.StringUtils.asTicketTypeToDomain
 
 data class TicketDetailResponseDTO(
     val id:Long = 0,
@@ -25,20 +22,19 @@ data class TicketDetailResponseDTO(
     val passengers:List<MemberResponseDTO>? = null
 ) {
     fun asTicketDomain() = TicketModel(
-        this.id,
-        this.studentNumber,
-        this.profileImage,
-        this.memberName,
-        this.startArea,
-        this.endArea,
-        this.boardingPlace,
-        this.startDayMonth.asStartDayMonthToDomain(),
-        this.dayStatus.asDayStatusToDomain(),
-        this.startTime.asStartTimeToDomain(),
-        this.openChatUrl,
-        this.recruitPerson,
-        this.ticketType.asTicketTypeToDomain(),
-        this.ticketPrice,
-        this.passengers?.asUserDomain()
+        id = this.id,
+        studentNumber = this.studentNumber,
+        profileImage = this.profileImage,
+        memberName = this.memberName,
+        startArea = this.startArea,
+        endArea = this.endArea,
+        boardingPlace = this.boardingPlace,
+        dayStatus = this.dayStatus.asDayStatusToDomain(),
+        startTime = ("2301"+this.startDayMonth+this.startTime).formatStartTime(),
+        openChatUrl = this.openChatUrl,
+        recruitPerson = this.recruitPerson,
+        ticketType = this.ticketType.asTicketTypeToDomain(),
+        ticketPrice = this.ticketPrice,
+        passenger = this.passengers?.asUserDomain()
     )
 }

@@ -24,13 +24,14 @@ class SplashViewModel @Inject constructor(
 
     private fun autoLogin() {
         authRepository.autoLoginInfo.onEach { info ->
-            if (info.token.isEmpty()) {
+            /*if (info.token.isEmpty()) {
                 delay(MIN_DELAY_TIME)
                 emitEvent(EVENT_GO_TO_LOGIN_SCREEN)
 
             } else {
                 login()
-            }
+            }*/
+            login()
         }.launchIn(viewModelScope)
     }
 

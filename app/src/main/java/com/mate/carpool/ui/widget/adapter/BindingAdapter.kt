@@ -89,12 +89,12 @@ fun setBoardingAreaTextInputListener(et: TextInputEditText, ticketViewModel: Cre
             }
 
             context.getString(R.string.출발날짜) -> {
-                ticketViewModel.mutableTicketModel.value?.startDayMonth = text.toString()
+                //ticketViewModel.mutableTicketModel.value = text
                 setTicketButtonSelected(text.toString(), buttonFlag, 0)
             }
 
             context.getString(R.string.출발시간) -> {
-                ticketViewModel.mutableTicketModel.value?.startTime = text.toString()
+                //ticketViewModel.mutableTicketModel.value?.startTime = text.toString()
                 setTicketButtonSelected(text.toString(), buttonFlag, 2)
             }
 

@@ -3,6 +3,8 @@ package com.mate.carpool.data.model.dto
 import com.mate.carpool.data.model.domain.TicketModel
 import com.mate.carpool.data.model.item.DayStatus
 import com.mate.carpool.data.model.item.TicketType
+import com.mate.carpool.util.formatStartDayMonthToDTO
+import com.mate.carpool.util.formatStartTimeToDTO
 
 data class CreateCarpoolRequestDTO(
     var startArea:String = "",
@@ -17,15 +19,15 @@ data class CreateCarpoolRequestDTO(
     val ticketPrice: Int=0
 ){
     constructor(ticketModel: TicketModel):this(
-        ticketModel.startArea,
-        ticketModel.endArea,
-        ticketModel.boardingPlace,
-        ticketModel.startDayMonth,
-        ticketModel.dayStatus,
-        ticketModel.startTime,
-        ticketModel.openChatUrl,
-        ticketModel.recruitPerson,
-        ticketModel.ticketType,
-        ticketModel.ticketPrice
+        startArea = ticketModel.startArea,
+        endArea = ticketModel.endArea,
+        boardingPlace = ticketModel.boardingPlace,
+        dayStatus = ticketModel.dayStatus,
+        startTime = ticketModel.startTime.formatStartTimeToDTO(),
+        startDayMonth = ticketModel.startTime.formatStartDayMonthToDTO(),
+        openChatUrl = ticketModel.openChatUrl,
+        recruitPerson = ticketModel.recruitPerson,
+        ticketType = ticketModel.ticketType,
+        ticketPrice = ticketModel.ticketPrice
     )
 }

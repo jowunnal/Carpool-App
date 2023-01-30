@@ -15,12 +15,30 @@ data class TicketModel(
     var startArea:String = "",
     val endArea:String = "경운대학교",
     var boardingPlace:String = "",
-    var startDayMonth:String = "",
     var dayStatus:DayStatus ?= null,
-    var startTime:String = "",
+    var startTime:Long,
     var openChatUrl: String = "",
     var recruitPerson: Int = 0,
     var ticketType: TicketType?= null,
     val ticketPrice: Int = 0,
     val passenger:List<UserModel> ?= emptyList()
-)
+) {
+    companion object{
+        fun getInitValue() = TicketModel(
+            id = 0L,
+            studentNumber = "",
+            profileImage = "",
+            memberName = "",
+            startArea = "",
+            endArea = "",
+            boardingPlace = "",
+            dayStatus = DayStatus.Morning,
+            startTime = 0L,
+            openChatUrl = "",
+            recruitPerson = 0,
+            ticketType = TicketType.Cost,
+            ticketPrice = 0,
+            passenger = emptyList()
+        )
+    }
+}

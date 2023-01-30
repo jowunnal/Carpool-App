@@ -3,7 +3,7 @@ package com.mate.carpool.data.model.dto
 import com.mate.carpool.data.model.domain.MemberModel
 import com.mate.carpool.data.model.domain.UserModel
 import com.mate.carpool.util.EncapsulationUtil.asTicketListDomain
-import com.mate.carpool.ui.util.StringUtils.asMemberRoleToDomain
+import com.mate.carpool.util.asMemberRoleToDomain
 
 data class MemberProfileDTO(
     val profileImage:String = "",

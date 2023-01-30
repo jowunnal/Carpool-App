@@ -28,6 +28,7 @@ import com.mate.carpool.ui.composable.HorizontalDividerItem
 import com.mate.carpool.ui.composable.HorizontalSpacer
 import com.mate.carpool.ui.theme.*
 import com.mate.carpool.ui.util.tu
+import com.mate.carpool.util.formatStartTimeToDTO
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -92,7 +93,7 @@ fun TicketList(
                                     fontSize = 16.tu
                                 )
                                 Text(
-                                    text = " ${item.startTime}",
+                                    text = " ${item.startTime.formatStartTimeToDTO()}",
                                     fontWeight = FontWeight.ExtraBold,
                                     fontSize = 16.tu
                                 )
@@ -134,7 +135,7 @@ private fun PreviewTicketList() {
                     1,
                     "",
                     "인동",
-                    "08:00",
+                    25200L,
                     3,
                     1,
                     TicketType.Cost,
@@ -145,7 +146,7 @@ private fun PreviewTicketList() {
                     2,
                     "",
                     "인동",
-                    "07:00",
+                    25200L,
                     3,
                     1,
                     TicketType.Cost,
@@ -156,7 +157,7 @@ private fun PreviewTicketList() {
                     3,
                     "",
                     "인동",
-                    "08:00",
+                    25200L,
                     3,
                     1,
                     TicketType.Free,
@@ -167,7 +168,7 @@ private fun PreviewTicketList() {
                     4,
                     "",
                     "인동",
-                    "09:00",
+                    25200L,
                     3,
                     1,
                     TicketType.Free,

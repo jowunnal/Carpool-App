@@ -11,7 +11,7 @@ data class TicketListModel(
     val id:Long = 0,
     val profileImage:String = "",
     val startArea:String = "",
-    val startTime:String = "",
+    val startTime:Long,
     val recruitPerson:Int = 0,
     val currentPersonCount:Int = 0,
     val ticketType: TicketType,

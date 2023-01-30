@@ -36,11 +36,11 @@ class HomeBottomSheetViewModel @Inject constructor(
         if(response is ApiResponse.SuccessResponse)
             emit(response.responseMessage)
         else if(response is ApiResponse.Loading)
-            emit(TicketModel())
+            emit(TicketModel.getInitValue())
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(2000),
-        initialValue = TicketModel()
+        initialValue = TicketModel.getInitValue()
     )
 
     fun setTicketId(id: Long) {

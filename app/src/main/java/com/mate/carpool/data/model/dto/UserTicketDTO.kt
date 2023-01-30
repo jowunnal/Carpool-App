@@ -1,10 +1,10 @@
 package com.mate.carpool.data.model.dto
 
 import com.mate.carpool.data.model.domain.TicketListModel
-import com.mate.carpool.ui.util.StringUtils.asDayStatusToDomain
-import com.mate.carpool.ui.util.StringUtils.asStartTimeToDomain
-import com.mate.carpool.ui.util.StringUtils.asTicketStatusToDomain
-import com.mate.carpool.ui.util.StringUtils.asTicketTypeToDomain
+import com.mate.carpool.util.asDayStatusToDomain
+import com.mate.carpool.util.asTicketStatusToDomain
+import com.mate.carpool.util.asTicketTypeToDomain
+import com.mate.carpool.util.formatStartTime
 
 data class UserTicketDTO(
     val id:Long = 0,
@@ -22,7 +22,7 @@ data class UserTicketDTO(
         this.id,
         this.profileImage,
         this.startArea,
-        this.startTime.asStartTimeToDomain(),
+        this.startTime.formatStartTime(),
         this.recruitPerson,
         this.currentPersonCount,
         this.ticketType.asTicketTypeToDomain(),
