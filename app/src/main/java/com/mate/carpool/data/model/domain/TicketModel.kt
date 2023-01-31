@@ -1,5 +1,6 @@
 package com.mate.carpool.data.model.domain
 
+import androidx.compose.runtime.Stable
 import com.mate.carpool.data.model.item.DayStatus
 import com.mate.carpool.data.model.item.TicketType
 

@@ -9,7 +9,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.mate.carpool.ui.base.BaseComposeFragment
+import com.mate.carpool.ui.base.Event
 import com.mate.carpool.ui.composable.rememberLambda
+import com.mate.carpool.ui.screen.profile.modify.ProfileModifyFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -44,7 +46,10 @@ class ProfileLookUpFragment : BaseComposeFragment<ProfileLookUpViewModel>() {
                     .actionProfileLookUpFragmentToProfileModifyFragment(profile = profile!!)
                 findNavController().navigate(action)
             },
-            onBackClick = rememberLambda { findNavController().popBackStack() },
+            onBackClick = rememberLambda {
+                val action = ProfileLookUpFragmentDirections.actionProfileLookUpFragmentToHomeFragment(ProfileLookUpViewModel.EVENT_FINISH)
+                findNavController().navigate(action)
+            },
         )
     }
 }

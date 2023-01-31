@@ -1,14 +1,18 @@
 package com.mate.carpool.ui.screen.home.vm
 
-import android.util.Log
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.mate.carpool.data.model.domain.MemberModel
+import com.mate.carpool.data.model.domain.Profile
 import com.mate.carpool.data.model.domain.TicketListModel
 import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.repository.CarpoolListRepository
 import com.mate.carpool.data.repository.MemberRepository
 import com.mate.carpool.ui.base.BaseViewModel
 import com.mate.carpool.ui.base.SnackBarMessage
+import com.mate.carpool.ui.screen.profile.modify.ProfileModifyViewModel
+import dagger.assisted.AssistedFactory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,8 +26,10 @@ import javax.inject.Inject
 class CarpoolListViewModel @Inject constructor(
     private val carpoolListRepository: CarpoolListRepository,
     private val memberRepository: MemberRepository
-    ) : BaseViewModel()
-{
+): BaseViewModel() {
+
+
+
     private val mutableCarpoolListState = MutableStateFlow<List<TicketListModel>>(emptyList())
     val carpoolListState get() = mutableCarpoolListState.asStateFlow()
 
@@ -49,7 +55,6 @@ class CarpoolListViewModel @Inject constructor(
             getCarpoolList()
             _refreshState.update { false }
             emitEvent(event)
-            Log.d("test",event)
         }
     }
 
@@ -117,6 +122,18 @@ class CarpoolListViewModel @Inject constructor(
                         )
                     }
                 }
+            }
+        }
+    }
+
+    companion object {
+        @Suppress("UNCHECKED_CAST")
+        fun provideFactory(
+            assistedFactory: ProfileModifyViewModel.InitialProfileAssistedFactory,
+            initialProfile: Profile
+        ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return assistedFactory.create(initialProfile) as T
             }
         }
     }

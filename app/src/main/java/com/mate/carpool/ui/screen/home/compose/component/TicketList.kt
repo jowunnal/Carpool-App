@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mate.carpool.R
 import com.mate.carpool.data.model.domain.TicketListModel
 import com.mate.carpool.data.model.item.*
 import com.mate.carpool.data.model.item.TicketStatus
@@ -74,7 +75,8 @@ fun TicketList(
                                     .width(50.dp)
                                     .height(47.dp)
                                     .clip(CircleShape)
-                                    .border(1.dp, Color.White, CircleShape)
+                                    .border(1.dp, Color.White, CircleShape),
+                                defaultImage = R.drawable.ic_profile
                             )
 
                             HorizontalSpacer(width = 8.dp)

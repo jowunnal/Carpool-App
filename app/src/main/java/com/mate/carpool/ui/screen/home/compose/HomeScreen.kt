@@ -2,16 +2,14 @@ package com.mate.carpool.ui.screen.home.compose
 
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -35,6 +33,7 @@ import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.screen.home.compose.component.*
 import com.mate.carpool.ui.screen.home.vm.CarpoolListViewModel
 import com.mate.carpool.ui.screen.home.vm.HomeBottomSheetViewModel
+import com.mate.carpool.ui.screen.register.RegisterDriverViewModel
 import com.mate.carpool.ui.screen.splash.SplashViewModel
 import com.mate.carpool.ui.theme.MateTheme
 
@@ -73,7 +72,7 @@ fun HomeBottomSheetLayout(
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()){}
 
     if(snackBarMessage.contentMessage.isNotBlank())
-        LaunchedEffect(key1 = snackBarMessage.contentMessage){
+        LaunchedEffect(key1 = snackBarMessage.contentMessage) {
             scaffoldState.snackbarHostState.showSnackbar(
                 message = snackBarMessage.contentMessage,
                 duration =  SnackbarDuration.Indefinite,
@@ -81,20 +80,33 @@ fun HomeBottomSheetLayout(
             )
         }
 
-    LaunchedEffect(key1 = event.type){
-        when (event.type) {
-            HomeBottomSheetViewModel.EVENT_ADDED_PASSENGER_TO_TICKET-> {
-                bottomSheetState.animateTo(ModalBottomSheetValue.Expanded)
-            }
-            SplashViewModel.EVENT_GO_TO_HOME_SCREEN -> {
-                scaffoldState.snackbarHostState.showSnackbar(
-                    message = "MATE에 성공적으로 로그인 했어요.",
-                    actionLabel = "주변에 있는 카풀을 찾아보세요.",
-                    duration = SnackbarDuration.Indefinite
-                )
+    if(event.type != BaseViewModel.EVENT_READY)
+        LaunchedEffect(key1 = event.type){
+            when (event.type) {
+                HomeBottomSheetViewModel.EVENT_ADDED_PASSENGER_TO_TICKET-> {
+                    bottomSheetState.animateTo(ModalBottomSheetValue.Expanded)
+                }
+                SplashViewModel.EVENT_GO_TO_HOME_SCREEN -> {
+                    emitSnackBar(
+                        SnackBarMessage(
+                            headerMessage = "MATE에 성공적으로 로그인 했어요.",
+                            contentMessage = when(userInfo.user.role){
+                                MemberRole.Driver -> "티켓을 생성해 카풀을 운영해보세요."
+                                MemberRole.Passenger -> "주변에 있는 카풀을 찾아보세요."
+                            }
+                        )
+                    )
+                }
+                RegisterDriverViewModel.EVENT_REGISTERED_DRIVER_SUCCEED -> {
+                    emitSnackBar(
+                        SnackBarMessage(
+                            headerMessage = "드라이버에 성공적으로 등록했어요.",
+                            contentMessage = "티켓을 생성해 카풀을 운영해보세요."
+                        )
+                    )
+                }
             }
         }
-    }
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -116,9 +128,9 @@ fun HomeBottomSheetLayout(
                     true -> {
                         ReservationBottomSheetContent(
                             ticketDetail = ticketDetail,
-                            userProfile = userInfo.user.profile,
                             userRole = userInfo.user.role,
-                            userPassengerId = getMyPassengerId(userInfo.user.studentID),
+                            userStudentId = userInfo.user.studentID,
+                            userPassengerId = getMyPassengerId,
                             onCloseBottomSheet = { bottomSheetState.animateTo(ModalBottomSheetValue.Hidden) },
                             onBrowseOpenChatLink = { launcher.launch(Intent(Intent.ACTION_VIEW, Uri.parse(ticketDetail.openChatUrl))) },
                             onNavigateToReportView = { onNavigateToReportView(studentId) },

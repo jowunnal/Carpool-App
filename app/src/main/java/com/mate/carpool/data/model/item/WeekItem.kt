@@ -1,10 +1,13 @@
 package com.mate.carpool.data.model.item
 
+import androidx.compose.runtime.Stable
+
 /**
  * 월~금 enum class
  * @property getWeekCode DTO 타입의 숫자코드 1~5 return
  */
 
+@Stable
 enum class WeekItem{
     Mon,
     Tues,

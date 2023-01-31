@@ -117,12 +117,14 @@ fun TicketBottomSheetContent(
                     }
                 }
                 else
-                    emitSnackBarMessage(
-                        SnackBarMessage(
-                            headerMessage = "드라이버는 탑승하기를 할 수 없습니다.",
-                            contentMessage = ""
+                    coroutineScope.launch {
+                        emitSnackBarMessage(
+                            SnackBarMessage(
+                                headerMessage = "드라이버는 탑승하기를 할 수 없습니다.",
+                                contentMessage = ""
+                            )
                         )
-                    )
+                    }
             },
             modifier = Modifier
                 .height(50.dp)
@@ -206,7 +208,8 @@ private fun Driver(
                 .width(50.dp)
                 .height(47.dp)
                 .clip(CircleShape)
-                .border(1.dp, Color.White, CircleShape)
+                .border(1.dp, Color.White, CircleShape),
+            defaultImage = R.drawable.ic_profile
         )
         Spacer(modifier = Modifier.width(9.dp))
         Column(
