@@ -63,4 +63,8 @@ class ProfileLookUpViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+    companion object {
+        const val EVENT_FINISH = "EVENT_FINISH"
+    }
+
 }

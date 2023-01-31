@@ -1,11 +1,13 @@
 package com.mate.carpool.data.model.domain
 
+import androidx.compose.runtime.Stable
 import com.mate.carpool.data.model.item.MemberRole
 
 /**
  * 사용자 정보를 담는 클래스
  */
 
+@Stable
 data class UserModel(
     var name: String = "",
     var studentID: String = "",

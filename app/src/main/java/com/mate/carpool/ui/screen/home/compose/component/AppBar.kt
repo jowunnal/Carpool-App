@@ -49,7 +49,8 @@ fun HomeAppBar(
                         .size(42.dp)
                         .clip(CircleShape)
                         .border(1.dp, Color.White, CircleShape)
-                        .clickable(onClick = goToProfileScreen)
+                        .clickable(onClick = goToProfileScreen),
+                    defaultImage = R.drawable.ic_profile
                 )
                 IconButton(
                     onClick = {

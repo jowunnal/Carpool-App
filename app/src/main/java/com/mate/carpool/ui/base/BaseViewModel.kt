@@ -1,5 +1,7 @@
 package com.mate.carpool.ui.base
 
+import android.util.Log
+import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -20,15 +22,22 @@ abstract class BaseViewModel : ViewModel() {
     }
 
     fun emitSnackbar(message: SnackBarMessage) {
-        viewModelScope.launch { _snackbarMessage.emit(message) }
-    }
+        viewModelScope.launch { _snackbarMessage.emit(message) } }
 
     companion object{
         const val EVENT_READY = "EVENT_READY"
     }
 }
 
-data class Event(val type: String)
+data class Event(val type: String) {
+    companion object {
+        fun getInitValues() = Event(
+            type = ""
+        )
+        const val EVENT_READY = "EVENT_READY"
+        const val EVENT_FINISH = "EVENT_FINISH"
+    }
+}
 
 data class SnackBarMessage(
     val headerMessage: String,

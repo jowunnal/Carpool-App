@@ -3,10 +3,10 @@ package com.mate.carpool.ui.navigation
 sealed class NavigationItem(
     val title:String,
     val route:String
-){
+) {
     object Home: NavigationItem(
         title = "홈",
-        route = "home"
+        route = "home/{event}"
     )
     object Announcement: NavigationItem(
         title = "공지",
@@ -16,8 +16,10 @@ sealed class NavigationItem(
         title = "신고",
         route = "report/{studentId}"
     )
-    object RegisterDriver: NavigationItem(
-        title = "드라이버 등록",
-        route = "registerDriver"
-    )
+
+    sealed class RegisterDriver(val step:String) : NavigationItem(title = "드라이버 등록", route = "registerDriver/$step"){
+        object StepCarImage : RegisterDriver(step = "carImage")
+        object StepCarNumber : RegisterDriver(step = "carNumber")
+        object StepPhoneNumber : RegisterDriver(step = "phoneNumber")
+    }
 }

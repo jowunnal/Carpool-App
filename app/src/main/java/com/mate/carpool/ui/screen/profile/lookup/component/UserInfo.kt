@@ -1,5 +1,7 @@
 package com.mate.carpool.ui.screen.profile.lookup.component
 
+import android.content.Context
+import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -34,6 +36,7 @@ import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.screen.home.compose.component.ProfileImage
 import com.mate.carpool.ui.theme.black
 import com.mate.carpool.ui.theme.primary10
+import com.mate.carpool.ui.util.FileUtils.getImageMultipartBody
 import com.mate.carpool.ui.util.displayName
 import com.mate.carpool.ui.util.tu
 import com.mate.carpool.util.formatPhoneNumber
@@ -101,17 +104,12 @@ private fun UserTopInfo(
 
         if (uri != null) {
             coroutineScope.launch(Dispatchers.IO) {
-                val inputStream = context.contentResolver.openInputStream(uri)
-                val file = File.createTempFile("temp", ".jpg")
-                file.deleteOnExit()
-                inputStream?.copyTo(file.outputStream())
-                inputStream?.close()
-                val part = MultipartBody.Part.createFormData(
-                    name = "image",
-                    filename = file.name,
-                    body = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+                setProfileImage(
+                    getImageMultipartBody(
+                        uri = uri,
+                        context = context
+                    )
                 )
-                setProfileImage(part)
             }
         }
     }
@@ -132,7 +130,8 @@ private fun UserTopInfo(
                     .clip(CircleShape)
                     .fillMaxSize()
                     .clickable { galleryLauncher.launch("image/*") }
-                    .background(primary10)
+                    .background(primary10),
+                defaultImage = R.drawable.ic_profile
             )
             Image(
                 modifier = Modifier

@@ -1,8 +1,9 @@
 package com.mate.carpool.ui.navigation
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.material.Scaffold
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.SnackbarHostState
+import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
@@ -12,12 +13,18 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.mate.carpool.ui.base.BaseViewModel
 import com.mate.carpool.ui.base.Event
 import com.mate.carpool.ui.base.SnackBarMessage
+import com.mate.carpool.ui.composable.SnackBarHostCustom
 import com.mate.carpool.ui.composable.rememberLambda
 import com.mate.carpool.ui.screen.home.compose.HomeBottomSheetLayout
 import com.mate.carpool.ui.screen.home.vm.CarpoolListViewModel
 import com.mate.carpool.ui.screen.home.vm.HomeBottomSheetViewModel
+import com.mate.carpool.ui.screen.register.RegisterDriverStepCarImageScreen
+import com.mate.carpool.ui.screen.register.RegisterDriverStepCarNumberScreen
+import com.mate.carpool.ui.screen.register.RegisterDriverStepPhoneNumberScreen
+import com.mate.carpool.ui.screen.register.RegisterDriverViewModel
 import com.mate.carpool.ui.screen.report.ReportScreen
 import com.mate.carpool.ui.screen.report.ReportViewModel
 
@@ -30,14 +37,18 @@ fun NavigationGraph(
     onNavigateToProfileView: () -> Unit,
     carpoolListViewModel: CarpoolListViewModel = hiltViewModel(),
     homeCarpoolBottomSheetViewModel: HomeBottomSheetViewModel = hiltViewModel(),
-    reportViewModel: ReportViewModel = hiltViewModel()
+    reportViewModel: ReportViewModel = hiltViewModel(),
+    registerDriverViewModel: RegisterDriverViewModel = hiltViewModel()
 ){
     NavHost(
         navController = navController,
         startDestination = NavigationItem.Home.route
     ){
 
-        composable(route = NavigationItem.Home.route) {
+        composable(
+            route = NavigationItem.Home.route,
+            arguments = listOf(navArgument("event") { type = NavType.StringType })
+        ) {
             val refreshState by carpoolListViewModel.refreshState.collectAsStateWithLifecycle()
 
             val userInfo by carpoolListViewModel.memberModelState.collectAsStateWithLifecycle()
@@ -48,12 +59,12 @@ fun NavigationGraph(
             val ticketDetail by homeCarpoolBottomSheetViewModel.carpoolTicketState.collectAsStateWithLifecycle()
 
             val event by carpoolListViewModel.event.collectAsStateWithLifecycle(
-                initialValue = Event(navArgs.event),
-                lifecycleOwner = LocalLifecycleOwner.current
+                initialValue = Event(it.arguments?.getString("event",navArgs.event)?:navArgs.event),
+                lifecycle = LocalLifecycleOwner.current.lifecycle
             )
-            val snackBarMessage by homeCarpoolBottomSheetViewModel.snackbarMessage.collectAsStateWithLifecycle(
-                initialValue = SnackBarMessage.getInitValues(),
-                lifecycleOwner = LocalLifecycleOwner.current
+
+            val snackBarMessage by homeCarpoolBottomSheetViewModel.snackbarMessage.collectAsState(
+                initial = SnackBarMessage.getInitValues()
             )
 
             HomeBottomSheetLayout(
@@ -67,7 +78,7 @@ fun NavigationGraph(
                 snackBarMessage = snackBarMessage,
                 onNavigateToCreateCarpool = onNavigateToCreateCarpool,
                 onNavigateToProfileView = onNavigateToProfileView,
-                onNavigateToRegisterDriver = { navController.navigate("RegisterDriver") },
+                onNavigateToRegisterDriver = { navController.navigate(NavigationItem.RegisterDriver.StepCarImage.route) },
                 onNavigateToReportView = fun(studentId:String){ navController.navigate("report/${studentId.toLong()}") },
                 isTicketIsMineOrNot = homeCarpoolBottomSheetViewModel::isTicketIsMineOrNot,
                 getMyPassengerId = homeCarpoolBottomSheetViewModel::getMyPassengerId,
@@ -79,12 +90,56 @@ fun NavigationGraph(
                 addNewPassengerToTicket = homeCarpoolBottomSheetViewModel::addNewPassengerToTicket,
                 updateTicketStatus = homeCarpoolBottomSheetViewModel::updateTicketStatus,
                 deletePassengerToTicket = homeCarpoolBottomSheetViewModel::deletePassengerToTicket,
-                emitSnackBar = homeCarpoolBottomSheetViewModel::emitSnackbar,
+                emitSnackBar = homeCarpoolBottomSheetViewModel::emitSnackbar
             )
         }
 
-        composable(route = NavigationItem.RegisterDriver.route) {
+        composable(route = NavigationItem.RegisterDriver.StepCarImage.route) {
+            val uiState by registerDriverViewModel.uiState.collectAsStateWithLifecycle()
 
+            RegisterDriverStepCarImageScreen(
+                uiState = uiState,
+                setCarImage = registerDriverViewModel::setCarImage,
+                onNavigatePopBackStack = {
+                    navController.navigate(route = "home/${Event.getInitValues()}") {
+                        popUpTo(NavigationItem.Home.route) {
+                            inclusive=true
+                        }
+                    }
+                },
+                onNavigateToNextStep = { navController.navigate(NavigationItem.RegisterDriver.StepCarNumber.route) }
+            )
+        }
+        composable(route = NavigationItem.RegisterDriver.StepCarNumber.route) {
+            val uiState by registerDriverViewModel.uiState.collectAsStateWithLifecycle()
+
+            RegisterDriverStepCarNumberScreen(
+                uiState = uiState,
+                onCarNumberEdit = registerDriverViewModel::setCarNumber,
+                onNavigatePopBackStack = { navController.popBackStack() },
+                onNavigateToNextStep = {navController.navigate(NavigationItem.RegisterDriver.StepPhoneNumber.route)}
+            )
+        }
+        composable(route = NavigationItem.RegisterDriver.StepPhoneNumber.route) {
+            val uiState by registerDriverViewModel.uiState.collectAsStateWithLifecycle()
+
+            val event by registerDriverViewModel.event.collectAsStateWithLifecycle(
+                initialValue = Event.getInitValues(),
+                lifecycle = LocalLifecycleOwner.current.lifecycle
+            )
+
+            RegisterDriverStepPhoneNumberScreen(
+                uiState = uiState,
+                onPhoneNumberEdit = registerDriverViewModel::setPhoneNumber,
+                onCarNumberEdit = registerDriverViewModel::setCarNumber,
+                onNavigatePopBackStack = { navController.popBackStack() },
+                onNavigateToNextStep = {
+                    navController.navigate("home/${RegisterDriverViewModel.EVENT_REGISTERED_DRIVER_SUCCEED}") {
+                        popUpTo(NavigationItem.Home.route) { inclusive = true }
+                    }
+                },
+                onFetch = registerDriverViewModel::fetch
+            )
         }
 
         composable(route = NavigationItem.Announcement.route){

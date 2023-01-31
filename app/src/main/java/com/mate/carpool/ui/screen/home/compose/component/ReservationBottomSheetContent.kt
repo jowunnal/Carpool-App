@@ -47,9 +47,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun ReservationBottomSheetContent(
     ticketDetail: TicketModel,
-    userProfile: String,
+    userStudentId: String,
     userRole: MemberRole,
-    userPassengerId: Long?,
+    userPassengerId: (String) -> Long?,
     onCloseBottomSheet: suspend () -> Unit,
     onBrowseOpenChatLink: () -> Unit,
     onNavigateToReportView: () -> Unit,
@@ -158,6 +158,7 @@ fun ReservationBottomSheetContent(
 
         TicketButton(
             userRole = userRole,
+            userStudentId = userStudentId,
             userPassengerId = userPassengerId,
             setPassengerId = setPassengerId,
             updateTicketStatus = updateTicketStatus,
@@ -205,7 +206,8 @@ private fun MemberInfo(
                 .width(50.dp)
                 .height(47.dp)
                 .clip(CircleShape)
-                .border(1.dp, Color.White, CircleShape)
+                .border(1.dp, Color.White, CircleShape),
+            defaultImage = R.drawable.ic_profile
         )
         Spacer(modifier = Modifier.width(9.dp))
         Column(
@@ -323,7 +325,8 @@ private fun TicketOpenChat(
 @Composable
 private fun TicketButton(
     userRole: MemberRole,
-    userPassengerId: Long?,
+    userStudentId: String,
+    userPassengerId: (String) -> Long?,
     setPassengerId: (Long) -> Unit,
     updateTicketStatus: (TicketStatus) -> Unit,
     deletePassengerFromTicket: () -> Unit,
@@ -351,7 +354,7 @@ private fun TicketButton(
                     text = "예약 취소",
                     onClick = {
                         coroutineScope.launch {
-                            setPassengerId(userPassengerId?:-1L)
+                            setPassengerId(userPassengerId(userStudentId)?:-2L)
                             deletePassengerFromTicket()
                             onCloseBottomSheet()
                             onRefresh(BaseViewModel.EVENT_READY)
@@ -407,7 +410,7 @@ fun PreviewReservationBottomSheetContent() {
                     )
                 )
             ),
-            userProfile = "",
+            userStudentId = "",
             userRole = MemberRole.Passenger,
             onBrowseOpenChatLink = {},
             onRefresh = {},
@@ -415,7 +418,7 @@ fun PreviewReservationBottomSheetContent() {
             updateTicketStatus = {},
             setPassengerId = {},
             onNavigateToReportView = {},
-            userPassengerId = 0L,
+            userPassengerId = {-1L},
             onCloseBottomSheet = {},
             setStudentId = {}
         )

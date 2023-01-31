@@ -4,38 +4,28 @@ import android.content.Context
 import android.database.Cursor
 import android.net.Uri
 import android.provider.MediaStore
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 
 object FileUtils {
     @JvmStatic
-    fun createTempFileFromInputStream(
-        fileName:String,
-        fileSuffix:String,
-        inputStream: InputStream
-    ): File? {
-        val tempFile = File.createTempFile(fileName,fileSuffix)
-        tempFile.deleteOnExit()
-        createFileFromTempFile(inputStream,tempFile)
-        return tempFile
-    }
-
-    @JvmStatic
-    fun createFileFromTempFile(inputStream: InputStream, tempFile: File){
-        val outputStream = FileOutputStream(tempFile)
-        outputStream.write(inputStream.readBytes())
-    }
-
-    @JvmStatic
-    fun getAbsolutelyFilePath(path: Uri?, context : Context): String {
-        val proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
-        val c: Cursor? = context.contentResolver.query(path!!, proj, null, null, null)
-        val index = c?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-        c?.moveToFirst()
-
-        val result = c?.getString(index!!)
-
-        return result!!
+    fun getImageMultipartBody(
+        uri:Uri,
+        context:Context
+    ): MultipartBody.Part {
+        val inputStream = context.contentResolver.openInputStream(uri)
+        val file = File.createTempFile("temp", ".jpg")
+        file.deleteOnExit()
+        inputStream?.copyTo(file.outputStream())
+        inputStream?.close()
+        return MultipartBody.Part.createFormData(
+            name = "image",
+            filename = file.name,
+            body = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+        )
     }
 }
