@@ -72,9 +72,9 @@ fun HomeBottomSheetLayout(
     if(snackBarMessage.contentMessage.isNotBlank())
         LaunchedEffect(key1 = snackBarMessage.contentMessage) {
             scaffoldState.snackbarHostState.showSnackbar(
-                message = snackBarMessage.contentMessage,
+                message = snackBarMessage.headerMessage,
                 duration =  SnackbarDuration.Indefinite,
-                actionLabel = snackBarMessage.headerMessage
+                actionLabel = snackBarMessage.contentMessage
             )
         }
 

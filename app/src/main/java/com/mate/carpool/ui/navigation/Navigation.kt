@@ -121,16 +121,18 @@ fun NavigationGraph(
                 lifecycle = LocalLifecycleOwner.current.lifecycle
             )
 
+            if(event != Event.getInitValues())
+                LaunchedEffect(key1 = event.type) {
+                    navController.navigate("home/${event.type}") {
+                        popUpTo(NavigationItem.Home.route) { inclusive = true }
+                    }
+                }
+
             RegisterDriverStepPhoneNumberScreen(
                 uiState = uiState,
                 onPhoneNumberEdit = registerDriverViewModel::setPhoneNumber,
                 onCarNumberEdit = registerDriverViewModel::setCarNumber,
                 onNavigatePopBackStack = { navController.popBackStack() },
-                onNavigateToNextStep = {
-                    navController.navigate("home/${RegisterDriverViewModel.EVENT_REGISTERED_DRIVER_SUCCEED}") {
-                        popUpTo(NavigationItem.Home.route) { inclusive = true }
-                    }
-                },
                 onFetch = registerDriverViewModel::fetch
             )
         }

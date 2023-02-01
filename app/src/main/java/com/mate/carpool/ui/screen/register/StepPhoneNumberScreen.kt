@@ -33,7 +33,6 @@ fun RegisterDriverStepPhoneNumberScreen(
     onPhoneNumberEdit: (String) -> Unit,
     onCarNumberEdit: (String) -> Unit,
     onNavigatePopBackStack: () -> Unit,
-    onNavigateToNextStep: () -> Unit,
     onFetch: (MultipartBody.Part) -> Unit
 ) {
     val context = LocalContext.current
@@ -83,7 +82,6 @@ fun RegisterDriverStepPhoneNumberScreen(
                         context = context
                     )
                 )
-                onNavigateToNextStep()
             },
             modifier = Modifier.fillMaxWidth(),
             enabled = uiState.invalidPhoneNumber and uiState.invalidCarNumber
@@ -99,7 +97,6 @@ private fun PreviewRegisterDriverStepPhoneNumberScreen(){
             uiState = RegisterUiState.getInitValue(),
             onPhoneNumberEdit = {},
             onCarNumberEdit = {},
-            onNavigateToNextStep = {},
             onNavigatePopBackStack = {},
             onFetch = {}
         )
