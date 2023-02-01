@@ -40,7 +40,7 @@ fun TicketBottomSheetContent(
     ticketDetail: TicketModel,
     userProfile: String,
     userRole: MemberRole,
-    addNewPassengerToTicket: () -> Unit,
+    addNewPassengerToTicket: (Long) -> Unit,
     onRefresh: (String) -> Unit,
     onCloseBottomSheet: suspend () -> Unit,
     emitSnackBarMessage: (SnackBarMessage) -> Unit
@@ -111,7 +111,7 @@ fun TicketBottomSheetContent(
             onClick = {
                 if(userRole == MemberRole.Passenger){
                     coroutineScope.launch {
-                        addNewPassengerToTicket()
+                        addNewPassengerToTicket(ticketDetail.id)
                         onCloseBottomSheet()
                         onRefresh(HomeBottomSheetViewModel.EVENT_ADDED_PASSENGER_TO_TICKET)
                     }

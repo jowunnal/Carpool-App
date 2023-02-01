@@ -1,8 +1,5 @@
 package com.mate.carpool.ui.navigation
 
-import androidx.compose.material.Scaffold
-import androidx.compose.material.SnackbarDuration
-import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -13,10 +10,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.mate.carpool.ui.base.BaseViewModel
 import com.mate.carpool.ui.base.Event
 import com.mate.carpool.ui.base.SnackBarMessage
-import com.mate.carpool.ui.composable.SnackBarHostCustom
 import com.mate.carpool.ui.composable.rememberLambda
 import com.mate.carpool.ui.screen.home.compose.HomeBottomSheetLayout
 import com.mate.carpool.ui.screen.home.vm.CarpoolListViewModel
@@ -55,8 +50,7 @@ fun NavigationGraph(
             val carpoolExistState by carpoolListViewModel.carpoolExistState.collectAsStateWithLifecycle()
             val carpoolList by carpoolListViewModel.carpoolListState.collectAsStateWithLifecycle()
 
-            val studentId by homeCarpoolBottomSheetViewModel.studentId.collectAsStateWithLifecycle()
-            val ticketDetail by homeCarpoolBottomSheetViewModel.carpoolTicketState.collectAsStateWithLifecycle()
+            val bottomSheetUiState by homeCarpoolBottomSheetViewModel.uiState.collectAsStateWithLifecycle()
 
             val event by carpoolListViewModel.event.collectAsStateWithLifecycle(
                 initialValue = Event(it.arguments?.getString("event",navArgs.event)?:navArgs.event),
@@ -71,9 +65,8 @@ fun NavigationGraph(
                 refreshState = refreshState,
                 userInfo = userInfo,
                 carpoolExistState = carpoolExistState,
-                studentId = studentId,
+                bottomSheetUiState = bottomSheetUiState,
                 carpoolList = carpoolList,
-                ticketDetail = ticketDetail,
                 event = event,
                 snackBarMessage = snackBarMessage,
                 onNavigateToCreateCarpool = onNavigateToCreateCarpool,
@@ -82,11 +75,11 @@ fun NavigationGraph(
                 onNavigateToReportView = fun(studentId:String){ navController.navigate("report/${studentId.toLong()}") },
                 isTicketIsMineOrNot = homeCarpoolBottomSheetViewModel::isTicketIsMineOrNot,
                 getMyPassengerId = homeCarpoolBottomSheetViewModel::getMyPassengerId,
+                getTicketDetail = homeCarpoolBottomSheetViewModel::getTicketDetail,
                 onRefresh = carpoolListViewModel::onRefresh,
                 setPassengerId = homeCarpoolBottomSheetViewModel::setPassengerId,
                 setStudentId = homeCarpoolBottomSheetViewModel::setStudentId,
-                setTicketId = homeCarpoolBottomSheetViewModel::setTicketId,
-                setTicketIdFromMyTicket = carpoolListViewModel::getMyTicket,
+                getMyTicketDetail = homeCarpoolBottomSheetViewModel::getMyTicketDetail,
                 addNewPassengerToTicket = homeCarpoolBottomSheetViewModel::addNewPassengerToTicket,
                 updateTicketStatus = homeCarpoolBottomSheetViewModel::updateTicketStatus,
                 deletePassengerToTicket = homeCarpoolBottomSheetViewModel::deletePassengerToTicket,
@@ -175,7 +168,13 @@ fun NavigationGraph(
                 onSelectReason = reportViewModel::selectReason,
                 onDeselectReason = reportViewModel::deselectReason,
                 onReportClick = reportViewModel::report,
-                onBackClick = rememberLambda { navController.popBackStack() }
+                onBackClick = rememberLambda {
+                    navController.navigate("home/${Event.getInitValues()}") {
+                        popUpTo(NavigationItem.Home.route) {
+                            inclusive = true
+                        }
+                    }
+                }
             )
         }
     }

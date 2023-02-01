@@ -56,8 +56,8 @@ fun ReservationBottomSheetContent(
     onRefresh: (String) -> Unit,
     setPassengerId: (Long) -> Unit,
     setStudentId: (String) -> Unit,
-    deletePassengerFromTicket: () -> Unit,
-    updateTicketStatus: (TicketStatus) -> Unit
+    deletePassengerFromTicket: (Long) -> Unit,
+    updateTicketStatus: (Long,TicketStatus) -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -157,12 +157,13 @@ fun ReservationBottomSheetContent(
         )
 
         TicketButton(
+            ticketId = ticketDetail.id,
             userRole = userRole,
             userStudentId = userStudentId,
             userPassengerId = userPassengerId,
             setPassengerId = setPassengerId,
             updateTicketStatus = updateTicketStatus,
-            deletePassengerFromTicket = deletePassengerFromTicket,
+            deletePassengerFromTicket = {deletePassengerFromTicket(ticketDetail.id)},
             onRefresh = onRefresh,
             onCloseBottomSheet = onCloseBottomSheet
         )
@@ -171,7 +172,7 @@ fun ReservationBottomSheetContent(
             dialogState = popUpState.value,
             popUpOffset = popUpOffset.value,
             userRole = userRole,
-            deletePassengerFromTicket = deletePassengerFromTicket,
+            deletePassengerFromTicket = {deletePassengerFromTicket(ticketDetail.id)},
             onNavigateToReportView = onNavigateToReportView,
             onRefresh = onRefresh
         )
@@ -324,11 +325,12 @@ private fun TicketOpenChat(
 
 @Composable
 private fun TicketButton(
+    ticketId: Long,
     userRole: MemberRole,
     userStudentId: String,
     userPassengerId: (String) -> Long?,
     setPassengerId: (Long) -> Unit,
-    updateTicketStatus: (TicketStatus) -> Unit,
+    updateTicketStatus: (Long,TicketStatus) -> Unit,
     deletePassengerFromTicket: () -> Unit,
     onRefresh: (String) -> Unit,
     onCloseBottomSheet: suspend () -> Unit
@@ -339,13 +341,13 @@ private fun TicketButton(
             MemberRole.Driver -> {
                 LargeSecondaryButton(
                     text = "티켓 삭제",
-                    onClick = { updateTicketStatus(TicketStatus.Cancel) },
+                    onClick = { updateTicketStatus(ticketId,TicketStatus.Cancel) },
                     modifier = Modifier.weight(1f)
                 )
                 HorizontalSpacer(width = 8.dp)
                 LargePrimaryButton(
                     text = "운행 종료",
-                    onClick = { updateTicketStatus(TicketStatus.After) },
+                    onClick = { updateTicketStatus(ticketId,TicketStatus.After) },
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -415,7 +417,7 @@ fun PreviewReservationBottomSheetContent() {
             onBrowseOpenChatLink = {},
             onRefresh = {},
             deletePassengerFromTicket = {},
-            updateTicketStatus = {},
+            updateTicketStatus = fun(_:Long, _:TicketStatus){},
             setPassengerId = {},
             onNavigateToReportView = {},
             userPassengerId = {-1L},

@@ -2,6 +2,7 @@
 
 package com.mate.carpool.ui.screen.report
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -36,6 +37,10 @@ fun ReportScreen(
     onReportClick: () -> Unit,
     onBackClick: () -> Unit,
 ) {
+    BackHandler(enabled = true) {
+        onBackClick()
+    }
+
     Scaffold(
         containerColor = white,
         topBar = {

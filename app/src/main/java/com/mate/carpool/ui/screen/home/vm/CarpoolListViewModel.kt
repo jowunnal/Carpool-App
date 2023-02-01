@@ -1,18 +1,12 @@
 package com.mate.carpool.ui.screen.home.vm
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.mate.carpool.data.model.domain.MemberModel
-import com.mate.carpool.data.model.domain.Profile
 import com.mate.carpool.data.model.domain.TicketListModel
 import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.repository.CarpoolListRepository
 import com.mate.carpool.data.repository.MemberRepository
 import com.mate.carpool.ui.base.BaseViewModel
-import com.mate.carpool.ui.base.SnackBarMessage
-import com.mate.carpool.ui.screen.profile.modify.ProfileModifyViewModel
-import dagger.assisted.AssistedFactory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,8 +21,6 @@ class CarpoolListViewModel @Inject constructor(
     private val carpoolListRepository: CarpoolListRepository,
     private val memberRepository: MemberRepository
 ): BaseViewModel() {
-
-
 
     private val mutableCarpoolListState = MutableStateFlow<List<TicketListModel>>(emptyList())
     val carpoolListState get() = mutableCarpoolListState.asStateFlow()
@@ -94,46 +86,6 @@ class CarpoolListViewModel @Inject constructor(
                     is ApiResponse.ExceptionResponse ->{
                     }
                 }
-            }
-        }
-    }
-
-    fun getMyTicket(setTicketId: (Long) -> Unit){
-        viewModelScope.launch {
-            carpoolListRepository.getMyTicket().collectLatest {
-                when(it){
-                    is ApiResponse.Loading -> {
-                    }
-                    is ApiResponse.SuccessResponse -> {
-                        setTicketId(it.responseMessage.id)
-                    }
-                    is ApiResponse.FailResponse -> {
-                        emitSnackbar(SnackBarMessage(
-                            headerMessage = "티켓정보를 가져오는데 실패했습니다. ${it.responseMessage.message}",
-                            contentMessage = "다시 시도해 주세요."
-                        ))
-                    }
-                    is ApiResponse.ExceptionResponse -> {
-                        emitSnackbar(
-                            SnackBarMessage(
-                                headerMessage = "일시적인 장애가 발생하였습니다.",
-                                contentMessage = "다시 시도해 주세요."
-                            )
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    companion object {
-        @Suppress("UNCHECKED_CAST")
-        fun provideFactory(
-            assistedFactory: ProfileModifyViewModel.InitialProfileAssistedFactory,
-            initialProfile: Profile
-        ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return assistedFactory.create(initialProfile) as T
             }
         }
     }

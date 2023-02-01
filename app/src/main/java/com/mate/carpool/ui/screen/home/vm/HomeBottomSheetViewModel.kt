@@ -2,7 +2,6 @@ package com.mate.carpool.ui.screen.home.vm
 
 import androidx.lifecycle.viewModelScope
 import com.mate.carpool.data.model.domain.TicketListModel
-import com.mate.carpool.data.model.domain.TicketModel
 import com.mate.carpool.data.model.item.TicketStatus
 import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.repository.CarpoolListRepository
@@ -10,8 +9,6 @@ import com.mate.carpool.data.repository.TicketChangeRepository
 import com.mate.carpool.ui.base.BaseViewModel
 import com.mate.carpool.ui.base.SnackBarMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,43 +19,96 @@ class HomeBottomSheetViewModel @Inject constructor(
     private val carpoolListRepository: CarpoolListRepository
 ) : BaseViewModel() {
 
-    private val mutableTicketId = MutableStateFlow(-1L)
-    private val ticketId:StateFlow<Long> get() = mutableTicketId.asStateFlow()
-    val passengerId = MutableStateFlow(0L)
-    val studentId = MutableStateFlow("")
+    private val _uiState = MutableStateFlow(BottomSheetUiState.getInitValue())
+    val uiState get() = _uiState.asStateFlow()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val carpoolTicketState:StateFlow<TicketModel> = ticketId.flatMapLatest{ value->
-        if(value == -1L)
-            awaitCancellation()
-        else
-            carpoolListRepository.getTicket(value)
-    }.transform {response->
-        if(response is ApiResponse.SuccessResponse)
-            emit(response.responseMessage)
-        else if(response is ApiResponse.Loading)
-            emit(TicketModel.getInitValue())
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(2000),
-        initialValue = TicketModel.getInitValue()
-    )
+    fun getMyTicketDetail() {
+        viewModelScope.launch {
+            carpoolListRepository.getMyTicket().collectLatest {
+                when(it){
+                    is ApiResponse.Loading -> {
+                    }
+                    is ApiResponse.SuccessResponse -> {
+                        _uiState.update { state ->
+                            state.copy(ticket = it.responseMessage)
+                        }
+                    }
+                    is ApiResponse.FailResponse -> {
+                        emitSnackbar(SnackBarMessage(
+                            headerMessage = "티켓정보를 가져오는데 실패했습니다. ${it.responseMessage.message}",
+                            contentMessage = "다시 시도해 주세요."
+                        ))
+                    }
+                    is ApiResponse.ExceptionResponse -> {
+                        emitSnackbar(
+                            SnackBarMessage(
+                                headerMessage = "일시적인 장애가 발생하였습니다.",
+                                contentMessage = "다시 시도해 주세요."
+                            )
+                        )
+                    }
+                }
+            }
+        }
+    }
 
-    fun setTicketId(id: Long) {
-        mutableTicketId.update { id }
+    fun getTicketDetail(id: Long) {
+        carpoolListRepository.getTicket(id).onEach {
+            when(it){
+                is ApiResponse.Loading -> {}
+                is ApiResponse.SuccessResponse -> {
+                    _uiState.update { state ->
+                        state.copy(ticket = it.responseMessage)
+                    }
+                }
+                is ApiResponse.FailResponse -> {
+                    when(it.responseMessage.code){
+                        "404" -> {
+                            emitSnackbar(
+                                SnackBarMessage(
+                                    headerMessage = "티켓을 불러오는데 실패했습니다.",
+                                    contentMessage = "존재하지 않는 카풀입니다."
+                                )
+                            )
+                        }
+                        else -> {
+                            emitSnackbar(
+                                SnackBarMessage(
+                                    headerMessage = "티켓을 불러오는데 실패했습니다.",
+                                    contentMessage = it.responseMessage.message
+                                )
+                            )
+                        }
+                    }
+
+                }
+                is ApiResponse.ExceptionResponse -> {
+                    emitSnackbar(
+                        SnackBarMessage(
+                            headerMessage = "일시적인 장애가 발생하였습니다.",
+                            contentMessage = "다시 시도해 주세요."
+                        )
+                    )
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 
     fun setPassengerId(id: Long) {
-        passengerId.update { id }
+        _uiState.update { state ->
+            state.copy(passengerId = id)
+        }
     }
 
     fun setStudentId(id:String) {
-        studentId.update { id }
+        _uiState.update { state ->
+            state.copy(studentId = id)
+        }
     }
 
-    fun addNewPassengerToTicket(){
+    fun addNewPassengerToTicket(ticketId: Long) {
         viewModelScope.launch {
-            ticketChangeRepository.addNewPassengerToTicket(ticketId.value).collectLatest {
+            ticketChangeRepository.addNewPassengerToTicket(ticketId).collectLatest {
                 when(it){
                     is ApiResponse.Loading -> {
 
@@ -90,10 +140,10 @@ class HomeBottomSheetViewModel @Inject constructor(
         }
     }
 
-    fun updateTicketStatus(status: TicketStatus){
+    fun updateTicketStatus(ticketId: Long, status: TicketStatus){
         viewModelScope.launch {
             ticketChangeRepository.updateTicketStatus(
-                ticketId = ticketId.value,
+                ticketId = ticketId,
                 status = status
             ).collectLatest {
                 when(it){
@@ -127,11 +177,11 @@ class HomeBottomSheetViewModel @Inject constructor(
         }
     }
 
-    fun deletePassengerToTicket(){
+    fun deletePassengerToTicket(ticketId:Long) {
         viewModelScope.launch {
             ticketChangeRepository.deletePassengerToTicket(
-                ticketId = ticketId.value,
-                passengerId = passengerId.value
+                ticketId = ticketId,
+                passengerId = uiState.value.passengerId
             ).collectLatest {
                 when(it){
                     is ApiResponse.Loading -> {
@@ -163,10 +213,10 @@ class HomeBottomSheetViewModel @Inject constructor(
         }
     }
 
-    fun isTicketIsMineOrNot(ticketList:List<TicketListModel>) : Boolean{
+    fun isTicketIsMineOrNot(ticketId: Long, ticketList:List<TicketListModel>) : Boolean{
         if(ticketList.isNotEmpty()){
             for(item in ticketList){
-                if(item.id==ticketId.value){
+                if(item.id==ticketId){
                     return true
                 }
             }
@@ -175,8 +225,8 @@ class HomeBottomSheetViewModel @Inject constructor(
     }
 
     fun getMyPassengerId(studentId:String): Long? {
-        if(carpoolTicketState.value.passenger != null)
-            for(item in carpoolTicketState.value.passenger!!){
+        if(uiState.value.ticket.passenger != null)
+            for(item in uiState.value.ticket.passenger!!){
                 if(item.studentID == studentId)
                     return item.passengerId
             }

@@ -37,8 +37,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun TicketList(
     refreshState: Boolean,
-    carpoolList : List<TicketListModel>,
-    setTicketId: (Long) -> Unit,
+    carpoolList: List<TicketListModel>,
+    getTicketDetail: (Long) -> Unit,
     onRefresh: (String) -> Unit,
     onOpenBottomSheet: suspend () -> Unit
 ){
@@ -62,7 +62,7 @@ fun TicketList(
                         .padding(16.dp)
                         .clickable {
                             coroutineScope.launch {
-                                setTicketId(item.id)
+                                getTicketDetail(item.id)
                                 onOpenBottomSheet()
                             }
                         }
@@ -130,7 +130,6 @@ fun TicketList(
 private fun PreviewTicketList() {
     MateTheme {
         TicketList(
-            setTicketId = {},
             refreshState = false,
             carpoolList =
             listOf(
@@ -180,7 +179,8 @@ private fun PreviewTicketList() {
                 )
             ),
             onRefresh = {},
-            onOpenBottomSheet = {}
+            onOpenBottomSheet = {},
+            getTicketDetail = {}
         )
     }
 }

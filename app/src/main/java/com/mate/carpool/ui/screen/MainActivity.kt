@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
+    /*
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if (isTaskRoot && navHostFragment.childFragmentManager.backStackEntryCount == 0) {
@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             super.onBackPressed()
         }
-    }
+    }*/
 
     companion object {
         const val TAG = "MainActivity"
