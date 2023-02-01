@@ -1,6 +1,7 @@
 package com.mate.carpool.ui.screen.register
 
 import android.net.Uri
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -40,6 +41,10 @@ fun RegisterDriverStepCarImageScreen(
     onNavigatePopBackStack: () -> Unit,
     onNavigateToNextStep: () -> Unit
 ) {
+    BackHandler {
+        onNavigatePopBackStack()
+    }
+
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) {

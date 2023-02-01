@@ -15,8 +15,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun MyCarpoolButton(
     carpoolExistState: Boolean ,
-    setTicketId: (Long) -> Unit,
-    setTicketIdFromMyTicket: ((Long) -> Unit) -> Unit,
+    getMyTicketDetail: () -> Unit,
     onOpenBottomSheet: suspend () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -26,7 +25,7 @@ fun MyCarpoolButton(
             text = "내 카풀 보기",
             onClick = {
                 coroutineScope.launch {
-                    setTicketIdFromMyTicket(setTicketId)
+                    getMyTicketDetail()
                     onOpenBottomSheet()
                 }
             },
@@ -45,7 +44,6 @@ private fun PreviewMyCarpoolButton() =
         MyCarpoolButton(
             carpoolExistState = true,
             onOpenBottomSheet = {},
-            setTicketId = {},
-            setTicketIdFromMyTicket = {}
+            getMyTicketDetail = {}
         )
     }

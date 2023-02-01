@@ -2,7 +2,7 @@ package com.mate.carpool.ui.screen.home.compose
 
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
@@ -12,15 +12,11 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mate.carpool.data.model.domain.MemberModel
 import com.mate.carpool.data.model.domain.TicketListModel
-import com.mate.carpool.data.model.domain.TicketModel
 import com.mate.carpool.data.model.item.DayStatus
 import com.mate.carpool.data.model.item.MemberRole
 import com.mate.carpool.data.model.item.TicketStatus
@@ -31,37 +27,37 @@ import com.mate.carpool.ui.base.SnackBarMessage
 import com.mate.carpool.ui.composable.SnackBarHostCustom
 import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.screen.home.compose.component.*
-import com.mate.carpool.ui.screen.home.vm.CarpoolListViewModel
+import com.mate.carpool.ui.screen.home.vm.BottomSheetUiState
 import com.mate.carpool.ui.screen.home.vm.HomeBottomSheetViewModel
 import com.mate.carpool.ui.screen.register.RegisterDriverViewModel
 import com.mate.carpool.ui.screen.splash.SplashViewModel
 import com.mate.carpool.ui.theme.MateTheme
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeBottomSheetLayout(
     refreshState: Boolean,
     userInfo: MemberModel,
-    studentId: String,
+    bottomSheetUiState: BottomSheetUiState,
     carpoolExistState: Boolean,
     carpoolList: List<TicketListModel>,
-    ticketDetail: TicketModel,
     event: Event,
     snackBarMessage: SnackBarMessage,
     onNavigateToCreateCarpool: () -> Unit,
     onNavigateToProfileView: () -> Unit,
     onNavigateToReportView: (String) -> Unit,
     onNavigateToRegisterDriver: () -> Unit,
-    isTicketIsMineOrNot: (List<TicketListModel>) -> Boolean,
+    isTicketIsMineOrNot: (Long,List<TicketListModel>) -> Boolean,
     getMyPassengerId: (String) -> Long?,
+    getTicketDetail: (Long) -> Unit,
     onRefresh: (String) -> Unit,
     setPassengerId: (Long) -> Unit,
     setStudentId: (String) -> Unit,
-    setTicketId: (Long) -> Unit,
-    setTicketIdFromMyTicket: ((Long) -> Unit) -> Unit,
-    addNewPassengerToTicket: () -> Unit,
-    updateTicketStatus: (TicketStatus) -> Unit,
-    deletePassengerToTicket: () -> Unit,
+    getMyTicketDetail: () -> Unit,
+    addNewPassengerToTicket: (Long) -> Unit,
+    updateTicketStatus: (Long,TicketStatus) -> Unit,
+    deletePassengerToTicket: (Long) -> Unit,
     emitSnackBar: (SnackBarMessage) -> Unit
 ) {
     val bottomSheetState = rememberModalBottomSheetState(
@@ -70,6 +66,7 @@ fun HomeBottomSheetLayout(
     )
     val scaffoldState = rememberScaffoldState()
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()){}
+    val coroutineScope = rememberCoroutineScope()
 
     if(snackBarMessage.contentMessage.isNotBlank())
         LaunchedEffect(key1 = snackBarMessage.contentMessage) {
@@ -107,6 +104,16 @@ fun HomeBottomSheetLayout(
                 }
             }
         }
+    BackHandler(enabled = bottomSheetState.isVisible || scaffoldState.drawerState.isOpen) {
+        if(bottomSheetState.isVisible)
+            coroutineScope.launch {
+                bottomSheetState.hide()
+            }
+        else if(scaffoldState.drawerState.isOpen)
+            coroutineScope.launch {
+                scaffoldState.drawerState.close()
+            }
+    }
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -124,16 +131,16 @@ fun HomeBottomSheetLayout(
     ) {
         ModalBottomSheetLayout(
             sheetContent = {
-                when(isTicketIsMineOrNot(userInfo.ticketList?: emptyList())){
+                when(isTicketIsMineOrNot(bottomSheetUiState.ticket.id,userInfo.ticketList?: emptyList())){
                     true -> {
                         ReservationBottomSheetContent(
-                            ticketDetail = ticketDetail,
+                            ticketDetail = bottomSheetUiState.ticket,
                             userRole = userInfo.user.role,
                             userStudentId = userInfo.user.studentID,
                             userPassengerId = getMyPassengerId,
                             onCloseBottomSheet = { bottomSheetState.animateTo(ModalBottomSheetValue.Hidden) },
-                            onBrowseOpenChatLink = { launcher.launch(Intent(Intent.ACTION_VIEW, Uri.parse(ticketDetail.openChatUrl))) },
-                            onNavigateToReportView = { onNavigateToReportView(studentId) },
+                            onBrowseOpenChatLink = { launcher.launch(Intent(Intent.ACTION_VIEW, Uri.parse(bottomSheetUiState.ticket.openChatUrl))) },
+                            onNavigateToReportView = { onNavigateToReportView(bottomSheetUiState.studentId) },
                             onRefresh = onRefresh,
                             setPassengerId = setPassengerId,
                             setStudentId = setStudentId,
@@ -143,7 +150,7 @@ fun HomeBottomSheetLayout(
                     }
                     false -> {
                         TicketBottomSheetContent(
-                            ticketDetail = ticketDetail,
+                            ticketDetail = bottomSheetUiState.ticket,
                             userProfile = userInfo.user.profile,
                             userRole = userInfo.user.role,
                             onCloseBottomSheet = { bottomSheetState.animateTo(ModalBottomSheetValue.Hidden) },
@@ -180,8 +187,8 @@ fun HomeBottomSheetLayout(
                             carpoolList = carpoolList,
                             userProfile = userInfo.user.profile,
                             userRole = userInfo.user.role,
-                            setTicketId = setTicketId,
-                            setTicketIdFromMyTicket = setTicketIdFromMyTicket,
+                            getMyTicketDetail = getMyTicketDetail,
+                            getTicketDetail = getTicketDetail,
                             onNavigateToCreateCarpool = onNavigateToCreateCarpool,
                             onNavigateToProfileView = onNavigateToProfileView,
                             onNavigateToRegisterDriver = onNavigateToRegisterDriver,
@@ -203,8 +210,8 @@ fun HomeView(
     carpoolList: List<TicketListModel>,
     userProfile: String,
     userRole: MemberRole,
-    setTicketId: (Long) -> Unit,
-    setTicketIdFromMyTicket: ((Long) -> Unit) -> Unit,
+    getMyTicketDetail: () -> Unit,
+    getTicketDetail: (Long) -> Unit,
     onNavigateToCreateCarpool: () -> Unit,
     onNavigateToProfileView: () -> Unit,
     onNavigateToRegisterDriver: () -> Unit,
@@ -236,7 +243,7 @@ fun HomeView(
                 TicketList(
                     refreshState = refreshState,
                     carpoolList = carpoolList,
-                    setTicketId = setTicketId,
+                    getTicketDetail = getTicketDetail,
                     onRefresh = onRefresh,
                     onOpenBottomSheet = onOpenBottomSheet
                 )
@@ -244,8 +251,7 @@ fun HomeView(
 
             MyCarpoolButton(
                 carpoolExistState = carpoolExistState,
-                setTicketIdFromMyTicket = setTicketIdFromMyTicket,
-                setTicketId = setTicketId,
+                getMyTicketDetail = getMyTicketDetail,
                 onOpenBottomSheet = onOpenBottomSheet
             )
         }
@@ -308,8 +314,8 @@ private fun HomePreview() {
                 ),
             userProfile = "",
             userRole = MemberRole.Driver,
-            setTicketId = {},
-            setTicketIdFromMyTicket = {},
+            getTicketDetail = {},
+            getMyTicketDetail = {},
             onNavigateToCreateCarpool = {},
             onNavigateToProfileView = {},
             onRefresh = {},

@@ -21,5 +21,5 @@ object HandleFlowUtils {
         } catch (e: Exception) {
             emit(ApiResponse.ExceptionResponse(e = e))
         }
-    }.flowOn(Dispatchers.IO)
+    }
 }
