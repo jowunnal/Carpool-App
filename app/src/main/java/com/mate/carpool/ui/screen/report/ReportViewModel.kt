@@ -73,7 +73,7 @@ class ReportViewModel @Inject constructor(
 
                 is Result.Success -> {
                     emitSnackbar(SnackBarMessage(headerMessage = "신고가 접수되었습니다."))
-                    emitEvent(EVENT_FINISH)
+                    emitEvent(EVENT_REPORTED_USER)
                 }
 
                 is Result.Error -> {
@@ -84,8 +84,7 @@ class ReportViewModel @Inject constructor(
     }
 
     companion object {
-
-        const val EVENT_FINISH = "EVENT_FINISH"
+        const val EVENT_REPORTED_USER = "EVENT_REPORTED_USER"
     }
 }
 

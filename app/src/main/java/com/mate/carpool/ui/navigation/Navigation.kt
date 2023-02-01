@@ -147,18 +147,19 @@ fun NavigationGraph(
             val enableReport by reportViewModel.enableReport.collectAsStateWithLifecycle()
 
             val event by reportViewModel.event.collectAsStateWithLifecycle(
-                initialValue = Event("EVENT_READY"),
+                initialValue = Event.getInitValues(),
                 lifecycleOwner = LocalLifecycleOwner.current
             )
             reportViewModel::init.invoke(it.arguments?.getLong("studentId")?:-1L)
 
-            LaunchedEffect(key1 = event.type){
-                when (event.type) {
-                    ReportViewModel.EVENT_FINISH -> {
-                        navController.popBackStack()
+            if(event != Event.getInitValues())
+                LaunchedEffect(key1 = event.type){
+                    navController.navigate("home/${event.type}") {
+                        popUpTo(NavigationItem.Home.route) {
+                            inclusive = true
+                        }
                     }
                 }
-            }
 
             ReportScreen(
                 selectedReason = reason,
@@ -168,7 +169,7 @@ fun NavigationGraph(
                 onSelectReason = reportViewModel::selectReason,
                 onDeselectReason = reportViewModel::deselectReason,
                 onReportClick = reportViewModel::report,
-                onBackClick = rememberLambda {
+                onBackClick = {
                     navController.navigate("home/${Event.getInitValues()}") {
                         popUpTo(NavigationItem.Home.route) {
                             inclusive = true

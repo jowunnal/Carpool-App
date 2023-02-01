@@ -30,6 +30,7 @@ import com.mate.carpool.ui.screen.home.compose.component.*
 import com.mate.carpool.ui.screen.home.vm.BottomSheetUiState
 import com.mate.carpool.ui.screen.home.vm.HomeBottomSheetViewModel
 import com.mate.carpool.ui.screen.register.RegisterDriverViewModel
+import com.mate.carpool.ui.screen.report.ReportViewModel
 import com.mate.carpool.ui.screen.splash.SplashViewModel
 import com.mate.carpool.ui.theme.MateTheme
 import kotlinx.coroutines.launch
@@ -99,6 +100,14 @@ fun HomeBottomSheetLayout(
                         SnackBarMessage(
                             headerMessage = "드라이버에 성공적으로 등록했어요.",
                             contentMessage = "티켓을 생성해 카풀을 운영해보세요."
+                        )
+                    )
+                }
+                ReportViewModel.EVENT_REPORTED_USER -> {
+                    emitSnackBar(
+                        SnackBarMessage(
+                            headerMessage = "신고접수가 완료됐어요.",
+                            contentMessage = "MATE팀이 확인 후 연락할게요."
                         )
                     )
                 }
