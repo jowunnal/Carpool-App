@@ -34,47 +34,71 @@
             app:popUpToInclusive="true" />
     </fragment>
 
-    <fragment
-        android:id="@+id/createTicketBoardingAreaFragment"
-        android:name="com.mate.carpool.ui.screen.createCarpool.fragment.CreateTicketBoardingAreaFragment"
-        android:label="createTicketBoardingAreaFragment"
-        tools:layout="@layout/fragment_create_carpool_ticket_boarding_area">
-        <action
-            android:id="@+id/action_createTicketBoardingAreaFragment_to_createTicketBoardingTimeFragment"
-            app:destination="@id/createTicketBoardingTimeFragment" />
-    </fragment>
+    <navigation
+        android:id="@+id/createTicket"
+        app:startDestination="@id/createTicketStep1">
+        <fragment
+            android:id="@+id/createTicketStep1"
+            android:name="com.mate.carpool.ui.screen.createCarpool.fragment.CreateTicketStep1"
+            android:label="fragment_create_carpool_ticket_step1"
+            tools:layout="@layout/fragment_create_carpool_ticket_step1">
+            <action
+                android:id="@+id/action_createTicketStep1_to_createTicketStep2"
+                app:destination="@id/createTicketStep2" />
+        </fragment>
 
-    <fragment
-        android:id="@+id/createTicketBoardingTimeFragment"
-        android:name="com.mate.carpool.ui.screen.createCarpool.fragment.CreateTicketBoardingTimeFragment"
-        android:label="fragment_create_carpool_ticket_boarding_time"
-        tools:layout="@layout/fragment_create_carpool_ticket_boarding_time">
-        <action
-            android:id="@+id/action_createTicketBoardingTimeFragment_to_createTicketOpenChatFragment"
-            app:destination="@id/createTicketOpenChatFragment" />
-    </fragment>
+        <fragment
+            android:id="@+id/createTicketStep2"
+            android:name="com.mate.carpool.ui.screen.createCarpool.fragment.CreateTicketStep2"
+            android:label="fragment_create_carpool_ticket_step2"
+            tools:layout="@layout/fragment_create_carpool_ticket_step2">
+            <action
+                android:id="@+id/action_CreateTicketStep2_to_createTicketStep3"
+                app:destination="@id/createTicketStep3" />
+        </fragment>
 
-    <fragment
-        android:id="@+id/createTicketOpenChatFragment"
-        android:name="com.mate.carpool.ui.screen.createCarpool.fragment.CreateTicketOpenChatFragment"
-        android:label="fragment_create_carpool_ticket_open_chat"
-        tools:layout="@layout/fragment_create_carpool_ticket_open_chat">
-        <action
-            android:id="@+id/action_createTicketOpenChatFragment_to_createTicketPreviewFragment"
-            app:destination="@id/createTicketPreviewFragment" />
-    </fragment>
+        <fragment
+            android:id="@+id/createTicketStep3"
+            android:name="com.mate.carpool.ui.screen.createCarpool.fragment.CreateTicketStep3"
+            android:label="fragment_create_carpool_ticket_step3"
+            tools:layout="@layout/fragment_create_carpool_ticket_step3">
+            <action
+                android:id="@+id/action_createTicketStep3_to_createTicketStep4"
+                app:destination="@id/createTicketStep4" />
+        </fragment>
 
-    <fragment
-        android:id="@+id/createTicketPreviewFragment"
-        android:name="com.mate.carpool.ui.screen.createCarpool.fragment.CreateTicketPreviewFragment"
-        android:label="fragment_create_carpool_ticket_preview"
-        tools:layout="@layout/fragment_create_carpool_ticket_preview">
-        <action
-            android:id="@+id/action_createTicketPreviewFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
-            app:popUpTo="@id/homeFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
+        <fragment
+            android:id="@+id/createTicketStep4"
+            android:name="com.mate.carpool.ui.screen.createCarpool.fragment.CreateTicketStep4"
+            android:label="fragment_create_carpool_ticket_step4"
+            tools:layout="@layout/fragment_create_carpool_ticket_step4" >
+            <action
+                android:id="@+id/action_createTicketStep4_to_createTicketStep5"
+                app:destination="@id/createTicketStep5" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/createTicketStep5"
+            android:name="com.mate.carpool.ui.screen.createCarpool.fragment.CreateTicketStep5"
+            android:label="fragment_create_ carpool_ticket_step5"
+            tools:layout="@layout/fragment_create_carpool_ticket_step5" >
+            <action
+                android:id="@+id/action_createTicketStep5_to_createTicketPreviewFragment"
+                app:destination="@id/createTicketPreviewFragment" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/createTicketPreviewFragment"
+            android:name="com.mate.carpool.ui.screen.createCarpool.fragment.CreateTicketPreviewFragment"
+            android:label="fragment_create_carpool_ticket_preview"
+            tools:layout="@layout/fragment_create_carpool_ticket_preview">
+            <action
+                android:id="@+id/action_createTicketPreviewFragment_to_homeFragment"
+                app:destination="@id/homeFragment"
+                app:popUpTo="@id/homeFragment"
+                app:popUpToInclusive="true" />
+        </fragment>
+    </navigation>
 
     <fragment
         android:id="@+id/homeFragment"
@@ -84,15 +108,13 @@
             android:name="event"
             app:argType="string"
             android:defaultValue=""/>
-
         <action
-            android:id="@+id/action_homeFragment_to_createTicketBoardingAreaFragment"
-            app:destination="@id/createTicketBoardingAreaFragment" />
+            android:id="@+id/action_homeFragment_to_createTicket"
+            app:destination="@id/createTicket" />
 
         <action
             android:id="@+id/action_homeFragment_to_profileLookUpFragment"
             app:destination="@id/profileLookUpFragment" />
-
     </fragment>
 
     <fragment

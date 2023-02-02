@@ -1,34 +1,36 @@
 package com.mate.carpool.ui.screen.createCarpool.fragment
 
-import android.os.Bundle
-import android.view.View
-import androidx.fragment.app.activityViewModels
-import androidx.navigation.Navigation
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
+import androidx.navigation.fragment.findNavController
 import com.mate.carpool.R
-import com.mate.carpool.ui.util.SettingToolbarUtils
-import com.mate.carpool.ui.screen.createCarpool.vm.CreateTicketViewModel
 import com.mate.carpool.databinding.FragmentCreateCarpoolTicketPreviewBinding
-import com.mate.carpool.ui.base.BindFragment
+import com.mate.carpool.ui.base.BaseFragment
+import com.mate.carpool.ui.base.Event
+import com.mate.carpool.ui.screen.createCarpool.vm.CreateTicketViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-class CreateTicketPreviewFragment : BindFragment<FragmentCreateCarpoolTicketPreviewBinding>(R.layout.fragment_create_carpool_ticket_preview) {
-    private val ticketViewModel: CreateTicketViewModel by activityViewModels()
+@AndroidEntryPoint
+class CreateTicketPreviewFragment : BaseFragment<CreateTicketViewModel,FragmentCreateCarpoolTicketPreviewBinding>() {
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override val viewModel: CreateTicketViewModel by hiltNavGraphViewModels(R.id.createTicket)
 
-        binding.lifecycleOwner=viewLifecycleOwner
-        binding.createCarpoolViewModel=ticketViewModel
-        binding.navController=Navigation.findNavController(view)
+    override fun getViewBinding(): FragmentCreateCarpoolTicketPreviewBinding = FragmentCreateCarpoolTicketPreviewBinding.inflate(layoutInflater)
 
-        binding.btnConfirm.setOnClickListener {
-            ticketViewModel.createCarpoolTicket()
-            Navigation.findNavController(view).navigate(R.id.action_createTicketPreviewFragment_to_homeFragment)
+    override val useActionBar: Boolean = true
+
+    override fun initViews() = with(binding) {
+        createTicketViewModel = viewModel
+        context = requireActivity()
+
+        btnConfirm.setOnClickListener {
+            viewModel.fetch()
+            val action = CreateTicketPreviewFragmentDirections.actionCreateTicketPreviewFragmentToHomeFragment(CreateTicketViewModel.EVENT_CREATED_TICKET)
+            findNavController().navigate(action)
         }
 
-        binding.btnCancel.setOnClickListener {
-            Navigation.findNavController(view).popBackStack()
+        btnCancel.setOnClickListener {
+            val action = CreateTicketPreviewFragmentDirections.actionCreateTicketPreviewFragmentToHomeFragment(Event.EVENT_FINISH)
+            findNavController().navigate(action)
         }
-
-        SettingToolbarUtils.setActionBar(requireActivity(), binding.appbarBack)
     }
 }

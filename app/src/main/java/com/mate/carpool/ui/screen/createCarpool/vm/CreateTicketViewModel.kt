@@ -1,40 +1,62 @@
 package com.mate.carpool.ui.screen.createCarpool.vm
 
-import android.content.Context
-import android.util.Log
-import android.widget.Toast
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.mate.carpool.data.model.dto.CreateCarpoolRequestDTO
-import com.mate.carpool.data.model.domain.TicketModel
-import com.mate.carpool.data.model.response.ResponseMessage
-import com.mate.carpool.data.service.APIService
-import com.mate.carpool.util.formatStartDayMonthToDTO
-import com.mate.carpool.util.formatStartTimeToDTO
+import com.mate.carpool.data.model.domain.StartArea
+import com.mate.carpool.data.repository.TicketRepository
+import com.mate.carpool.ui.base.BaseViewModel
+import com.mate.carpool.ui.screen.createCarpool.item.CreateTicketUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import java.text.DecimalFormat
 import javax.inject.Inject
 
 @HiltViewModel
-class CreateTicketViewModel @Inject constructor(@ApplicationContext private val context:Context, private val apiService: APIService):ViewModel() {
+class CreateTicketViewModel @Inject constructor(
+    private val ticketRepository: TicketRepository
+): BaseViewModel() {
 
-    val mutableTicketModel = MutableLiveData(TicketModel.getInitValue())
-    val ticketModel : LiveData<TicketModel> get() = mutableTicketModel
-    val boardingAreaButtonFlag:MutableLiveData<ArrayList<Boolean>> = MutableLiveData(arrayListOf(false,false))
-    val boardingTimeButtonFlag:MutableLiveData<ArrayList<Boolean>> = MutableLiveData(arrayListOf(false,false,false))
-    val openChatButtonFlag:MutableLiveData<ArrayList<Boolean>> = MutableLiveData(arrayListOf(false,false,false))
+    private val _uiState = MutableStateFlow(CreateTicketUiState.getInitValue())
+    val uiState get() = _uiState.asStateFlow()
 
-    val ticketStartDayMonth = MutableStateFlow("")
-    val ticketStartTime = MutableStateFlow("")
+    fun setStartArea(area: String) = _uiState.update { state ->
+        state.copy(startArea = StartArea.findByDisplayName(area), invalidArea = true)
+    }
 
+    val setBoardingPlace = fun (place: String) {
+        _uiState.update { state ->
+            state.copy(boardingPlace = place)
+        }
+    }
+
+    fun setRecruitNumber(num: String) = _uiState.update { state ->
+        state.copy(recruitNumber = num, invalidRecruitNumber = true)
+    }
+
+    val setOpenChatUrl = fun (url: String) {
+        _uiState.update { state ->
+            state.copy(openChatLink = url, invalidOpenChatLink = url.isNotBlank())
+        }
+    }
+
+    val setBoardingFee = fun (fee: String) {
+        _uiState.update { state ->
+            val result = DecimalFormat("###,###").format(fee.replace(",","").toInt()).toString()
+            state.copy(fee = result, invalidFee = true)
+        }
+    }
+
+    val fetch = fun () {
+        //TODO fetch api
+        emitEvent(EVENT_CREATED_TICKET)
+    }
+
+    companion object {
+        const val EVENT_CREATED_TICKET = "EVENT_CREATED_TICKET"
+        const val EVENT_FAILED_CREATE_TICKET = "EVENT_FAILED_CREATE_TICKET"
+    }
+
+    /*
     fun createCarpoolTicket(){
         viewModelScope.launch {
             ticketStartDayMonth.update { mutableTicketModel.value?.startTime?.formatStartDayMonthToDTO()?:"" }
@@ -63,5 +85,5 @@ class CreateTicketViewModel @Inject constructor(@ApplicationContext private val 
 
             })
         }
-    }
+    }*/
 }
