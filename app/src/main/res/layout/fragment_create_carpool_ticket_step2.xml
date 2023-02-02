@@ -16,6 +16,8 @@
 
         <import type="com.mate.carpool.R" />
 
+        <import type="com.mate.carpool.util.LongUtilsKt"/>
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -117,6 +119,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="@string/출발시간"
+            android:text="@{createTicketViewModel.uiState.startTime}"
             android:textSize="18dp"
             android:background="@drawable/common_textfield"
             android:gravity="center_vertical"
