@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.screen.createCarpool.fragment.CreateTicketStep3">
+
+    <data>
+
+        <variable
+            name="navController"
+            type="androidx.navigation.NavController" />
+
+        <variable
+            name="createTicketViewModel"
+            type="com.mate.carpool.ui.screen.createCarpool.vm.CreateTicketViewModel" />
+
+        <import type="com.mate.carpool.R" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:paddingHorizontal="16dp">
+
+        <TextView
+            android:id="@+id/tv_bar1"
+            android:layout_width="0dp"
+            android:layout_height="8dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/round_100_blue"
+            app:layout_constraintEnd_toStartOf="@+id/tv_bar2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_bar2"
+            android:layout_width="0dp"
+            android:layout_height="8dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="6dp"
+            android:background="@drawable/round_100_blue"
+            app:layout_constraintEnd_toStartOf="@+id/tv_bar3"
+            app:layout_constraintStart_toEndOf="@+id/tv_bar1"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_bar3"
+            android:layout_width="0dp"
+            android:layout_height="8dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/round_100_gray_dadde1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_bar2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_carpool1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="오픈 카톡을 입력해주세요"
+            android:textColor="@color/black"
+            android:textSize="22dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_bar1" />
+
+        <TextView
+            android:id="@+id/tv_openChatLinkHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="오픈 채팅방 링크"
+            android:textColor="@color/black"
+            android:textSize="13dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_carpool1" />
+
+        <EditText
+            android:id="@+id/et_openChatLink"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/오픈채팅방링크"
+            android:textSize="18dp"
+            android:background="@drawable/common_textfield"
+            updateText="@{createTicketViewModel.setOpenChatUrl}"
+            android:inputType="text"
+            android:maxLines="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_openChatLinkHeader" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_confirm"
+            navController="@{navController}"
+            navi_ID="@{R.id.action_createTicketStep3_to_createTicketStep4}"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="33dp"
+            android:background="@drawable/button_select_navigate"
+            android:text="@string/login_next"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:enabled="@{createTicketViewModel.uiState.invalidOpenChatLink}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
