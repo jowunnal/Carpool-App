@@ -47,6 +47,12 @@ fun HomeMenu(
                     icon = R.drawable.ic_add_small,
                     onNavigateCallBack = onNavigateToRegisterDriver
                 )
+                HomeCardView(
+                    imageId = R.drawable.ic_home_car,
+                    text = "카풀 모집하기",
+                    icon = R.drawable.ic_add_small,
+                    onNavigateCallBack = onNavigateToCreateCarpool
+                )
             }
 
             MemberRole.Driver -> {

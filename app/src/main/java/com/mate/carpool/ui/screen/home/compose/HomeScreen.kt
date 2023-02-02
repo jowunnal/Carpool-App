@@ -26,6 +26,7 @@ import com.mate.carpool.ui.base.Event
 import com.mate.carpool.ui.base.SnackBarMessage
 import com.mate.carpool.ui.composable.SnackBarHostCustom
 import com.mate.carpool.ui.composable.VerticalSpacer
+import com.mate.carpool.ui.screen.createCarpool.vm.CreateTicketViewModel
 import com.mate.carpool.ui.screen.home.compose.component.*
 import com.mate.carpool.ui.screen.home.vm.BottomSheetUiState
 import com.mate.carpool.ui.screen.home.vm.HomeBottomSheetViewModel
@@ -69,8 +70,8 @@ fun HomeBottomSheetLayout(
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()){}
     val coroutineScope = rememberCoroutineScope()
 
-    if(snackBarMessage.contentMessage.isNotBlank())
-        LaunchedEffect(key1 = snackBarMessage.contentMessage) {
+    if(snackBarMessage.headerMessage.isNotBlank())
+        LaunchedEffect(key1 = snackBarMessage.headerMessage) {
             scaffoldState.snackbarHostState.showSnackbar(
                 message = snackBarMessage.headerMessage,
                 duration =  SnackbarDuration.Indefinite,
@@ -79,40 +80,13 @@ fun HomeBottomSheetLayout(
         }
 
     if(event.type != BaseViewModel.EVENT_READY)
-        LaunchedEffect(key1 = event.type){
-            when (event.type) {
-                HomeBottomSheetViewModel.EVENT_ADDED_PASSENGER_TO_TICKET-> {
-                    bottomSheetState.animateTo(ModalBottomSheetValue.Expanded)
-                }
-                SplashViewModel.EVENT_GO_TO_HOME_SCREEN -> {
-                    emitSnackBar(
-                        SnackBarMessage(
-                            headerMessage = "MATE에 성공적으로 로그인 했어요.",
-                            contentMessage = when(userInfo.user.role){
-                                MemberRole.Driver -> "티켓을 생성해 카풀을 운영해보세요."
-                                MemberRole.Passenger -> "주변에 있는 카풀을 찾아보세요."
-                            }
-                        )
-                    )
-                }
-                RegisterDriverViewModel.EVENT_REGISTERED_DRIVER_SUCCEED -> {
-                    emitSnackBar(
-                        SnackBarMessage(
-                            headerMessage = "드라이버에 성공적으로 등록했어요.",
-                            contentMessage = "티켓을 생성해 카풀을 운영해보세요."
-                        )
-                    )
-                }
-                ReportViewModel.EVENT_REPORTED_USER -> {
-                    emitSnackBar(
-                        SnackBarMessage(
-                            headerMessage = "신고접수가 완료됐어요.",
-                            contentMessage = "MATE팀이 확인 후 연락할게요."
-                        )
-                    )
-                }
-            }
-        }
+        OnActiveSnackBar(
+            event = event,
+            role = userInfo.user.role,
+            bottomSheetState = bottomSheetState,
+            emitSnackBar = emitSnackBar
+        )
+
     BackHandler(enabled = bottomSheetState.isVisible || scaffoldState.drawerState.isOpen) {
         if(bottomSheetState.isVisible)
             coroutineScope.launch {
@@ -213,7 +187,7 @@ fun HomeBottomSheetLayout(
 }
 
 @Composable
-fun HomeView(
+private fun HomeView(
     refreshState: Boolean,
     carpoolExistState: Boolean,
     carpoolList: List<TicketListModel>,
@@ -263,6 +237,66 @@ fun HomeView(
                 getMyTicketDetail = getMyTicketDetail,
                 onOpenBottomSheet = onOpenBottomSheet
             )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun OnActiveSnackBar(
+    event: Event,
+    role: MemberRole,
+    bottomSheetState: ModalBottomSheetState,
+    emitSnackBar: (SnackBarMessage) -> Unit,
+) {
+    LaunchedEffect(key1 = event.type){
+        when (event.type) {
+            HomeBottomSheetViewModel.EVENT_ADDED_PASSENGER_TO_TICKET-> {
+                bottomSheetState.animateTo(ModalBottomSheetValue.Expanded)
+            }
+            SplashViewModel.EVENT_GO_TO_HOME_SCREEN -> {
+                emitSnackBar(
+                    SnackBarMessage(
+                        headerMessage = "MATE에 성공적으로 로그인 했어요.",
+                        contentMessage = when(role){
+                            MemberRole.Driver -> "티켓을 생성해 카풀을 운영해보세요."
+                            MemberRole.Passenger -> "주변에 있는 카풀을 찾아보세요."
+                        }
+                    )
+                )
+            }
+            RegisterDriverViewModel.EVENT_REGISTERED_DRIVER_SUCCEED -> {
+                emitSnackBar(
+                    SnackBarMessage(
+                        headerMessage = "드라이버에 성공적으로 등록했어요.",
+                        contentMessage = "티켓을 생성해 카풀을 운영해보세요."
+                    )
+                )
+            }
+            ReportViewModel.EVENT_REPORTED_USER -> {
+                emitSnackBar(
+                    SnackBarMessage(
+                        headerMessage = "신고접수가 완료됐어요.",
+                        contentMessage = "MATE팀이 확인 후 연락할게요."
+                    )
+                )
+            }
+            CreateTicketViewModel.EVENT_CREATED_TICKET -> {
+                emitSnackBar(
+                    SnackBarMessage(
+                        headerMessage = "티켓이 성공적으로 생성되었어요.",
+                        contentMessage = ""
+                    )
+                )
+            }
+            CreateTicketViewModel.EVENT_FAILED_CREATE_TICKET -> {
+                emitSnackBar(
+                    SnackBarMessage(
+                        headerMessage = "티켓을 생성하는데 실패했어요.",
+                        contentMessage = "다시 생성해 주세요."
+                    )
+                )
+            }
         }
     }
 }

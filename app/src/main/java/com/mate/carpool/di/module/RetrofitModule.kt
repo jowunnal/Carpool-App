@@ -28,7 +28,6 @@ class HeaderInterceptor @Inject constructor(@ApplicationContext private val cont
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         val token = context.applicationContext.getSharedPreferences("accessToken",Context.MODE_PRIVATE).getString("accessToken","")!!
-        Log.d("test",token)
         val newRequest = chain.request().newBuilder()
             .addHeader("Authorization", token)
             .build()

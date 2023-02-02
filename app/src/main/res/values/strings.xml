@@ -27,11 +27,6 @@
     <string name="login_number_example">예: 01011111111</string>
     <string name="login_type_content">드라이버는 자차보유자를, 패신저는 승객(이용자)를 뜻합니다.\n추후에 변경 가능합니다.</string>
     <string name="login_profile_content">미설정시, 기본이미지로 자동설정됩니다.</string>
-    <string name="login_select_monday">월</string>
-    <string name="login_select_tuesday">화</string>
-    <string name="login_select_wednesday">수</string>
-    <string name="login_select_thursday">목</string>
-    <string name="login_select_friday">금</string>
     <string name="home_no_reservation">예약된 카풀이 없습니다</string>
     <string name="home_no_list">생성한 카풀이 없습니다</string>
     <string name="home_show_mycarpool">내 카풀 보기</string>
@@ -40,8 +35,14 @@
     <string name="출발지역">출발 지역을 선택해 주세요</string>
     <string name="탑승장소">예: 안동사우나 앞</string>
     <string name="출발날짜">MM/dd 예:11/30</string>
-    <string name="출발시간">HH:mm, 예:08:30</string>
+    <string name="출발시간">시간을 입력해주세요.</string>
+    <string name="여객자동차운수사업법">여객자동차 운수사업법 제81조 1항에 따라 유료 카풀의 경우 오전 07:00-09:00사이에 운행이 가능해요. 09:00 이후에는 운행이 종료돼야해요. (휴일, 공휴일은 유료 카풀 불가)</string>
     <string name="오픈채팅방링크">링크를 붙여넣기 해주세요.</string>
+    <string name="탑승인원비용선택">탑승 인원/비용을 입력해주세요.</string>
+    <string name="탑승인원">탑승인원</string>
+    <string name="탑승인원힌트">탑승 최대인원을 선택해주세요.</string>
+    <string name="탑승비용">탑승 비용(1인 기준)</string>
+    <string name="탑승비용입력">비용을 입력해주세요.</string>
     <string name="선택">선택</string>
     <string name="title_activity_main">MainActivity</string>
 </resources>
