@@ -252,7 +252,7 @@
                 android:id="@+id/text_time_departure_detail"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@{LongUtilsKt.formatStartTimeToDTO(createTicketViewModel.uiState.startTime)}"
+                android:text="@{createTicketViewModel.uiState.startTime}"
                 android:textSize="14dp"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"

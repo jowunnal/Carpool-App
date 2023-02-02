@@ -29,5 +29,9 @@ class CreateTicketStep2 : BaseFragment<CreateTicketViewModel,FragmentCreateCarpo
             add(Calendar.DATE,1)
         }
         tvStartingDate.text = "내일 ${tomorrow.month}월 ${tomorrow.date}일"
+
+        tlBoardingTime.setOnClickListener {
+            TimePickerCustomDialog(viewModel::setStartTime).show(requireActivity().supportFragmentManager,"TimePicker")
+        }
     }
 }

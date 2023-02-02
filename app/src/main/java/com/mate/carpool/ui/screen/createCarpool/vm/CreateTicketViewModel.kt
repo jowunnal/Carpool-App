@@ -1,14 +1,20 @@
 package com.mate.carpool.ui.screen.createCarpool.vm
 
+import android.util.Log
 import com.mate.carpool.data.model.domain.StartArea
 import com.mate.carpool.data.repository.TicketRepository
 import com.mate.carpool.ui.base.BaseViewModel
 import com.mate.carpool.ui.screen.createCarpool.item.CreateTicketUiState
+import com.mate.carpool.ui.screen.createCarpool.item.TimeUiState
+import com.mate.carpool.ui.util.hour
+import com.mate.carpool.ui.util.minute
+import com.mate.carpool.util.formatStartTimeToDTO
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import java.text.DecimalFormat
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,6 +33,10 @@ class CreateTicketViewModel @Inject constructor(
         _uiState.update { state ->
             state.copy(boardingPlace = place)
         }
+    }
+
+    fun setStartTime(timeUiState: TimeUiState) = _uiState.update { state ->
+        state.copy(startTime = String.format("%02d:%02d",timeUiState.hour,timeUiState.min), invalidStartTime = true)
     }
 
     fun setRecruitNumber(num: String) = _uiState.update { state ->
@@ -49,6 +59,7 @@ class CreateTicketViewModel @Inject constructor(
     val fetch = fun () {
         //TODO fetch api
         emitEvent(EVENT_CREATED_TICKET)
+        Log.d("test",uiState.value.toString())
     }
 
     companion object {

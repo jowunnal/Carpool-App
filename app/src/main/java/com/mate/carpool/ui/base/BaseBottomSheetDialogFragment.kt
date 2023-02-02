@@ -40,12 +40,8 @@ abstract class BaseBottomSheetDialogFragment<VB:ViewDataBinding>(@LayoutRes priv
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme).apply {
-            behavior.peekHeight = LayoutParamsUtils.getBottomSheetDialogDefaultHeight(93, requireActivity())
+            behavior.peekHeight = LayoutParamsUtils.getBottomSheetDialogDefaultHeight(100, requireActivity())
         }
         return dialog
-    }
-
-    abstract class Renewing{
-        abstract fun onRewNew()
     }
 }
