@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.screen.createCarpool.fragment.CreateTicketStep4">
+
+    <data>
+
+        <variable
+            name="navController"
+            type="androidx.navigation.NavController" />
+
+        <variable
+            name="context"
+            type="androidx.fragment.app.FragmentActivity" />
+
+        <variable
+            name="createTicketViewModel"
+            type="com.mate.carpool.ui.screen.createCarpool.vm.CreateTicketViewModel" />
+
+        <variable
+            name="recruitNumberList"
+            type="List&lt;String&gt;" />
+
+        <import type="java.util.List" />
+
+        <import type="com.mate.carpool.R" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:paddingHorizontal="16dp">
+
+        <TextView
+            android:id="@+id/tv_bar1"
+            android:layout_width="0dp"
+            android:layout_height="8dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/round_100_blue"
+            app:layout_constraintEnd_toStartOf="@+id/tv_bar2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_bar2"
+            android:layout_width="0dp"
+            android:layout_height="8dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="6dp"
+            android:background="@drawable/round_100_blue"
+            app:layout_constraintEnd_toStartOf="@+id/tv_bar3"
+            app:layout_constraintStart_toEndOf="@+id/tv_bar1"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_bar3"
+            android:layout_width="0dp"
+            android:layout_height="8dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/round_100_blue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_bar2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_carpool1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/탑승인원비용선택"
+            android:textColor="@color/black"
+            android:textSize="22dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_bar1" />
+
+        <TextView
+            android:id="@+id/tv_recruitNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/탑승인원"
+            android:textColor="@color/black"
+            android:textSize="13dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_carpool1" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tl_recruitNumber"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/탑승인원힌트"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_recruitNumber"
+            app:startIconTint="@color/black">
+
+            <AutoCompleteTextView
+                android:id="@+id/tv_selectRecruitNumber"
+                android:textSize="18dp"
+                areaItems="@{recruitNumberList}"
+                context="@{context}"
+                ticketViewModel="@{createTicketViewModel}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_confirm"
+            navController="@{navController}"
+            navi_ID="@{R.id.action_createTicketStep4_to_createTicketStep5}"
+            fetch="@{}"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="33dp"
+            android:background="@drawable/button_select_navigate"
+            android:text="@string/login_next"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:enabled="@{createTicketViewModel.uiState.invalidRecruitNumber}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -54,7 +54,7 @@ class NavigationFragment : Fragment() {
             navArgs = args,
             navController = rememberNavController(),
             onNavigateToCreateCarpool = rememberLambda {
-                findNavController().navigate(R.id.action_homeFragment_to_createTicketBoardingAreaFragment)
+                findNavController().navigate(R.id.action_homeFragment_to_createTicket)
             },
             onNavigateToProfileView = rememberLambda {
                 findNavController().navigate(R.id.action_homeFragment_to_profileLookUpFragment)
@@ -69,7 +69,7 @@ class NavigationFragment : Fragment() {
                 backPressedTime = System.currentTimeMillis()
                 Snackbar.make(
                     requireView().rootView,
-                    "뒤로 가기 버튼을 한 번 더 누르면 종료됩니다. $backPressedTime",
+                    "뒤로 가기 버튼을 한 번 더 누르면 종료됩니다.",
                     Snackbar.LENGTH_SHORT
                 ).show()
             }

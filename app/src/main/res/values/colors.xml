@@ -13,4 +13,9 @@
     <color name="gray_DADDE1">#DADDE1</color>
     <color name="blue_0063CF">#0063CF</color>
     <color name="red_E0302D">#E0302D</color>
+
+    <color name="primary50">#007AFF</color>
+    <color name="neutralGray30">#A2ABB4</color>
+    <color name="shadeGray">#575757</color>
+    <color name="neutralGray40">#74818E</color>
 </resources>

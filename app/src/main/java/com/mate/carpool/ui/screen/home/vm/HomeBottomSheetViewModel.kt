@@ -5,7 +5,7 @@ import com.mate.carpool.data.model.domain.TicketListModel
 import com.mate.carpool.data.model.item.TicketStatus
 import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.repository.CarpoolListRepository
-import com.mate.carpool.data.repository.TicketChangeRepository
+import com.mate.carpool.data.repository.TicketRepository
 import com.mate.carpool.ui.base.BaseViewModel
 import com.mate.carpool.ui.base.SnackBarMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeBottomSheetViewModel @Inject constructor(
-    private val ticketChangeRepository:TicketChangeRepository,
+    private val ticketChangeRepository:TicketRepository,
     private val carpoolListRepository: CarpoolListRepository
 ) : BaseViewModel() {
 
