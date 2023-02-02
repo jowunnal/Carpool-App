@@ -28,7 +28,7 @@ class CarpoolListViewModel @Inject constructor(
     private val mutableCarpoolExistState = MutableStateFlow(false)
     val carpoolExistState get() = mutableCarpoolExistState.asStateFlow()
 
-    private val mutableMemberModelState = MutableStateFlow(MemberModel())
+    private val mutableMemberModelState = MutableStateFlow(MemberModel.getInitValue())
     val memberModelState get() = mutableMemberModelState.asStateFlow()
 
     private val _refreshState = MutableStateFlow(false)

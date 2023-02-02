@@ -18,5 +18,5 @@ data class TicketListModel(
     val currentPersonCount:Int = 0,
     val ticketType: TicketType,
     val ticketStatus: TicketStatus,
-    val dayStatus:DayStatus ?= null
+    val dayStatus: DayStatus
 )

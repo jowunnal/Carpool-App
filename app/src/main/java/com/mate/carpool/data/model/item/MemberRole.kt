@@ -3,19 +3,17 @@ package com.mate.carpool.data.model.item
 import androidx.compose.runtime.Stable
 
 @Stable
-enum class MemberRole{
-    Passenger,
-    Driver
+enum class MemberRole(val displayName: String) {
+    PASSENGER(displayName = "패신저"),
+    DRIVER(displayName = "드라이버"),
+    ADMIN(displayName = "관리자");
+
+    companion object {
+        fun getMemberRoleDTO(displayName: String) =
+            when(displayName) {
+                "패신저" -> { "PASSENGER" }
+                "드라이버" -> { "DRIVER" }
+                else -> throw IllegalStateException("[MemberRole.getMemberRoleDTO] displayName = $displayName")
+            }
+    }
 }
-
-fun MemberRole.getMemberRoleDomain() =
-    when(this) {
-        MemberRole.Passenger -> { "패신저" }
-        MemberRole.Driver -> { "드라이버" }
-    }
-
-fun MemberRole.getMemberRoleDTO() =
-    when(this) {
-        MemberRole.Passenger -> { "PASSENGER" }
-        MemberRole.Driver -> { "DRIVER" }
-    }

@@ -8,10 +8,8 @@ import com.mate.carpool.ui.base.BaseFragment
 import com.mate.carpool.ui.screen.createCarpool.vm.CreateTicketViewModel
 import com.mate.carpool.ui.util.date
 import com.mate.carpool.ui.util.month
-import com.mate.carpool.util.formatStartDayMonthToDTO
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
-import kotlin.time.Duration.Companion.days
 
 @AndroidEntryPoint
 class CreateTicketStep2 : BaseFragment<CreateTicketViewModel,FragmentCreateCarpoolTicketStep2Binding>(){

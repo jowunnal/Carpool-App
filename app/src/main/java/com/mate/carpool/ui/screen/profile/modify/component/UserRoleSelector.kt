@@ -29,7 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mate.carpool.data.model.domain.UserRole
+import com.mate.carpool.data.model.item.MemberRole
 import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.theme.black
 import com.mate.carpool.ui.theme.neutral50
@@ -39,15 +39,15 @@ import com.mate.carpool.ui.util.tu
 
 @Composable
 fun UserRoleSelector(
-    userRole: UserRole,
+    userRole: MemberRole,
     modifier: Modifier = Modifier,
-    onUserRoleChange: (UserRole) -> Unit,
+    onUserRoleChange: (MemberRole) -> Unit,
 ) {
     val indicatorBias by animateFloatAsState(
         when (userRole) {
-            UserRole.PASSENGER -> 1f
-            UserRole.DRIVER -> -1f
-            UserRole.ADMIN -> -1f  // TODO 확인
+            MemberRole.PASSENGER -> 1f
+            MemberRole.DRIVER -> -1f
+            MemberRole.ADMIN -> -1f  // TODO 확인
         }
     )
 
@@ -75,7 +75,7 @@ fun UserRoleSelector(
                         .weight(1f)
                         .fillMaxSize()
                         .clip(RoundedCornerShape(100.dp))
-                        .clickable { onUserRoleChange(UserRole.DRIVER) },
+                        .clickable { onUserRoleChange(MemberRole.DRIVER) },
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -90,7 +90,7 @@ fun UserRoleSelector(
                         .weight(1f)
                         .fillMaxSize()
                         .clip(RoundedCornerShape(100.dp))
-                        .clickable { onUserRoleChange(UserRole.PASSENGER) },
+                        .clickable { onUserRoleChange(MemberRole.PASSENGER) },
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -133,9 +133,9 @@ fun UserRoleSelector(
 @Preview(showBackground = true)
 @Composable
 private fun UserRoleSelectorPreview1() {
-    var currentUserRole by remember { mutableStateOf(UserRole.PASSENGER) }
+    var currentUserRole by remember { mutableStateOf(MemberRole.PASSENGER) }
 
-    UserRoleSelector(userRole = UserRole.DRIVER) { userRole ->
+    UserRoleSelector(userRole = MemberRole.DRIVER) { userRole ->
         currentUserRole = userRole
     }
 }
@@ -143,5 +143,5 @@ private fun UserRoleSelectorPreview1() {
 @Preview(showBackground = true)
 @Composable
 private fun UserRoleSelectorPreview2() {
-    UserRoleSelector(userRole = UserRole.PASSENGER) {}
+    UserRoleSelector(userRole = MemberRole.PASSENGER) {}
 }

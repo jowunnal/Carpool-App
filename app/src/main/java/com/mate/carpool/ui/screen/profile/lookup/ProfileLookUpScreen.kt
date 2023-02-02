@@ -1,6 +1,5 @@
 package com.mate.carpool.ui.screen.profile.lookup
 
-import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -16,12 +15,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mate.carpool.data.model.item.TicketType
-import com.mate.carpool.data.model.domain.DayStatus
+import com.mate.carpool.data.model.item.DayStatus
 import com.mate.carpool.data.model.domain.Profile
 import com.mate.carpool.data.model.domain.StartArea
 import com.mate.carpool.data.model.domain.Ticket
 import com.mate.carpool.data.model.item.TicketStatus
-import com.mate.carpool.data.model.domain.UserRole
+import com.mate.carpool.data.model.item.MemberRole
 import com.mate.carpool.ui.composable.HorizontalDividerItem
 import com.mate.carpool.ui.screen.profile.lookup.component.HistoryGroup
 import com.mate.carpool.ui.screen.profile.lookup.component.HistoryHeaderItem
@@ -105,7 +104,7 @@ private fun ProfileScreenPreview() = MatePreview {
             department = "미학과",
             phone = "01012345678",
             daysOfUse = listOf(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.THURSDAY),
-            userRole = UserRole.DRIVER,
+            userRole = MemberRole.DRIVER,
             recentTickets = listOf(
                 Ticket(
                     id = 1L,

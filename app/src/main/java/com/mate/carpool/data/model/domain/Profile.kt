@@ -2,6 +2,7 @@ package com.mate.carpool.data.model.domain
 
 import android.os.Parcelable
 import androidx.compose.runtime.Stable
+import com.mate.carpool.data.model.item.MemberRole
 import kotlinx.parcelize.Parcelize
 import java.time.DayOfWeek
 
@@ -14,7 +15,7 @@ data class Profile(
     val department: String,
     val phone: String,
     val daysOfUse: List<DayOfWeek>,
-    val userRole: UserRole,
+    val userRole: MemberRole,
     val recentTickets: List<Ticket>
 ) : Parcelable
 

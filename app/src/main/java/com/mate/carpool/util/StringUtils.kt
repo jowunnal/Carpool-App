@@ -37,9 +37,9 @@ fun String.asTicketTypeToDomain() =
 
 fun String.asDayStatusToDomain() =
     when(this){
-        "MORNING" -> DayStatus.Morning
-        "Afternoon" -> DayStatus.Afternoon
-        else -> DayStatus.Afternoon
+        "MORNING" -> DayStatus.AM
+        "Afternoon" -> DayStatus.PM
+        else -> throw IllegalStateException("[String.asDayStatusToDomain] Status = $this")
     }
 
 fun String.asTicketStatusToDomain() =
@@ -57,7 +57,8 @@ fun String.asStartDayMonthToDomain() = StringBuffer(this).insert(2,'/').toString
 
 fun String.asMemberRoleToDomain() =
     when(this){
-        "PASSENGER" -> MemberRole.Passenger
-        "DRIVER" -> MemberRole.Driver
-        else -> MemberRole.Driver
+        "PASSENGER" -> MemberRole.PASSENGER
+        "DRIVER" -> MemberRole.DRIVER
+        "ADMIN" -> MemberRole.ADMIN
+        else -> throw IllegalStateException("[String.asMemberRoleToDomain] string = $this")
     }

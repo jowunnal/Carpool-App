@@ -1,11 +1,11 @@
 package com.mate.carpool.data.model.dto
 
-import com.mate.carpool.data.model.domain.DayStatus
+import com.mate.carpool.data.model.item.DayStatus
 import com.mate.carpool.data.model.domain.Profile
 import com.mate.carpool.data.model.domain.StartArea
 import com.mate.carpool.data.model.domain.Ticket
 import com.mate.carpool.data.model.item.TicketStatus
-import com.mate.carpool.data.model.domain.UserRole
+import com.mate.carpool.data.model.item.MemberRole
 import com.mate.carpool.data.model.item.asTicketTypeDomain
 import com.mate.carpool.data.model.dto.common.TimeOfUseDto
 import com.mate.carpool.ui.util.date
@@ -34,9 +34,9 @@ data class ProfileDto(
         phone = phoneNumber,
         daysOfUse = memberTimeTable.map { it.toDomain() },
         userRole = when (memberRole) {
-            "DRIVER" -> UserRole.DRIVER
-            "PASSENGER" -> UserRole.PASSENGER
-            "ADMIN" -> UserRole.ADMIN
+            "DRIVER" -> MemberRole.DRIVER
+            "PASSENGER" -> MemberRole.PASSENGER
+            "ADMIN" -> MemberRole.ADMIN
             else -> throw IllegalStateException("[ProfileDto.toDomain] memberRole = $memberRole")
         },
         recentTickets = tickets.map { it.toDomain() }

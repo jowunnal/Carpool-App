@@ -1,20 +1,11 @@
 package com.mate.carpool.ui.screen.profile.lookup.component
 
-import android.content.Context
-import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
@@ -30,8 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mate.carpool.R
-import com.mate.carpool.data.model.domain.UserRole
-import com.mate.carpool.ui.composable.RemoteImage
+import com.mate.carpool.data.model.item.MemberRole
 import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.screen.home.compose.component.ProfileImage
 import com.mate.carpool.ui.theme.black
@@ -42,10 +32,7 @@ import com.mate.carpool.ui.util.tu
 import com.mate.carpool.util.formatPhoneNumber
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import java.io.File
 import java.time.DayOfWeek
 
 @Suppress("FunctionName")
@@ -74,7 +61,7 @@ fun LazyListScope.UserTopInfoItem(
 @Suppress("FunctionName")
 fun LazyListScope.UserBottomInfoItem(
     daysOfUser: List<DayOfWeek>,
-    userRole: UserRole?,
+    userRole: MemberRole?,
     modifier: Modifier = Modifier
 ) {
     item {
@@ -157,7 +144,7 @@ private fun UserTopInfo(
 @Composable
 private fun UserBottomInfo(
     daysOfUser: List<DayOfWeek>,
-    userRole: UserRole?,
+    userRole: MemberRole?,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -212,6 +199,6 @@ private fun UserTopInfoPreview() {
 private fun UserBottomInfo() {
     UserBottomInfo(
         daysOfUser = listOf(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.THURSDAY),
-        userRole = UserRole.DRIVER
+        userRole = MemberRole.DRIVER
     )
 }

@@ -56,7 +56,7 @@ fun PopupWindow(
                     .shadow(0.5.dp)
 
             ) {
-                if(userRole == MemberRole.Driver)
+                if(userRole == MemberRole.DRIVER)
                     PopUpItem(
                         text = "퇴출하기",
                         modifier = Modifier

@@ -40,7 +40,7 @@ fun HomeMenu(
         VerticalSpacer(height = 4.dp)
 
         when (userRole) {
-            MemberRole.Passenger -> {
+            MemberRole.PASSENGER -> {
                 HomeCardView(
                     imageId = R.drawable.ic_home_car,
                     text = "드라이버 등록하기",
@@ -55,7 +55,7 @@ fun HomeMenu(
                 )
             }
 
-            MemberRole.Driver -> {
+            MemberRole.DRIVER -> {
                 HomeCardView(
                     imageId = R.drawable.ic_home_car,
                     text = "카풀 모집하기",
@@ -63,6 +63,8 @@ fun HomeMenu(
                     onNavigateCallBack = onNavigateToCreateCarpool
                 )
             }
+
+            MemberRole.ADMIN -> {}
         }
     }
 }
@@ -136,7 +138,7 @@ private fun PreviewHomeCardView() =
 private fun PreviewHomeMenu() =
     MateTheme {
         HomeMenu(
-            userRole = MemberRole.Driver,
+            userRole = MemberRole.DRIVER,
             onNavigateToCreateCarpool = {},
             onNavigateToRegisterDriver = {}
         )

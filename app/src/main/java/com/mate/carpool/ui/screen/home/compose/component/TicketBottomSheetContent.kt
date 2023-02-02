@@ -109,7 +109,7 @@ fun TicketBottomSheetContent(
         PrimaryButton(
             text = "탑승하기",
             onClick = {
-                if(userRole == MemberRole.Passenger){
+                if(userRole == MemberRole.PASSENGER){
                     coroutineScope.launch {
                         addNewPassengerToTicket(ticketDetail.id)
                         onCloseBottomSheet()
@@ -314,33 +314,34 @@ private fun PreviewBottomSheetContent() =
     MateTheme {
         TicketBottomSheetContent(
             ticketDetail = TicketModel(
-                1,
-                "",
-                "",
-                "황진호",
-                "인동",
-                "경운대학교",
-                "경운대학교앞",
-                DayStatus.Morning,
-                25200L,
-                "link",
-                3,
-                TicketType.Cost,
-                20000,
+                id = 1,
+                studentNumber = "",
+                profileImage = "",
+                memberName = "황진호",
+                startArea = "인동",
+                endArea = "경운대학교",
+                boardingPlace = "경운대학교앞",
+                dayStatus = DayStatus.AM,
+                startTime = 25200L,
+                openChatUrl = "link",
+                recruitPerson = 3,
+                ticketType = TicketType.Cost,
+                ticketPrice = 20000,
                 listOf(
                     UserModel(
-                        "진호",
-                        "20173000",
-                        "동의대학교",
-                        "010-1234-5678",
-                        MemberRole.Driver,
-                        "",
-                        emptyList()
+                        name = "진호",
+                        studentID = "20173000",
+                        department = "동의대학교",
+                        phone = "010-1234-5678",
+                        role = MemberRole.DRIVER,
+                        profile = "",
+                        studentDayCodes = emptyList(),
+                        passengerId = -1L
                     )
                 )
             ),
             addNewPassengerToTicket = {},
-            userRole = MemberRole.Driver,
+            userRole = MemberRole.DRIVER,
             userProfile = "",
             onRefresh = {},
             onCloseBottomSheet = {},

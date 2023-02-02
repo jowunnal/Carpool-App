@@ -9,12 +9,25 @@ import com.mate.carpool.data.model.item.MemberRole
 
 @Stable
 data class UserModel(
-    var name: String = "",
-    var studentID: String = "",
-    var department: String = "",
-    val phone: String = "",
-    var role: MemberRole = MemberRole.Driver,
-    var profile: String = "",
-    var studentDayCodes: List<String> = emptyList(),
-    var passengerId: Long = 0
-)
+    var name: String,
+    var studentID: String,
+    var department: String,
+    val phone: String,
+    var role: MemberRole,
+    var profile: String,
+    var studentDayCodes: List<String>,
+    var passengerId: Long
+) {
+    companion object {
+        fun getInitValue() = UserModel(
+            name = "",
+            studentID = "",
+            department = "",
+            phone = "",
+            role = MemberRole.DRIVER,
+            profile = "",
+            studentDayCodes = emptyList(),
+            passengerId = -1L
+        )
+    }
+}

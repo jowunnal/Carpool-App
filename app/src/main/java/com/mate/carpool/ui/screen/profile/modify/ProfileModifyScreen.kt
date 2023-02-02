@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mate.carpool.data.model.domain.UserRole
+import com.mate.carpool.data.model.item.MemberRole
 import com.mate.carpool.ui.composable.SimpleTopAppBar
 import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.screen.profile.modify.component.ConfirmButton
@@ -25,11 +25,11 @@ import java.time.DayOfWeek
 @Composable
 fun ProfileModifyScreen(
     phone: String,
-    userRole: UserRole,
+    userRole: MemberRole,
     daysOfUse: List<DayOfWeek>,
     enableConfirm: Boolean,
     onEditPhone: (String) -> Unit,
-    onUserRoleChange: (UserRole) -> Unit,
+    onUserRoleChange: (MemberRole) -> Unit,
     onDayOfUseSelect: (DayOfWeek) -> Unit,
     onDayOfUseDeselect: (DayOfWeek) -> Unit,
     onConfirmClick: () -> Unit,
@@ -80,7 +80,7 @@ fun ProfileModifyScreen(
 private fun ProfileModifyScreenPreview() = MatePreview {
     ProfileModifyScreen(
         phone = "010123456789",
-        userRole = UserRole.PASSENGER,
+        userRole = MemberRole.PASSENGER,
         daysOfUse = listOf(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.THURSDAY),
         enableConfirm = true,
         onEditPhone = {},

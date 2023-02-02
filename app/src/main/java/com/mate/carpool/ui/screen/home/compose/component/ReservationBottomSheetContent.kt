@@ -338,7 +338,7 @@ private fun TicketButton(
     val coroutineScope = rememberCoroutineScope()
     Row() {
         when(userRole){
-            MemberRole.Driver -> {
+            MemberRole.DRIVER -> {
                 LargeSecondaryButton(
                     text = "티켓 삭제",
                     onClick = { updateTicketStatus(ticketId,TicketStatus.Cancel) },
@@ -351,7 +351,7 @@ private fun TicketButton(
                     modifier = Modifier.weight(1f)
                 )
             }
-            MemberRole.Passenger -> {
+            MemberRole.PASSENGER -> {
                 LargePrimaryButton(
                     text = "예약 취소",
                     onClick = {
@@ -365,6 +365,7 @@ private fun TicketButton(
                     modifier = Modifier.fillMaxWidth()
                 )
             }
+            MemberRole.ADMIN -> {}
         }
 
     }
@@ -383,7 +384,7 @@ fun PreviewReservationBottomSheetContent() {
                 "인동",
                 "경운대학교",
                 "경운대학교앞",
-                DayStatus.Morning,
+                DayStatus.AM,
                 25200L,
                 "link",
                 3,
@@ -395,7 +396,7 @@ fun PreviewReservationBottomSheetContent() {
                         "20173000",
                         "동의대학교",
                         "010-1234-5678",
-                        MemberRole.Driver,
+                        MemberRole.DRIVER,
                         "",
                         emptyList(),
                         1
@@ -405,7 +406,7 @@ fun PreviewReservationBottomSheetContent() {
                         "20173001",
                         "동의대학교",
                         "010-1234-5678",
-                        MemberRole.Driver,
+                        MemberRole.DRIVER,
                         "",
                         emptyList(),
                         2
@@ -413,7 +414,7 @@ fun PreviewReservationBottomSheetContent() {
                 )
             ),
             userStudentId = "",
-            userRole = MemberRole.Passenger,
+            userRole = MemberRole.PASSENGER,
             onBrowseOpenChatLink = {},
             onRefresh = {},
             deletePassengerFromTicket = {},

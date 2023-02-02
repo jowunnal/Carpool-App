@@ -259,8 +259,9 @@ private fun OnActiveSnackBar(
                     SnackBarMessage(
                         headerMessage = "MATE에 성공적으로 로그인 했어요.",
                         contentMessage = when(role){
-                            MemberRole.Driver -> "티켓을 생성해 카풀을 운영해보세요."
-                            MemberRole.Passenger -> "주변에 있는 카풀을 찾아보세요."
+                            MemberRole.DRIVER -> "티켓을 생성해 카풀을 운영해보세요."
+                            MemberRole.PASSENGER -> "주변에 있는 카풀을 찾아보세요."
+                            MemberRole.ADMIN -> ""
                         }
                     )
                 )
@@ -319,7 +320,7 @@ private fun HomePreview() {
                         1,
                         TicketType.Cost,
                         TicketStatus.Before,
-                        DayStatus.Morning
+                        DayStatus.AM,
                     ),
                     TicketListModel(
                         2,
@@ -330,7 +331,7 @@ private fun HomePreview() {
                         1,
                         TicketType.Cost,
                         TicketStatus.Before,
-                        DayStatus.Morning
+                        DayStatus.AM
                     ),
                     TicketListModel(
                         3,
@@ -341,7 +342,7 @@ private fun HomePreview() {
                         1,
                         TicketType.Free,
                         TicketStatus.Before,
-                        DayStatus.Morning
+                        DayStatus.AM
                     ),
                     TicketListModel(
                         4,
@@ -352,11 +353,11 @@ private fun HomePreview() {
                         1,
                         TicketType.Free,
                         TicketStatus.Before,
-                        DayStatus.Morning
+                        DayStatus.AM
                     )
                 ),
             userProfile = "",
-            userRole = MemberRole.Driver,
+            userRole = MemberRole.DRIVER,
             getTicketDetail = {},
             getMyTicketDetail = {},
             onNavigateToCreateCarpool = {},

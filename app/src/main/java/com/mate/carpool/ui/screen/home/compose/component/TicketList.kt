@@ -92,7 +92,7 @@ fun TicketList(
                                     fontSize = 16.tu
                                 )
                                 Text(
-                                    text = item.dayStatus?.getDayStatus() ?: "",
+                                    text = item.dayStatus.displayName,
                                     fontSize = 16.tu
                                 )
                                 Text(
@@ -142,7 +142,7 @@ private fun PreviewTicketList() {
                     1,
                     TicketType.Cost,
                     TicketStatus.Before,
-                    DayStatus.Morning
+                    DayStatus.AM
                 ),
                 TicketListModel(
                     2,
@@ -153,7 +153,7 @@ private fun PreviewTicketList() {
                     1,
                     TicketType.Cost,
                     TicketStatus.Before,
-                    DayStatus.Morning
+                    DayStatus.AM
                 ),
                 TicketListModel(
                     3,
@@ -164,7 +164,7 @@ private fun PreviewTicketList() {
                     1,
                     TicketType.Free,
                     TicketStatus.Before,
-                    DayStatus.Morning
+                    DayStatus.AM
                 ),
                 TicketListModel(
                     4,
@@ -175,7 +175,7 @@ private fun PreviewTicketList() {
                     1,
                     TicketType.Free,
                     TicketStatus.Before,
-                    DayStatus.Morning
+                    DayStatus.AM
                 )
             ),
             onRefresh = {},

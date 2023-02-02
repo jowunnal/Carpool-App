@@ -1,6 +1,5 @@
 package com.mate.carpool.data.model.domain
 
-import androidx.compose.runtime.Stable
 import com.mate.carpool.data.model.item.DayStatus
 import com.mate.carpool.data.model.item.TicketType
 
@@ -16,7 +15,7 @@ data class TicketModel(
     var startArea:String = "",
     val endArea:String = "경운대학교",
     var boardingPlace:String = "",
-    var dayStatus:DayStatus ?= null,
+    var dayStatus: DayStatus?= null,
     var startTime:Long,
     var openChatUrl: String = "",
     var recruitPerson: Int = 0,
@@ -33,7 +32,7 @@ data class TicketModel(
             startArea = "",
             endArea = "",
             boardingPlace = "",
-            dayStatus = DayStatus.Morning,
+            dayStatus = DayStatus.AM,
             startTime = 0L,
             openChatUrl = "",
             recruitPerson = 0,

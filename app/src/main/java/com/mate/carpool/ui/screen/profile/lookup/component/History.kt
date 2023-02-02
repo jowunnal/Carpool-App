@@ -17,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mate.carpool.data.model.item.TicketType
-import com.mate.carpool.data.model.domain.DayStatus
+import com.mate.carpool.data.model.item.DayStatus
 import com.mate.carpool.data.model.domain.StartArea
 import com.mate.carpool.data.model.domain.Ticket
 import com.mate.carpool.data.model.item.TicketStatus

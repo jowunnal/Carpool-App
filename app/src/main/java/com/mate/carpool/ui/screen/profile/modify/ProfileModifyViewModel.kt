@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.mate.carpool.data.Result
 import com.mate.carpool.data.model.domain.Profile
-import com.mate.carpool.data.model.domain.UserRole
+import com.mate.carpool.data.model.item.MemberRole
 import com.mate.carpool.data.repository.MemberRepository
 import com.mate.carpool.ui.base.BaseViewModel
 import com.mate.carpool.ui.base.SnackBarMessage
@@ -46,7 +46,7 @@ class ProfileModifyViewModel @AssistedInject constructor(
         _profile.update { it.copy(phone = result) }
     }
 
-    fun setUserRole(userRole: UserRole) {
+    fun setUserRole(userRole: MemberRole) {
         _profile.update { it.copy(userRole = userRole) }
     }
 

@@ -1,6 +1,6 @@
 package com.mate.carpool.data.model.dto.request
 
-import com.mate.carpool.data.model.domain.UserRole
+import com.mate.carpool.data.model.item.MemberRole
 import com.mate.carpool.data.model.dto.common.TimeOfUseDto
 import java.time.DayOfWeek
 
@@ -14,14 +14,14 @@ data class UpdateMyProfileRequest(
 
         fun fromDomain(
             phone: String,
-            userRole: UserRole,
+            userRole: MemberRole,
             daysOfUse: List<DayOfWeek>
         ) = UpdateMyProfileRequest(
             phoneNumber = phone,
             auth = when (userRole) {
-                UserRole.PASSENGER -> "PASSENGER"
-                UserRole.DRIVER -> "DRIVER"
-                UserRole.ADMIN -> "ADMIN"
+                MemberRole.PASSENGER -> "PASSENGER"
+                MemberRole.DRIVER -> "DRIVER"
+                MemberRole.ADMIN -> "ADMIN"
             },
             memberTimeTable = daysOfUse.map { TimeOfUseDto.fromDomain(it) }
         )

@@ -6,7 +6,7 @@ import com.mate.carpool.data.Result
 import com.mate.carpool.data.callApi
 import com.mate.carpool.data.model.domain.MemberModel
 import com.mate.carpool.data.model.domain.Profile
-import com.mate.carpool.data.model.domain.UserRole
+import com.mate.carpool.data.model.item.MemberRole
 import com.mate.carpool.data.model.dto.request.UpdateMyProfileRequest
 import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.model.response.ResponseMessage
@@ -78,7 +78,7 @@ class MemberRepositoryImpl @Inject constructor(
 
     override fun updateProfile(
         phone: String,
-        userRole: UserRole,
+        userRole: MemberRole,
         daysOfUse: List<DayOfWeek>
     ): Flow<Result<ResponseMessage>> = callApi {
         val body = UpdateMyProfileRequest.fromDomain(

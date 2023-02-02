@@ -6,7 +6,14 @@ package com.mate.carpool.data.model.domain
  * @param ticketList 사용자가 가진 티켓 정보
  */
 data class MemberModel(
-    val user : UserModel = UserModel(),
+    val user : UserModel,
     val ticketList : List<TicketListModel> ?= emptyList()
-)
+) {
+    companion object {
+        fun getInitValue() = MemberModel(
+            user = UserModel.getInitValue(),
+            ticketList = emptyList()
+        )
+    }
+}
 
