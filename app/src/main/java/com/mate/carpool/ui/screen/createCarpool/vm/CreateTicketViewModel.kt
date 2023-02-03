@@ -1,20 +1,15 @@
 package com.mate.carpool.ui.screen.createCarpool.vm
 
-import android.util.Log
 import com.mate.carpool.data.model.domain.StartArea
 import com.mate.carpool.data.repository.TicketRepository
 import com.mate.carpool.ui.base.BaseViewModel
 import com.mate.carpool.ui.screen.createCarpool.item.CreateTicketUiState
 import com.mate.carpool.ui.screen.createCarpool.item.TimeUiState
-import com.mate.carpool.ui.util.hour
-import com.mate.carpool.ui.util.minute
-import com.mate.carpool.util.formatStartTimeToDTO
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import java.text.DecimalFormat
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,7 +21,7 @@ class CreateTicketViewModel @Inject constructor(
     val uiState get() = _uiState.asStateFlow()
 
     fun setStartArea(area: String) = _uiState.update { state ->
-        state.copy(startArea = StartArea.findByDisplayName(area), invalidArea = true)
+        state.copy(startArea = StartArea.findByDisplayName(area), invalidArea = area.isNotBlank())
     }
 
     val setBoardingPlace = fun (place: String) {
@@ -40,7 +35,7 @@ class CreateTicketViewModel @Inject constructor(
     }
 
     fun setRecruitNumber(num: String) = _uiState.update { state ->
-        state.copy(recruitNumber = num, invalidRecruitNumber = true)
+        state.copy(recruitNumber = num, invalidRecruitNumber = num.isNotBlank())
     }
 
     val setOpenChatUrl = fun (url: String) {
@@ -51,15 +46,15 @@ class CreateTicketViewModel @Inject constructor(
 
     val setBoardingFee = fun (fee: String) {
         _uiState.update { state ->
-            val result = DecimalFormat("###,###").format(fee.replace(",","").toInt()).toString()
-            state.copy(fee = result, invalidFee = true)
+            val unFormattedFee = fee.replace(",","").toInt()
+            val result = DecimalFormat("###,###").format(unFormattedFee)
+            state.copy(fee = result, invalidFee = fee.isNotBlank())
         }
     }
 
     val fetch = fun () {
         //TODO fetch api
         emitEvent(EVENT_CREATED_TICKET)
-        Log.d("test",uiState.value.toString())
     }
 
     companion object {

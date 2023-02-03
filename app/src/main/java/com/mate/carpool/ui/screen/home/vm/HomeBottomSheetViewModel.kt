@@ -8,6 +8,7 @@ import com.mate.carpool.data.repository.CarpoolListRepository
 import com.mate.carpool.data.repository.TicketRepository
 import com.mate.carpool.ui.base.BaseViewModel
 import com.mate.carpool.ui.base.SnackBarMessage
+import com.mate.carpool.ui.screen.home.item.BottomSheetUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

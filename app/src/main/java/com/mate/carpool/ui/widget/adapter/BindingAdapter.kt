@@ -31,7 +31,12 @@ fun setUpdateStateFlowFromText(tv: EditText, updateText: (String) -> Unit) {
 
 @BindingAdapter("image", "context")
 fun setProfileImage(imageView:ImageView, image:String, context:Context) {
-    Glide.with(context).load(image).into(imageView)
+    Glide
+        .with(context)
+        .load(image)
+        .placeholder(R.drawable.ic_profile)
+        .error(R.drawable.ic_profile)
+        .into(imageView)
 }
 
 @BindingAdapter("areaItems", "context", "ticketViewModel")
@@ -52,7 +57,5 @@ fun setDropDownMenu(tv: AutoCompleteTextView, areaItems: List<String>, context: 
             }
         }
     }
-
 }
-
 

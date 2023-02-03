@@ -11,6 +11,11 @@
         android:orientation="vertical"
         android:padding="16dp">
         <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            app:srcCompat="@drawable/ic_handle_bar"/>
+        <ImageView
             android:id="@+id/exit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,7 +50,6 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="33dp"
             android:text="@string/login_next"
             android:textSize="18dp"
             android:textStyle="bold"

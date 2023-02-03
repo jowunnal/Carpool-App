@@ -39,7 +39,7 @@
     <string name="여객자동차운수사업법">여객자동차 운수사업법 제81조 1항에 따라 유료 카풀의 경우 오전 07:00-09:00사이에 운행이 가능해요. 09:00 이후에는 운행이 종료돼야해요. (휴일, 공휴일은 유료 카풀 불가)</string>
     <string name="오픈채팅방링크">링크를 붙여넣기 해주세요.</string>
     <string name="탑승인원비용선택">탑승 인원/비용을 입력해주세요.</string>
-    <string name="탑승인원">탑승인원</string>
+    <string name="탑승인원">탑승 인원</string>
     <string name="탑승인원힌트">탑승 최대인원을 선택해주세요.</string>
     <string name="탑승비용">탑승 비용(1인 기준)</string>
     <string name="탑승비용입력">비용을 입력해주세요.</string>

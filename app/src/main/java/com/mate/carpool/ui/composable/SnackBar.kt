@@ -82,24 +82,38 @@ private fun SnackBarCustom(
                 fontSize = 16.tu,
                 color = black
             )
-            VerticalSpacer(height = 4.dp)
-            Text(
-                text = contentMessage,
-                fontWeight = FontWeight.W400,
-                fontSize = 13.tu,
-                color = black
-            )
+            if(contentMessage.isNotBlank()){
+                VerticalSpacer(height = 4.dp)
+                Text(
+                    text = contentMessage,
+                    fontWeight = FontWeight.W400,
+                    fontSize = 13.tu,
+                    color = black
+                )
+            }
         }
     }
 }
 
 @Preview
 @Composable
-private fun PreviewSnackBarCustom(){
+private fun PreviewSnackBarCustom1(){
     MatePreview {
         SnackBarCustom(
             headerMessage = "헤더메세지는 이렇게 보입니다.",
             contentMessage = "컨텐트메세지는 이렇게 보입니다.",
+            disMissSnackBar = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewSnackBarCustom2(){
+    MatePreview {
+        SnackBarCustom(
+            headerMessage = "컨텐트메세지가 없다면 이렇게 보입니다.",
+            contentMessage = "",
             disMissSnackBar = {}
         )
     }

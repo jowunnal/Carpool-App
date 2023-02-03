@@ -139,7 +139,7 @@
             android:textColor="@color/white"
             android:textSize="18dp"
             android:textStyle="bold"
-            android:enabled="true"
+            android:enabled="@{createTicketViewModel.uiState.invalidStartTime}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
