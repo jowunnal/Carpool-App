@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.screen.home.vm
+package com.mate.carpool.ui.screen.home.item
 
 import com.mate.carpool.data.model.domain.TicketModel
 

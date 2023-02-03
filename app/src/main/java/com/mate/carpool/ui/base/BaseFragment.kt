@@ -21,7 +21,8 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewDataBinding> : Fragment
 
     abstract val viewModel: VM
     open val useActionBar: Boolean = true
-    protected lateinit var binding: VB
+    protected var _binding: VB ?= null
+    protected val binding get() = _binding!!
 
     abstract fun getViewBinding(): VB
 
@@ -48,7 +49,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewDataBinding> : Fragment
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = getViewBinding()
+        _binding = getViewBinding()
         binding.lifecycleOwner = viewLifecycleOwner
         // binding.setVariable(BR.viewModel, viewModel)
         binding.setVariable(BR.navController, findNavController())
@@ -85,6 +86,11 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewDataBinding> : Fragment
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        _binding = null
+        super.onDestroy()
     }
 
     protected fun showSnackbar(message: String, length: Int = Snackbar.LENGTH_SHORT) {

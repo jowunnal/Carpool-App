@@ -130,6 +130,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/탑승인원힌트"
             android:textSize="18dp"
+            app:hintEnabled="@{createTicketViewModel.uiState.invalidRecruitNumber}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"

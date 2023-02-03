@@ -28,7 +28,7 @@ import com.mate.carpool.ui.composable.SnackBarHostCustom
 import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.screen.createCarpool.vm.CreateTicketViewModel
 import com.mate.carpool.ui.screen.home.compose.component.*
-import com.mate.carpool.ui.screen.home.vm.BottomSheetUiState
+import com.mate.carpool.ui.screen.home.item.BottomSheetUiState
 import com.mate.carpool.ui.screen.home.vm.HomeBottomSheetViewModel
 import com.mate.carpool.ui.screen.register.RegisterDriverViewModel
 import com.mate.carpool.ui.screen.report.ReportViewModel
@@ -84,7 +84,8 @@ fun HomeBottomSheetLayout(
             event = event,
             role = userInfo.user.role,
             bottomSheetState = bottomSheetState,
-            emitSnackBar = emitSnackBar
+            emitSnackBar = emitSnackBar,
+            onRefresh = onRefresh
         )
 
     BackHandler(enabled = bottomSheetState.isVisible || scaffoldState.drawerState.isOpen) {
@@ -248,6 +249,7 @@ private fun OnActiveSnackBar(
     role: MemberRole,
     bottomSheetState: ModalBottomSheetState,
     emitSnackBar: (SnackBarMessage) -> Unit,
+    onRefresh: (String) -> Unit
 ) {
     LaunchedEffect(key1 = event.type){
         when (event.type) {
@@ -289,6 +291,7 @@ private fun OnActiveSnackBar(
                         contentMessage = ""
                     )
                 )
+                onRefresh(Event.EVENT_FINISH)
             }
             CreateTicketViewModel.EVENT_FAILED_CREATE_TICKET -> {
                 emitSnackBar(
