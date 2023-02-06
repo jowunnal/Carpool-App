@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.screen.home.compose.component
+package com.mate.carpool.ui.screen.home.compose.component.bottomsheet
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mate.carpool.R
+import com.mate.carpool.data.model.domain.TicketListModel
 import com.mate.carpool.data.model.domain.TicketModel
 import com.mate.carpool.data.model.domain.UserModel
 import com.mate.carpool.data.model.item.DayStatus
@@ -28,22 +29,24 @@ import com.mate.carpool.ui.base.SnackBarMessage
 import com.mate.carpool.ui.composable.HorizontalSpacer
 import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.composable.button.PrimaryButton
+import com.mate.carpool.ui.screen.home.compose.component.ProfileImage
 import com.mate.carpool.ui.screen.home.vm.HomeBottomSheetViewModel
 import com.mate.carpool.ui.theme.*
 import com.mate.carpool.ui.util.tu
 import com.mate.carpool.util.formatStartDayMonthToDTO
 import com.mate.carpool.util.formatStartTimeToDTO
 import kotlinx.coroutines.launch
+import java.text.DecimalFormat
 
 @Composable
 fun TicketBottomSheetContent(
     ticketDetail: TicketModel,
     userProfile: String,
     userRole: MemberRole,
+    userTicketList: List<TicketListModel>,
     addNewPassengerToTicket: (Long) -> Unit,
     onRefresh: (String) -> Unit,
-    onCloseBottomSheet: suspend () -> Unit,
-    emitSnackBarMessage: (SnackBarMessage) -> Unit
+    onCloseBottomSheet: suspend () -> Unit
 ){
     val coroutineScope = rememberCoroutineScope()
 
@@ -55,6 +58,15 @@ fun TicketBottomSheetContent(
             )
     )
     {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_handle_bar)
+                , contentDescription = "HandleBar"
+            )
+        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -100,14 +112,31 @@ fun TicketBottomSheetContent(
         VerticalSpacer(height = 20.dp)
         TicketDetail(
             text1 = "탑승 인원",
-            text2 = ticketDetail.recruitPerson.toString() + "명",
+            text2 = "${ticketDetail.passenger?.size?:0}/${ticketDetail.recruitPerson}",
             text3 = "비용",
-            text4 = ticketDetail.ticketType?.displayName?:""
+            text4 = DecimalFormat("###,###").format(ticketDetail.ticketPrice)
         )
         VerticalSpacer(height = 20.dp)
 
+        when(userRole) {
+            MemberRole.DRIVER -> {
+                TicketButtonMessage(message = "드라이버는 다른 카풀에 탑승할 수 없어요.")
+            }
+            MemberRole.PASSENGER -> {
+                when(userTicketList.isEmpty()) {
+                    true -> {
+                        //TODO 21시 ~ 09시 예약 불가 메세지 처리
+                    }
+                    false -> {
+                        TicketButtonMessage(message =  "중복 예약을 하실 수 없어요.")
+                    }
+                }
+            }
+            MemberRole.ADMIN -> {}
+        }
+
         PrimaryButton(
-            text = "탑승하기",
+            text = "예약하기",
             onClick = {
                 if(userRole == MemberRole.PASSENGER){
                     coroutineScope.launch {
@@ -116,19 +145,11 @@ fun TicketBottomSheetContent(
                         onRefresh(HomeBottomSheetViewModel.EVENT_ADDED_PASSENGER_TO_TICKET)
                     }
                 }
-                else
-                    coroutineScope.launch {
-                        emitSnackBarMessage(
-                            SnackBarMessage(
-                                headerMessage = "드라이버는 탑승하기를 할 수 없습니다.",
-                                contentMessage = ""
-                            )
-                        )
-                    }
             },
             modifier = Modifier
                 .height(50.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            enabled = userRole == MemberRole.PASSENGER && userTicketList.isEmpty()
         )
     }
 }
@@ -296,11 +317,6 @@ fun TicketDetail(
                 Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                color = when (text4) {
-                    "무료" -> primary50
-                    "유료" -> red60
-                    else -> Color.Black
-                },
                 fontSize = 14.tu,
                 fontWeight = FontWeight.W400
             )
@@ -308,43 +324,114 @@ fun TicketDetail(
     }
 }
 
+@Composable
+private fun TicketButtonMessage(message: String) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = message,
+            fontSize = 12.tu,
+            fontWeight = FontWeight.W400,
+            color = primary60
+        )
+    }
+    VerticalSpacer(height = 4.dp)
+}
+
 @Preview(showBackground = true)
 @Composable
-private fun PreviewBottomSheetContent() =
+private fun PreviewBottomSheetContentDriver() =
     MateTheme {
         TicketBottomSheetContent(
             ticketDetail = TicketModel(
                 id = 1,
                 studentNumber = "",
                 profileImage = "",
-                memberName = "황진호",
+                memberName = "드라이버",
                 startArea = "인동",
                 endArea = "경운대학교",
-                boardingPlace = "경운대학교앞",
+                boardingPlace = "인동병원앞",
                 dayStatus = DayStatus.AM,
                 startTime = 25200L,
                 openChatUrl = "link",
                 recruitPerson = 3,
                 ticketType = TicketType.Cost,
                 ticketPrice = 20000,
-                listOf(
-                    UserModel(
-                        name = "진호",
-                        studentID = "20173000",
-                        department = "동의대학교",
-                        phone = "010-1234-5678",
-                        role = MemberRole.DRIVER,
-                        profile = "",
-                        studentDayCodes = emptyList(),
-                        passengerId = -1L
-                    )
-                )
+                emptyList()
             ),
             addNewPassengerToTicket = {},
             userRole = MemberRole.DRIVER,
             userProfile = "",
+            userTicketList = emptyList(),
             onRefresh = {},
-            onCloseBottomSheet = {},
-            emitSnackBarMessage = {}
+            onCloseBottomSheet = {}
+        )
+    }
+
+@Preview(showBackground = true)
+@Composable
+private fun PreviewBottomSheetContentPassengerReservedYet() =
+    MateTheme {
+        TicketBottomSheetContent(
+            ticketDetail = TicketModel(
+                id = 1,
+                studentNumber = "",
+                profileImage = "",
+                memberName = "패신저",
+                startArea = "인동",
+                endArea = "경운대학교",
+                boardingPlace = "인동사우나앞",
+                dayStatus = DayStatus.AM,
+                startTime = 25200L,
+                openChatUrl = "link",
+                recruitPerson = 5,
+                ticketType = TicketType.Cost,
+                ticketPrice = 5000,
+                listOf(
+                    UserModel.getInitValue(),
+                    UserModel.getInitValue()
+                )
+            ),
+            addNewPassengerToTicket = {},
+            userRole = MemberRole.PASSENGER,
+            userProfile = "",
+            userTicketList = emptyList(),
+            onRefresh = {},
+            onCloseBottomSheet = {}
+        )
+    }
+
+@Preview(showBackground = true)
+@Composable
+private fun PreviewBottomSheetContentPassengerReservedAlready() =
+    MateTheme {
+        TicketBottomSheetContent(
+            ticketDetail = TicketModel(
+                id = 1,
+                studentNumber = "",
+                profileImage = "",
+                memberName = "패신저",
+                startArea = "인동",
+                endArea = "경운대학교",
+                boardingPlace = "인동사우나앞",
+                dayStatus = DayStatus.AM,
+                startTime = 25200L,
+                openChatUrl = "link",
+                recruitPerson = 5,
+                ticketType = TicketType.Cost,
+                ticketPrice = 5000,
+                listOf(
+                    UserModel.getInitValue(),
+                    UserModel.getInitValue()
+                )
+            ),
+            addNewPassengerToTicket = {},
+            userRole = MemberRole.PASSENGER,
+            userProfile = "",
+            userTicketList = listOf(TicketListModel.getInitValue()),
+            onRefresh = {},
+            onCloseBottomSheet = {}
         )
     }

@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.mate.carpool.data.model.domain.MemberModel
 import com.mate.carpool.data.model.domain.TicketListModel
+import com.mate.carpool.data.model.domain.TicketModel
 import com.mate.carpool.data.model.item.DayStatus
 import com.mate.carpool.data.model.item.MemberRole
 import com.mate.carpool.data.model.item.TicketStatus
@@ -28,6 +29,11 @@ import com.mate.carpool.ui.composable.SnackBarHostCustom
 import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.screen.createCarpool.vm.CreateTicketViewModel
 import com.mate.carpool.ui.screen.home.compose.component.*
+import com.mate.carpool.ui.screen.home.compose.component.appbar.HomeAppBar
+import com.mate.carpool.ui.screen.home.compose.component.bottomsheet.ReservationBottomSheetContent
+import com.mate.carpool.ui.screen.home.compose.component.bottomsheet.TicketBottomSheetContent
+import com.mate.carpool.ui.screen.home.compose.component.drawer.DrawerContent
+import com.mate.carpool.ui.screen.home.compose.component.drawer.DrawerItem
 import com.mate.carpool.ui.screen.home.item.BottomSheetUiState
 import com.mate.carpool.ui.screen.home.vm.HomeBottomSheetViewModel
 import com.mate.carpool.ui.screen.register.RegisterDriverViewModel
@@ -50,16 +56,16 @@ fun HomeBottomSheetLayout(
     onNavigateToProfileView: () -> Unit,
     onNavigateToReportView: (String) -> Unit,
     onNavigateToRegisterDriver: () -> Unit,
-    isTicketIsMineOrNot: (Long,List<TicketListModel>) -> Boolean,
+    isTicketIsMineOrNot: (Long,List<TicketListModel>) -> Unit,
     getMyPassengerId: (String) -> Long?,
     getTicketDetail: (Long) -> Unit,
-    onRefresh: (String) -> Unit,
+    getMyTicketDetail: () -> Unit,
     setPassengerId: (Long) -> Unit,
     setStudentId: (String) -> Unit,
-    getMyTicketDetail: () -> Unit,
     addNewPassengerToTicket: (Long) -> Unit,
     updateTicketStatus: (Long,TicketStatus) -> Unit,
     deletePassengerToTicket: (Long) -> Unit,
+    onRefresh: (String) -> Unit,
     emitSnackBar: (SnackBarMessage) -> Unit
 ) {
     val bottomSheetState = rememberModalBottomSheetState(
@@ -79,7 +85,7 @@ fun HomeBottomSheetLayout(
             )
         }
 
-    if(event.type != BaseViewModel.EVENT_READY)
+    if(event.type != Event.EVENT_READY || event.type != Event.EVENT_FINISH)
         OnActiveSnackBar(
             event = event,
             role = userInfo.user.role,
@@ -115,7 +121,7 @@ fun HomeBottomSheetLayout(
     ) {
         ModalBottomSheetLayout(
             sheetContent = {
-                when(isTicketIsMineOrNot(bottomSheetUiState.ticket.id,userInfo.ticketList?: emptyList())){
+                when(bottomSheetUiState.ticketIsMineOrNot){
                     true -> {
                         ReservationBottomSheetContent(
                             ticketDetail = bottomSheetUiState.ticket,
@@ -137,10 +143,10 @@ fun HomeBottomSheetLayout(
                             ticketDetail = bottomSheetUiState.ticket,
                             userProfile = userInfo.user.profile,
                             userRole = userInfo.user.role,
+                            userTicketList = userInfo.ticketList ?: emptyList(),
                             onCloseBottomSheet = { bottomSheetState.animateTo(ModalBottomSheetValue.Hidden) },
                             addNewPassengerToTicket = addNewPassengerToTicket,
-                            onRefresh = onRefresh,
-                            emitSnackBarMessage = emitSnackBar
+                            onRefresh = onRefresh
                         )
                     }
                 }
@@ -171,6 +177,8 @@ fun HomeBottomSheetLayout(
                             carpoolList = carpoolList,
                             userProfile = userInfo.user.profile,
                             userRole = userInfo.user.role,
+                            userTicketList = userInfo.ticketList ?: emptyList(),
+                            isTicketIsMineOrNot = isTicketIsMineOrNot,
                             getMyTicketDetail = getMyTicketDetail,
                             getTicketDetail = getTicketDetail,
                             onNavigateToCreateCarpool = onNavigateToCreateCarpool,
@@ -194,8 +202,10 @@ private fun HomeView(
     carpoolList: List<TicketListModel>,
     userProfile: String,
     userRole: MemberRole,
+    userTicketList: List<TicketListModel>,
     getMyTicketDetail: () -> Unit,
     getTicketDetail: (Long) -> Unit,
+    isTicketIsMineOrNot: (Long,List<TicketListModel>) -> Unit,
     onNavigateToCreateCarpool: () -> Unit,
     onNavigateToProfileView: () -> Unit,
     onNavigateToRegisterDriver: () -> Unit,
@@ -229,14 +239,18 @@ private fun HomeView(
                     carpoolList = carpoolList,
                     getTicketDetail = getTicketDetail,
                     onRefresh = onRefresh,
-                    onOpenBottomSheet = onOpenBottomSheet
+                    onOpenBottomSheet = onOpenBottomSheet,
+                    isTicketIsMineOrNot = isTicketIsMineOrNot,
+                    userTicketList = userTicketList
                 )
             }
 
             MyCarpoolButton(
                 carpoolExistState = carpoolExistState,
                 getMyTicketDetail = getMyTicketDetail,
-                onOpenBottomSheet = onOpenBottomSheet
+                onOpenBottomSheet = onOpenBottomSheet,
+                isTicketIsMineOrNot = isTicketIsMineOrNot,
+                userTicketList = userTicketList
             )
         }
     }
@@ -368,7 +382,9 @@ private fun HomePreview() {
             onRefresh = {},
             onOpenBottomSheet = {},
             onNavigateToRegisterDriver = {},
-            onOpenDrawer = {}
+            onOpenDrawer = {},
+            userTicketList = emptyList(),
+            isTicketIsMineOrNot = fun(id:Long, ticketList:List<TicketListModel>){}
         )
     }
 }

@@ -19,4 +19,18 @@ data class TicketListModel(
     val ticketType: TicketType,
     val ticketStatus: TicketStatus,
     val dayStatus: DayStatus
-)
+) {
+    companion object {
+        fun getInitValue() = TicketListModel(
+            id = -1L,
+            profileImage = "",
+            startArea = "",
+            startTime = 0L,
+            recruitPerson = 0,
+            currentPersonCount = 0,
+            ticketType = TicketType.Cost,
+            ticketStatus = TicketStatus.Before,
+            dayStatus = DayStatus.AM
+        )
+    }
+}

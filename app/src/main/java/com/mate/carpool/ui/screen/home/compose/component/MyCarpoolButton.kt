@@ -7,16 +7,20 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mate.carpool.data.model.domain.TicketListModel
 import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.composable.button.PrimaryButton
 import com.mate.carpool.util.MatePreview
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
 fun MyCarpoolButton(
-    carpoolExistState: Boolean ,
+    carpoolExistState: Boolean,
     getMyTicketDetail: () -> Unit,
-    onOpenBottomSheet: suspend () -> Unit
+    onOpenBottomSheet: suspend () -> Unit,
+    isTicketIsMineOrNot: (Long,List<TicketListModel>) -> Unit,
+    userTicketList: List<TicketListModel>
 ) {
     val coroutineScope = rememberCoroutineScope()
     if(carpoolExistState) {
@@ -26,6 +30,8 @@ fun MyCarpoolButton(
             onClick = {
                 coroutineScope.launch {
                     getMyTicketDetail()
+                    isTicketIsMineOrNot(userTicketList[0].id,userTicketList)
+                    delay(50)
                     onOpenBottomSheet()
                 }
             },
@@ -44,6 +50,8 @@ private fun PreviewMyCarpoolButton() =
         MyCarpoolButton(
             carpoolExistState = true,
             onOpenBottomSheet = {},
-            getMyTicketDetail = {}
+            getMyTicketDetail = {},
+            userTicketList = emptyList(),
+            isTicketIsMineOrNot = fun(id:Long, ticketList:List<TicketListModel>){}
         )
     }

@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.screen.home.compose.component
+package com.mate.carpool.ui.screen.home.compose.component.appbar
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -16,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mate.carpool.R
+import com.mate.carpool.ui.screen.home.compose.component.ProfileImage
 import com.mate.carpool.ui.theme.MateTheme
 import kotlinx.coroutines.launch
 
