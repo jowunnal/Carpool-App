@@ -31,6 +31,7 @@ import com.mate.carpool.ui.screen.home.vm.HomeBottomSheetViewModel
 import com.mate.carpool.ui.theme.*
 import com.mate.carpool.ui.util.tu
 import com.mate.carpool.util.formatStartTimeToDTO
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -40,7 +41,9 @@ fun TicketList(
     carpoolList: List<TicketListModel>,
     getTicketDetail: (Long) -> Unit,
     onRefresh: (String) -> Unit,
-    onOpenBottomSheet: suspend () -> Unit
+    onOpenBottomSheet: suspend () -> Unit,
+    isTicketIsMineOrNot: (Long,List<TicketListModel>) -> Unit,
+    userTicketList: List<TicketListModel>
 ){
     val coroutineScope = rememberCoroutineScope()
 
@@ -63,6 +66,8 @@ fun TicketList(
                         .clickable {
                             coroutineScope.launch {
                                 getTicketDetail(item.id)
+                                isTicketIsMineOrNot(item.id,userTicketList)
+                                delay(50)
                                 onOpenBottomSheet()
                             }
                         }
@@ -125,7 +130,6 @@ fun TicketList(
 }
 
 @Preview(showBackground = true)
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun PreviewTicketList() {
     MateTheme {
@@ -180,7 +184,9 @@ private fun PreviewTicketList() {
             ),
             onRefresh = {},
             onOpenBottomSheet = {},
-            getTicketDetail = {}
+            getTicketDetail = {},
+            userTicketList = emptyList(),
+            isTicketIsMineOrNot = fun(id:Long, ticketList:List<TicketListModel>){}
         )
     }
 }

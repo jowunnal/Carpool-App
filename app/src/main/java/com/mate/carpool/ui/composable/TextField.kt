@@ -226,7 +226,7 @@ private fun DefaultTextFieldPreview2() {
 @Composable
 private fun DefaultTextFieldPreview3() {
     DefaultTextField(
-        value = "disable 상태에서는 이렇게 보입니다.",
+        value = "텍스트가 길어질 때는 이렇게 보입니다. 텍스트가 길어질 때는 이렇게 보입니다. 텍스트가 길어질 때는 이렇게 보입니다.",
         label = "프리뷰",
         onValueChange = {}
     )
@@ -236,18 +236,14 @@ private fun DefaultTextFieldPreview3() {
 @Composable
 private fun DefaultTextFieldPreview4() {
     DefaultTextField(
-        value = "텍스트가 길어질 때는 이렇게 보입니다. 텍스트가 길어질 때는 이렇게 보입니다. 텍스트가 길어질 때는 이렇게 보입니다.",
-        label = "프리뷰",
-        onValueChange = {}
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun DefaultTextFieldPreview5() {
-    DefaultTextField(
         value = "header icon 또는 tail icon이 있을 때는 이렇게 보입니다.",
         label = "프리뷰",
+        headerIcon = {
+            Image(
+                painter = painterResource(id = R.drawable.ic_arrow_right_small),
+                contentDescription = "next button"
+            )
+        },
         tailIcon = {
             Image(
                 painter = painterResource(id = R.drawable.ic_arrow_right_small),
@@ -260,7 +256,7 @@ private fun DefaultTextFieldPreview5() {
 
 @Preview(showBackground = true)
 @Composable
-private fun DefaultTextFieldPreview6() {
+private fun DefaultTextFieldPreview5() {
     DefaultTextField(
         value = "disable 상태에서는 이렇게 보입니다",
         label = "프리뷰",

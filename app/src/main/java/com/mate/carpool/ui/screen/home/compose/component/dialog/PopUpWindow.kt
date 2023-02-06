@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.screen.home.compose.component
+package com.mate.carpool.ui.screen.home.compose.component.dialog
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,6 +17,7 @@ import androidx.compose.ui.window.PopupPositionProvider
 import androidx.compose.ui.window.PopupProperties
 import com.mate.carpool.data.model.item.MemberRole
 import com.mate.carpool.ui.base.BaseViewModel
+import com.mate.carpool.ui.composable.DialogState
 import com.mate.carpool.ui.theme.black
 import com.mate.carpool.ui.util.tu
 
@@ -27,7 +28,9 @@ fun PopupWindow(
     userRole: MemberRole,
     deletePassengerFromTicket: () -> Unit,
     onNavigateToReportView: () -> Unit,
-    onRefresh: (String) -> Unit
+    onRefresh: (String) -> Unit,
+    onOpenDialog: (DialogState) -> Unit,
+    onCloseDialog: () -> Unit
 ) {
     if (dialogState) {
         Popup(
@@ -67,8 +70,20 @@ fun PopupWindow(
                                 horizontal = 12.dp
                             )
                             .clickable {
-                                deletePassengerFromTicket()
-                                onRefresh(BaseViewModel.EVENT_READY)
+                                onOpenDialog(
+                                    DialogState(
+                                        header = "정말 퇴출할 건가요?",
+                                        content = "정당한 이유 없는 퇴출은 서비스 이용 제한의 사유에요. 이를 방지하기 위해 신고 후 퇴출하기를 눌러주세요.",
+                                        positiveMessage = "네, 퇴출할래요.",
+                                        negativeMessage = "아뇨, 취소할게요.",
+                                        onPositiveCallback = {
+                                            deletePassengerFromTicket()
+                                            onRefresh(BaseViewModel.EVENT_READY)
+                                            onCloseDialog()
+                                        },
+                                        onNegativeCallback = onCloseDialog
+                                    )
+                                )
                             }
                     )
 

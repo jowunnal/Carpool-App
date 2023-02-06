@@ -107,6 +107,7 @@ class HomeBottomSheetViewModel @Inject constructor(
         }
     }
 
+
     fun addNewPassengerToTicket(ticketId: Long) {
         viewModelScope.launch {
             ticketChangeRepository.addNewPassengerToTicket(ticketId).collectLatest {
@@ -214,15 +215,20 @@ class HomeBottomSheetViewModel @Inject constructor(
         }
     }
 
-    fun isTicketIsMineOrNot(ticketId: Long, ticketList:List<TicketListModel>) : Boolean{
+    fun isTicketIsMineOrNot(ticketId: Long, ticketList:List<TicketListModel>) {
         if(ticketList.isNotEmpty()){
             for(item in ticketList){
                 if(item.id==ticketId){
-                    return true
+                    _uiState.update { state ->
+                        state.copy(ticketIsMineOrNot = true)
+                    }
+                    return
                 }
             }
         }
-        return false
+        _uiState.update { state ->
+            state.copy(ticketIsMineOrNot = false)
+        }
     }
 
     fun getMyPassengerId(studentId:String): Long? {

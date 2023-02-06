@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.screen.home.compose.component
+package com.mate.carpool.ui.screen.home.compose.component.drawer
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
