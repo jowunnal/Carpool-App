@@ -117,8 +117,7 @@ private fun UserTopInfo(
                     .clip(CircleShape)
                     .fillMaxSize()
                     .clickable { galleryLauncher.launch("image/*") }
-                    .background(primary10),
-                defaultImage = R.drawable.ic_profile
+                    .background(primary10)
             )
             Image(
                 modifier = Modifier

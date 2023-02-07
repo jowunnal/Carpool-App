@@ -18,6 +18,7 @@ import com.mate.carpool.ui.composable.LargeDefaultTextField
 import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.composable.button.PrimaryButton
 import com.mate.carpool.ui.composable.layout.CommonLayout
+import com.mate.carpool.ui.screen.register.item.RegisterUiState
 import com.mate.carpool.ui.theme.black
 import com.mate.carpool.ui.util.tu
 import com.mate.carpool.util.MatePreview

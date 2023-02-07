@@ -1,5 +1,6 @@
 package com.mate.carpool.ui.util
 
+import com.mate.carpool.data.model.dto.dto.response.CommonResponse
 import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.model.response.ResponseMessage
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +18,7 @@ object HandleFlowUtils {
         try {
             emit(ApiResponse.SuccessResponse(execute()))
         } catch (e: HttpException) {
-            emit(ApiResponse.FailResponse(ResponseMessage(e.code(),e.message(),e.code().toString())))
+            emit(ApiResponse.FailResponse(CommonResponse(e.code().toString(),e.message())))
         } catch (e: Exception) {
             emit(ApiResponse.ExceptionResponse(e = e))
         }

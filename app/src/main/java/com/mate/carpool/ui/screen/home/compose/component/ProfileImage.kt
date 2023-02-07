@@ -1,12 +1,10 @@
 package com.mate.carpool.ui.screen.home.compose.component
 
-import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.mate.carpool.R
@@ -17,7 +15,12 @@ import com.skydoves.landscapist.glide.GlideImage
 fun ProfileImage(
     profileImage:String,
     modifier: Modifier,
-    @DrawableRes defaultImage: Int
+    failure: @Composable () -> Unit = {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_profile),
+            contentDescription = null
+        )
+    }
 ){
     GlideImage(
         imageModel = { profileImage },
@@ -26,12 +29,9 @@ fun ProfileImage(
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         },
         failure = {
-            Image(
-                painter = painterResource(id = defaultImage),
-                contentDescription = null
-            )
+            failure()
         },
-        previewPlaceholder = defaultImage
+        previewPlaceholder = R.drawable.ic_profile
     )
 }
 
@@ -42,6 +42,11 @@ private fun PreviewProfileImage() =
         ProfileImage(
             profileImage = "",
             modifier = Modifier,
-            defaultImage = R.drawable.ic_profile
+            failure = {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_add_small),
+                    contentDescription = null
+                )
+            }
         )
     }

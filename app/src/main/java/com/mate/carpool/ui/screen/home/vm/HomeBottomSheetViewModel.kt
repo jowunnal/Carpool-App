@@ -65,7 +65,7 @@ class HomeBottomSheetViewModel @Inject constructor(
                     }
                 }
                 is ApiResponse.FailResponse -> {
-                    when(it.responseMessage.code){
+                    when(it.responseMessage.status){
                         "404" -> {
                             emitSnackbar(
                                 SnackBarMessage(
@@ -121,7 +121,7 @@ class HomeBottomSheetViewModel @Inject constructor(
                             SnackBarMessage(headerMessage = "티켓 탑승이 완료되었습니다."))
                     }
                     is ApiResponse.FailResponse -> {
-                        when(it.responseMessage.code){
+                        when(it.responseMessage.status){
                             "400"-> {
                                 emitSnackbar(SnackBarMessage(headerMessage = "자리가 만석이거나, 이미 탑승중입니다."))
                             }
@@ -157,7 +157,7 @@ class HomeBottomSheetViewModel @Inject constructor(
 
                     }
                     is ApiResponse.FailResponse -> {
-                        when(it.responseMessage.code){
+                        when(it.responseMessage.status){
                             "403"->{
                                 emitSnackbar(SnackBarMessage(headerMessage = "권한이 없습니다."))
                             }
@@ -194,7 +194,7 @@ class HomeBottomSheetViewModel @Inject constructor(
                         emitSnackbar(SnackBarMessage(headerMessage = "티켓 삭제가 완료되었습니다."))
                     }
                     is ApiResponse.FailResponse -> {
-                        when(it.responseMessage.code){
+                        when(it.responseMessage.status){
                             "404"-> {
                                 emitSnackbar(SnackBarMessage(headerMessage = "해당 티켓을 찾을 수 없습니다."))
                             }

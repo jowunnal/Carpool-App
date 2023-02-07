@@ -301,6 +301,14 @@ private fun OnActiveSnackBar(
                     )
                 )
             }
+            RegisterDriverViewModel.EVENT_REGISTERED_DRIVER_FAILED -> {
+                emitSnackBar(
+                    SnackBarMessage(
+                        headerMessage = "예상치 못한 문제가 발생하였습니다.",
+                        contentMessage = "다시 시도해 주세요."
+                    )
+                )
+            }
             ReportViewModel.EVENT_REPORTED_USER -> {
                 emitSnackBar(
                     SnackBarMessage(
