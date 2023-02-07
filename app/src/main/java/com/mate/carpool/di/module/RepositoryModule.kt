@@ -32,4 +32,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindsAuthRepository(impl: AuthRepositoryImpl): AuthRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindsDriverRepository(driverRepositoryImpl: DriverRepositoryImpl): DriverRepository
 }

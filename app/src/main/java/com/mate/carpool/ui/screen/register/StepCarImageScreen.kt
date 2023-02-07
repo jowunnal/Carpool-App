@@ -9,15 +9,11 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,17 +23,16 @@ import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.composable.button.PrimaryButton
 import com.mate.carpool.ui.composable.layout.CommonLayout
 import com.mate.carpool.ui.screen.home.compose.component.ProfileImage
+import com.mate.carpool.ui.screen.register.item.RegisterUiState
 import com.mate.carpool.ui.theme.black
 import com.mate.carpool.ui.theme.neutral20
-import com.mate.carpool.ui.util.FileUtils.getImageMultipartBody
 import com.mate.carpool.ui.util.tu
 import com.mate.carpool.util.MatePreview
-import okhttp3.MultipartBody
 
 @Composable
 fun RegisterDriverStepCarImageScreen(
     uiState: RegisterUiState,
-    setCarImage: (Uri?) -> Unit,
+    setCarImage: (Uri) -> Unit,
     onNavigatePopBackStack: () -> Unit,
     onNavigateToNextStep: () -> Unit
 ) {
@@ -75,7 +70,13 @@ fun RegisterDriverStepCarImageScreen(
                 .border(1.dp, Color.White, CircleShape)
                 .background(neutral20)
                 .clickable { galleryLauncher.launch("image/*") },
-            defaultImage = R.drawable.ic_add_small
+            failure = {
+                androidx.compose.material.Icon(
+                    painter = painterResource(id = R.drawable.ic_add_small),
+                    contentDescription = null,
+                    modifier = Modifier.padding(28.dp)
+                )
+            }
         )
 
         Spacer(modifier = Modifier.weight(1f))

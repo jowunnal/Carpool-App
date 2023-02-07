@@ -5,6 +5,7 @@ import com.mate.carpool.data.model.dto.*
 import com.mate.carpool.data.model.item.StudentItem
 import com.mate.carpool.data.model.dto.ProfileDto
 import com.mate.carpool.data.model.dto.TicketDeleteMemberRequestDTO
+import com.mate.carpool.data.model.dto.dto.request.DriverRegisterDTO
 import com.mate.carpool.data.model.dto.dto.request.LoginDTO
 import com.mate.carpool.data.model.dto.dto.request.SignUpDTO
 import com.mate.carpool.data.model.dto.dto.response.CommonResponse
@@ -33,13 +34,17 @@ interface APIService {
     @POST("auth/signup")
     suspend fun signUp(signUpDTO: SignUpDTO): CommonResponse
 
+    @Multipart
+    @POST("driver")
+    suspend fun registerDriver(
+        @Part image:MultipartBody.Part,
+        @Part driverRegisterDTO: DriverRegisterDTO
+    ): CommonResponse
+
     @GET("member/check/class/{studentNumber}")
     suspend fun checkIsStudentNumberExists(
         @Path("studentNumber") studentNumber: String
     ): ResponseMessage
-
-    @POST("ticket/new")
-    fun postTicketNew(@Body ticket: CreateCarpoolRequestDTO): Call<ResponseMessage>
 
     @GET("ticket/read/{id}")
     suspend fun getTicketReadId(@Path("id") id: Long): TicketDetailResponseDTO

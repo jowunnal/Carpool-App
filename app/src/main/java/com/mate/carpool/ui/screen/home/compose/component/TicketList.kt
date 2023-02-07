@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -66,7 +67,7 @@ fun TicketList(
                         .clickable {
                             coroutineScope.launch {
                                 getTicketDetail(item.id)
-                                isTicketIsMineOrNot(item.id,userTicketList)
+                                isTicketIsMineOrNot(item.id, userTicketList)
                                 delay(50)
                                 onOpenBottomSheet()
                             }
@@ -80,8 +81,7 @@ fun TicketList(
                                     .width(50.dp)
                                     .height(47.dp)
                                     .clip(CircleShape)
-                                    .border(1.dp, Color.White, CircleShape),
-                                defaultImage = R.drawable.ic_profile
+                                    .border(1.dp, Color.White, CircleShape)
                             )
 
                             HorizontalSpacer(width = 8.dp)

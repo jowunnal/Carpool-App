@@ -1,23 +1,30 @@
 package com.mate.carpool.ui.screen.register
 
 import android.net.Uri
+import androidx.lifecycle.viewModelScope
+import com.mate.carpool.data.repository.DriverRepository
+import com.mate.carpool.data.repository.impl.AuthRepositoryImpl
 import com.mate.carpool.ui.base.BaseViewModel
 import com.mate.carpool.ui.base.SnackBarMessage
+import com.mate.carpool.ui.screen.register.item.RegisterUiState
 import com.mate.carpool.util.substring
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import okhttp3.MultipartBody
 import javax.inject.Inject
 
 @HiltViewModel
-class RegisterDriverViewModel @Inject constructor(): BaseViewModel() {
+class RegisterDriverViewModel @Inject constructor(
+    private val driverRepository: DriverRepository
+): BaseViewModel() {
 
     private val _uiState = MutableStateFlow(RegisterUiState.getInitValue())
     val uiState get() = _uiState
 
-    fun setCarImage(image: Uri?) =
+    fun setCarImage(image: Uri) =
         _uiState.update { state ->
             state.copy(carImage = image, invalidCarImage = true)
         }
@@ -48,12 +55,24 @@ class RegisterDriverViewModel @Inject constructor(): BaseViewModel() {
         }
 
     fun fetch(image: MultipartBody.Part) {
-        // TODO fetch
+        driverRepository.registerDriver(
+            driverModel = uiState.value.asDriverDomainModel(image)
+        ).onEach { response ->
+            when (response.status) {
 
-        emitEvent(EVENT_REGISTERED_DRIVER_SUCCEED)
+                "OK" -> {
+                    emitEvent(EVENT_REGISTERED_DRIVER_SUCCEED)
+                }
+
+                else -> {
+                    emitEvent(EVENT_REGISTERED_DRIVER_FAILED)
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 
     companion object {
         const val EVENT_REGISTERED_DRIVER_SUCCEED = "EVENT_REGISTERED_DRIVER_SUCCEED"
+        const val EVENT_REGISTERED_DRIVER_FAILED = "EVENT_REGISTERED_DRIVER_FAILED"
     }
 }

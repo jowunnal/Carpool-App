@@ -281,8 +281,7 @@ private fun MemberInfo(
                 .width(50.dp)
                 .height(47.dp)
                 .clip(CircleShape)
-                .border(1.dp, Color.White, CircleShape),
-            defaultImage = R.drawable.ic_profile
+                .border(1.dp, Color.White, CircleShape)
         )
         Spacer(modifier = Modifier.width(9.dp))
         Column(
