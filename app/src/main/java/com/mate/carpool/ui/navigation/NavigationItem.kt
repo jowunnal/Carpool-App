@@ -22,4 +22,9 @@ sealed class NavigationItem(
         object StepCarNumber : RegisterDriver(step = "carNumber")
         object StepPhoneNumber : RegisterDriver(step = "phoneNumber")
     }
+
+    object TicketUpdate: NavigationItem(
+        title = "티켓수정",
+        route = "ticketUpdate"
+    )
 }

@@ -38,6 +38,7 @@ import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.composable.button.LargeSecondaryButton
 import com.mate.carpool.ui.screen.home.compose.component.ProfileImage
 import com.mate.carpool.ui.screen.home.compose.component.dialog.PopupWindow
+import com.mate.carpool.ui.screen.home.item.TicketState
 import com.mate.carpool.ui.theme.black
 import com.mate.carpool.ui.theme.gray
 import com.mate.carpool.ui.theme.neutral40
@@ -50,13 +51,14 @@ import java.text.DecimalFormat
 
 @Composable
 fun ReservationBottomSheetContent(
-    ticketDetail: TicketModel,
+    ticketDetail: TicketState,
     userStudentId: String,
     userRole: MemberRole,
     userPassengerId: (String) -> Long?,
     onCloseBottomSheet: suspend () -> Unit,
     onBrowseOpenChatLink: () -> Unit,
     onNavigateToReportView: () -> Unit,
+    onNavigateToTicketUpdate: () -> Unit,
     onRefresh: (String) -> Unit,
     setPassengerId: (Long) -> Unit,
     setStudentId: (String) -> Unit,
@@ -135,7 +137,7 @@ fun ReservationBottomSheetContent(
         VerticalSpacer(height = 20.dp)
         TicketDetail(
             text1 = "출발 시간",
-            text2 = "${ticketDetail.dayStatus?.displayName} ${ticketDetail.startTime.formatStartTimeAsDisplay()}",
+            text2 = "${ticketDetail.dayStatus.displayName} ${ticketDetail.startTime.formatStartTimeAsDisplay()}",
             text3 = "탑승 장소",
             text4 = ticketDetail.boardingPlace
         )
@@ -181,8 +183,8 @@ fun ReservationBottomSheetContent(
                 TicketPassengerList(
                     userStudentId = userStudentId,
                     memberRecruitNumber = ticketDetail.recruitPerson,
-                    memberGatherNumber = ticketDetail.passenger?.size?:0,
-                    passengerList = ticketDetail.passenger?: emptyList(),
+                    memberGatherNumber = ticketDetail.passenger.size,
+                    passengerList = ticketDetail.passenger,
                     modifier = Modifier.weight(1f),
                     onChangePopUpState = {popUpState.value = !popUpState.value},
                     onSetPopUpOffset = { popUpOffset.value = it },
@@ -224,7 +226,8 @@ fun ReservationBottomSheetContent(
                 dialogUiState.value = state.copy()
                 showDialogState.value = true
             },
-            onCloseDialog = {showDialogState.value = false}
+            onCloseDialog = {showDialogState.value = false},
+            onNavigateToTicketUpdate = onNavigateToTicketUpdate
         )
 
         PopupWindow(
@@ -419,7 +422,8 @@ private fun TicketButton(
     onRefresh: (String) -> Unit,
     onCloseBottomSheet: suspend () -> Unit,
     onOpenDialog: (DialogState) -> Unit,
-    onCloseDialog: () -> Unit
+    onCloseDialog: () -> Unit,
+    onNavigateToTicketUpdate: () -> Unit
 ){
     val coroutineScope = rememberCoroutineScope()
     Row() {
@@ -427,7 +431,7 @@ private fun TicketButton(
             MemberRole.DRIVER -> {
                 LargeSecondaryButton(
                     text = "수정하기",
-                    onClick = { updateTicketStatus(ticketId,TicketStatus.Cancel) },
+                    onClick = { onNavigateToTicketUpdate() },
                     modifier = Modifier.weight(1f)
                 )
                 HorizontalSpacer(width = 8.dp)
@@ -494,7 +498,7 @@ private fun TicketButton(
 fun PreviewReservationBottomSheetContentPassenger() {
     MatePreview {
         ReservationBottomSheetContent(
-            ticketDetail = TicketModel(
+            ticketDetail = TicketState(
                 1,
                 "20",
                 "",
@@ -506,7 +510,6 @@ fun PreviewReservationBottomSheetContentPassenger() {
                 25200L,
                 "link",
                 4,
-                TicketType.Cost,
                 20000,
                 listOf(
                     UserModel(
@@ -561,7 +564,8 @@ fun PreviewReservationBottomSheetContentPassenger() {
             onNavigateToReportView = {},
             userPassengerId = {-1L},
             onCloseBottomSheet = {},
-            setStudentId = {}
+            setStudentId = {},
+            onNavigateToTicketUpdate = {}
         )
     }
 }
@@ -575,7 +579,7 @@ fun PreviewReservationBottomSheetContentPassenger() {
 fun PreviewReservationBottomSheetContentDriver() {
     MatePreview {
         ReservationBottomSheetContent(
-            ticketDetail = TicketModel(
+            ticketDetail = TicketState(
                 1,
                 "2017",
                 "",
@@ -587,7 +591,6 @@ fun PreviewReservationBottomSheetContentDriver() {
                 25200L,
                 "link",
                 3,
-                TicketType.Cost,
                 20000,
                 listOf(
                     UserModel(
@@ -622,7 +625,8 @@ fun PreviewReservationBottomSheetContentDriver() {
             onNavigateToReportView = {},
             userPassengerId = {-1L},
             onCloseBottomSheet = {},
-            setStudentId = {}
+            setStudentId = {},
+            onNavigateToTicketUpdate = {}
         )
     }
 }
