@@ -2,9 +2,12 @@ package com.mate.carpool.ui.screen.signup
 
 import androidx.lifecycle.viewModelScope
 import com.mate.carpool.data.Result
+import com.mate.carpool.data.model.domain.domain.UserModel
 import com.mate.carpool.data.repository.AuthRepository
+import com.mate.carpool.data.repository.impl.AuthRepositoryImpl
 import com.mate.carpool.ui.base.BaseViewModel
 import com.mate.carpool.ui.base.SnackBarMessage
+import com.mate.carpool.ui.screen.signup.item.SignUpUiState
 import com.mate.carpool.util.substring
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,33 +16,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
-
-data class SignUpUiState(
-    val name: String,
-    val email: String,
-    val password: String,
-    val showPassword: Boolean,
-    val signUpSuccess: Boolean,
-    val invalidName: Boolean,
-    val invalidEmail: Boolean,
-    val invalidPassword: Boolean,
-) {
-    val enableSignUp: Boolean
-        get() = name.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty()
-
-    companion object {
-        fun getInitialValue() = SignUpUiState(
-            name = "",
-            email = "",
-            password = "",
-            showPassword = false,
-            signUpSuccess = false,
-            invalidName = false,
-            invalidEmail = false,
-            invalidPassword = false
-        )
-    }
-}
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
@@ -70,32 +46,21 @@ class SignUpViewModel @Inject constructor(
     fun setShowPassword(value: Boolean) =
         _uiState.update { state -> state.copy(showPassword = value) }
 
-    // TODO 로그인 성공 시, 홈화면 이동 후 성공 메시지 출력
     fun signUp() {
         if (!checkInput()) return
 
-        authRepository.signUp(
-            name = uiState.value.name,
-            email = uiState.value.email,
-            password = uiState.value.password
-        ).onEach { result ->
-            when (result) {
-                is Result.Loading -> {
-
-                }
-
-                is Result.Success -> {
-                    // TODO 회원가입 성공 시, 서버에서 로그인까지 처리해달라고 요청?
+        authRepository.signUp(uiState.value.asUserDomainModel()).onEach { response ->
+            when (response) {
+                AuthRepositoryImpl.RESPONSE_SUCCESS -> {
                     _uiState.update { it.copy(signUpSuccess = true) }
-                    //emitSnackbar(SnackBarMessage(headerMessage = "회원가입 성공 어쩌구"))
                 }
-
-                is Result.Error -> {
-                    when (result.message) {
+                AuthRepositoryImpl.RESPONSE_FAIL -> {
+                    /*when (result.message) {
                         "invalidName" -> _uiState.update { it.copy(invalidName = true) }
                         "invalidEmail" -> _uiState.update { it.copy(invalidEmail = true) }
                         "invalidPassword" -> _uiState.update { it.copy(invalidPassword = true) }
                     }
+                     */
                 }
             }
         }.launchIn(viewModelScope)

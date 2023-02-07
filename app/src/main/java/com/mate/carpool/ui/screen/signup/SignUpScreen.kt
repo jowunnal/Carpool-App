@@ -27,6 +27,7 @@ import com.mate.carpool.ui.composable.LargeDefaultTextField
 import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.composable.button.LargePrimaryButton
 import com.mate.carpool.ui.composable.layout.CommonLayout
+import com.mate.carpool.ui.screen.signup.item.SignUpUiState
 import com.mate.carpool.ui.theme.black
 import com.mate.carpool.ui.theme.neutral40
 import com.mate.carpool.ui.theme.primary90

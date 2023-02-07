@@ -35,6 +35,6 @@ data class TicketDetailResponseDTO(
         recruitPerson = this.recruitPerson,
         ticketType = this.ticketType.asTicketTypeToDomain(),
         ticketPrice = this.ticketPrice,
-        passenger = this.passengers?.asUserDomain()
+        passenger = this.passengers?.asUserDomain() ?: emptyList()
     )
 }

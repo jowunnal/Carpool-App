@@ -1,19 +1,17 @@
 package com.mate.carpool.data.repository.impl
 
-import android.content.Context
-import androidx.datastore.core.DataStore
 import com.mate.carpool.AutoLoginPreferences
 import com.mate.carpool.data.Result
 import com.mate.carpool.data.callApi
 import com.mate.carpool.data.datasource.AutoLoginDataSource
+import com.mate.carpool.data.model.domain.domain.UserModel
 import com.mate.carpool.data.model.item.StudentItem
+import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.model.response.ResponseMessage
 import com.mate.carpool.data.repository.AuthRepository
 import com.mate.carpool.data.service.APIService
-import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import com.mate.carpool.ui.util.HandleFlowUtils.handleFlowApi
 import kotlinx.coroutines.flow.*
-import java.io.IOException
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
@@ -23,81 +21,53 @@ class AuthRepositoryImpl @Inject constructor(
 
     override val autoLoginInfo: Flow<AutoLoginPreferences> = autoLoginDataSource.autoLoginInfo
 
-    override fun signUp(name: String, email: String, password: String) = flow {
-        when {
-            name == "실패" -> {
-                emit(Result.Error("invalidName"))
+    override fun signUp(userModel: UserModel): Flow<String> = handleFlowApi {
+        apiService.signUp(userModel.asSignUpRequestDTO())
+    }.map {
+        when(it) {
+            is ApiResponse.Loading -> { "" }
+            is ApiResponse.SuccessResponse -> {
+                RESPONSE_SUCCESS
             }
-
-            email == "fail@mate.com" -> {
-                emit(Result.Error("invalidEmail"))
-            }
-
-            password == "fail" -> {
-                emit(Result.Error("invalidPassword"))
-            }
-
-            else -> {
-                emit(Result.Success(ResponseMessage()))
-            }
+            is ApiResponse.FailResponse -> { RESPONSE_FAIL }
+            is ApiResponse.ExceptionResponse -> { RESPONSE_FAIL }
         }
     }
 
-    override fun login(email: String, password: String): Flow<Result<ResponseMessage>> = flow {
-        emit(Result.Loading)
-
-        when {
-            email == "fail" -> {
-                emit(Result.Error("invalidEmail"))
+    override fun login(userModel: UserModel): Flow<String> = handleFlowApi {
+        apiService.login(userModel.asLoginRequestDTO())
+    }.map {
+        when(it) {
+            is ApiResponse.Loading -> { "" }
+            is ApiResponse.SuccessResponse -> {
+                autoLoginDataSource.updateAutoLoginInfo(it.responseMessage.accessToken)
+                RESPONSE_SUCCESS
             }
-
-            password == "fail" -> {
-                emit(Result.Error("invalidPassword"))
-            }
-
-            else -> {
-                // TODO 토큰 저장
-                //autoLoginDataSource.updateAutoLoginInfo(token = "")
-                emit(Result.Success(ResponseMessage()))
-            }
+            is ApiResponse.FailResponse -> { RESPONSE_FAIL }
+            is ApiResponse.ExceptionResponse -> { RESPONSE_FAIL }
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    override fun logout(): Flow<Result<ResponseMessage>> {
-        return autoLoginDataSource.autoLoginInfo.flatMapLatest {
-            callApi {
-                apiService.postLogout(it.token)
+    override fun logout(): Flow<String> = handleFlowApi {
+        apiService.logout()
+    }.map {
+        when(it){
+            is ApiResponse.Loading -> { "" }
+            is ApiResponse.SuccessResponse -> {
+               autoLoginDataSource.updateAutoLoginInfo("")
+                RESPONSE_SUCCESS
             }
-        }.map {
-            when(it){
-                is Result.Success -> {
-                    Result.Success(
-                        ResponseMessage(
-                            status = it.data.hashCode(),
-                            message = it.data,
-                            code = it.data
-                        )
-                    )
-                }
-                is Result.Loading -> {
-                    Result.Loading
-                }
-                is Result.Error -> {
-                    Result.Error(
-                        it.message
-                    )
-                }
-            }
+            is ApiResponse.FailResponse -> { RESPONSE_FAIL }
+            is ApiResponse.ExceptionResponse ->{ RESPONSE_FAIL }
         }
     }
 
     override fun temporaryLogin(): Flow<Result<ResponseMessage>> = callApi {
         apiService.postLogin(
             StudentItem(
-                "282838",
+                "282836",
                 "테스트",
-                "01028282838"
+                "01028282836"
             )
         )
     }.map {
@@ -145,5 +115,10 @@ class AuthRepositoryImpl @Inject constructor(
                 )
             }
         }
+    }
+
+    companion object {
+        const val RESPONSE_SUCCESS = "SUCCESS"
+        const val RESPONSE_FAIL = "FAIL"
     }
 }
