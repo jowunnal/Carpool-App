@@ -5,6 +5,7 @@ import com.mate.carpool.data.model.dto.*
 import com.mate.carpool.data.model.item.StudentItem
 import com.mate.carpool.data.model.dto.ProfileDto
 import com.mate.carpool.data.model.dto.TicketDeleteMemberRequestDTO
+import com.mate.carpool.data.model.dto.dto.request.CreateTicketRequestDTO
 import com.mate.carpool.data.model.dto.dto.request.DriverRegisterDTO
 import com.mate.carpool.data.model.dto.dto.request.LoginDTO
 import com.mate.carpool.data.model.dto.dto.request.SignUpDTO
@@ -14,7 +15,6 @@ import com.mate.carpool.data.model.dto.request.UpdateMyProfileRequest
 import com.mate.carpool.data.model.response.LoginResponse
 import com.mate.carpool.data.model.response.ResponseMessage
 import okhttp3.MultipartBody
-import retrofit2.Call
 import retrofit2.http.*
 
 interface APIService {
@@ -40,6 +40,9 @@ interface APIService {
         @Part image:MultipartBody.Part,
         @Part driverRegisterDTO: DriverRegisterDTO
     ): CommonResponse
+
+    @POST("carpool")
+    suspend fun createTicket(createTicketRequestDTO: CreateTicketRequestDTO): CommonResponse
 
     @GET("member/check/class/{studentNumber}")
     suspend fun checkIsStudentNumberExists(

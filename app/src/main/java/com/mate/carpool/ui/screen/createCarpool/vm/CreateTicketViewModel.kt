@@ -1,14 +1,13 @@
 package com.mate.carpool.ui.screen.createCarpool.vm
 
+import androidx.lifecycle.viewModelScope
 import com.mate.carpool.data.model.domain.StartArea
 import com.mate.carpool.data.repository.TicketRepository
 import com.mate.carpool.ui.base.BaseViewModel
 import com.mate.carpool.ui.screen.createCarpool.item.CreateTicketUiState
 import com.mate.carpool.ui.screen.createCarpool.item.TimeUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import java.text.DecimalFormat
 import javax.inject.Inject
 
@@ -53,8 +52,16 @@ class CreateTicketViewModel @Inject constructor(
     }
 
     val fetch = fun () {
-        //TODO fetch api
-        emitEvent(EVENT_CREATED_TICKET)
+        ticketRepository.createTicket(uiState.value.asTicketDomainModel()).onEach { response ->
+            when(response.status) {
+                "CREATED" -> {
+                    emitEvent(EVENT_CREATED_TICKET)
+                }
+                else -> {
+                    emitEvent(EVENT_FAILED_CREATE_TICKET)
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 
     companion object {

@@ -51,14 +51,14 @@ class AuthRepositoryImpl @Inject constructor(
     override fun logout(): Flow<String> = handleFlowApi {
         apiService.logout()
     }.map {
-        when(it){
+        when(it) {
             is ApiResponse.Loading -> { "" }
             is ApiResponse.SuccessResponse -> {
                autoLoginDataSource.updateAutoLoginInfo("")
                 RESPONSE_SUCCESS
             }
             is ApiResponse.FailResponse -> { RESPONSE_FAIL }
-            is ApiResponse.ExceptionResponse ->{ RESPONSE_FAIL }
+            is ApiResponse.ExceptionResponse -> { RESPONSE_FAIL }
         }
     }
 
