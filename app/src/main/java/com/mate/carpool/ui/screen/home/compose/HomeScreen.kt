@@ -40,6 +40,7 @@ import com.mate.carpool.ui.screen.register.RegisterDriverViewModel
 import com.mate.carpool.ui.screen.report.ReportViewModel
 import com.mate.carpool.ui.screen.splash.SplashViewModel
 import com.mate.carpool.ui.theme.MateTheme
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -56,6 +57,7 @@ fun HomeBottomSheetLayout(
     onNavigateToProfileView: () -> Unit,
     onNavigateToReportView: (String) -> Unit,
     onNavigateToRegisterDriver: () -> Unit,
+    onNavigateToTicketUpdate: () -> Unit,
     isTicketIsMineOrNot: (Long,List<TicketListModel>) -> Unit,
     getMyPassengerId: (String) -> Long?,
     getTicketDetail: (Long) -> Unit,
@@ -89,9 +91,12 @@ fun HomeBottomSheetLayout(
         OnActiveSnackBar(
             event = event,
             role = userInfo.user.role,
-            bottomSheetState = bottomSheetState,
+            userTicketList = userInfo.ticketList ?: emptyList(),
+            onOpenBottomSheet = { bottomSheetState.animateTo(ModalBottomSheetValue.Expanded) },
             emitSnackBar = emitSnackBar,
-            onRefresh = onRefresh
+            onRefresh = onRefresh,
+            isTicketIsMineOrNot = isTicketIsMineOrNot,
+            getMyTicketDetail = getMyTicketDetail,
         )
 
     BackHandler(enabled = bottomSheetState.isVisible || scaffoldState.drawerState.isOpen) {
@@ -131,6 +136,7 @@ fun HomeBottomSheetLayout(
                             onCloseBottomSheet = { bottomSheetState.animateTo(ModalBottomSheetValue.Hidden) },
                             onBrowseOpenChatLink = { launcher.launch(Intent(Intent.ACTION_VIEW, Uri.parse(bottomSheetUiState.ticket.openChatUrl))) },
                             onNavigateToReportView = { onNavigateToReportView(bottomSheetUiState.studentId) },
+                            onNavigateToTicketUpdate = onNavigateToTicketUpdate,
                             onRefresh = onRefresh,
                             setPassengerId = setPassengerId,
                             setStudentId = setStudentId,
@@ -256,19 +262,24 @@ private fun HomeView(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun OnActiveSnackBar(
     event: Event,
     role: MemberRole,
-    bottomSheetState: ModalBottomSheetState,
+    userTicketList: List<TicketListModel>,
+    onOpenBottomSheet: suspend () -> Unit,
     emitSnackBar: (SnackBarMessage) -> Unit,
-    onRefresh: (String) -> Unit
+    onRefresh: (String) -> Unit,
+    getMyTicketDetail: () -> Unit,
+    isTicketIsMineOrNot: (Long,List<TicketListModel>) -> Unit
 ) {
     LaunchedEffect(key1 = event.type){
         when (event.type) {
             HomeBottomSheetViewModel.EVENT_ADDED_PASSENGER_TO_TICKET-> {
-                bottomSheetState.animateTo(ModalBottomSheetValue.Expanded)
+                getMyTicketDetail()
+                isTicketIsMineOrNot(userTicketList[0].id,userTicketList)
+                delay(50)
+                onOpenBottomSheet()
             }
             SplashViewModel.EVENT_GO_TO_HOME_SCREEN -> {
                 emitSnackBar(

@@ -2,6 +2,7 @@ package com.mate.carpool.ui.screen.home.vm
 
 import androidx.lifecycle.viewModelScope
 import com.mate.carpool.data.model.domain.TicketListModel
+import com.mate.carpool.data.model.domain.TicketModel
 import com.mate.carpool.data.model.item.TicketStatus
 import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.repository.CarpoolListRepository
@@ -9,6 +10,7 @@ import com.mate.carpool.data.repository.TicketRepository
 import com.mate.carpool.ui.base.BaseViewModel
 import com.mate.carpool.ui.base.SnackBarMessage
 import com.mate.carpool.ui.screen.home.item.BottomSheetUiState
+import com.mate.carpool.ui.screen.home.item.TicketState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -31,7 +33,7 @@ class HomeBottomSheetViewModel @Inject constructor(
                     }
                     is ApiResponse.SuccessResponse -> {
                         _uiState.update { state ->
-                            state.copy(ticket = it.responseMessage)
+                            state.copy(ticket = it.responseMessage.asTicketState())
                         }
                     }
                     is ApiResponse.FailResponse -> {
@@ -59,7 +61,7 @@ class HomeBottomSheetViewModel @Inject constructor(
                 is ApiResponse.Loading -> {}
                 is ApiResponse.SuccessResponse -> {
                     _uiState.update { state ->
-                        state.copy(ticket = it.responseMessage)
+                        state.copy(ticket = it.responseMessage.asTicketState())
                     }
                 }
                 is ApiResponse.FailResponse -> {
@@ -106,7 +108,6 @@ class HomeBottomSheetViewModel @Inject constructor(
             state.copy(studentId = id)
         }
     }
-
 
     fun addNewPassengerToTicket(ticketId: Long) {
         viewModelScope.launch {

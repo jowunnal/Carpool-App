@@ -23,6 +23,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.mate.carpool.R
 import com.mate.carpool.ui.theme.black
@@ -39,6 +40,7 @@ fun DefaultTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    fontSize: Int = 16,
     enabled: Boolean = true,
     readOnly: Boolean = false,
     placeholder: String? = null,
@@ -84,7 +86,7 @@ fun DefaultTextField(
                     Text(
                         text = placeholder,
                         color = gray.copy(alpha = 0.5f),
-                        fontSize = 16.tu,
+                        fontSize = fontSize.tu,
                         fontWeight = FontWeight.Normal
                     )
                 }
@@ -93,7 +95,7 @@ fun DefaultTextField(
                     value = value,
                     textStyle = TextStyle.Default.copy(
                         color = textColor,
-                        fontSize = 16.tu,
+                        fontSize = fontSize.tu,
                         fontWeight = FontWeight.Normal
                     ),
                     onValueChange = onValueChange,
@@ -189,6 +191,7 @@ fun LargeDefaultTextField(
         onValueChange = onValueChange,
         enabled = enabled,
         readOnly = readOnly,
+        fontSize = 18,
         placeholder = placeholder,
         errorMessage = errorMessage,
         maxLines = maxLines,

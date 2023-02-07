@@ -42,9 +42,9 @@ class CarpoolListViewModel @Inject constructor(
     fun onRefresh(event:String) {
         viewModelScope.launch {
             _refreshState.update { true }
-            delay(1000)
             getMemberModel()
             getCarpoolList()
+            delay(1000)
             _refreshState.update { false }
             emitEvent(event)
         }

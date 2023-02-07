@@ -1,8 +1,10 @@
 package com.mate.carpool.ui.navigation
 
-import android.util.Log
+import android.content.ContextWrapper
 import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -13,7 +15,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.mate.carpool.ui.base.Event
 import com.mate.carpool.ui.base.SnackBarMessage
-import com.mate.carpool.ui.composable.rememberLambda
+import com.mate.carpool.ui.screen.ticketupdate.TicketUpdateScreen
+import com.mate.carpool.ui.screen.ticketupdate.TicketUpdateViewModel
 import com.mate.carpool.ui.screen.home.compose.HomeBottomSheetLayout
 import com.mate.carpool.ui.screen.home.vm.CarpoolListViewModel
 import com.mate.carpool.ui.screen.home.vm.HomeBottomSheetViewModel
@@ -34,7 +37,8 @@ fun NavigationGraph(
     carpoolListViewModel: CarpoolListViewModel = hiltViewModel(),
     homeCarpoolBottomSheetViewModel: HomeBottomSheetViewModel = hiltViewModel(),
     reportViewModel: ReportViewModel = hiltViewModel(),
-    registerDriverViewModel: RegisterDriverViewModel = hiltViewModel()
+    registerDriverViewModel: RegisterDriverViewModel = hiltViewModel(),
+    ticketUpdateViewModel: TicketUpdateViewModel = hiltViewModel()
 ){
     NavHost(
         navController = navController,
@@ -74,6 +78,7 @@ fun NavigationGraph(
                 onNavigateToProfileView = onNavigateToProfileView,
                 onNavigateToRegisterDriver = { navController.navigate(NavigationItem.RegisterDriver.StepCarImage.route) },
                 onNavigateToReportView = fun(studentId:String){ navController.navigate("report/${studentId.toLong()}") },
+                onNavigateToTicketUpdate = { navController.navigate(NavigationItem.TicketUpdate.route) },
                 isTicketIsMineOrNot = homeCarpoolBottomSheetViewModel::isTicketIsMineOrNot,
                 getMyPassengerId = homeCarpoolBottomSheetViewModel::getMyPassengerId,
                 getTicketDetail = homeCarpoolBottomSheetViewModel::getTicketDetail,
@@ -138,7 +143,7 @@ fun NavigationGraph(
             )
         }
 
-        composable(route = NavigationItem.Announcement.route){
+        composable(route = NavigationItem.Announcement.route) {
         }
 
         composable(
@@ -173,6 +178,30 @@ fun NavigationGraph(
                 onDeselectReason = reportViewModel::deselectReason,
                 onReportClick = reportViewModel::report,
                 onBackClick = {
+                    navController.navigate("home/${Event.getInitValues()}") {
+                        popUpTo(NavigationItem.Home.route) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
+        }
+
+        composable(route = NavigationItem.TicketUpdate.route) {
+            val ticketDetail by ticketUpdateViewModel.uiState.collectAsStateWithLifecycle()
+            val context = LocalContext.current
+            val fragmentManager = ((context as ContextWrapper).baseContext as FragmentActivity).supportFragmentManager
+
+            TicketUpdateScreen(
+                ticketDetail = ticketDetail,
+                fragmentManager = fragmentManager,
+                setStartArea = ticketUpdateViewModel::setStartArea,
+                setBoardingPlace = ticketUpdateViewModel::setBoardingPlace,
+                setStartTime = ticketUpdateViewModel::setStartTime,
+                setOpenChatLink = ticketUpdateViewModel::setOpenChatLink,
+                setRecruitPersonCount = ticketUpdateViewModel::setRecruitPersonCount,
+                setFee = ticketUpdateViewModel::setFee,
+                onNavigateToHome = {
                     navController.navigate("home/${Event.getInitValues()}") {
                         popUpTo(NavigationItem.Home.route) {
                             inclusive = true

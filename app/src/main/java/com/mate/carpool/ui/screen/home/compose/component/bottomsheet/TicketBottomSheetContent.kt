@@ -30,6 +30,7 @@ import com.mate.carpool.ui.composable.HorizontalSpacer
 import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.composable.button.PrimaryButton
 import com.mate.carpool.ui.screen.home.compose.component.ProfileImage
+import com.mate.carpool.ui.screen.home.item.TicketState
 import com.mate.carpool.ui.screen.home.vm.HomeBottomSheetViewModel
 import com.mate.carpool.ui.theme.*
 import com.mate.carpool.ui.util.tu
@@ -40,7 +41,7 @@ import java.text.DecimalFormat
 
 @Composable
 fun TicketBottomSheetContent(
-    ticketDetail: TicketModel,
+    ticketDetail: TicketState,
     userProfile: String,
     userRole: MemberRole,
     userTicketList: List<TicketListModel>,
@@ -112,7 +113,7 @@ fun TicketBottomSheetContent(
         VerticalSpacer(height = 20.dp)
         TicketDetail(
             text1 = "탑승 인원",
-            text2 = "${ticketDetail.passenger?.size?:0}/${ticketDetail.recruitPerson}",
+            text2 = "${ticketDetail.passenger.size}/${ticketDetail.recruitPerson}",
             text3 = "비용",
             text4 = DecimalFormat("###,###").format(ticketDetail.ticketPrice)
         )
@@ -345,7 +346,7 @@ private fun TicketButtonMessage(message: String) {
 private fun PreviewBottomSheetContentDriver() =
     MateTheme {
         TicketBottomSheetContent(
-            ticketDetail = TicketModel(
+            ticketDetail = TicketState(
                 id = 1,
                 studentNumber = "",
                 profileImage = "",
@@ -357,7 +358,6 @@ private fun PreviewBottomSheetContentDriver() =
                 startTime = 25200L,
                 openChatUrl = "link",
                 recruitPerson = 3,
-                ticketType = TicketType.Cost,
                 ticketPrice = 20000,
                 emptyList()
             ),
@@ -375,7 +375,7 @@ private fun PreviewBottomSheetContentDriver() =
 private fun PreviewBottomSheetContentPassengerReservedYet() =
     MateTheme {
         TicketBottomSheetContent(
-            ticketDetail = TicketModel(
+            ticketDetail = TicketState(
                 id = 1,
                 studentNumber = "",
                 profileImage = "",
@@ -387,7 +387,6 @@ private fun PreviewBottomSheetContentPassengerReservedYet() =
                 startTime = 25200L,
                 openChatUrl = "link",
                 recruitPerson = 5,
-                ticketType = TicketType.Cost,
                 ticketPrice = 5000,
                 listOf(
                     UserModel.getInitValue(),
@@ -408,7 +407,7 @@ private fun PreviewBottomSheetContentPassengerReservedYet() =
 private fun PreviewBottomSheetContentPassengerReservedAlready() =
     MateTheme {
         TicketBottomSheetContent(
-            ticketDetail = TicketModel(
+            ticketDetail = TicketState(
                 id = 1,
                 studentNumber = "",
                 profileImage = "",
@@ -420,7 +419,6 @@ private fun PreviewBottomSheetContentPassengerReservedAlready() =
                 startTime = 25200L,
                 openChatUrl = "link",
                 recruitPerson = 5,
-                ticketType = TicketType.Cost,
                 ticketPrice = 5000,
                 listOf(
                     UserModel.getInitValue(),
