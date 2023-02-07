@@ -1,9 +1,6 @@
 package com.mate.carpool.util
 
-import com.mate.carpool.ui.util.date
-import com.mate.carpool.ui.util.hour
-import com.mate.carpool.ui.util.minute
-import com.mate.carpool.ui.util.month
+import com.mate.carpool.ui.util.*
 import java.util.*
 import kotlin.time.Duration.Companion.minutes
 
@@ -26,4 +23,10 @@ fun Long.formatStartTimeAsDisplay() = this.run {
         String.format(Locale.KOREA,"%d시 %b분",cal.hour, cal.minute )
     else
         String.format(Locale.KOREA,"%d시",cal.hour )
+}
+
+fun Long.startTimeAsRequestDTO() = this.run {
+    val cal = Calendar.getInstance()
+    cal.timeInMillis = this
+    String.format(Locale.KOREA,"%tF %tH-%tM-%tS",cal.timeInMillis,cal.hour,cal.minute,cal.second)
 }
