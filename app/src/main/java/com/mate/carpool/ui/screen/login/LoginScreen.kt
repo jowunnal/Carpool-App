@@ -15,7 +15,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -24,7 +23,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mate.carpool.R
 import com.mate.carpool.ui.base.SnackBarMessage
 import com.mate.carpool.ui.composable.LargeDefaultTextField
@@ -32,6 +30,7 @@ import com.mate.carpool.ui.composable.SnackBarHostCustom
 import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.composable.button.LargePrimaryButton
 import com.mate.carpool.ui.composable.layout.CommonLayout
+import com.mate.carpool.ui.screen.login.item.LoginUiState
 import com.mate.carpool.ui.theme.black
 import com.mate.carpool.ui.util.tu
 

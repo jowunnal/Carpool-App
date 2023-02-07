@@ -1,41 +1,16 @@
 package com.mate.carpool.ui.screen.login
 
 import android.content.Context
-import androidx.datastore.core.DataStore
 import androidx.lifecycle.viewModelScope
-import com.mate.carpool.AutoLoginPreferences
 import com.mate.carpool.data.Result
 import com.mate.carpool.data.repository.AuthRepository
+import com.mate.carpool.data.repository.impl.AuthRepositoryImpl
 import com.mate.carpool.ui.base.BaseViewModel
+import com.mate.carpool.ui.screen.login.item.LoginUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import java.io.IOException
 import javax.inject.Inject
-
-data class LoginUiState(
-    val email: String,
-    val password: String,
-    val showPassword: Boolean,
-    val loginSuccess: Boolean,
-    val invalidEmail: Boolean,
-    val invalidPassword: Boolean,
-) {
-    val enableLogin: Boolean
-        get() = email.isNotBlank() && password.isNotBlank()
-
-    companion object {
-        fun getInitialValue() = LoginUiState(
-            email = "",
-            password = "",
-            showPassword = false,
-            loginSuccess = false,
-            invalidEmail = false,
-            invalidPassword = false
-        )
-    }
-}
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
@@ -66,28 +41,40 @@ class LoginViewModel @Inject constructor(
     }
 
     fun login() {
-        authRepository.login(email = uiState.value.email, password = uiState.value.password)
-            .onEach { result ->
-                when (result) {
-                    is Result.Loading -> {
-                    }
-
-                    is Result.Success -> {
+        authRepository.login(uiState.value.asUserDomainModel())
+            .onEach { response ->
+                when (response) {
+                    AuthRepositoryImpl.RESPONSE_SUCCESS -> {
                         checkAccessTokenIsExpired()
                         _uiState.update { it.copy(loginSuccess = true) }
                     }
 
-                    is Result.Error -> {
-                        if (result.message == "invalidEmail") {
+                    AuthRepositoryImpl.RESPONSE_FAIL -> {
+                        /*if (result.message == "invalidEmail") {
                             _uiState.update { it.copy(invalidEmail = true) }
 
                         } else if (result.message == "invalidPassword") {
                             _uiState.update { it.copy(invalidPassword = true) }
                         }
-
+                         */
                     }
                 }
             }.launchIn(viewModelScope)
+    }
+
+    fun logout() {
+        authRepository.logout().onEach { response ->
+            when(response) {
+
+                AuthRepositoryImpl.RESPONSE_SUCCESS -> {
+                    emitEvent(LOGOUT_SUCCESS)
+                }
+
+                AuthRepositoryImpl.RESPONSE_FAIL -> {
+                    emitEvent(LOGOUT_FAILED)
+                }
+            }
+        }
     }
 
     suspend fun checkAccessTokenIsExpired(){
@@ -123,6 +110,11 @@ class LoginViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    companion object {
+        const val LOGOUT_SUCCESS = "LOGOUT_SUCCESS"
+        const val LOGOUT_FAILED = "LOGOUT_FAILED"
     }
 }
 

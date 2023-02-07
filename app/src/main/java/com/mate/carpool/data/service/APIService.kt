@@ -5,6 +5,9 @@ import com.mate.carpool.data.model.dto.*
 import com.mate.carpool.data.model.item.StudentItem
 import com.mate.carpool.data.model.dto.ProfileDto
 import com.mate.carpool.data.model.dto.TicketDeleteMemberRequestDTO
+import com.mate.carpool.data.model.dto.dto.request.LoginDTO
+import com.mate.carpool.data.model.dto.dto.request.SignUpDTO
+import com.mate.carpool.data.model.dto.dto.response.CommonResponse
 import com.mate.carpool.data.model.dto.request.ReportRequest
 import com.mate.carpool.data.model.dto.request.UpdateMyProfileRequest
 import com.mate.carpool.data.model.response.LoginResponse
@@ -21,15 +24,14 @@ interface APIService {
     @POST("auth/login")
     suspend fun postLogin(@Body studentInfo: StudentItem): LoginResponse
 
-    @POST("auth/logout")
-    suspend fun postLogout(accessToken: String): String
+    @POST("auth/login")
+    suspend fun login(@Body loginDTO: LoginDTO): LoginResponse
 
-    @Multipart
+    @POST("auth/logout")
+    suspend fun logout(): CommonResponse
+
     @POST("auth/signup")
-    suspend fun postSignUp(
-        @Part("memberRequestDTO") memberRequestDTO: MemberRequestDTO,
-        @Part image: MultipartBody.Part?
-    ): ResponseMessage?
+    suspend fun signUp(signUpDTO: SignUpDTO): CommonResponse
 
     @GET("member/check/class/{studentNumber}")
     suspend fun checkIsStudentNumberExists(
