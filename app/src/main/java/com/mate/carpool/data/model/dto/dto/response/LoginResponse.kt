@@ -1,5 +1,4 @@
-package com.mate.carpool.data.model.response
-
+package com.mate.carpool.data.model.dto.dto.response
 
 data class LoginResponse(
     val grantType:String,

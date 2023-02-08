@@ -54,12 +54,17 @@ class RegisterDriverViewModel @Inject constructor(
                 state.copy(phoneNumber = result, invalidPhoneNumber = false)
         }
 
-    fun fetch(image: MultipartBody.Part) {
+    fun fetch(
+        image: MultipartBody.Part,
+        carNumber: String,
+        phoneNumber: String
+    ) {
         driverRepository.registerDriver(
-            driverModel = uiState.value.asDriverDomainModel(image)
+            carImage = image,
+            carNumber = carNumber,
+            phoneNumber = phoneNumber
         ).onEach { response ->
             when (response.status) {
-
                 "OK" -> {
                     emitEvent(EVENT_REGISTERED_DRIVER_SUCCEED)
                 }

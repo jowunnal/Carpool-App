@@ -5,6 +5,8 @@ import com.mate.carpool.data.Result
 import com.mate.carpool.data.callApi
 import com.mate.carpool.data.datasource.AutoLoginDataSource
 import com.mate.carpool.data.model.domain.domain.UserModel
+import com.mate.carpool.data.model.dto.dto.request.LoginDTO
+import com.mate.carpool.data.model.dto.dto.request.SignUpDTO
 import com.mate.carpool.data.model.item.StudentItem
 import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.model.response.ResponseMessage
@@ -21,75 +23,37 @@ class AuthRepositoryImpl @Inject constructor(
 
     override val autoLoginInfo: Flow<AutoLoginPreferences> = autoLoginDataSource.autoLoginInfo
 
-    override fun signUp(userModel: UserModel): Flow<String> = handleFlowApi {
-        apiService.signUp(userModel.asSignUpRequestDTO())
-    }.map {
-        when(it) {
-            is ApiResponse.Loading -> { "" }
-            is ApiResponse.SuccessResponse -> {
-                RESPONSE_SUCCESS
-            }
-            is ApiResponse.FailResponse -> { RESPONSE_FAIL }
-            is ApiResponse.ExceptionResponse -> { RESPONSE_FAIL }
-        }
+    override fun signUp(
+        email: String,
+        passWord: String,
+        name: String
+    ): Flow<String> = flow {
+        emit(apiService.signUp(SignUpDTO.fromDomain(
+            email = email,
+            passWord = passWord,
+            name = name
+        )))
+    }.map { response ->
+        response.message
     }
 
-    override fun login(userModel: UserModel): Flow<String> = handleFlowApi {
-        apiService.login(userModel.asLoginRequestDTO())
-    }.map {
-        when(it) {
-            is ApiResponse.Loading -> { "" }
-            is ApiResponse.SuccessResponse -> {
-                autoLoginDataSource.updateAutoLoginInfo(it.responseMessage.accessToken)
-                RESPONSE_SUCCESS
-            }
-            is ApiResponse.FailResponse -> { RESPONSE_FAIL }
-            is ApiResponse.ExceptionResponse -> { RESPONSE_FAIL }
-        }
+    override fun login(
+        email: String,
+        passWord: String
+    ): Flow<String> = flow {
+        emit(apiService.login(LoginDTO.fromDomain(
+            email = email,
+            passWord = passWord
+        )))
+    }.map { response ->
+        autoLoginDataSource.updateAutoLoginInfo(response.accessToken)
+        response.accessToken
     }
 
-    override fun logout(): Flow<String> = handleFlowApi {
-        apiService.logout()
-    }.map {
-        when(it) {
-            is ApiResponse.Loading -> { "" }
-            is ApiResponse.SuccessResponse -> {
-               autoLoginDataSource.updateAutoLoginInfo("")
-                RESPONSE_SUCCESS
-            }
-            is ApiResponse.FailResponse -> { RESPONSE_FAIL }
-            is ApiResponse.ExceptionResponse -> { RESPONSE_FAIL }
-        }
-    }
-
-    override fun temporaryLogin(): Flow<Result<ResponseMessage>> = callApi {
-        apiService.postLogin(
-            StudentItem(
-                "282836",
-                "테스트",
-                "01028282836"
-            )
-        )
-    }.map {
-        when(it){
-            is Result.Success -> {
-                Result.Success(
-                    ResponseMessage(
-                        status = it.data.hashCode(),
-                        message = it.data.accessToken,
-                        code = it.data.refreshTokenExpiresIn
-                    )
-                )
-            }
-            is Result.Loading -> {
-                Result.Loading
-            }
-            is Result.Error -> {
-                Result.Error(
-                    it.message
-                )
-            }
-        }
+    override fun logout(): Flow<String> = flow {
+        emit(apiService.logout())
+    }.map { response ->
+        response.message
     }
 
     override fun checkAccessTokenIsExpired(): Flow<Result<ResponseMessage>> = callApi {
@@ -115,10 +79,5 @@ class AuthRepositoryImpl @Inject constructor(
                 )
             }
         }
-    }
-
-    companion object {
-        const val RESPONSE_SUCCESS = "SUCCESS"
-        const val RESPONSE_FAIL = "FAIL"
     }
 }

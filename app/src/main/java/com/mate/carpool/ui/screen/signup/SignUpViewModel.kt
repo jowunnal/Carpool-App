@@ -10,11 +10,7 @@ import com.mate.carpool.ui.base.SnackBarMessage
 import com.mate.carpool.ui.screen.signup.item.SignUpUiState
 import com.mate.carpool.util.substring
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -46,23 +42,26 @@ class SignUpViewModel @Inject constructor(
     fun setShowPassword(value: Boolean) =
         _uiState.update { state -> state.copy(showPassword = value) }
 
-    fun signUp() {
+    fun signUp(
+        email: String,
+        passWord: String,
+        name: String
+    ) {
         if (!checkInput()) return
 
-        authRepository.signUp(uiState.value.asUserDomainModel()).onEach { response ->
-            when (response) {
-                AuthRepositoryImpl.RESPONSE_SUCCESS -> {
-                    _uiState.update { it.copy(signUpSuccess = true) }
-                }
-                AuthRepositoryImpl.RESPONSE_FAIL -> {
-                    /*when (result.message) {
-                        "invalidName" -> _uiState.update { it.copy(invalidName = true) }
-                        "invalidEmail" -> _uiState.update { it.copy(invalidEmail = true) }
-                        "invalidPassword" -> _uiState.update { it.copy(invalidPassword = true) }
-                    }
-                     */
-                }
-            }
+        authRepository.signUp(
+            email = email,
+            passWord = passWord,
+            name = name
+        ).onEach { _ ->
+            _uiState.update { it.copy(signUpSuccess = true) }
+        }.catch {
+            /*when (result.message) {
+                "invalidName" -> _uiState.update { it.copy(invalidName = true) }
+                "invalidEmail" -> _uiState.update { it.copy(invalidEmail = true) }
+                "invalidPassword" -> _uiState.update { it.copy(invalidPassword = true) }
+            }*/
+
         }.launchIn(viewModelScope)
     }
 

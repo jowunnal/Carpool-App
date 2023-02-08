@@ -8,9 +8,19 @@ import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
     val autoLoginInfo:Flow<AutoLoginPreferences>
-    fun login(userModel: UserModel): Flow<String>
+
+    fun login(
+        email: String,
+        passWord: String
+    ): Flow<String>
+
     fun logout(): Flow<String>
-    fun signUp(userModel: UserModel): Flow<String>
-    fun temporaryLogin(): Flow<Result<ResponseMessage>>
+
+    fun signUp(
+        email: String,
+        passWord: String,
+        name: String
+    ): Flow<String>
+
     fun checkAccessTokenIsExpired(): Flow<Result<ResponseMessage>>
 }

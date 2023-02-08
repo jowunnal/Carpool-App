@@ -1,6 +1,7 @@
 package com.mate.carpool.ui.screen.login.item
 
 import com.mate.carpool.data.model.domain.domain.UserModel
+import com.mate.carpool.data.model.item.MemberRole
 
 data class LoginUiState(
     val email: String,
@@ -16,7 +17,10 @@ data class LoginUiState(
     fun asUserDomainModel() = UserModel(
         name = "",
         email = email,
-        passWord = password
+        passWord = password,
+        id = "",
+        profileImage = "",
+        role = MemberRole.PASSENGER
     )
 
     companion object {
