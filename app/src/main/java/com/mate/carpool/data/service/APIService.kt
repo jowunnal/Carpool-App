@@ -5,11 +5,13 @@ import com.mate.carpool.data.model.dto.*
 import com.mate.carpool.data.model.item.StudentItem
 import com.mate.carpool.data.model.dto.ProfileDto
 import com.mate.carpool.data.model.dto.TicketDeleteMemberRequestDTO
-import com.mate.carpool.data.model.dto.dto.request.CreateTicketRequestDTO
+import com.mate.carpool.data.model.dto.dto.request.CreateTicketDTO
 import com.mate.carpool.data.model.dto.dto.request.DriverRegisterDTO
 import com.mate.carpool.data.model.dto.dto.request.LoginDTO
 import com.mate.carpool.data.model.dto.dto.request.SignUpDTO
 import com.mate.carpool.data.model.dto.dto.response.CommonResponse
+import com.mate.carpool.data.model.dto.dto.response.ProfileDTO
+import com.mate.carpool.data.model.dto.dto.response.TicketListDTO
 import com.mate.carpool.data.model.dto.request.ReportRequest
 import com.mate.carpool.data.model.dto.request.UpdateMyProfileRequest
 import com.mate.carpool.data.model.response.LoginResponse
@@ -18,12 +20,6 @@ import okhttp3.MultipartBody
 import retrofit2.http.*
 
 interface APIService {
-
-    @GET("auth/test")
-    suspend fun checkAccessTokenIsExpired(): String
-
-    @POST("auth/login")
-    suspend fun postLogin(@Body studentInfo: StudentItem): LoginResponse
 
     @POST("auth/login")
     suspend fun login(@Body loginDTO: LoginDTO): LoginResponse
@@ -42,7 +38,26 @@ interface APIService {
     ): CommonResponse
 
     @POST("carpool")
-    suspend fun createTicket(createTicketRequestDTO: CreateTicketRequestDTO): CommonResponse
+    suspend fun createTicket(createTicketRequestDTO: CreateTicketDTO): CommonResponse
+
+    @GET("carpool")
+    suspend fun getTicketList(): List<TicketListDTO>
+
+    @GET("member")
+    suspend fun getMyProfileNew(): ProfileDTO
+
+
+
+
+    /**
+     * refactor
+     */
+    @GET("auth/test")
+    suspend fun checkAccessTokenIsExpired(): String
+
+    @POST("auth/login")
+    suspend fun postLogin(@Body studentInfo: StudentItem): LoginResponse
+
 
     @GET("member/check/class/{studentNumber}")
     suspend fun checkIsStudentNumberExists(
@@ -58,8 +73,8 @@ interface APIService {
         @Query("status") status: String
     ): ResponseMessage
 
-    @GET("ticket/list")
-    suspend fun getTicketList(): List<UserTicketDTO>
+    //@GET("ticket/list")
+    //suspend fun getTicketList(): List<UserTicketDTO>
 
     @GET("ticket/promise")
     suspend fun getMyTicket(): TicketDetailResponseDTO

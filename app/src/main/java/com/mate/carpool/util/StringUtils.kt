@@ -21,11 +21,21 @@ fun String.formatStartTime(): Long =
     this.run {
         val cal = Calendar.getInstance()
         cal.year = substring(0..3).toInt()
-        cal.month = substring(4..5).toInt()
-        cal.date = substring(6..7).toInt()
-        cal.hour = substring(8..9).toInt()
-        cal.minute = substring(10..11).toInt()
+        cal.month = substring(5..6).toInt()
+        cal.date = substring(8..9).toInt()
+        cal.hour = substring(11..12).toInt()
+        cal.minute = substring(14..15).toInt()
         cal.timeInMillis
+    }
+
+fun String.asStartTimeDomain(): String =
+    this.run {
+        val cal = Calendar.getInstance().apply {
+            add(Calendar.DATE,1)
+            hour = this@run.split(":")[0].toInt()
+            minute = this@run.split(":")[1].toInt()
+        }
+        String.format(Locale.KOREA,"%tF %tH-%tM-%tS",cal.timeInMillis,cal.hour,cal.minute,cal.second)
     }
 
 fun String.asTicketTypeToDomain() =
@@ -50,10 +60,6 @@ fun String.asTicketStatusToDomain() =
         "AFTER" -> TicketStatus.After
         else -> TicketStatus.After
     }
-
-fun String.asStartTimeToDomain() = StringBuffer(this).insert(2,':').toString()
-
-fun String.asStartDayMonthToDomain() = StringBuffer(this).insert(2,'/').toString()
 
 fun String.asMemberRoleToDomain() =
     when(this){

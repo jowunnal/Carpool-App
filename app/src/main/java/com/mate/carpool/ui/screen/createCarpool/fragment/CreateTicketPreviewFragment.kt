@@ -1,14 +1,20 @@
 package com.mate.carpool.ui.screen.createCarpool.fragment
 
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.mate.carpool.R
 import com.mate.carpool.databinding.FragmentCreateCarpoolTicketPreviewBinding
 import com.mate.carpool.ui.base.BaseFragment
 import com.mate.carpool.ui.base.CommonDialogFragment
 import com.mate.carpool.ui.base.Event
+import com.mate.carpool.ui.screen.createCarpool.item.CreateTicketUiState
 import com.mate.carpool.ui.screen.createCarpool.vm.CreateTicketViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CreateTicketPreviewFragment : BaseFragment<CreateTicketViewModel,FragmentCreateCarpoolTicketPreviewBinding>() {
@@ -19,14 +25,36 @@ class CreateTicketPreviewFragment : BaseFragment<CreateTicketViewModel,FragmentC
 
     override val useActionBar: Boolean = true
 
+    private var uiState: CreateTicketUiState ?= null
+
+    override fun subscribeUi() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collectLatest {
+                    uiState = it
+                }
+            }
+        }
+    }
+
     override fun initViews() = with(binding) {
         createTicketViewModel = viewModel
         context = requireActivity()
 
         btnConfirm.setOnClickListener {
-            viewModel.fetch()
-            val action = CreateTicketPreviewFragmentDirections.actionCreateTicketPreviewFragmentToHomeFragment(CreateTicketViewModel.EVENT_CREATED_TICKET)
-            findNavController().navigate(action)
+            uiState?.let {
+                viewModel.fetch(
+                    startArea = uiState!!.startArea,
+                    startTime = uiState!!.startTime,
+                    endArea = uiState!!.endArea,
+                    boardingPlace = uiState!!.boardingPlace,
+                    openChatUrl = uiState!!.openChatLink,
+                    recruitPerson = uiState!!.recruitNumber,
+                    fee = uiState!!.fee
+                )
+                val action = CreateTicketPreviewFragmentDirections.actionCreateTicketPreviewFragmentToHomeFragment(CreateTicketViewModel.EVENT_CREATED_TICKET)
+                findNavController().navigate(action)
+            }
         }
 
         btnCancel.setOnClickListener {

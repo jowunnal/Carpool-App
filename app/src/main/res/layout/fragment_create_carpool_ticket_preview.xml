@@ -164,7 +164,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="@{createTicketViewModel.uiState.startArea.displayName}"
+                    android:text="@{createTicketViewModel.uiState.startArea}"
                     android:textColor="@color/black"
                     android:textSize="14dp"
                     app:layout_constraintBottom_toBottomOf="parent"
