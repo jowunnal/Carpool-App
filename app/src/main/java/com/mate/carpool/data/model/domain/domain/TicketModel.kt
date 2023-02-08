@@ -1,8 +1,11 @@
 package com.mate.carpool.data.model.domain.domain
 
 import com.mate.carpool.data.model.domain.UserModel
-import com.mate.carpool.data.model.dto.dto.request.CreateTicketRequestDTO
+import com.mate.carpool.data.model.dto.dto.request.CreateTicketDTO
+import com.mate.carpool.data.model.item.TicketStatus
+import com.mate.carpool.ui.screen.home.item.TicketListState
 import com.mate.carpool.util.startTimeAsRequestDTO
+import com.mate.carpool.util.startTimeToDayStatus
 
 data class TicketModel(
     val id: Long,
@@ -17,30 +20,16 @@ data class TicketModel(
     val ticketPrice: Int,
     val passenger: List<UserModel>
 ) {
-    /*fun asTicketState() = TicketState(
+
+    fun asTicketListState() = TicketListState(
         id = id,
         profileImage = profileImage,
-        memberName = memberName,
         startArea = startArea,
-        endArea = endArea,
-        boardingPlace = boardingPlace,
         startTime = startTime,
-        openChatUrl = openChatUrl,
         recruitPerson = recruitPerson,
-        ticketPrice = ticketPrice,
-        passenger = passenger
-    )
-
-     */
-
-    fun asTicketRequestDTO() = CreateTicketRequestDTO(
-        startArea = startArea,
-        startTime = startTime.startTimeAsRequestDTO(),
-        endArea = endArea,
-        boardingPlace = boardingPlace,
-        openChatUrl = openChatUrl,
-        recruitPerson = recruitPerson,
-        ticketPrice = ticketPrice
+        currentPersonCount = passenger.size,
+        ticketStatus = TicketStatus.Before,
+        dayStatus = startTime.startTimeToDayStatus()
     )
 
     companion object{

@@ -28,6 +28,16 @@ fun String.formatStartTime(): Long =
         cal.timeInMillis
     }
 
+fun String.asStartTimeDomain(): String =
+    this.run {
+        val cal = Calendar.getInstance().apply {
+            add(Calendar.DATE,1)
+            hour = this@run.split(":")[0].toInt()
+            minute = this@run.split(":")[1].toInt()
+        }
+        String.format(Locale.KOREA,"%tF %tH-%tM-%tS",cal.timeInMillis,cal.hour,cal.minute,cal.second)
+    }
+
 fun String.asTicketTypeToDomain() =
     when(this){
         "FREE" -> TicketType.Free
@@ -58,4 +68,3 @@ fun String.asMemberRoleToDomain() =
         "ADMIN" -> MemberRole.ADMIN
         else -> throw IllegalStateException("[String.asMemberRoleToDomain] string = $this")
     }
-

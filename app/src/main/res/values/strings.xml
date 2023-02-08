@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Mate</string>
-    <string name="login_title">경운대학교\n카풀 서비스</string>
+    <string name="login_title">카풀 서비스</string>
     <string name="login_content">간편하게 가입하고 \n카풀 서비스를 이용해보세요</string>
     <string name="login_register">시작하기</string>
     <string name="login_id_check">이미 아이디가 있으신가요?</string>
@@ -33,7 +33,7 @@
     <string name="ticket_bording">탑승하기</string>
     <string name="로그인하기">로그인하기</string>
     <string name="출발지역">출발 지역을 선택해 주세요</string>
-    <string name="탑승장소">예: 안동사우나 앞</string>
+    <string name="탑승장소">예: 센텀시티역</string>
     <string name="출발날짜">MM/dd 예:11/30</string>
     <string name="출발시간">시간을 입력해주세요.</string>
     <string name="여객자동차운수사업법">여객자동차 운수사업법 제81조 1항에 따라 유료 카풀의 경우 오전 07:00-09:00사이에 운행이 가능해요. 09:00 이후에는 운행이 종료돼야해요. (휴일, 공휴일은 유료 카풀 불가)</string>

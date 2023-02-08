@@ -71,7 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="출발지를 선택해 주세요."
+            android:text="장소를 선택해 주세요."
             android:textColor="@color/black"
             android:textSize="22dp"
             android:textStyle="bold"
@@ -85,7 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:text="도착지는 경운대학교로 자동 설정됩니다."
+            android:text=""
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -105,33 +105,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_carpool2" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tl_StartingArea"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        <EditText
+            android:id="@+id/et_startArea"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="@string/출발지역"
-            app:hintEnabled="@{createTicketViewModel.uiState.invalidArea}"
+            android:hint="@string/탑승장소"
             android:textSize="18dp"
+            android:background="@drawable/common_textfield"
+            updateText="@{createTicketViewModel.setStartArea}"
+            android:maxLines="1"
+            android:maxEms="12"
+            android:inputType="text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_startingAreaHeader"
             app:startIconDrawable="@drawable/ic_home_location"
-            app:startIconTint="@color/blue">
+            app:startIconTint="@color/blue"/>
 
-            <AutoCompleteTextView
-                android:id="@+id/tv_selectStartingArea"
-                android:textSize="18dp"
-                areaItems="@{startingAreaList}"
-                context="@{context}"
-                ticketViewModel="@{createTicketViewModel}"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:inputType="none" />
-        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:id="@+id/tv_boardingAreaHeader"
@@ -144,7 +135,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tl_StartingArea" />
+            app:layout_constraintTop_toBottomOf="@id/et_startArea" />
 
         <EditText
             android:id="@+id/tl_boardingArea"
@@ -160,6 +151,34 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_boardingAreaHeader"/>
+
+        <TextView
+            android:id="@+id/tv_endAreaHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="도착 장소"
+            android:textColor="@color/black"
+            android:textSize="13dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tl_boardingArea" />
+
+        <EditText
+            android:id="@+id/et_endArea"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="예: 부산대학교"
+            android:textSize="18dp"
+            android:background="@drawable/common_textfield"
+            updateText="@{createTicketViewModel.setEndArea}"
+            android:maxLines="1"
+            android:maxEms="12"
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_endAreaHeader"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_confirm"
