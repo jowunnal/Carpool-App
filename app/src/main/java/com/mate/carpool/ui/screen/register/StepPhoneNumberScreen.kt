@@ -33,7 +33,7 @@ fun RegisterDriverStepPhoneNumberScreen(
     onPhoneNumberEdit: (String) -> Unit,
     onCarNumberEdit: (String) -> Unit,
     onNavigatePopBackStack: () -> Unit,
-    onFetch: (MultipartBody.Part) -> Unit
+    onFetch: (MultipartBody.Part,String,String) -> Unit
 ) {
     val context = LocalContext.current
     val textFieldFocusRequest = remember { FocusRequester() }
@@ -80,7 +80,9 @@ fun RegisterDriverStepPhoneNumberScreen(
                     FileUtils.getImageMultipartBody(
                         uri = uiState.carImage?:"".toUri(),
                         context = context
-                    )
+                    ),
+                    uiState.carNumber,
+                    uiState.phoneNumber
                 )
             },
             modifier = Modifier.fillMaxWidth(),
@@ -98,7 +100,7 @@ private fun PreviewRegisterDriverStepPhoneNumberScreen(){
             onPhoneNumberEdit = {},
             onCarNumberEdit = {},
             onNavigatePopBackStack = {},
-            onFetch = {}
+            onFetch = fun(image:MultipartBody.Part,carNum:String,phoneNum:String){}
         )
     }
 }
