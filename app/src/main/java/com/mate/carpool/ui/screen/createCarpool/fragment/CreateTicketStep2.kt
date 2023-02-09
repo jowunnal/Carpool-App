@@ -12,11 +12,13 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
 @AndroidEntryPoint
-class CreateTicketStep2 : BaseFragment<CreateTicketViewModel,FragmentCreateCarpoolTicketStep2Binding>(){
+class CreateTicketStep2 :
+    BaseFragment<CreateTicketViewModel, FragmentCreateCarpoolTicketStep2Binding>() {
 
     override val viewModel: CreateTicketViewModel by hiltNavGraphViewModels(R.id.createTicket)
 
-    override fun getViewBinding(): FragmentCreateCarpoolTicketStep2Binding = FragmentCreateCarpoolTicketStep2Binding.inflate(layoutInflater)
+    override fun getViewBinding(): FragmentCreateCarpoolTicketStep2Binding =
+        FragmentCreateCarpoolTicketStep2Binding.inflate(layoutInflater)
 
     override val useActionBar: Boolean = true
 
@@ -26,12 +28,15 @@ class CreateTicketStep2 : BaseFragment<CreateTicketViewModel,FragmentCreateCarpo
 
         val tomorrow = Calendar.getInstance().apply {
             time = Date()
-            add(Calendar.DATE,1)
+            add(Calendar.DATE, 1)
         }
         tvStartingDate.text = "내일 ${tomorrow.month}월 ${tomorrow.date}일"
 
         tlBoardingTime.setOnClickListener {
-            TimePickerCustomDialog(viewModel::setStartTime).show(requireActivity().supportFragmentManager,"TimePicker")
+            TimePickerCustomDialog(viewModel::setStartTime).show(
+                requireActivity().supportFragmentManager,
+                "TimePicker"
+            )
         }
     }
 }
