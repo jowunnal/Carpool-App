@@ -13,7 +13,7 @@ import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
 fun ProfileImage(
-    profileImage:String,
+    profileImage: String,
     modifier: Modifier,
     failure: @Composable () -> Unit = {
         Icon(
@@ -21,7 +21,7 @@ fun ProfileImage(
             contentDescription = null
         )
     }
-){
+) {
     GlideImage(
         imageModel = { profileImage },
         modifier = modifier,

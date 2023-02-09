@@ -10,7 +10,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,12 +27,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mate.carpool.R
-import com.mate.carpool.data.model.domain.TicketModel
-import com.mate.carpool.data.model.domain.UserModel
 import com.mate.carpool.data.model.item.DayStatus
 import com.mate.carpool.data.model.item.MemberRole
-import com.mate.carpool.data.model.item.TicketStatus
-import com.mate.carpool.data.model.item.TicketType
 import com.mate.carpool.ui.base.BaseViewModel
 import com.mate.carpool.ui.composable.DialogCustom
 import com.mate.carpool.ui.composable.DialogState
@@ -38,6 +37,8 @@ import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.composable.button.LargeSecondaryButton
 import com.mate.carpool.ui.screen.home.compose.component.ProfileImage
 import com.mate.carpool.ui.screen.home.compose.component.dialog.PopupWindow
+import com.mate.carpool.ui.screen.home.item.DriverState
+import com.mate.carpool.ui.screen.home.item.PassengerState
 import com.mate.carpool.ui.screen.home.item.TicketState
 import com.mate.carpool.ui.theme.black
 import com.mate.carpool.ui.theme.gray
@@ -52,26 +53,27 @@ import java.text.DecimalFormat
 @Composable
 fun ReservationBottomSheetContent(
     ticketDetail: TicketState,
-    userStudentId: String,
     userRole: MemberRole,
-    userPassengerId: (String) -> Long?,
+    userId: String,
+    userPassengerId: String,
+    selectedMemberPassengerId: String,
+    setPassengerId: (String) -> Unit,
+    setUserId: (String) -> Unit,
     onCloseBottomSheet: suspend () -> Unit,
     onBrowseOpenChatLink: () -> Unit,
-    onNavigateToReportView: () -> Unit,
+    onNavigateToReportView: (String, String) -> Unit,
     onNavigateToTicketUpdate: () -> Unit,
     onRefresh: (String) -> Unit,
-    setPassengerId: (Long) -> Unit,
-    setStudentId: (String) -> Unit,
-    deletePassengerFromTicket: (Long) -> Unit,
-    updateTicketStatus: (Long,TicketStatus) -> Unit
+    deletePassengerFromTicket: (String, MemberRole) -> Unit,
+    deleteMyTicket: (String) -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
 
     val popUpState = remember {
         mutableStateOf(false)
     }
-    val popUpOffset = remember{
-        mutableStateOf(Offset(0F,0F))
+    val popUpOffset = remember {
+        mutableStateOf(Offset(0F, 0F))
     }
 
     val dialogUiState = remember {
@@ -80,11 +82,14 @@ fun ReservationBottomSheetContent(
     val showDialogState = remember {
         mutableStateOf(false)
     }
+    val passengerId = remember {
+        mutableStateOf("")
+    }
 
-    if(showDialogState.value)
+    if (showDialogState.value)
         DialogCustom(
             dialogState = dialogUiState.value,
-            onDismissRequest = {showDialogState.value = false}
+            onDismissRequest = { showDialogState.value = false }
         )
 
     Column(
@@ -100,8 +105,8 @@ fun ReservationBottomSheetContent(
             horizontalArrangement = Arrangement.Center
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_handle_bar)
-                , contentDescription = "HandleBar"
+                painter = painterResource(id = R.drawable.ic_handle_bar),
+                contentDescription = "HandleBar"
             )
         }
         Row(
@@ -151,7 +156,7 @@ fun ReservationBottomSheetContent(
         VerticalSpacer(height = 20.dp)
 
         TicketOpenChat(
-            onBrowseOpenChatLink= onBrowseOpenChatLink
+            onBrowseOpenChatLink = onBrowseOpenChatLink
         )
 
         VerticalSpacer(height = 20.dp)
@@ -166,14 +171,15 @@ fun ReservationBottomSheetContent(
                 )
                 VerticalSpacer(height = 4.dp)
                 MemberInfo(
-                    userProfile = ticketDetail.profileImage,
-                    memberName = ticketDetail.memberName,
-                    memberStudentId = ticketDetail.studentNumber,
-                    userStudentId = userStudentId,
+                    memberProfile = ticketDetail.driver.profileImage,
+                    memberName = ticketDetail.driver.name,
+                    memberId = ticketDetail.driver.id,
+                    userId = userId,
                     iconDrawable = R.drawable.ic_hamburger_circle,
-                    onChangePopUpState = {popUpState.value = !popUpState.value},
-                    onSetPopUpOffset = { popUpOffset.value = it },
-                    setStudentId = setStudentId
+                    setUserId = setUserId,
+                    setPassengerId = setPassengerId,
+                    onChangePopUpState = { popUpState.value = !popUpState.value },
+                    onSetPopUpOffset = { popUpOffset.value = it }
                 )
             }
 
@@ -181,15 +187,15 @@ fun ReservationBottomSheetContent(
 
             Column(modifier = Modifier.weight(1f)) {
                 TicketPassengerList(
-                    userStudentId = userStudentId,
+                    userId = userId,
                     memberRecruitNumber = ticketDetail.recruitPerson,
                     memberGatherNumber = ticketDetail.passenger.size,
                     passengerList = ticketDetail.passenger,
                     modifier = Modifier.weight(1f),
-                    onChangePopUpState = {popUpState.value = !popUpState.value},
-                    onSetPopUpOffset = { popUpOffset.value = it },
+                    setUserId = setUserId,
                     setPassengerId = setPassengerId,
-                    setStudentId = setStudentId
+                    onChangePopUpState = { popUpState.value = !popUpState.value },
+                    onSetPopUpOffset = { popUpOffset.value = it },
                 )
             }
         }
@@ -215,18 +221,16 @@ fun ReservationBottomSheetContent(
         TicketButton(
             ticketId = ticketDetail.id,
             userRole = userRole,
-            userStudentId = userStudentId,
             userPassengerId = userPassengerId,
-            setPassengerId = setPassengerId,
-            updateTicketStatus = updateTicketStatus,
-            deletePassengerFromTicket = {deletePassengerFromTicket(ticketDetail.id)},
+            deletePassengerFromTicket = deletePassengerFromTicket,
+            deleteMyTicket = deleteMyTicket,
             onRefresh = onRefresh,
             onCloseBottomSheet = onCloseBottomSheet,
             onOpenDialog = { state ->
                 dialogUiState.value = state.copy()
                 showDialogState.value = true
             },
-            onCloseDialog = {showDialogState.value = false},
+            onCloseDialog = { showDialogState.value = false },
             onNavigateToTicketUpdate = onNavigateToTicketUpdate
         )
 
@@ -234,14 +238,15 @@ fun ReservationBottomSheetContent(
             dialogState = popUpState.value,
             popUpOffset = popUpOffset.value,
             userRole = userRole,
-            deletePassengerFromTicket = {deletePassengerFromTicket(ticketDetail.id)},
-            onNavigateToReportView = onNavigateToReportView,
+            selectedMemberPassengerId = selectedMemberPassengerId,
+            deletePassengerFromTicket = deletePassengerFromTicket,
+            onNavigateToReportView = { onNavigateToReportView(ticketDetail.id, userId) },
             onRefresh = onRefresh,
             onOpenDialog = { state ->
                 dialogUiState.value = state.copy()
                 showDialogState.value = true
             },
-            onCloseDialog = {showDialogState.value = false}
+            onCloseDialog = { showDialogState.value = false }
         )
     }
 }
@@ -254,17 +259,17 @@ fun ReservationBottomSheetContent(
 
 @Composable
 private fun MemberInfo(
-    userProfile: String,
+    memberProfile: String,
     memberName: String,
-    passengerId: Long = -1L,
-    memberStudentId: String,
-    userStudentId: String,
+    memberId: String,
+    userId: String,
+    passengerId: String = "",
     @DrawableRes iconDrawable: Int,
+    setPassengerId: (String) -> Unit,
+    setUserId: (String) -> Unit,
     onChangePopUpState: () -> Unit,
     onSetPopUpOffset: (Offset) -> Unit,
-    setPassengerId: (Long) -> Unit = {},
-    setStudentId: (String) -> Unit
-){
+) {
     val clickState = remember {
         mutableStateOf(false)
     }
@@ -276,7 +281,7 @@ private fun MemberInfo(
         verticalAlignment = Alignment.CenterVertically
     ) {
         ProfileImage(
-            userProfile,
+            memberProfile,
             Modifier
                 .width(50.dp)
                 .height(47.dp)
@@ -296,7 +301,7 @@ private fun MemberInfo(
                 modifier = Modifier
             )
         }
-        if(userStudentId != memberStudentId)
+        if (userId != memberId)
             Row(
                 modifier = Modifier.weight(1f),
                 horizontalArrangement = Arrangement.End
@@ -305,8 +310,9 @@ private fun MemberInfo(
                     onClick = {
                         onChangePopUpState()
                         setPassengerId(passengerId)
-                        setStudentId(memberStudentId)
-                        clickState.value = true },
+                        setUserId(userId)
+                        clickState.value = true
+                    },
                     modifier = Modifier
                         .width(24.dp)
                         .height(24.dp)
@@ -335,15 +341,15 @@ private fun MemberInfo(
 
 @Composable
 private fun TicketPassengerList(
-    passengerList: List<UserModel>,
-    userStudentId: String,
+    userId: String,
+    passengerList: List<PassengerState>,
     memberRecruitNumber: Int,
     memberGatherNumber: Int,
     modifier: Modifier,
+    setPassengerId: (String) -> Unit,
+    setUserId: (String) -> Unit,
     onChangePopUpState: () -> Unit,
     onSetPopUpOffset: (Offset) -> Unit,
-    setPassengerId: (Long) -> Unit,
-    setStudentId: (String) -> Unit
 ) {
     LazyColumn(modifier = modifier) {
         item {
@@ -355,18 +361,18 @@ private fun TicketPassengerList(
             )
             VerticalSpacer(height = 4.dp)
         }
-        itemsIndexed(passengerList, key = {index,item -> item.passengerId}) {index, item ->
+        itemsIndexed(passengerList, key = { index, item -> item.passengerId }) { index, item ->
             MemberInfo(
-                userProfile = item.profile,
+                memberProfile = item.profileImage,
                 memberName = item.name,
+                memberId = item.id,
+                userId = userId,
+                setUserId = setUserId,
                 passengerId = item.passengerId,
-                memberStudentId = item.studentID,
-                userStudentId = userStudentId,
                 iconDrawable = R.drawable.ic_hamburger_circle,
                 onChangePopUpState = onChangePopUpState,
                 onSetPopUpOffset = onSetPopUpOffset,
                 setPassengerId = setPassengerId,
-                setStudentId = setStudentId
             )
             VerticalSpacer(height = 5.dp)
         }
@@ -411,22 +417,20 @@ private fun TicketOpenChat(
 
 @Composable
 private fun TicketButton(
-    ticketId: Long,
+    ticketId: String,
     userRole: MemberRole,
-    userStudentId: String,
-    userPassengerId: (String) -> Long?,
-    setPassengerId: (Long) -> Unit,
-    updateTicketStatus: (Long,TicketStatus) -> Unit,
-    deletePassengerFromTicket: () -> Unit,
+    userPassengerId: String,
+    deleteMyTicket: (String) -> Unit,
+    deletePassengerFromTicket: (String, MemberRole) -> Unit,
     onRefresh: (String) -> Unit,
     onCloseBottomSheet: suspend () -> Unit,
     onOpenDialog: (DialogState) -> Unit,
     onCloseDialog: () -> Unit,
     onNavigateToTicketUpdate: () -> Unit
-){
+) {
     val coroutineScope = rememberCoroutineScope()
     Row() {
-        when(userRole){
+        when (userRole) {
             MemberRole.DRIVER -> {
                 LargeSecondaryButton(
                     text = "수정하기",
@@ -446,8 +450,12 @@ private fun TicketButton(
                                 positiveMessage = "삭제",
                                 negativeMessage = "취소",
                                 onPositiveCallback = {
-                                    updateTicketStatus(ticketId,TicketStatus.After)
-                                    onCloseDialog()
+                                    coroutineScope.launch {
+                                        deleteMyTicket(ticketId)
+                                        onCloseDialog()
+                                        onCloseBottomSheet()
+                                        onRefresh(BaseViewModel.EVENT_READY)
+                                    }
                                 },
                                 onNegativeCallback = onCloseDialog
                             )
@@ -468,8 +476,10 @@ private fun TicketButton(
                                 negativeMessage = "아뇨, 유지할게요.",
                                 onPositiveCallback = {
                                     coroutineScope.launch {
-                                        setPassengerId(userPassengerId(userStudentId)?:-2L)
-                                        deletePassengerFromTicket()
+                                        deletePassengerFromTicket(
+                                            userPassengerId,
+                                            MemberRole.PASSENGER
+                                        )
                                         onCloseBottomSheet()
                                         onRefresh(BaseViewModel.EVENT_READY)
                                     }
@@ -498,73 +508,74 @@ fun PreviewReservationBottomSheetContentPassenger() {
     MatePreview {
         ReservationBottomSheetContent(
             ticketDetail = TicketState(
-                1,
-                "20",
-                "",
-                "김민수",
-                "인동",
-                "경운대학교",
-                "경운대학교앞",
-                DayStatus.AM,
-                25200L,
-                "link",
-                4,
-                20000,
+                id = "1",
+                startArea = "해운대",
+                endArea = "동아대학교",
+                boardingPlace = "해운대앞바다",
+                dayStatus = DayStatus.AM,
+                startTime = 25200L,
+                openChatUrl = "",
+                recruitPerson = 4,
+                ticketPrice = 2000,
+                driver = DriverState(
+                    id = "207",
+                    name = "홍길동",
+                    profileImage = "",
+                    email = "",
+                    role = MemberRole.DRIVER,
+                    phoneNumber = "",
+                    carNumber = "",
+                    carImage = ""
+                ),
+                passenger =
                 listOf(
-                    UserModel(
-                        "황진호",
-                        "2017",
-                        "동의대학교",
-                        "010-1234-5678",
-                        MemberRole.DRIVER,
-                        "",
-                        emptyList(),
-                        1
+                    PassengerState(
+                        id = "200",
+                        name = "황진호",
+                        profileImage = "",
+                        email = "",
+                        role = MemberRole.PASSENGER,
+                        passengerId = "1"
                     ),
-                    UserModel(
-                        "이수영",
-                        "20173001",
-                        "동의대학교",
-                        "010-1234-5678",
-                        MemberRole.DRIVER,
-                        "",
-                        emptyList(),
-                        2
+                    PassengerState(
+                        id = "201",
+                        name = "이수영",
+                        profileImage = "",
+                        email = "",
+                        role = MemberRole.PASSENGER,
+                        passengerId = "2"
                     ),
-                    UserModel(
-                        "박신혜",
-                        "20173001",
-                        "동의대학교",
-                        "010-1234-5678",
-                        MemberRole.DRIVER,
-                        "",
-                        emptyList(),
-                        3
+                    PassengerState(
+                        id = "202",
+                        name = "박신혜",
+                        profileImage = "",
+                        email = "",
+                        role = MemberRole.PASSENGER,
+                        passengerId = "3"
                     ),
-                    UserModel(
-                        "박보영",
-                        "20173001",
-                        "동의대학교",
-                        "010-1234-5678",
-                        MemberRole.DRIVER,
-                        "",
-                        emptyList(),
-                        4
+                    PassengerState(
+                        id = "203",
+                        name = "박보영",
+                        profileImage = "",
+                        email = "",
+                        role = MemberRole.PASSENGER,
+                        passengerId = "4"
                     )
                 )
             ),
-            userStudentId = "2017",
             userRole = MemberRole.PASSENGER,
+            userId = "200",
+            userPassengerId = "",
+            selectedMemberPassengerId = "",
             onBrowseOpenChatLink = {},
             onRefresh = {},
-            deletePassengerFromTicket = {},
-            updateTicketStatus = fun(_:Long, _:TicketStatus){},
+            deletePassengerFromTicket = { _, _ -> },
             setPassengerId = {},
-            onNavigateToReportView = {},
-            userPassengerId = {-1L},
+            onNavigateToReportView = { _, _ -> },
             onCloseBottomSheet = {},
-            setStudentId = {},
-            onNavigateToTicketUpdate = {}
+            onNavigateToTicketUpdate = {},
+            deleteMyTicket = {},
+            setUserId = {}
         )
     }
 }
@@ -579,53 +590,58 @@ fun PreviewReservationBottomSheetContentDriver() {
     MatePreview {
         ReservationBottomSheetContent(
             ticketDetail = TicketState(
-                1,
-                "2017",
-                "",
-                "황진호",
-                "인동",
-                "경운대학교",
-                "경운대학교앞",
-                DayStatus.AM,
-                25200L,
-                "link",
-                3,
-                20000,
+                id = "1",
+                startArea = "해운대",
+                endArea = "동아대학교",
+                boardingPlace = "해운대앞바다",
+                dayStatus = DayStatus.AM,
+                startTime = 25200L,
+                openChatUrl = "",
+                recruitPerson = 3,
+                ticketPrice = 2000,
+                driver = DriverState(
+                    id = "202",
+                    name = "황진호",
+                    profileImage = "",
+                    email = "",
+                    role = MemberRole.DRIVER,
+                    phoneNumber = "",
+                    carNumber = "",
+                    carImage = ""
+                ),
+                passenger =
                 listOf(
-                    UserModel(
-                        "김민수",
-                        "20173000",
-                        "동의대학교",
-                        "010-1234-5678",
-                        MemberRole.DRIVER,
-                        "",
-                        emptyList(),
-                        1
+                    PassengerState(
+                        id = "200",
+                        name = "박보영",
+                        profileImage = "",
+                        email = "",
+                        role = MemberRole.PASSENGER,
+                        passengerId = "1"
                     ),
-                    UserModel(
-                        "이수영",
-                        "20173001",
-                        "동의대학교",
-                        "010-1234-5678",
-                        MemberRole.DRIVER,
-                        "",
-                        emptyList(),
-                        2
-                    )
+                    PassengerState(
+                        id = "201",
+                        name = "아이유",
+                        profileImage = "",
+                        email = "",
+                        role = MemberRole.PASSENGER,
+                        passengerId = "2"
+                    ),
                 )
             ),
-            userStudentId = "2017",
-            userRole = MemberRole.DRIVER ,
+            userRole = MemberRole.DRIVER,
+            userId = "202",
+            userPassengerId = "",
+            selectedMemberPassengerId = "",
             onBrowseOpenChatLink = {},
             onRefresh = {},
-            deletePassengerFromTicket = {},
-            updateTicketStatus = fun(_:Long, _:TicketStatus){},
+            deletePassengerFromTicket = { _, _ -> },
             setPassengerId = {},
-            onNavigateToReportView = {},
-            userPassengerId = {-1L},
+            onNavigateToReportView = { _, _ -> },
             onCloseBottomSheet = {},
-            setStudentId = {},
-            onNavigateToTicketUpdate = {}
+            onNavigateToTicketUpdate = {},
+            deleteMyTicket = {},
+            setUserId = {}
         )
     }
 }

@@ -31,7 +31,7 @@ import com.mate.carpool.ui.screen.report.ReportViewModel
 @Composable
 fun NavigationGraph(
     navArgs: NavigationFragmentArgs,
-    navController:NavHostController,
+    navController: NavHostController,
     onNavigateToCreateCarpool: () -> Unit,
     onNavigateToProfileView: () -> Unit,
     carpoolListViewModel: CarpoolListViewModel = hiltViewModel(),
@@ -39,26 +39,23 @@ fun NavigationGraph(
     reportViewModel: ReportViewModel = hiltViewModel(),
     registerDriverViewModel: RegisterDriverViewModel = hiltViewModel(),
     ticketUpdateViewModel: TicketUpdateViewModel = hiltViewModel()
-){
+) {
     NavHost(
         navController = navController,
         startDestination = NavigationItem.Home.route
-    ){
+    ) {
 
         composable(
             route = NavigationItem.Home.route,
             arguments = listOf(navArgument("event") { type = NavType.StringType })
         ) {
-            val refreshState by carpoolListViewModel.refreshState.collectAsStateWithLifecycle()
-
-            val userInfo by carpoolListViewModel.memberModelState.collectAsStateWithLifecycle()
-            val carpoolExistState by carpoolListViewModel.carpoolExistState.collectAsStateWithLifecycle()
-            val carpoolList by carpoolListViewModel.carpoolListState.collectAsStateWithLifecycle()
-
+            val carpoolListUiState by carpoolListViewModel.uiState.collectAsStateWithLifecycle()
             val bottomSheetUiState by homeCarpoolBottomSheetViewModel.uiState.collectAsStateWithLifecycle()
 
             val event by carpoolListViewModel.event.collectAsStateWithLifecycle(
-                initialValue = Event(it.arguments?.getString("event",navArgs.event)?:navArgs.event),
+                initialValue = Event(
+                    it.arguments?.getString("event", navArgs.event) ?: navArgs.event
+                ),
                 lifecycle = LocalLifecycleOwner.current.lifecycle
             )
 
@@ -67,28 +64,28 @@ fun NavigationGraph(
             )
 
             HomeBottomSheetLayout(
-                refreshState = refreshState,
-                userInfo = userInfo,
-                carpoolExistState = carpoolExistState,
+                carpoolListUiState = carpoolListUiState,
                 bottomSheetUiState = bottomSheetUiState,
-                carpoolList = carpoolList,
                 event = event,
                 snackBarMessage = snackBarMessage,
                 onNavigateToCreateCarpool = onNavigateToCreateCarpool,
                 onNavigateToProfileView = onNavigateToProfileView,
                 onNavigateToRegisterDriver = { navController.navigate(NavigationItem.RegisterDriver.StepCarImage.route) },
-                onNavigateToReportView = fun(studentId:String){ navController.navigate("report/${studentId.toLong()}") },
+                onNavigateToReportView = { ticketId: String, userId: String ->
+                    navController.navigate(
+                        "report/${ticketId}/${userId}"
+                    )
+                },
                 onNavigateToTicketUpdate = { navController.navigate(NavigationItem.TicketUpdate.route) },
                 isTicketIsMineOrNot = homeCarpoolBottomSheetViewModel::isTicketIsMineOrNot,
-                getMyPassengerId = homeCarpoolBottomSheetViewModel::getMyPassengerId,
-                getTicketDetail = homeCarpoolBottomSheetViewModel::getTicketDetail,
-                onRefresh = carpoolListViewModel::onRefresh,
                 setPassengerId = homeCarpoolBottomSheetViewModel::setPassengerId,
-                setStudentId = homeCarpoolBottomSheetViewModel::setStudentId,
+                setUserId = homeCarpoolBottomSheetViewModel::setUserId,
+                onRefresh = carpoolListViewModel::onRefresh,
+                getTicketDetail = homeCarpoolBottomSheetViewModel::getTicketDetail,
                 getMyTicketDetail = homeCarpoolBottomSheetViewModel::getMyTicketDetail,
                 addNewPassengerToTicket = homeCarpoolBottomSheetViewModel::addNewPassengerToTicket,
-                updateTicketStatus = homeCarpoolBottomSheetViewModel::updateTicketStatus,
-                deletePassengerToTicket = homeCarpoolBottomSheetViewModel::deletePassengerToTicket,
+                deletePassengerFromTicket = homeCarpoolBottomSheetViewModel::deletePassengerFromTicket,
+                deleteMyTicket = homeCarpoolBottomSheetViewModel::deleteMyTicket,
                 emitSnackBar = homeCarpoolBottomSheetViewModel::emitSnackbar
             )
         }
@@ -102,7 +99,7 @@ fun NavigationGraph(
                 onNavigatePopBackStack = {
                     navController.navigate(route = "home/${Event.getInitValues()}") {
                         popUpTo(NavigationItem.Home.route) {
-                            inclusive=true
+                            inclusive = true
                         }
                     }
                 },
@@ -116,7 +113,7 @@ fun NavigationGraph(
                 uiState = uiState,
                 onCarNumberEdit = registerDriverViewModel::setCarNumber,
                 onNavigatePopBackStack = { navController.popBackStack() },
-                onNavigateToNextStep = {navController.navigate(NavigationItem.RegisterDriver.StepPhoneNumber.route)}
+                onNavigateToNextStep = { navController.navigate(NavigationItem.RegisterDriver.StepPhoneNumber.route) }
             )
         }
         composable(route = NavigationItem.RegisterDriver.StepPhoneNumber.route) {
@@ -127,7 +124,7 @@ fun NavigationGraph(
                 lifecycle = LocalLifecycleOwner.current.lifecycle
             )
 
-            if(event != Event.getInitValues())
+            if (event != Event.getInitValues())
                 LaunchedEffect(key1 = event.type) {
                     navController.navigate("home/${event.type}") {
                         popUpTo(NavigationItem.Home.route) { inclusive = true }
@@ -148,7 +145,10 @@ fun NavigationGraph(
 
         composable(
             route = NavigationItem.Report.route,
-            arguments = listOf(navArgument("studentId") { type = NavType.LongType })
+            arguments = listOf(
+                navArgument("ticketId") { type = NavType.StringType },
+                navArgument("userId") { type = NavType.StringType }
+            )
         ) {
             val reason by reportViewModel.reason.collectAsStateWithLifecycle()
             val description by reportViewModel.description.collectAsStateWithLifecycle()
@@ -158,10 +158,14 @@ fun NavigationGraph(
                 initialValue = Event.getInitValues(),
                 lifecycleOwner = LocalLifecycleOwner.current
             )
-            reportViewModel::init.invoke(it.arguments?.getLong("studentId")?:-1L)
 
-            if(event != Event.getInitValues())
-                LaunchedEffect(key1 = event.type){
+            reportViewModel::init.invoke(
+                it.arguments?.getString("ticketId") ?: "-1",
+                it.arguments?.getString("userId") ?: "-1"
+            )
+
+            if (event != Event.getInitValues())
+                LaunchedEffect(key1 = event.type) {
                     navController.navigate("home/${event.type}") {
                         popUpTo(NavigationItem.Home.route) {
                             inclusive = true
@@ -190,7 +194,8 @@ fun NavigationGraph(
         composable(route = NavigationItem.TicketUpdate.route) {
             val ticketDetail by ticketUpdateViewModel.uiState.collectAsStateWithLifecycle()
             val context = LocalContext.current
-            val fragmentManager = ((context as ContextWrapper).baseContext as FragmentActivity).supportFragmentManager
+            val fragmentManager =
+                ((context as ContextWrapper).baseContext as FragmentActivity).supportFragmentManager
 
             TicketUpdateScreen(
                 ticketDetail = ticketDetail,

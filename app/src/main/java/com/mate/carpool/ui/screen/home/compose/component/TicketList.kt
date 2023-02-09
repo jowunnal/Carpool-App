@@ -16,20 +16,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mate.carpool.R
-import com.mate.carpool.data.model.domain.TicketListModel
 import com.mate.carpool.data.model.item.*
-import com.mate.carpool.data.model.item.TicketStatus
-import com.mate.carpool.data.model.item.TicketType
 import com.mate.carpool.ui.composable.HorizontalDivider
 import com.mate.carpool.ui.composable.HorizontalDividerItem
 import com.mate.carpool.ui.composable.HorizontalSpacer
+import com.mate.carpool.ui.screen.home.item.TicketListState
 import com.mate.carpool.ui.screen.home.vm.HomeBottomSheetViewModel
 import com.mate.carpool.ui.theme.*
+import com.mate.carpool.ui.util.appendBoldText
 import com.mate.carpool.ui.util.tu
 import com.mate.carpool.util.formatStartTimeToDTO
 import kotlinx.coroutines.delay
@@ -39,13 +37,13 @@ import kotlinx.coroutines.launch
 @Composable
 fun TicketList(
     refreshState: Boolean,
-    carpoolList: List<TicketListModel>,
-    getTicketDetail: (Long) -> Unit,
+    carpoolList: List<TicketListState>,
+    getTicketDetail: (String) -> Unit,
     onRefresh: (String) -> Unit,
     onOpenBottomSheet: suspend () -> Unit,
-    isTicketIsMineOrNot: (Long,List<TicketListModel>) -> Unit,
-    userTicketList: List<TicketListModel>
-){
+    isTicketIsMineOrNot: (String, List<TicketListState>) -> Unit,
+    userTicketList: List<TicketListState>
+) {
     val coroutineScope = rememberCoroutineScope()
 
     val pullRefreshState = rememberPullRefreshState(
@@ -59,7 +57,7 @@ fun TicketList(
             .pullRefresh(pullRefreshState)
     ) {
         LazyColumn(Modifier.fillMaxSize()) {
-            if(!refreshState){
+            if (!refreshState) {
                 HorizontalDividerItem()
                 itemsIndexed(items = carpoolList, key = { _, item -> item.id }) { index, item ->
                     Column(modifier = Modifier
@@ -73,7 +71,7 @@ fun TicketList(
                             }
                         }
                     ) {
-                        Row ( verticalAlignment = Alignment.CenterVertically )
+                        Row(verticalAlignment = Alignment.CenterVertically)
                         {
                             ProfileImage(
                                 profileImage = item.profileImage,
@@ -88,21 +86,11 @@ fun TicketList(
 
                             Row(modifier = Modifier.weight(1f)) {
                                 Text(
-                                    text = item.startArea,
-                                    fontWeight = FontWeight.ExtraBold,
-                                    fontSize = 16.tu
-                                )
-                                Text(
-                                    text = " 출발,",
-                                    fontSize = 16.tu
-                                )
-                                Text(
-                                    text = item.dayStatus.displayName,
-                                    fontSize = 16.tu
-                                )
-                                Text(
-                                    text = " ${item.startTime.formatStartTimeToDTO()}",
-                                    fontWeight = FontWeight.ExtraBold,
+                                    text = buildAnnotatedString {
+                                        appendBoldText(item.startArea)
+                                        append(" 출발,${item.dayStatus.displayName}")
+                                        appendBoldText(" ${item.startTime.formatStartTimeToDTO()}")
+                                    },
                                     fontSize = 16.tu
                                 )
                             }
@@ -110,12 +98,11 @@ fun TicketList(
                             com.mate.carpool.ui.composable.Badge(
                                 maximumNumber = item.recruitPerson,
                                 currentNumber = item.currentPersonCount,
-                                status = item.ticketStatus,
-                                costType = item.ticketType
+                                status = item.ticketStatus
                             )
                         }
                     }
-                    if(index != carpoolList.lastIndex)
+                    if (index != carpoolList.lastIndex)
                         HorizontalDivider()
                 }
                 HorizontalDividerItem()
@@ -137,56 +124,52 @@ private fun PreviewTicketList() {
             refreshState = false,
             carpoolList =
             listOf(
-                TicketListModel(
-                    1,
-                    "",
-                    "인동",
-                    25200L,
-                    3,
-                    1,
-                    TicketType.Cost,
-                    TicketStatus.Before,
-                    DayStatus.AM
+                TicketListState(
+                    id = "1",
+                    profileImage = "",
+                    startArea = "인동",
+                    startTime = 25200L,
+                    recruitPerson = 3,
+                    currentPersonCount = 1,
+                    ticketStatus = TicketStatus.Before,
+                    dayStatus = DayStatus.AM
                 ),
-                TicketListModel(
-                    2,
-                    "",
-                    "인동",
-                    25200L,
-                    3,
-                    1,
-                    TicketType.Cost,
-                    TicketStatus.Before,
-                    DayStatus.AM
+                TicketListState(
+                    id = "2",
+                    profileImage = "",
+                    startArea = "인동",
+                    startTime = 25200L,
+                    recruitPerson = 3,
+                    currentPersonCount = 1,
+                    ticketStatus = TicketStatus.Before,
+                    dayStatus = DayStatus.AM
                 ),
-                TicketListModel(
-                    3,
-                    "",
-                    "인동",
-                    25200L,
-                    3,
-                    1,
-                    TicketType.Free,
-                    TicketStatus.Before,
-                    DayStatus.AM
+                TicketListState(
+                    id = "3",
+                    profileImage = "",
+                    startArea = "인동",
+                    startTime = 25200L,
+                    recruitPerson = 3,
+                    currentPersonCount = 1,
+                    ticketStatus = TicketStatus.Before,
+                    dayStatus = DayStatus.AM
                 ),
-                TicketListModel(
-                    4,
-                    "",
-                    "인동",
-                    25200L,
-                    3,
-                    1,
-                    TicketType.Free,
-                    TicketStatus.Before,
-                    DayStatus.AM
+                TicketListState(
+                    id = "4",
+                    profileImage = "",
+                    startArea = "인동",
+                    startTime = 25200L,
+                    recruitPerson = 3,
+                    currentPersonCount = 1,
+                    ticketStatus = TicketStatus.Before,
+                    dayStatus = DayStatus.AM
                 )
             ),
             onRefresh = {},
             onOpenBottomSheet = {},
             getTicketDetail = {},
             userTicketList = emptyList(),
-            isTicketIsMineOrNot = fun(id:Long, ticketList:List<TicketListModel>){}
+            isTicketIsMineOrNot = { ticketId, ticketListStates -> }
         )
     }
 }

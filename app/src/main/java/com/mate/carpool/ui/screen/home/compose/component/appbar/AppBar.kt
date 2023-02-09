@@ -23,10 +23,10 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeAppBar(
-    profileImage:String,
+    profileImage: String,
     goToProfileScreen: () -> Unit,
     onOpenDrawer: suspend () -> Unit
-){
+) {
     val coroutineScope = rememberCoroutineScope()
     SmallTopAppBar(
         title = {
