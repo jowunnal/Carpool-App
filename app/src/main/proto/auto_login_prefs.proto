@@ -4,5 +4,6 @@ option java_package = "com.mate.carpool";
 option java_multiple_files = true;
 
 message AutoLoginPreferences {
-  string token = 1;
+  string accessToken = 1;
+  string refreshToken = 2;
 }

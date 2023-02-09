@@ -6,6 +6,7 @@ import com.mate.carpool.data.Result
 import com.mate.carpool.data.callApi
 import com.mate.carpool.data.model.domain.MemberModel
 import com.mate.carpool.data.model.domain.Profile
+import com.mate.carpool.data.model.domain.domain.UserModel
 import com.mate.carpool.data.model.item.MemberRole
 import com.mate.carpool.data.model.dto.request.UpdateMyProfileRequest
 import com.mate.carpool.data.model.response.ApiResponse
@@ -25,9 +26,8 @@ import javax.inject.Inject
 
 
 class MemberRepositoryImpl @Inject constructor(
-    private val apiService: APIService,
-    @ApplicationContext private val applicationContext: Context
-) : MemberRepository {
+    private val apiService: APIService
+): MemberRepository {
 
     override fun getMemberInfo(): Flow<ApiResponse<MemberModel>> = handleFlowApi {
         apiService.getMemberMe()
@@ -91,5 +91,11 @@ class MemberRepositoryImpl @Inject constructor(
 
     override fun updateProfileImage(part: MultipartBody.Part) = callApi {
         apiService.updateProfileImage(body = part)
+    }
+
+    override fun getMyProfileNew(): Flow<UserModel> = flow {
+        emit(apiService.getMyProfileNew())
+    }.map { profileDTO ->
+        profileDTO.asUserDomainModel()
     }
 }

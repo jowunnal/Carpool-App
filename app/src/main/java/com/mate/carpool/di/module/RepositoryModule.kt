@@ -22,12 +22,11 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindsPassengerRepository(passengerRepositoryImpl: TicketRepositoryImpl) : TicketRepository
+    abstract fun bindsPassengerRepository(passengerRepositoryImpl: TicketRepositoryImpl): TicketRepository
 
     @Binds
     @Singleton
     abstract fun bindsReportRepository(impl: ReportRepositoryImpl): ReportRepository
-
 
     @Binds
     @Singleton
