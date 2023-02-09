@@ -9,23 +9,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
 import com.mate.carpool.ui.composable.LargeDefaultTextField
 import com.mate.carpool.ui.composable.VerticalSpacer
 import com.mate.carpool.ui.composable.button.PrimaryButton
 import com.mate.carpool.ui.composable.layout.CommonLayout
 import com.mate.carpool.ui.screen.register.item.RegisterUiState
 import com.mate.carpool.ui.theme.black
-import com.mate.carpool.ui.util.FileUtils
 import com.mate.carpool.ui.util.tu
 import com.mate.carpool.util.MatePreview
-import okhttp3.MultipartBody
 
 @Composable
 fun RegisterDriverStepPhoneNumberScreen(
@@ -33,14 +29,12 @@ fun RegisterDriverStepPhoneNumberScreen(
     onPhoneNumberEdit: (String) -> Unit,
     onCarNumberEdit: (String) -> Unit,
     onNavigatePopBackStack: () -> Unit,
-    onFetch: (MultipartBody.Part,String,String) -> Unit
+    onFetch: () -> Unit
 ) {
-    val context = LocalContext.current
     val textFieldFocusRequest = remember { FocusRequester() }
 
     CommonLayout(
-        title = "드라이버 등록",
-        onBackClick = onNavigatePopBackStack
+        title = "드라이버 등록", onBackClick = onNavigatePopBackStack
     ) {
         Text(
             text = "연락을 받을 수 있는\n전화번호를 입력해주세요.",
@@ -56,8 +50,7 @@ fun RegisterDriverStepPhoneNumberScreen(
             onValueChange = onPhoneNumberEdit,
             placeholder = "‘-’없이 11자리를 입력해주세요.",
             keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Done
+                keyboardType = KeyboardType.Text, imeAction = ImeAction.Done
             )
         )
         VerticalSpacer(height = 24.dp)
@@ -68,23 +61,13 @@ fun RegisterDriverStepPhoneNumberScreen(
             onValueChange = onCarNumberEdit,
             placeholder = "띄어쓰기 없이 입력해주세요",
             keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Done
+                keyboardType = KeyboardType.Text, imeAction = ImeAction.Done
             )
         )
         Spacer(modifier = Modifier.weight(1f))
         PrimaryButton(
             text = "드라이버 등록하기",
-            onClick = {
-                onFetch(
-                    FileUtils.getImageMultipartBody(
-                        uri = uiState.carImage?:"".toUri(),
-                        context = context
-                    ),
-                    uiState.carNumber,
-                    uiState.phoneNumber
-                )
-            },
+            onClick = { onFetch() },
             modifier = Modifier.fillMaxWidth(),
             enabled = uiState.invalidPhoneNumber and uiState.invalidCarNumber
         )
@@ -93,14 +76,13 @@ fun RegisterDriverStepPhoneNumberScreen(
 
 @Composable
 @Preview
-private fun PreviewRegisterDriverStepPhoneNumberScreen(){
+private fun PreviewRegisterDriverStepPhoneNumberScreen() {
     MatePreview {
-        RegisterDriverStepPhoneNumberScreen(
-            uiState = RegisterUiState.getInitValue(),
+        RegisterDriverStepPhoneNumberScreen(uiState = RegisterUiState.getInitValue(),
             onPhoneNumberEdit = {},
             onCarNumberEdit = {},
             onNavigatePopBackStack = {},
-            onFetch = fun(image:MultipartBody.Part,carNum:String,phoneNum:String){}
+            onFetch = {}
         )
     }
 }

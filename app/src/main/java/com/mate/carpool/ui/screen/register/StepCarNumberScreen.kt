@@ -66,7 +66,7 @@ fun RegisterDriverStepCarNumberScreen(
 
 @Composable
 @Preview
-private fun PreviewRegisterDriverStepCarNumberScreen(){
+private fun PreviewRegisterDriverStepCarNumberScreen() {
     MatePreview {
         RegisterDriverStepCarNumberScreen(
             uiState = RegisterUiState.getInitValue(),
