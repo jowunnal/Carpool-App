@@ -1,23 +1,17 @@
 package com.mate.carpool.ui.screen.register.item
 
-import android.net.Uri
-import com.mate.carpool.data.model.domain.domain.DriverModel
+import androidx.compose.runtime.Stable
 import okhttp3.MultipartBody
 
+@Stable
 data class RegisterUiState(
-    val carImage: Uri?,
+    val carImage: MultipartBody.Part?,
     val carNumber: String,
     val phoneNumber: String,
     val invalidCarImage: Boolean,
     val invalidCarNumber: Boolean,
     val invalidPhoneNumber: Boolean
 ) {
-
-    fun asDriverDomainModel(image: MultipartBody.Part) = DriverModel(
-        image = image,
-        carNumber = carNumber,
-        phoneNumber = phoneNumber
-    )
 
     companion object {
         fun getInitValue() = RegisterUiState(

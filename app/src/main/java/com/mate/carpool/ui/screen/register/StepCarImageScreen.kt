@@ -1,6 +1,5 @@
 package com.mate.carpool.ui.screen.register
 
-import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -14,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,33 +26,38 @@ import com.mate.carpool.ui.screen.home.compose.component.ProfileImage
 import com.mate.carpool.ui.screen.register.item.RegisterUiState
 import com.mate.carpool.ui.theme.black
 import com.mate.carpool.ui.theme.neutral20
+import com.mate.carpool.ui.util.FileUtils
 import com.mate.carpool.ui.util.tu
 import com.mate.carpool.util.MatePreview
+import okhttp3.MultipartBody
 
 @Composable
 fun RegisterDriverStepCarImageScreen(
     uiState: RegisterUiState,
-    setCarImage: (Uri) -> Unit,
+    setCarImage: (MultipartBody.Part) -> Unit,
     onNavigatePopBackStack: () -> Unit,
     onNavigateToNextStep: () -> Unit
 ) {
     BackHandler {
         onNavigatePopBackStack()
     }
-
+    val context = LocalContext.current
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) {
-        if(it != null){
+        if (it != null) {
             setCarImage(
-                it
+                FileUtils.getImageMultipartBody(
+                    uri = it,
+                    context = context
+                )
             )
         }
     }
 
     CommonLayout(
-         title = "드라이버 등록", 
-         onBackClick = onNavigatePopBackStack
+        title = "드라이버 등록",
+        onBackClick = onNavigatePopBackStack
     ) {
         Text(
             text = "카풀에 이용할\n자동차 사진을 올려주세요.",
@@ -93,7 +98,7 @@ fun RegisterDriverStepCarImageScreen(
 
 @Preview
 @Composable
-private fun PreviewRegisterDriverStepCarImageScreen(){
+private fun PreviewRegisterDriverStepCarImageScreen() {
     MatePreview {
         RegisterDriverStepCarImageScreen(
             uiState = RegisterUiState.getInitValue(),

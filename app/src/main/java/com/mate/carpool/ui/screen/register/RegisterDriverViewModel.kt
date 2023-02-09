@@ -1,30 +1,26 @@
 package com.mate.carpool.ui.screen.register
 
-import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.mate.carpool.data.repository.DriverRepository
-import com.mate.carpool.data.repository.impl.AuthRepositoryImpl
 import com.mate.carpool.ui.base.BaseViewModel
 import com.mate.carpool.ui.base.SnackBarMessage
 import com.mate.carpool.ui.screen.register.item.RegisterUiState
 import com.mate.carpool.util.substring
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import okhttp3.MultipartBody
+import retrofit2.HttpException
 import javax.inject.Inject
 
 @HiltViewModel
 class RegisterDriverViewModel @Inject constructor(
     private val driverRepository: DriverRepository
-): BaseViewModel() {
+) : BaseViewModel() {
 
     private val _uiState = MutableStateFlow(RegisterUiState.getInitValue())
     val uiState get() = _uiState
 
-    fun setCarImage(image: Uri) =
+    fun setCarImage(image: MultipartBody.Part) =
         _uiState.update { state ->
             state.copy(carImage = image, invalidCarImage = true)
         }
@@ -35,7 +31,7 @@ class RegisterDriverViewModel @Inject constructor(
             val result = carNum
                 .filter { pattern.matches(it.toString()) }
                 .substring(7)
-            if(result.length == 7)
+            if (result.length == 7)
                 state.copy(carNumber = result, invalidCarNumber = true)
             else
                 state.copy(carNumber = result, invalidCarNumber = false)
@@ -48,29 +44,39 @@ class RegisterDriverViewModel @Inject constructor(
             val result = phoneNum
                 .filter { pattern.matches(it.toString()) }
                 .substring(11)
-            if(result.length == 11)
+            if (result.length == 11)
                 state.copy(phoneNumber = result, invalidPhoneNumber = true)
             else
                 state.copy(phoneNumber = result, invalidPhoneNumber = false)
         }
 
-    fun fetch(
-        image: MultipartBody.Part,
-        carNumber: String,
-        phoneNumber: String
-    ) {
+    fun fetch() {
         driverRepository.registerDriver(
-            carImage = image,
-            carNumber = carNumber,
-            phoneNumber = phoneNumber
+            carImage = uiState.value.carImage!!,
+            carNumber = uiState.value.carNumber,
+            phoneNumber = uiState.value.phoneNumber
         ).onEach { response ->
             when (response.status) {
                 "OK" -> {
                     emitEvent(EVENT_REGISTERED_DRIVER_SUCCEED)
                 }
-
+            }
+        }.catch { e ->
+            when (e) {
+                is HttpException -> {
+                    when (e.code()) {
+                        409 -> {
+                            emitEvent(EVENT_REGISTERED_DRIVER_FAILED)
+                        }
+                    }
+                }
                 else -> {
-                    emitEvent(EVENT_REGISTERED_DRIVER_FAILED)
+                    emitSnackbar(
+                        SnackBarMessage(
+                            headerMessage = "일시적인 장애가 발생하였습니다.",
+                            contentMessage = "다시 시도해 주세요."
+                        )
+                    )
                 }
             }
         }.launchIn(viewModelScope)
