@@ -1,13 +1,11 @@
 package com.mate.carpool.ui.screen.splash
 
 import androidx.lifecycle.viewModelScope
-import com.mate.carpool.AutoLoginPreferences
-import com.mate.carpool.data.Result
 import com.mate.carpool.data.repository.AuthRepository
 import com.mate.carpool.ui.base.BaseViewModel
-import com.mate.carpool.ui.base.SnackBarMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -25,7 +23,7 @@ class SplashViewModel @Inject constructor(
 
     private fun autoLogin() {
         authRepository.autoLoginInfo.onEach { info ->
-            if (info.token.isBlank() || info.token.isEmpty()) {
+            if (info.accessToken.isBlank() || info.accessToken.isEmpty()) {
                 delay(MIN_DELAY_TIME)
                 emitEvent(EVENT_GO_TO_LOGIN_SCREEN)
             } else {
@@ -35,24 +33,18 @@ class SplashViewModel @Inject constructor(
     }
 
     private fun login() {
-        authRepository.checkAccessTokenIsExpired().onEach { result ->
-            when (result) {
-                is Result.Loading -> {
-
-                }
-
-                is Result.Success -> {
-                    delayIfNeed()
-                    emitEvent(EVENT_GO_TO_HOME_SCREEN)
-                }
-
-                is Result.Error -> {
-                    emitSnackbar(SnackBarMessage(headerMessage = result.message))
-                    delayIfNeed()
-                    emitEvent(EVENT_GO_TO_LOGIN_SCREEN)
-                }
-            }
-        }.launchIn(viewModelScope)
+        authRepository.reNewAccessToken()
+            .onEach { loginResponse ->
+                delayIfNeed()
+                authRepository.updateToken(
+                    accessToken = loginResponse.accessToken,
+                    refreshToken = loginResponse.refreshToken
+                )
+                emitEvent(EVENT_GO_TO_HOME_SCREEN)
+            }.catch {
+                delayIfNeed()
+                emitEvent(EVENT_GO_TO_LOGIN_SCREEN)
+            }.launchIn(viewModelScope)
     }
 
     private suspend fun delayIfNeed() {

@@ -1,14 +1,14 @@
 package com.mate.carpool.di.module
 
-import android.content.Context
-import android.util.Log
+import androidx.datastore.core.DataStore
 import com.google.gson.GsonBuilder
+import com.mate.carpool.AutoLoginPreferences
 import com.mate.carpool.data.service.APIService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -24,10 +24,16 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 
-class HeaderInterceptor @Inject constructor(@ApplicationContext private val context:Context) : Interceptor {
+class HeaderInterceptor @Inject constructor(private val autoLoginPreferences: DataStore<AutoLoginPreferences>) :
+    Interceptor {
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
-        val token = context.applicationContext.getSharedPreferences("accessToken",Context.MODE_PRIVATE).getString("accessToken","")!!
+        var token = ""
+        runBlocking {
+            autoLoginPreferences.data.collect {
+                token = "Bearer " + it.accessToken
+            }
+        }
         val newRequest = chain.request().newBuilder()
             .addHeader("Authorization", token)
             .build()
@@ -53,8 +59,8 @@ object RetrofitModule {
 
     @Singleton
     @Provides
-    fun provideHeaderIntercepter(@ApplicationContext context:Context): HeaderInterceptor {
-        return HeaderInterceptor(context)
+    fun provideHeaderIntercepter(autoLoginPreferences: DataStore<AutoLoginPreferences>): HeaderInterceptor {
+        return HeaderInterceptor(autoLoginPreferences)
     }
 
     @Singleton
@@ -65,7 +71,7 @@ object RetrofitModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(headerInterceptor: HeaderInterceptor):OkHttpClient{
+    fun provideOkHttpClient(headerInterceptor: HeaderInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
@@ -77,7 +83,10 @@ object RetrofitModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient,nullOnEmptyConverterFactory: NullOnEmptyConverterFactory):Retrofit{
+    fun provideRetrofit(
+        okHttpClient: OkHttpClient,
+        nullOnEmptyConverterFactory: NullOnEmptyConverterFactory
+    ): Retrofit {
         return Retrofit.Builder()
             .addConverterFactory(nullOnEmptyConverterFactory)
             .addConverterFactory(ScalarsConverterFactory.create())
