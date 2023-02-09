@@ -23,9 +23,7 @@ class SignUpViewModel @Inject constructor(
 
     fun setName(value: String) = _uiState.update { state ->
         val pattern = Regex("[ㄱ-ㅎ|가-힣]")
-        val result = value
-            .filter { pattern.matches(it.toString()) }
-            .substring(4)
+        val result = value.filter { pattern.matches(it.toString()) }.substring(4)
         state.copy(name = result, invalidName = false)
     }
 
@@ -42,17 +40,13 @@ class SignUpViewModel @Inject constructor(
     fun setShowPassword(value: Boolean) =
         _uiState.update { state -> state.copy(showPassword = value) }
 
-    fun signUp(
-        email: String,
-        passWord: String,
-        name: String
-    ) {
-        if (!checkInput()) return
+    fun signUp() {
+        if (checkInput().not()) return
 
         authRepository.signUp(
-            email = email,
-            passWord = passWord,
-            name = name
+            email = uiState.value.email,
+            passWord = uiState.value.password,
+            name = uiState.value.name
         ).onEach { _ ->
             _uiState.update { it.copy(signUpSuccess = true) }
         }.catch {
@@ -81,11 +75,9 @@ class SignUpViewModel @Inject constructor(
             return false
         }
 
-        if (password.length < 8 || password.length > 20
-            || !password.matches(passwordPattern)
-            || !password.contains(Regex("[a-z]"))
-            || !password.contains(Regex("[A-Z]"))
-            || !password.contains(Regex("[0-9]"))
+        if (password.length < 8 || password.length > 20 || !password.matches(passwordPattern) || !password.contains(
+                Regex("[a-z]")
+            ) || !password.contains(Regex("[A-Z]")) || !password.contains(Regex("[0-9]"))
         ) {
             _uiState.update { it.copy(invalidPassword = true) }
             return false

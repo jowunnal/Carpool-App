@@ -1,8 +1,10 @@
 package com.mate.carpool.ui.screen.login.item
 
+import androidx.compose.runtime.Stable
 import com.mate.carpool.data.model.domain.domain.UserModel
 import com.mate.carpool.data.model.item.MemberRole
 
+@Stable
 data class LoginUiState(
     val email: String,
     val password: String,
@@ -13,15 +15,6 @@ data class LoginUiState(
 ) {
     val enableLogin: Boolean
         get() = email.isNotBlank() && password.isNotBlank()
-
-    fun asUserDomainModel() = UserModel(
-        name = "",
-        email = email,
-        passWord = password,
-        id = "",
-        profileImage = "",
-        role = MemberRole.PASSENGER
-    )
 
     companion object {
         fun getInitialValue() = LoginUiState(

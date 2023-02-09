@@ -3,11 +3,12 @@ package com.mate.carpool.data.repository
 import com.mate.carpool.AutoLoginPreferences
 import com.mate.carpool.data.Result
 import com.mate.carpool.data.model.domain.domain.UserModel
+import com.mate.carpool.data.model.dto.dto.response.LoginResponse
 import com.mate.carpool.data.model.response.ResponseMessage
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
-    val autoLoginInfo:Flow<AutoLoginPreferences>
+    val autoLoginInfo: Flow<AutoLoginPreferences>
 
     fun login(
         email: String,
@@ -22,5 +23,7 @@ interface AuthRepository {
         name: String
     ): Flow<String>
 
-    fun checkAccessTokenIsExpired(): Flow<Result<ResponseMessage>>
+    fun reNewAccessToken(): Flow<LoginResponse>
+
+    suspend fun updateToken(accessToken: String, refreshToken: String)
 }

@@ -11,7 +11,7 @@ class AutoLoginDataSource @Inject constructor(
     private val autoLoginDataStore: DataStore<AutoLoginPreferences>
 ) {
     val autoLoginInfo: Flow<AutoLoginPreferences> =
-        autoLoginDataStore.data  // TODO 비밀번호 복호화
+        autoLoginDataStore.data
             .catch { exception ->
                 if (exception is IOException) {
                     emit(AutoLoginPreferences.getDefaultInstance())
@@ -20,10 +20,16 @@ class AutoLoginDataSource @Inject constructor(
                 }
             }
 
-    suspend fun updateAutoLoginInfo(token:String) {
+    suspend fun updateAutoLoginInfo(
+        accessToken: String,
+        refreshToken: String
+    ) {
         autoLoginDataStore.updateData { preferences ->
             // TODO 토큰암호화? 필요한가?
-            preferences.toBuilder().setToken(token).build()
+            preferences.toBuilder()
+                .setAccessToken(accessToken)
+                .setRefreshToken(refreshToken)
+                .build()
         }
     }
 }
