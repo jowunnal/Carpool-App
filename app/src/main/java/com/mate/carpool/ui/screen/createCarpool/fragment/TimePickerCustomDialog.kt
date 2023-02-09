@@ -12,7 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class TimePickerCustomDialog(
     private val getTime: (TimeUiState) -> Unit,
-) :BaseBottomSheetDialogFragment<DialogTimePickerBinding>(R.layout.dialog_time_picker) {
+) : BaseBottomSheetDialogFragment<DialogTimePickerBinding>(R.layout.dialog_time_picker) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -35,7 +35,7 @@ class TimePickerCustomDialog(
             displayedValues = DayStatus.values().map { it.displayName }.toTypedArray()
         }
         dayStatus.setOnValueChangedListener { picker, i, i2 ->
-            when(picker.value) {
+            when (picker.value) {
                 0 -> {
                     hour.apply {
                         maxValue = 11

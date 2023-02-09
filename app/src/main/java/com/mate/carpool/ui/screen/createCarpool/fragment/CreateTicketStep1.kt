@@ -9,15 +9,17 @@ import com.mate.carpool.ui.screen.createCarpool.vm.CreateTicketViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CreateTicketStep1 : BaseFragment<CreateTicketViewModel,FragmentCreateCarpoolTicketStep1Binding>() {
+class CreateTicketStep1 :
+    BaseFragment<CreateTicketViewModel, FragmentCreateCarpoolTicketStep1Binding>() {
 
     override val viewModel: CreateTicketViewModel by hiltNavGraphViewModels(R.id.createTicket)
 
-    override fun getViewBinding(): FragmentCreateCarpoolTicketStep1Binding = FragmentCreateCarpoolTicketStep1Binding.inflate(layoutInflater)
+    override fun getViewBinding(): FragmentCreateCarpoolTicketStep1Binding =
+        FragmentCreateCarpoolTicketStep1Binding.inflate(layoutInflater)
 
     override val useActionBar: Boolean = true
 
-    override fun initViews() = with(binding){
+    override fun initViews() = with(binding) {
         context = requireActivity()
         createTicketViewModel = viewModel
         startingAreaList = StartArea.values().map { it.displayName }
