@@ -18,15 +18,14 @@ fun String.substring(maxLength: Int) =
     if (length <= maxLength) this else substring(0 until maxLength)
 
 fun String.formatStartTime(): Long =
-    this.run {
-        val cal = Calendar.getInstance()
-        cal.year = substring(0..3).toInt()
-        cal.month = substring(5..6).toInt()
-        cal.date = substring(8..9).toInt()
-        cal.hour = substring(11..12).toInt()
-        cal.minute = substring(14..15).toInt()
-        cal.timeInMillis
-    }
+    Calendar.getInstance().apply {
+        year = substring(0..3).toInt()
+        month = substring(5..6).toInt()
+        date = substring(8..9).toInt()
+        hour = substring(11..12).toInt()
+        minute = substring(14..15).toInt()
+    }.timeInMillis
+
 
 fun String.asStartTimeDomain(): String =
     this.run {

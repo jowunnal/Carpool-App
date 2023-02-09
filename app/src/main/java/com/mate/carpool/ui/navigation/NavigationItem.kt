@@ -14,7 +14,7 @@ sealed class NavigationItem(
     )
     object Report: NavigationItem(
         title = "신고",
-        route = "report/{studentId}"
+        route = "report/{ticketId}/{userId}"
     )
 
     sealed class RegisterDriver(val step:String) : NavigationItem(title = "드라이버 등록", route = "registerDriver/$step"){

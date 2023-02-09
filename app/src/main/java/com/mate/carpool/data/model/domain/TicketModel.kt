@@ -24,21 +24,6 @@ data class TicketModel(
     val ticketPrice: Int = 0,
     val passenger:List<UserModel>
 ) {
-    fun asTicketState() = TicketState(
-        id = id,
-        studentNumber = studentNumber,
-        profileImage = profileImage,
-        memberName = memberName,
-        startArea = startArea,
-        endArea = endArea,
-        boardingPlace = boardingPlace,
-        dayStatus = dayStatus,
-        startTime = startTime,
-        openChatUrl = openChatUrl,
-        recruitPerson = recruitPerson,
-        ticketPrice = ticketPrice,
-        passenger = passenger
-    )
 
     companion object{
         fun getInitValue() = TicketModel(

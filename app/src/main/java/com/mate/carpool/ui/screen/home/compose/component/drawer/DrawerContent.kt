@@ -46,11 +46,11 @@ fun DrawerContent(
     items: List<DrawerItem>,
     onCloseDrawer: suspend () -> Unit
 ) {
-    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr){
+    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
         Column() {
             Header(onCloseDrawer)
             Column(modifier = Modifier.weight(1f)) {
-                for(item in items){
+                for (item in items) {
                     Body(item = item)
                 }
             }
@@ -93,11 +93,12 @@ private fun Header(
 private fun Body(
     item: DrawerItem
 ) {
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .padding(16.dp)
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
     ) {
-        when(item){
+        when (item) {
             DrawerItem.WITHDRAW -> {
                 Text(
                     text = item.title,
@@ -120,10 +121,11 @@ private fun Body(
 
 @Composable
 private fun Tail() {
-    Row(modifier = Modifier
-        .height(56.dp)
-        .fillMaxWidth()
-        .padding(16.dp)
+    Row(
+        modifier = Modifier
+            .height(56.dp)
+            .fillMaxWidth()
+            .padding(16.dp)
     ) {
         Text(
             text = "앱 버전 1.02",
@@ -135,14 +137,14 @@ private fun Tail() {
 
 @Preview(showBackground = true)
 @Composable
-private fun PreviewDrawerContent(){
+private fun PreviewDrawerContent() {
     MateTheme() {
         DrawerContent(
             items = listOf(
-            DrawerItem.CONTACT,
-            DrawerItem.CLAUSE,
-            DrawerItem.LOGOUT,
-            DrawerItem.WITHDRAW
+                DrawerItem.CONTACT,
+                DrawerItem.CLAUSE,
+                DrawerItem.LOGOUT,
+                DrawerItem.WITHDRAW
             ),
             onCloseDrawer = {}
         )

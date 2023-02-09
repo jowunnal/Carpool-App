@@ -26,7 +26,8 @@ fun PopupWindow(
     dialogState: Boolean,
     popUpOffset: Offset,
     userRole: MemberRole,
-    deletePassengerFromTicket: () -> Unit,
+    selectedMemberPassengerId: String,
+    deletePassengerFromTicket: (String,MemberRole) -> Unit,
     onNavigateToReportView: () -> Unit,
     onRefresh: (String) -> Unit,
     onOpenDialog: (DialogState) -> Unit,
@@ -34,7 +35,7 @@ fun PopupWindow(
 ) {
     if (dialogState) {
         Popup(
-            popupPositionProvider = object : PopupPositionProvider{
+            popupPositionProvider = object : PopupPositionProvider {
                 override fun calculatePosition(
                     anchorBounds: IntRect,
                     windowSize: IntSize,
@@ -59,7 +60,7 @@ fun PopupWindow(
                     .shadow(0.5.dp)
 
             ) {
-                if(userRole == MemberRole.DRIVER)
+                if (userRole == MemberRole.DRIVER)
                     PopUpItem(
                         text = "퇴출하기",
                         modifier = Modifier
@@ -77,7 +78,7 @@ fun PopupWindow(
                                         positiveMessage = "네, 퇴출할래요.",
                                         negativeMessage = "아뇨, 취소할게요.",
                                         onPositiveCallback = {
-                                            deletePassengerFromTicket()
+                                            deletePassengerFromTicket(selectedMemberPassengerId,MemberRole.DRIVER)
                                             onRefresh(BaseViewModel.EVENT_READY)
                                             onCloseDialog()
                                         },
@@ -108,9 +109,9 @@ fun PopupWindow(
 
 @Composable
 private fun PopUpItem(
-    text:String,
+    text: String,
     modifier: Modifier
-){
+) {
     Row(
         modifier = modifier
     ) {
@@ -119,6 +120,7 @@ private fun PopUpItem(
             fontSize = 14.tu,
             fontWeight = FontWeight.W400,
             color = black,
-            modifier = Modifier.weight(1f))
+            modifier = Modifier.weight(1f)
+        )
     }
 }

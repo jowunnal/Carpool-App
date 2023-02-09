@@ -9,6 +9,9 @@ enum class MemberRole(val displayName: String) {
     ADMIN(displayName = "관리자");
 
     companion object {
+
+        fun findByDisplayName(name: String) = values().first { role -> role.displayName == name }
+
         fun getMemberRoleDTO(displayName: String) =
             when(displayName) {
                 "패신저" -> { "PASSENGER" }

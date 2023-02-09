@@ -1,5 +1,6 @@
 package com.mate.carpool.util
 
+import com.mate.carpool.data.model.item.DayStatus
 import com.mate.carpool.ui.util.*
 import java.util.*
 import kotlin.time.Duration.Companion.minutes
@@ -29,4 +30,13 @@ fun Long.startTimeAsRequestDTO() = this.run {
     val cal = Calendar.getInstance()
     cal.timeInMillis = this
     String.format(Locale.KOREA,"%tF %tH-%tM-%tS",cal.timeInMillis,cal.hour,cal.minute,cal.second)
+}
+
+fun Long.startTimeToDayStatus() = this.run {
+    val cal = Calendar.getInstance()
+    cal.timeInMillis = this
+    when(cal.hour < 12) {
+        true -> DayStatus.AM
+        false -> DayStatus.PM
+    }
 }

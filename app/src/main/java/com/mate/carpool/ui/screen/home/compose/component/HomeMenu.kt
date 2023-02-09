@@ -28,7 +28,7 @@ fun HomeMenu(
     userRole: MemberRole,
     onNavigateToCreateCarpool: () -> Unit,
     onNavigateToRegisterDriver: () -> Unit
-){
+) {
     Column() {
         HomeCardView(
             imageId = R.drawable.ic_home_folder,

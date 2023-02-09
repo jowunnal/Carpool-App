@@ -3,90 +3,92 @@ package com.mate.carpool.ui.screen.home.vm
 import androidx.lifecycle.viewModelScope
 import com.mate.carpool.data.model.domain.MemberModel
 import com.mate.carpool.data.model.domain.TicketListModel
+import com.mate.carpool.data.model.item.DayStatus
+import com.mate.carpool.data.model.item.TicketStatus
 import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.repository.CarpoolListRepository
 import com.mate.carpool.data.repository.MemberRepository
 import com.mate.carpool.ui.base.BaseViewModel
+import com.mate.carpool.ui.screen.home.item.CarpoolListUiState
+import com.mate.carpool.ui.screen.home.item.TicketListState
+import com.mate.carpool.ui.screen.home.item.UserState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import javax.inject.Inject
 
 @HiltViewModel
 class CarpoolListViewModel @Inject constructor(
     private val carpoolListRepository: CarpoolListRepository,
     private val memberRepository: MemberRepository
-): BaseViewModel() {
+) : BaseViewModel() {
 
-    private val mutableCarpoolListState = MutableStateFlow<List<TicketListModel>>(emptyList())
-    val carpoolListState get() = mutableCarpoolListState.asStateFlow()
-
-    private val mutableCarpoolExistState = MutableStateFlow(false)
-    val carpoolExistState get() = mutableCarpoolExistState.asStateFlow()
-
-    private val mutableMemberModelState = MutableStateFlow(MemberModel.getInitValue())
-    val memberModelState get() = mutableMemberModelState.asStateFlow()
-
-    private val _refreshState = MutableStateFlow(false)
-    val refreshState get() = _refreshState.asStateFlow()
+    private val _uiState = MutableStateFlow(CarpoolListUiState.getInitValue())
+    val uiState get() = _uiState.asStateFlow()
 
     init {
         getCarpoolList()
         getMemberModel()
     }
 
-    fun onRefresh(event:String) {
+    fun onRefresh(event: String) {
         viewModelScope.launch {
-            _refreshState.update { true }
+            _uiState.update { state ->
+                state.copy(refreshState = true)
+            }
+
             getMemberModel()
             getCarpoolList()
             delay(1000)
-            _refreshState.update { false }
+
+            _uiState.update { state ->
+                state.copy(refreshState = false)
+            }
+
             emitEvent(event)
         }
     }
 
-    private fun getCarpoolList(){
-        viewModelScope.launch {
-            carpoolListRepository.getTicketList().collectLatest {
-                when(it){
-                    is ApiResponse.Loading -> {
-                    }
-                    is ApiResponse.SuccessResponse ->{
-                        mutableCarpoolListState.emit(it.responseMessage)
-                    }
-                    is ApiResponse.FailResponse ->{
-                    }
-                    is ApiResponse.ExceptionResponse ->{
+    private fun getCarpoolList() = carpoolListRepository.getTicketList().onEach {
+            when (it.isNotEmpty()) {
+                true -> {
+                    _uiState.update { state ->
+                        state.copy(ticketList = it.map { ticketModel ->
+                            ticketModel.asTicketListState()
+                        })
                     }
                 }
+                false -> {
+                    //TODO 데이터없을때 처리 ( 화면상에 메세지 표시하는등 )
+                }
             }
-        }
-    }
+        }.catch { e ->
+            when (e) {
+                is HttpException -> {
+                    //TODO 결과값 불러올수 없을때 처리
+                }
+                else -> {
+                    //TODO 네트워크 예외 이외의 다른 예외처리
+                }
+            }
+        }.launchIn(viewModelScope)
 
-    private fun getMemberModel(){
-        viewModelScope.launch {
-            memberRepository.getMemberInfo().collectLatest {
-                when(it){
-                    is ApiResponse.Loading -> {
-                    }
-                    is ApiResponse.SuccessResponse ->{
-                        mutableMemberModelState.emit(it.responseMessage)
-                        if(it.responseMessage.ticketList?.size!=0)
-                            mutableCarpoolExistState.emit(true)
-                        else
-                            mutableCarpoolExistState.emit(false)
-                    }
-                    is ApiResponse.FailResponse ->{
-                    }
-                    is ApiResponse.ExceptionResponse ->{
-                    }
+
+    private fun getMemberModel() = memberRepository.getMyProfileNew().onEach { userModel ->
+            _uiState.update { state ->
+                state.copy(userState = userModel.asUserStateItem())
+            }
+        }.catch { e ->
+            when (e) {
+                is HttpException -> {
+                    //TODO 결과값 불러올수 없을때 처리
+                }
+                else -> {
+                    //TODO 네트워크 예외 이외의 다른 예외처리
                 }
             }
-        }
-    }
+        }.launchIn(viewModelScope)
+
 }
