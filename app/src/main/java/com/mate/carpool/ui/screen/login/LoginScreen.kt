@@ -41,7 +41,7 @@ fun LoginScreen(
     onEmailEdit: (String) -> Unit,
     onPasswordEdit: (String) -> Unit,
     onShowPasswordClick: () -> Unit,
-    onLoginClick: (String,String) -> Unit,
+    onLoginClick: () -> Unit,
     onBackClick: () -> Unit,
     moveToHomeScreen: () -> Unit,
 ) {
@@ -51,8 +51,8 @@ fun LoginScreen(
         SnackbarHostState()
     }
 
-    if(snackBarMessage.contentMessage.isNotBlank())
-        LaunchedEffect(key1 = snackBarMessage.contentMessage){
+    if (snackBarMessage.contentMessage.isNotBlank())
+        LaunchedEffect(key1 = snackBarMessage.contentMessage) {
             snackBarHostState.showSnackbar(
                 message = snackBarMessage.contentMessage,
                 duration = SnackbarDuration.Indefinite,
@@ -126,7 +126,7 @@ fun LoginScreen(
         LargePrimaryButton(
             modifier = Modifier.fillMaxWidth(),
             text = "로그인하기",
-            onClick = { onLoginClick(uiState.email,uiState.password) },
+            onClick = { onLoginClick() },
             enabled = uiState.enableLogin,
         )
     }
@@ -148,7 +148,7 @@ private fun LoginScreenPreview1() {
         onEmailEdit = {},
         onPasswordEdit = {},
         onShowPasswordClick = {},
-        onLoginClick = {email,password ->},
+        onLoginClick = {},
         onBackClick = {},
         moveToHomeScreen = {},
     )
@@ -164,7 +164,7 @@ private fun LoginScreenPreview2() {
         onEmailEdit = {},
         onPasswordEdit = {},
         onShowPasswordClick = {},
-        onLoginClick = {email,password ->},
+        onLoginClick = {},
         onBackClick = {},
         moveToHomeScreen = {},
     )
@@ -182,7 +182,7 @@ private fun LoginScreenPreview3() {
         onEmailEdit = {},
         onPasswordEdit = {},
         onShowPasswordClick = {},
-        onLoginClick = {email,password ->},
+        onLoginClick = {},
         onBackClick = {},
         moveToHomeScreen = {},
     )
@@ -200,7 +200,7 @@ private fun LoginScreenPreview4() {
         onEmailEdit = {},
         onPasswordEdit = {},
         onShowPasswordClick = {},
-        onLoginClick = {email,password ->},
+        onLoginClick = {},
         onBackClick = {},
         moveToHomeScreen = {},
     )
@@ -219,7 +219,7 @@ private fun LoginScreenPreview5() {
         onEmailEdit = {},
         onPasswordEdit = {},
         onShowPasswordClick = {},
-        onLoginClick = {email,password ->},
+        onLoginClick = {},
         onBackClick = {},
         moveToHomeScreen = {},
     )

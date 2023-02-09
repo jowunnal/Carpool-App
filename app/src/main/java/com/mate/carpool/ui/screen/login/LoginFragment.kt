@@ -46,7 +46,8 @@ class LoginFragment : BaseComposeFragment<LoginViewModel>() {
                 findNavController().popBackStack()
             },
             moveToHomeScreen = rememberLambda {
-                val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment(SplashViewModel.EVENT_GO_TO_HOME_SCREEN)
+                val action =
+                    LoginFragmentDirections.actionLoginFragmentToHomeFragment(SplashViewModel.EVENT_GO_TO_HOME_SCREEN)
                 findNavController().navigate(action)
             }
         )

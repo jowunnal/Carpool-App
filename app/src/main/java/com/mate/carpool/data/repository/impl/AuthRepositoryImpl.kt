@@ -6,7 +6,9 @@ import com.mate.carpool.data.callApi
 import com.mate.carpool.data.datasource.AutoLoginDataSource
 import com.mate.carpool.data.model.domain.domain.UserModel
 import com.mate.carpool.data.model.dto.dto.request.LoginDTO
+import com.mate.carpool.data.model.dto.dto.request.ReissueDTO
 import com.mate.carpool.data.model.dto.dto.request.SignUpDTO
+import com.mate.carpool.data.model.dto.dto.response.LoginResponse
 import com.mate.carpool.data.model.item.StudentItem
 import com.mate.carpool.data.model.response.ApiResponse
 import com.mate.carpool.data.model.response.ResponseMessage
@@ -17,36 +19,25 @@ import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
-    private val apiService: APIService,
-    private val autoLoginDataSource: AutoLoginDataSource
+    private val apiService: APIService, private val autoLoginDataSource: AutoLoginDataSource
 ) : AuthRepository {
 
     override val autoLoginInfo: Flow<AutoLoginPreferences> = autoLoginDataSource.autoLoginInfo
 
-    override fun signUp(
-        email: String,
-        passWord: String,
-        name: String
-    ): Flow<String> = flow {
-        emit(apiService.signUp(SignUpDTO.fromDomain(
-            email = email,
-            passWord = passWord,
-            name = name
-        )))
-    }.map { response ->
-        response.message
-    }
-
     override fun login(
-        email: String,
-        passWord: String
+        email: String, passWord: String
     ): Flow<String> = flow {
-        emit(apiService.login(LoginDTO.fromDomain(
-            email = email,
-            passWord = passWord
-        )))
+        emit(
+            apiService.login(
+                LoginDTO.fromDomain(
+                    email = email, passWord = passWord
+                )
+            )
+        )
     }.map { response ->
-        autoLoginDataSource.updateAutoLoginInfo(response.accessToken)
+        autoLoginDataSource.updateAutoLoginInfo(
+            accessToken = response.accessToken, refreshToken = response.refreshToken
+        )
         response.accessToken
     }
 
@@ -56,28 +47,36 @@ class AuthRepositoryImpl @Inject constructor(
         response.message
     }
 
-    override fun checkAccessTokenIsExpired(): Flow<Result<ResponseMessage>> = callApi {
-        apiService.checkAccessTokenIsExpired()
-    }.map {
-        when(it){
-            is Result.Loading -> {
-                Result.Loading
-            }
-
-            is Result.Success -> {
-                Result.Success(
-                    ResponseMessage(
-                        status = it.data.hashCode(),
-                        message = it.data,
-                        code = it.data
+    override fun reNewAccessToken(): Flow<LoginResponse> = flow {
+        autoLoginInfo.collect { pref ->
+            emit(
+                apiService.reNewAccessToken(
+                    ReissueDTO.fromDomain(
+                        accessToken = pref.accessToken, refreshToken = pref.refreshToken
                     )
                 )
-            }
-            is Result.Error -> {
-                Result.Error(
-                    it.message
-                )
-            }
+            )
         }
+    }
+
+    override suspend fun updateToken(accessToken: String, refreshToken: String) {
+        autoLoginDataSource.updateAutoLoginInfo(
+            accessToken = accessToken,
+            refreshToken = refreshToken
+        )
+    }
+
+    override fun signUp(
+        email: String, passWord: String, name: String
+    ): Flow<String> = flow {
+        emit(
+            apiService.signUp(
+                SignUpDTO.fromDomain(
+                    email = email, passWord = passWord, name = name
+                )
+            )
+        )
+    }.map { response ->
+        response.message
     }
 }

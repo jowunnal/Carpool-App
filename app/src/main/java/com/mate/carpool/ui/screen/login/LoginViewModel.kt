@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val authRepository: AuthRepository,
-    @ApplicationContext private val context:Context
+    @ApplicationContext private val context: Context
 ) : BaseViewModel() {
 
     private val _uiState = MutableStateFlow(LoginUiState.getInitialValue())
@@ -41,13 +41,10 @@ class LoginViewModel @Inject constructor(
         _uiState.update { it.copy(showPassword = value) }
     }
 
-    fun login(
-        email: String,
-        passWord: String
-    ) {
+    fun login() {
         authRepository.login(
-            email = email,
-            passWord = passWord
+            email = uiState.value.email,
+            passWord = uiState.value.password
         ).onEach {
             _uiState.update { it.copy(loginSuccess = true) }
         }.catch {

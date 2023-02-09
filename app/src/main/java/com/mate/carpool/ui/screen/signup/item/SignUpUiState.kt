@@ -1,8 +1,10 @@
 package com.mate.carpool.ui.screen.signup.item
 
+import androidx.compose.runtime.Stable
 import com.mate.carpool.data.model.domain.domain.UserModel
 import com.mate.carpool.data.model.item.MemberRole
 
+@Stable
 data class SignUpUiState(
     val name: String,
     val email: String,
@@ -15,15 +17,6 @@ data class SignUpUiState(
 ) {
     val enableSignUp: Boolean
         get() = name.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty()
-
-    fun asUserDomainModel() = UserModel(
-        name = name,
-        email = email,
-        passWord = password,
-        id = "",
-        profileImage = "",
-        role = MemberRole.PASSENGER
-    )
 
     companion object {
         fun getInitialValue() = SignUpUiState(
