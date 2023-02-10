@@ -143,8 +143,7 @@ private fun HistoryCell(
         Badge(
             maximumNumber = maximumNumber,
             currentNumber = currentNumber,
-            status = status,
-            costType = costType
+            enabled = true
         )
     }
 }

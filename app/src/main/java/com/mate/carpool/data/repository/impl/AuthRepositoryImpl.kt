@@ -1,20 +1,14 @@
 package com.mate.carpool.data.repository.impl
 
 import com.mate.carpool.AutoLoginPreferences
-import com.mate.carpool.data.Result
-import com.mate.carpool.data.callApi
 import com.mate.carpool.data.datasource.AutoLoginDataSource
-import com.mate.carpool.data.model.domain.domain.UserModel
+import com.mate.carpool.data.model.domain.domain.ResponseModel
 import com.mate.carpool.data.model.dto.dto.request.LoginDTO
 import com.mate.carpool.data.model.dto.dto.request.ReissueDTO
 import com.mate.carpool.data.model.dto.dto.request.SignUpDTO
 import com.mate.carpool.data.model.dto.dto.response.LoginResponse
-import com.mate.carpool.data.model.item.StudentItem
-import com.mate.carpool.data.model.response.ApiResponse
-import com.mate.carpool.data.model.response.ResponseMessage
 import com.mate.carpool.data.repository.AuthRepository
 import com.mate.carpool.data.service.APIService
-import com.mate.carpool.ui.util.HandleFlowUtils.handleFlowApi
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
@@ -64,6 +58,12 @@ class AuthRepositoryImpl @Inject constructor(
             accessToken = accessToken,
             refreshToken = refreshToken
         )
+    }
+
+    override fun withDraw(): Flow<ResponseModel> = flow {
+        emit(apiService.withDraw())
+    }.map { response ->
+        response.asResponseModel()
     }
 
     override fun signUp(

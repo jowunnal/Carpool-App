@@ -1,20 +1,12 @@
 package com.mate.carpool.ui.screen.report
 
 import androidx.lifecycle.viewModelScope
-import com.mate.carpool.data.Result
 import com.mate.carpool.data.repository.ReportRepository
 import com.mate.carpool.ui.base.BaseViewModel
 import com.mate.carpool.ui.base.SnackBarMessage
+import com.mate.carpool.ui.screen.report.item.ReportReason
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,7 +14,8 @@ class ReportViewModel @Inject constructor(
     private val reportRepository: ReportRepository
 ) : BaseViewModel() {
 
-    private var studentId: Long? = null
+    private lateinit var ticketId: String
+    private lateinit var userId: String
 
     private val _reason = MutableStateFlow<ReportReason?>(null)
     val reason = _reason.asStateFlow()
@@ -41,8 +34,9 @@ class ReportViewModel @Inject constructor(
         initialValue = false
     )
 
-    fun init(studentId: Long) {
-        this.studentId = studentId
+    fun init(ticketId: String, userId: String) {
+        this.ticketId = ticketId
+        this.userId = userId
     }
 
     fun selectReason(reason: ReportReason) {
@@ -64,22 +58,18 @@ class ReportViewModel @Inject constructor(
             reason.value!!.description
         }
         reportRepository.report(
-            studentId = studentId!!, content = content
+            ticketId = ticketId,
+            userId = userId,
+            content = content
         ).onEach { result ->
-            when (result) {
-                is Result.Loading -> {
-
-                }
-
-                is Result.Success -> {
-                    emitSnackbar(SnackBarMessage(headerMessage = "신고가 접수되었습니다."))
-                    emitEvent(EVENT_REPORTED_USER)
-                }
-
-                is Result.Error -> {
-                    emitSnackbar(SnackBarMessage(headerMessage = result.message))
-                }
-            }
+            emitSnackbar(SnackBarMessage(headerMessage = "신고가 접수되었습니다."))
+        }.catch {
+            emitSnackbar(
+                SnackBarMessage(
+                    headerMessage = "일시적인 장애가 발생하였습니다.",
+                    contentMessage = "다시 시도해 주세요."
+                )
+            )
         }.launchIn(viewModelScope)
     }
 

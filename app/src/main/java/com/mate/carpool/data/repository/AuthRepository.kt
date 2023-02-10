@@ -2,6 +2,7 @@ package com.mate.carpool.data.repository
 
 import com.mate.carpool.AutoLoginPreferences
 import com.mate.carpool.data.Result
+import com.mate.carpool.data.model.domain.domain.ResponseModel
 import com.mate.carpool.data.model.domain.domain.UserModel
 import com.mate.carpool.data.model.dto.dto.response.LoginResponse
 import com.mate.carpool.data.model.response.ResponseMessage
@@ -26,4 +27,6 @@ interface AuthRepository {
     fun reNewAccessToken(): Flow<LoginResponse>
 
     suspend fun updateToken(accessToken: String, refreshToken: String)
+
+    fun withDraw(): Flow<ResponseModel>
 }

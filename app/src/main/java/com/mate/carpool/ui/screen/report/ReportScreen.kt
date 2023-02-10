@@ -22,6 +22,7 @@ import com.mate.carpool.ui.composable.button.LargePrimaryButton
 import com.mate.carpool.ui.composable.rememberLambda
 import com.mate.carpool.ui.screen.report.component.EtcTextField
 import com.mate.carpool.ui.screen.report.component.ReasonOption
+import com.mate.carpool.ui.screen.report.item.ReportReason
 import com.mate.carpool.ui.theme.black
 import com.mate.carpool.ui.theme.white
 import com.mate.carpool.ui.util.tu

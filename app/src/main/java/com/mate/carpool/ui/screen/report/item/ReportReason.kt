@@ -1,4 +1,4 @@
-package com.mate.carpool.ui.screen.report
+package com.mate.carpool.ui.screen.report.item
 
 enum class ReportReason(val description: String) {
     NON_PAYMENT("카풀 돈을 받지 못했어요."),
