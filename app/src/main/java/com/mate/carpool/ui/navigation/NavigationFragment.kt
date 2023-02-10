@@ -58,6 +58,9 @@ class NavigationFragment : Fragment() {
             },
             onNavigateToProfileView = rememberLambda {
                 findNavController().navigate(R.id.action_homeFragment_to_profileLookUpFragment)
+            },
+            onNavigateToOnBoarding = rememberLambda {
+                findNavController().navigate(R.id.action_homeFragment_to_onboardingFragment)
             }
         )
     }
@@ -65,15 +68,14 @@ class NavigationFragment : Fragment() {
     @Composable
     private fun OnBackPressed() {
         BackHandler {
-            if(System.currentTimeMillis() - backPressedTime >= 2000L){
+            if (System.currentTimeMillis() - backPressedTime >= 2000L) {
                 backPressedTime = System.currentTimeMillis()
                 Snackbar.make(
                     requireView().rootView,
                     "뒤로 가기 버튼을 한 번 더 누르면 종료됩니다.",
                     Snackbar.LENGTH_SHORT
                 ).show()
-            }
-            else{
+            } else {
                 finishAffinity(requireActivity())
                 System.runFinalization()
                 exitProcess(0)

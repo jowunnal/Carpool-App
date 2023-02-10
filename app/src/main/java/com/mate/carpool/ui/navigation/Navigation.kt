@@ -15,8 +15,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.mate.carpool.ui.base.Event
 import com.mate.carpool.ui.base.SnackBarMessage
-import com.mate.carpool.ui.screen.ticketupdate.TicketUpdateScreen
-import com.mate.carpool.ui.screen.ticketupdate.TicketUpdateViewModel
 import com.mate.carpool.ui.screen.home.compose.HomeBottomSheetLayout
 import com.mate.carpool.ui.screen.home.vm.CarpoolListViewModel
 import com.mate.carpool.ui.screen.home.vm.HomeBottomSheetViewModel
@@ -26,6 +24,8 @@ import com.mate.carpool.ui.screen.register.RegisterDriverStepPhoneNumberScreen
 import com.mate.carpool.ui.screen.register.RegisterDriverViewModel
 import com.mate.carpool.ui.screen.report.ReportScreen
 import com.mate.carpool.ui.screen.report.ReportViewModel
+import com.mate.carpool.ui.screen.ticketupdate.TicketUpdateScreen
+import com.mate.carpool.ui.screen.ticketupdate.TicketUpdateViewModel
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
@@ -34,6 +34,7 @@ fun NavigationGraph(
     navController: NavHostController,
     onNavigateToCreateCarpool: () -> Unit,
     onNavigateToProfileView: () -> Unit,
+    onNavigateToOnBoarding: () -> Unit,
     carpoolListViewModel: CarpoolListViewModel = hiltViewModel(),
     homeCarpoolBottomSheetViewModel: HomeBottomSheetViewModel = hiltViewModel(),
     reportViewModel: ReportViewModel = hiltViewModel(),
@@ -76,6 +77,7 @@ fun NavigationGraph(
                         "report/${ticketId}/${userId}"
                     )
                 },
+                onNavigateToOnBoarding = onNavigateToOnBoarding,
                 onNavigateToTicketUpdate = { navController.navigate(NavigationItem.TicketUpdate.route) },
                 isTicketIsMineOrNot = homeCarpoolBottomSheetViewModel::isTicketIsMineOrNot,
                 setPassengerId = homeCarpoolBottomSheetViewModel::setPassengerId,
@@ -86,6 +88,8 @@ fun NavigationGraph(
                 addNewPassengerToTicket = homeCarpoolBottomSheetViewModel::addNewPassengerToTicket,
                 deletePassengerFromTicket = homeCarpoolBottomSheetViewModel::deletePassengerFromTicket,
                 deleteMyTicket = homeCarpoolBottomSheetViewModel::deleteMyTicket,
+                logout = carpoolListViewModel::logout,
+                withDraw = carpoolListViewModel::withDraw,
                 emitSnackBar = homeCarpoolBottomSheetViewModel::emitSnackbar
             )
         }
@@ -193,12 +197,32 @@ fun NavigationGraph(
 
         composable(route = NavigationItem.TicketUpdate.route) {
             val ticketDetail by ticketUpdateViewModel.uiState.collectAsStateWithLifecycle()
+            val snackBarMessage by ticketUpdateViewModel.snackbarMessage.collectAsStateWithLifecycle(
+                initialValue = SnackBarMessage.getInitValues(),
+                lifecycleOwner = LocalLifecycleOwner.current
+            )
+            val event by ticketUpdateViewModel.event.collectAsStateWithLifecycle(
+                initialValue = Event.getInitValues(),
+                lifecycleOwner = LocalLifecycleOwner.current
+            )
             val context = LocalContext.current
             val fragmentManager =
                 ((context as ContextWrapper).baseContext as FragmentActivity).supportFragmentManager
 
+            if (event != Event.getInitValues()) {
+                LaunchedEffect(key1 = event.type) {
+                    if (event.type == TicketUpdateViewModel.EVENT_UPDATED_TICKET)
+                        navController.navigate("home/${TicketUpdateViewModel.EVENT_UPDATED_TICKET}") {
+                            popUpTo(NavigationItem.Home.route) {
+                                inclusive = true
+                            }
+                        }
+                }
+            }
+
             TicketUpdateScreen(
                 ticketDetail = ticketDetail,
+                snackBarMessage = snackBarMessage,
                 fragmentManager = fragmentManager,
                 setStartArea = ticketUpdateViewModel::setStartArea,
                 setBoardingPlace = ticketUpdateViewModel::setBoardingPlace,
@@ -206,6 +230,7 @@ fun NavigationGraph(
                 setOpenChatLink = ticketUpdateViewModel::setOpenChatLink,
                 setRecruitPersonCount = ticketUpdateViewModel::setRecruitPersonCount,
                 setFee = ticketUpdateViewModel::setFee,
+                updateTicket = ticketUpdateViewModel::updateTicket,
                 onNavigateToHome = {
                     navController.navigate("home/${Event.getInitValues()}") {
                         popUpTo(NavigationItem.Home.route) {

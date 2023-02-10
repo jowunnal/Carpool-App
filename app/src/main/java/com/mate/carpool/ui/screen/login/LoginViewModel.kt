@@ -51,19 +51,6 @@ class LoginViewModel @Inject constructor(
 
         }.launchIn(viewModelScope)
     }
-
-    fun logout() {
-        authRepository.logout().onEach {
-            emitEvent(LOGOUT_SUCCESS)
-        }.catch {
-            emitEvent(LOGOUT_FAILED)
-        }.launchIn(viewModelScope)
-    }
-
-    companion object {
-        const val LOGOUT_SUCCESS = "LOGOUT_SUCCESS"
-        const val LOGOUT_FAILED = "LOGOUT_FAILED"
-    }
 }
 
 
