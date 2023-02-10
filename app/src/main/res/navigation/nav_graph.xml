@@ -71,7 +71,7 @@
             android:id="@+id/createTicketStep4"
             android:name="com.mate.carpool.ui.screen.createCarpool.fragment.CreateTicketStep4"
             android:label="fragment_create_carpool_ticket_step4"
-            tools:layout="@layout/fragment_create_carpool_ticket_step4" >
+            tools:layout="@layout/fragment_create_carpool_ticket_step4">
             <action
                 android:id="@+id/action_createTicketStep4_to_createTicketStep5"
                 app:destination="@id/createTicketStep5" />
@@ -81,7 +81,7 @@
             android:id="@+id/createTicketStep5"
             android:name="com.mate.carpool.ui.screen.createCarpool.fragment.CreateTicketStep5"
             android:label="fragment_create_ carpool_ticket_step5"
-            tools:layout="@layout/fragment_create_carpool_ticket_step5" >
+            tools:layout="@layout/fragment_create_carpool_ticket_step5">
             <action
                 android:id="@+id/action_createTicketStep5_to_createTicketPreviewFragment"
                 app:destination="@id/createTicketPreviewFragment" />
@@ -106,8 +106,8 @@
         android:label="HomeFragment">
         <argument
             android:name="event"
-            app:argType="string"
-            android:defaultValue=""/>
+            android:defaultValue=""
+            app:argType="string" />
         <action
             android:id="@+id/action_homeFragment_to_createTicket"
             app:destination="@id/createTicket" />
@@ -115,6 +115,11 @@
         <action
             android:id="@+id/action_homeFragment_to_profileLookUpFragment"
             app:destination="@id/profileLookUpFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_onboardingFragment"
+            app:destination="@id/onboardingFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/onboardingFragment"/>
     </fragment>
 
     <fragment
@@ -132,7 +137,7 @@
             android:id="@+id/action_profileLookUpFragment_to_homeFragment"
             app:destination="@id/homeFragment"
             app:popUpTo="@id/homeFragment"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment

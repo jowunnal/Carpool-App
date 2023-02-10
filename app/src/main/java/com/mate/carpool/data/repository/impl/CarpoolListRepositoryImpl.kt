@@ -6,6 +6,7 @@ import com.mate.carpool.data.service.APIService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 class CarpoolListRepositoryImpl @Inject constructor(private val apiService: APIService) :
@@ -17,6 +18,10 @@ class CarpoolListRepositoryImpl @Inject constructor(private val apiService: APIS
         list.map { ticketDTO ->
             ticketDTO.asTicketListDomainModel()
         }
+    }.onEach { ticketList ->
+        ticketList.sortedWith(compareBy { ticketModel ->
+            ticketModel.available
+        })
     }
 
     override fun getTicketById(id: String): Flow<TicketModel> = flow {

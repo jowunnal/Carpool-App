@@ -62,6 +62,7 @@ data class TicketDetailDTO(
         recruitPerson = recruitPerson,
         currentPerson = currentPerson?:0,
         ticketPrice = ticketPrice,
+        available = true,
         driver = driver.asDriverDomainModel(),
         passenger = passenger.map { it.asUserDomainModel() }
     )

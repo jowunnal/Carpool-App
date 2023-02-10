@@ -23,18 +23,17 @@ import com.mate.carpool.ui.util.tu
 fun Badge(
     maximumNumber: Int,   // 정원
     currentNumber: Int,   // 현재 카풀에 참여한 인원 수
-    status: TicketStatus,
+    enabled: Boolean,
     modifier: Modifier = Modifier
 ) {
     // TODO 정확한 조건 확인 필요
-    /*val backgroundColor = when {
-        status != TicketStatus.After -> primary60
-        status != TicketStatus.After -> red60
-        else -> neutral30
-    }*/
+    val backgroundColor = when(enabled) {
+        true -> primary60
+        false -> neutral30
+    }
 
     Box(
-        modifier = modifier.size(44.dp, 24.dp).background(primary60, RoundedCornerShape(100.dp)),
+        modifier = modifier.size(44.dp, 24.dp).background(backgroundColor, RoundedCornerShape(100.dp)),
         contentAlignment = Alignment.Center
     ) {
         Text(
@@ -52,7 +51,7 @@ private fun BadgePreview1() {
     Badge(
         maximumNumber = 4,
         currentNumber = 1,
-        status = TicketStatus.Before
+        enabled = true
     )
 }
 
@@ -62,16 +61,6 @@ private fun BadgePreview2() {
     Badge(
         maximumNumber = 4,
         currentNumber = 1,
-        status = TicketStatus.Before
-    )
-}
-
-@Preview
-@Composable
-private fun BadgePreview3() {
-    Badge(
-        maximumNumber = 4,
-        currentNumber = 1,
-        status = TicketStatus.After
+        enabled = false
     )
 }

@@ -2,10 +2,13 @@ package com.mate.carpool.ui.screen.home.vm
 
 import androidx.lifecycle.viewModelScope
 import com.mate.carpool.data.model.domain.MemberModel
+import com.mate.carpool.data.model.domain.Ticket
 import com.mate.carpool.data.model.domain.TicketListModel
+import com.mate.carpool.data.model.domain.TicketModel
 import com.mate.carpool.data.model.item.DayStatus
 import com.mate.carpool.data.model.item.TicketStatus
 import com.mate.carpool.data.model.response.ApiResponse
+import com.mate.carpool.data.repository.AuthRepository
 import com.mate.carpool.data.repository.CarpoolListRepository
 import com.mate.carpool.data.repository.MemberRepository
 import com.mate.carpool.ui.base.BaseViewModel
@@ -22,7 +25,8 @@ import javax.inject.Inject
 @HiltViewModel
 class CarpoolListViewModel @Inject constructor(
     private val carpoolListRepository: CarpoolListRepository,
-    private val memberRepository: MemberRepository
+    private val memberRepository: MemberRepository,
+    private val authRepository: AuthRepository
 ) : BaseViewModel() {
 
     private val _uiState = MutableStateFlow(CarpoolListUiState.getInitValue())
@@ -51,11 +55,11 @@ class CarpoolListViewModel @Inject constructor(
         }
     }
 
-    private fun getCarpoolList() = carpoolListRepository.getTicketList().onEach {
-            when (it.isNotEmpty()) {
+    private fun getCarpoolList() = carpoolListRepository.getTicketList().onEach { ticketList ->
+            when (ticketList.isNotEmpty()) {
                 true -> {
                     _uiState.update { state ->
-                        state.copy(ticketList = it.map { ticketModel ->
+                        state.copy(ticketList = ticketList.map { ticketModel ->
                             ticketModel.asTicketListState()
                         })
                     }
@@ -90,5 +94,26 @@ class CarpoolListViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
+
+    fun withDraw() =
+        authRepository.withDraw().onEach {
+            emitEvent(WITHDRAW_SUCCESS)
+        }.catch {
+            emitEvent(WITHDRAW_FAILED)
+        }.launchIn(viewModelScope)
+
+    fun logout() =
+        authRepository.logout().onEach {
+            emitEvent(LOGOUT_SUCCESS)
+        }.catch {
+            emitEvent(LOGOUT_FAILED)
+        }.launchIn(viewModelScope)
+
+    companion object {
+        const val LOGOUT_SUCCESS = "LOGOUT_SUCCESS"
+        const val LOGOUT_FAILED = "LOGOUT_FAILED"
+        const val WITHDRAW_SUCCESS = "WITHDRAW_SUCCESS"
+        const val WITHDRAW_FAILED = "WITHDRAW_FAILED"
+    }
 
 }
