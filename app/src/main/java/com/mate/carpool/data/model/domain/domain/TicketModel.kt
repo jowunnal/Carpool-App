@@ -1,7 +1,5 @@
 package com.mate.carpool.data.model.domain.domain
 
-import com.mate.carpool.data.model.item.MemberRole
-import com.mate.carpool.data.model.item.TicketStatus
 import com.mate.carpool.ui.screen.home.item.PassengerState
 import com.mate.carpool.ui.screen.home.item.TicketListState
 import com.mate.carpool.ui.screen.home.item.TicketState
@@ -18,6 +16,7 @@ data class TicketModel(
     val recruitPerson: Int,
     val currentPerson: Int,
     val ticketPrice: Int,
+    val available: Boolean,
     val driver: DriverModel,
     val passenger: List<UserModel>
 ) {
@@ -29,8 +28,8 @@ data class TicketModel(
         startTime = startTime,
         recruitPerson = recruitPerson,
         currentPersonCount = passenger.size,
-        ticketStatus = TicketStatus.Before,
-        dayStatus = startTime.startTimeToDayStatus()
+        dayStatus = startTime.startTimeToDayStatus(),
+        available = available
     )
 
     fun asTicketState() = TicketState(
@@ -48,7 +47,7 @@ data class TicketModel(
 
     )
 
-    companion object{
+    companion object {
         fun getInitValue() = TicketModel(
             id = "",
             profileImage = "",
@@ -60,6 +59,7 @@ data class TicketModel(
             recruitPerson = 0,
             currentPerson = 0,
             ticketPrice = 0,
+            available = false,
             driver = DriverModel.getInitValue(),
             passenger = emptyList()
         )

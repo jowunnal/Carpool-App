@@ -1,5 +1,6 @@
 package com.mate.carpool.ui.screen.home.compose.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -60,14 +61,17 @@ fun TicketList(
             if (!refreshState) {
                 HorizontalDividerItem()
                 itemsIndexed(items = carpoolList, key = { _, item -> item.id }) { index, item ->
+                    val textColor = if (item.available) black else neutral30
                     Column(modifier = Modifier
                         .padding(16.dp)
                         .clickable {
-                            coroutineScope.launch {
-                                getTicketDetail(item.id)
-                                isTicketIsMineOrNot(item.id, userTicketList)
-                                delay(50)
-                                onOpenBottomSheet()
+                            if(item.available) {
+                                coroutineScope.launch {
+                                    getTicketDetail(item.id)
+                                    isTicketIsMineOrNot(item.id, userTicketList)
+                                    delay(50)
+                                    onOpenBottomSheet()
+                                }
                             }
                         }
                     ) {
@@ -79,7 +83,8 @@ fun TicketList(
                                     .width(50.dp)
                                     .height(47.dp)
                                     .clip(CircleShape)
-                                    .border(1.dp, Color.White, CircleShape)
+                                    .border(1.dp, Color.White, CircleShape),
+                                enabled = item.available
                             )
 
                             HorizontalSpacer(width = 8.dp)
@@ -91,14 +96,15 @@ fun TicketList(
                                         append(" 출발,${item.dayStatus.displayName}")
                                         appendBoldText(" ${item.startTime.formatStartTimeToDTO()}")
                                     },
-                                    fontSize = 16.tu
+                                    fontSize = 16.tu,
+                                    color = textColor
                                 )
                             }
 
                             com.mate.carpool.ui.composable.Badge(
                                 maximumNumber = item.recruitPerson,
                                 currentNumber = item.currentPersonCount,
-                                status = item.ticketStatus
+                                enabled = item.available
                             )
                         }
                     }
@@ -127,22 +133,22 @@ private fun PreviewTicketList() {
                 TicketListState(
                     id = "1",
                     profileImage = "",
-                    startArea = "인동",
+                    startArea = "해운대앞바다",
                     startTime = 25200L,
                     recruitPerson = 3,
                     currentPersonCount = 1,
-                    ticketStatus = TicketStatus.Before,
-                    dayStatus = DayStatus.AM
+                    dayStatus = DayStatus.AM,
+                    available = true
                 ),
                 TicketListState(
                     id = "2",
                     profileImage = "",
-                    startArea = "인동",
+                    startArea = "부산대역 인근",
                     startTime = 25200L,
                     recruitPerson = 3,
                     currentPersonCount = 1,
-                    ticketStatus = TicketStatus.Before,
-                    dayStatus = DayStatus.AM
+                    dayStatus = DayStatus.AM,
+                    available = true
                 ),
                 TicketListState(
                     id = "3",
@@ -151,18 +157,18 @@ private fun PreviewTicketList() {
                     startTime = 25200L,
                     recruitPerson = 3,
                     currentPersonCount = 1,
-                    ticketStatus = TicketStatus.Before,
-                    dayStatus = DayStatus.AM
+                    dayStatus = DayStatus.AM,
+                    available = false
                 ),
                 TicketListState(
                     id = "4",
                     profileImage = "",
-                    startArea = "인동",
+                    startArea = "광화문앞",
                     startTime = 25200L,
                     recruitPerson = 3,
                     currentPersonCount = 1,
-                    ticketStatus = TicketStatus.Before,
-                    dayStatus = DayStatus.AM
+                    dayStatus = DayStatus.AM,
+                    available = false
                 )
             ),
             onRefresh = {},

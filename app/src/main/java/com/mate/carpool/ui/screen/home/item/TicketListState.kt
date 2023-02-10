@@ -12,8 +12,8 @@ data class TicketListState(
     val startTime: Long,
     val recruitPerson: Int,
     val currentPersonCount: Int,
-    val ticketStatus: TicketStatus,
-    val dayStatus: DayStatus
+    val dayStatus: DayStatus,
+    val available: Boolean
 ) {
     companion object {
         fun getInitValue() = TicketListState(
@@ -23,8 +23,8 @@ data class TicketListState(
             startTime = 0L,
             recruitPerson = 0,
             currentPersonCount = 0,
-            ticketStatus = TicketStatus.Before,
-            dayStatus = DayStatus.AM
+            dayStatus = DayStatus.AM,
+            available = false
         )
     }
 }

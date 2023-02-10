@@ -10,10 +10,3 @@ enum class TicketStatus {
     After
 }
 
-fun TicketStatus.getTicketStatusDTO() =
-    when(this){
-        TicketStatus.Cancel -> "CANCEL"
-        TicketStatus.After -> "AFTER"
-        TicketStatus.Before -> "BEFORE"
-        TicketStatus.Ing -> "ING"
-    }

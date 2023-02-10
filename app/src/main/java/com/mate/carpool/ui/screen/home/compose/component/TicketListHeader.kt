@@ -43,28 +43,6 @@ fun TicketListHeader() {
             fontWeight = FontWeight.ExtraBold,
             fontSize = 16.tu
         )
-
-        Image(
-            painter = painterResource(id = R.drawable.ic_home_reddot),
-            contentDescription = null
-        )
-
-        Text(
-            text = "유료",
-            fontSize = 12.tu
-        )
-
-        HorizontalSpacer(width = 6.dp)
-
-        Image(
-            painter = painterResource(id = R.drawable.ic_home_bluedot),
-            contentDescription = null
-        )
-
-        Text(
-            text = "무료",
-            fontSize = 12.tu
-        )
     }
 }
 

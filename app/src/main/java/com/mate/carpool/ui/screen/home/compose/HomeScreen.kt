@@ -15,14 +15,8 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import com.mate.carpool.data.model.domain.MemberModel
-import com.mate.carpool.data.model.domain.TicketListModel
-import com.mate.carpool.data.model.domain.TicketModel
 import com.mate.carpool.data.model.item.DayStatus
 import com.mate.carpool.data.model.item.MemberRole
-import com.mate.carpool.data.model.item.TicketStatus
-import com.mate.carpool.data.model.item.TicketType
-import com.mate.carpool.ui.base.BaseViewModel
 import com.mate.carpool.ui.base.Event
 import com.mate.carpool.ui.base.SnackBarMessage
 import com.mate.carpool.ui.composable.SnackBarHostCustom
@@ -38,10 +32,12 @@ import com.mate.carpool.ui.screen.home.item.BottomSheetUiState
 import com.mate.carpool.ui.screen.home.item.CarpoolListUiState
 import com.mate.carpool.ui.screen.home.item.PassengerState
 import com.mate.carpool.ui.screen.home.item.TicketListState
+import com.mate.carpool.ui.screen.home.vm.CarpoolListViewModel
 import com.mate.carpool.ui.screen.home.vm.HomeBottomSheetViewModel
 import com.mate.carpool.ui.screen.register.RegisterDriverViewModel
 import com.mate.carpool.ui.screen.report.ReportViewModel
 import com.mate.carpool.ui.screen.splash.SplashViewModel
+import com.mate.carpool.ui.screen.ticketupdate.TicketUpdateViewModel
 import com.mate.carpool.ui.theme.MateTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -55,9 +51,10 @@ fun HomeBottomSheetLayout(
     snackBarMessage: SnackBarMessage,
     onNavigateToCreateCarpool: () -> Unit,
     onNavigateToProfileView: () -> Unit,
-    onNavigateToReportView: (String,String) -> Unit,
+    onNavigateToReportView: (String, String) -> Unit,
     onNavigateToRegisterDriver: () -> Unit,
     onNavigateToTicketUpdate: () -> Unit,
+    onNavigateToOnBoarding: () -> Unit,
     isTicketIsMineOrNot: (String, List<TicketListState>) -> Unit,
     setPassengerId: (String) -> Unit,
     setUserId: (String) -> Unit,
@@ -65,8 +62,10 @@ fun HomeBottomSheetLayout(
     getTicketDetail: (String) -> Unit,
     getMyTicketDetail: () -> Unit,
     addNewPassengerToTicket: (String) -> Unit,
-    deletePassengerFromTicket: (String,MemberRole) -> Unit,
+    deletePassengerFromTicket: (String, MemberRole) -> Unit,
     deleteMyTicket: (String) -> Unit,
+    logout: () -> Unit,
+    withDraw: () -> Unit,
     emitSnackBar: (SnackBarMessage) -> Unit
 ) {
     val bottomSheetState = rememberModalBottomSheetState(
@@ -85,16 +84,18 @@ fun HomeBottomSheetLayout(
         )
     }
 
-    if (event.type != Event.EVENT_READY || event.type != Event.EVENT_FINISH) OnActiveSnackBar(
-        event = event,
-        role = carpoolListUiState.userState.role,
-        userTicketList = carpoolListUiState.ticketList,
-        onOpenBottomSheet = { bottomSheetState.animateTo(ModalBottomSheetValue.Expanded) },
-        emitSnackBar = emitSnackBar,
-        onRefresh = onRefresh,
-        isTicketIsMineOrNot = isTicketIsMineOrNot,
-        getMyTicketDetail = getMyTicketDetail,
-    )
+    if (event.type != Event.EVENT_READY || event.type != Event.EVENT_FINISH || event != Event.getInitValues())
+        OnActiveSnackBar(
+            event = event,
+            role = carpoolListUiState.userState.role,
+            userTicketList = carpoolListUiState.ticketList,
+            onOpenBottomSheet = { bottomSheetState.animateTo(ModalBottomSheetValue.Expanded) },
+            emitSnackBar = emitSnackBar,
+            onRefresh = onRefresh,
+            isTicketIsMineOrNot = isTicketIsMineOrNot,
+            getMyTicketDetail = getMyTicketDetail,
+            onNavigateToOnBoarding = onNavigateToOnBoarding
+        )
 
     BackHandler(enabled = bottomSheetState.isVisible || scaffoldState.drawerState.isOpen) {
         if (bottomSheetState.isVisible) coroutineScope.launch {
@@ -161,13 +162,19 @@ fun HomeBottomSheetLayout(
             CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
                 ModalDrawer(
                     drawerContent = {
-                        DrawerContent(items = listOf(
-                            DrawerItem.CONTACT,
-                            DrawerItem.CLAUSE,
-                            DrawerItem.LOGOUT,
-                            DrawerItem.WITHDRAW
-                        ), onCloseDrawer = { scaffoldState.drawerState.close() })
-                    }, drawerState = scaffoldState.drawerState
+                        DrawerContent(
+                            items = listOf(
+                                DrawerItem.CONTACT,
+                                DrawerItem.CLAUSE,
+                                DrawerItem.LOGOUT,
+                                DrawerItem.WITHDRAW
+                            ),
+                            onCloseDrawer = { scaffoldState.drawerState.close() },
+                            logout = logout,
+                            withDraw = withDraw
+                        )
+                    },
+                    drawerState = scaffoldState.drawerState
                 ) {
                     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
                         HomeView(refreshState = carpoolListUiState.refreshState,
@@ -261,7 +268,8 @@ private fun OnActiveSnackBar(
     emitSnackBar: (SnackBarMessage) -> Unit,
     onRefresh: (String) -> Unit,
     getMyTicketDetail: () -> Unit,
-    isTicketIsMineOrNot: (String, List<TicketListState>) -> Unit
+    isTicketIsMineOrNot: (String, List<TicketListState>) -> Unit,
+    onNavigateToOnBoarding: () -> Unit
 ) {
     LaunchedEffect(key1 = event.type) {
         when (event.type) {
@@ -326,6 +334,35 @@ private fun OnActiveSnackBar(
                     )
                 )
             }
+            TicketUpdateViewModel.EVENT_UPDATED_TICKET -> {
+                emitSnackBar(
+                    SnackBarMessage(
+                        headerMessage = "티켓이 성공적으로 수정되었어요."
+                    )
+                )
+            }
+            CarpoolListViewModel.LOGOUT_SUCCESS -> {
+                onNavigateToOnBoarding()
+            }
+            CarpoolListViewModel.LOGOUT_FAILED -> {
+                emitSnackBar(
+                    SnackBarMessage(
+                        headerMessage = "로그아웃을 실패했어요.",
+                        contentMessage = "다시 시도해 주세요."
+                    )
+                )
+            }
+            CarpoolListViewModel.WITHDRAW_SUCCESS -> {
+                onNavigateToOnBoarding()
+            }
+            CarpoolListViewModel.WITHDRAW_FAILED -> {
+                emitSnackBar(
+                    SnackBarMessage(
+                        headerMessage = "회원탈퇴를 실패했어요.",
+                        contentMessage = "다시 시도해 주세요."
+                    )
+                )
+            }
         }
     }
 }
@@ -344,8 +381,8 @@ private fun HomePreview() {
                     startTime = 25200L,
                     recruitPerson = 3,
                     currentPersonCount = 1,
-                    ticketStatus = TicketStatus.Before,
-                    dayStatus = DayStatus.AM
+                    dayStatus = DayStatus.AM,
+                    available = true
                 ), TicketListState(
                     id = "2",
                     profileImage = "",
@@ -353,8 +390,8 @@ private fun HomePreview() {
                     startTime = 25200L,
                     recruitPerson = 3,
                     currentPersonCount = 1,
-                    ticketStatus = TicketStatus.Before,
-                    dayStatus = DayStatus.AM
+                    dayStatus = DayStatus.AM,
+                    available = true
                 ), TicketListState(
                     id = "3",
                     profileImage = "",
@@ -362,8 +399,8 @@ private fun HomePreview() {
                     startTime = 25200L,
                     recruitPerson = 3,
                     currentPersonCount = 1,
-                    ticketStatus = TicketStatus.Before,
-                    dayStatus = DayStatus.AM
+                    dayStatus = DayStatus.AM,
+                    available = false
                 ), TicketListState(
                     id = "4",
                     profileImage = "",
@@ -371,8 +408,8 @@ private fun HomePreview() {
                     startTime = 25200L,
                     recruitPerson = 3,
                     currentPersonCount = 1,
-                    ticketStatus = TicketStatus.Before,
-                    dayStatus = DayStatus.AM
+                    dayStatus = DayStatus.AM,
+                    available = false
                 )
             ),
             userProfile = "",
@@ -386,6 +423,6 @@ private fun HomePreview() {
             onNavigateToRegisterDriver = {},
             onOpenDrawer = {},
             userTicketList = emptyList(),
-            isTicketIsMineOrNot = {_,_->})
+            isTicketIsMineOrNot = { _, _ -> })
     }
 }

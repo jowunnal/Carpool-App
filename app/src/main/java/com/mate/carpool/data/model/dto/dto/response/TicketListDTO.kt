@@ -12,7 +12,8 @@ data class TicketListDTO(
     @SerializedName("driverImageUrl") val driverImage: String,
     @SerializedName("currentPerson") val currentPerson: Int,
     @SerializedName("recruitPerson") val recruitPerson: Int,
-    @SerializedName("boardingPrice") val ticketPrice: Int
+    @SerializedName("boardingPrice") val ticketPrice: Int,
+    @SerializedName("available") val available: Boolean
 ) {
     fun asTicketListDomainModel() = TicketModel(
         id = id,
@@ -25,6 +26,7 @@ data class TicketListDTO(
         recruitPerson = recruitPerson,
         currentPerson = currentPerson,
         ticketPrice = ticketPrice,
+        available = available,
         driver = DriverModel.getInitValue(),
         passenger = emptyList()
     )

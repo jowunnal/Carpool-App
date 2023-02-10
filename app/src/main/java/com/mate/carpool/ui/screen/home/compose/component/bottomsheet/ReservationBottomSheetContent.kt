@@ -169,7 +169,7 @@ fun ReservationBottomSheetContent(
                     fontSize = 12.tu,
                     color = neutral50
                 )
-                VerticalSpacer(height = 4.dp)
+                VerticalSpacer(height = 1.dp)
                 MemberInfo(
                     memberProfile = ticketDetail.driver.profileImage,
                     memberName = ticketDetail.driver.name,
@@ -181,6 +181,34 @@ fun ReservationBottomSheetContent(
                     onChangePopUpState = { popUpState.value = !popUpState.value },
                     onSetPopUpOffset = { popUpOffset.value = it }
                 )
+
+                VerticalSpacer(height = 5.dp)
+
+                Text(
+                    text = "차량 정보",
+                    fontWeight = FontWeight.W700,
+                    fontSize = 12.tu,
+                    color = neutral50
+                )
+                VerticalSpacer(height = 1.dp)
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    ProfileImage(
+                        profileImage = ticketDetail.driver.carImage,
+                        modifier = Modifier
+                            .width(50.dp)
+                            .height(47.dp)
+                            .clip(CircleShape)
+                            .border(1.dp, Color.White, CircleShape)
+                    )
+                    HorizontalSpacer(width = 8.dp)
+                    Text(
+                        text = ticketDetail.driver.carNumber,
+                        fontSize = 14.tu,
+                        fontWeight = FontWeight.W400,
+                        color = black,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
             }
 
             HorizontalSpacer(width = 16.dp)
@@ -252,9 +280,9 @@ fun ReservationBottomSheetContent(
 }
 
 /**
- * memberStudentId : 드라이버의 학번 혹은 패신저의 학번
- * userStudentId : 사용자의 학번
- * 이 두개가 일치하면? 햄버거 아이콘 없고, 일치하지 않으면? 햄버거 아이콘 생성
+ * member*** 화면내의 드라이버 혹은 패신저의 정보
+ * user*** 앱의 사용자 정보
+ * @param passengerId 선택된 화면내의 드라이버 혹은 패신저의 passengerId ( 퇴출하기는 드라이버가 이용하기 때문에 드라이버의 passengerId 는 빈값 )
  */
 
 @Composable
@@ -359,7 +387,7 @@ private fun TicketPassengerList(
                 fontSize = 12.tu,
                 color = neutral50
             )
-            VerticalSpacer(height = 4.dp)
+            VerticalSpacer(height = 1.dp)
         }
         itemsIndexed(passengerList, key = { index, item -> item.passengerId }) { index, item ->
             MemberInfo(
@@ -524,7 +552,7 @@ fun PreviewReservationBottomSheetContentPassenger() {
                     email = "",
                     role = MemberRole.DRIVER,
                     phoneNumber = "",
-                    carNumber = "",
+                    carNumber = "12가3456",
                     carImage = ""
                 ),
                 passenger =
@@ -606,7 +634,7 @@ fun PreviewReservationBottomSheetContentDriver() {
                     email = "",
                     role = MemberRole.DRIVER,
                     phoneNumber = "",
-                    carNumber = "",
+                    carNumber = "12가3456",
                     carImage = ""
                 ),
                 passenger =

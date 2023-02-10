@@ -5,8 +5,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.SnackbarDuration
 import androidx.compose.material3.Icon
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -15,13 +19,14 @@ import androidx.fragment.app.FragmentManager
 import com.mate.carpool.R
 import com.mate.carpool.data.model.domain.StartArea
 import com.mate.carpool.data.model.item.DayStatus
-import com.mate.carpool.ui.composable.DropDownMenuCustom
-import com.mate.carpool.ui.composable.HorizontalSpacer
-import com.mate.carpool.ui.composable.LargeDefaultTextField
-import com.mate.carpool.ui.composable.VerticalSpacer
+import com.mate.carpool.data.model.item.MemberRole
+import com.mate.carpool.ui.base.SnackBarMessage
+import com.mate.carpool.ui.composable.*
 import com.mate.carpool.ui.composable.button.LargePrimaryButton
 import com.mate.carpool.ui.composable.layout.CommonLayout
 import com.mate.carpool.ui.screen.createCarpool.fragment.TimePickerCustomDialog
+import com.mate.carpool.ui.screen.home.item.DriverState
+import com.mate.carpool.ui.screen.home.item.PassengerState
 import com.mate.carpool.ui.screen.home.item.TicketState
 import com.mate.carpool.ui.theme.neutral30
 import com.mate.carpool.ui.util.date
@@ -36,6 +41,7 @@ import java.util.*
 @Composable
 fun TicketUpdateScreen(
     ticketDetail: TicketState,
+    snackBarMessage: SnackBarMessage,
     fragmentManager: FragmentManager,
     setStartArea: (String) -> Unit,
     setBoardingPlace: (String) -> Unit,
@@ -43,11 +49,34 @@ fun TicketUpdateScreen(
     setOpenChatLink: (String) -> Unit,
     setRecruitPersonCount: (String) -> Unit,
     setFee: (String) -> Unit,
+    updateTicket: () -> Unit,
     onNavigateToHome: () -> Unit
 ) {
+    val snackBarHostState = remember {
+        SnackbarHostState()
+    }
+
+    if(snackBarMessage != SnackBarMessage.getInitValues())
+        LaunchedEffect(key1 = snackBarMessage.headerMessage) {
+            snackBarHostState.showSnackbar(
+                message = snackBarMessage.headerMessage,
+                actionLabel = snackBarMessage.contentMessage,
+                duration = SnackbarDuration.Indefinite
+            )
+        }
+
     CommonLayout(
         title = "티켓 수정",
-        onBackClick = onNavigateToHome
+        onBackClick = onNavigateToHome,
+        snackBarHost = {
+            Column() {
+                SnackBarHostCustom(headerMessage = it.currentSnackbarData?.message ?: "",
+                    contentMessage = it.currentSnackbarData?.actionLabel ?: "",
+                    snackBarHostState = snackBarHostState,
+                    disMissSnackBar = { snackBarHostState.currentSnackbarData?.dismiss() })
+                VerticalSpacer(height = 90.dp)
+            }
+        }
     ) {
         Row() {
             Column(modifier = Modifier.weight(1f)) {
@@ -93,13 +122,15 @@ fun TicketUpdateScreen(
                 .weight(1f)
                 .clickable {
                     TimePickerCustomDialog { timeUiState ->
-                        val cal = Calendar.getInstance().apply {
-                            add(Calendar.DATE, 1)
-                            hour = timeUiState.hour
-                            minute = timeUiState.min
-                        }
+                        val cal = Calendar
+                            .getInstance()
+                            .apply {
+                                add(Calendar.DATE, 1)
+                                hour = timeUiState.hour
+                                minute = timeUiState.min
+                            }
                         setStartTime(cal.timeInMillis)
-                    }.show(fragmentManager,"TimePickerDialog")
+                    }.show(fragmentManager, "TimePickerDialog")
                 }
             ) {
                 Item(
@@ -146,7 +177,7 @@ fun TicketUpdateScreen(
         LargePrimaryButton(
             text = "티켓 수정하기",
             onClick = {
-
+                updateTicket()
             },
             modifier = Modifier.fillMaxWidth()
         )
@@ -178,21 +209,29 @@ private fun Item(
 private fun PreviewTicketUpdate() {
     MatePreview {
         TicketUpdateScreen(
-            ticketDetail = TicketState(
-                1,
-                "2017",
-                "",
-                "황진호",
-                "인동",
-                "경운대학교",
-                "경운대학교앞",
-                DayStatus.AM,
-                25200L,
-                "link",
-                3,
-                20000,
+            TicketState(
+                id = "1",
+                startArea = "해운대",
+                endArea = "동아대학교",
+                boardingPlace = "해운대앞바다",
+                dayStatus = DayStatus.AM,
+                startTime = 25200L,
+                openChatUrl = "",
+                recruitPerson = 3,
+                ticketPrice = 2000,
+                driver = DriverState(
+                    id = "202",
+                    name = "황진호",
+                    profileImage = "",
+                    email = "",
+                    role = MemberRole.DRIVER,
+                    phoneNumber = "",
+                    carNumber = "",
+                    carImage = ""
+                ),
                 passenger = emptyList()
             ),
+            snackBarMessage = SnackBarMessage.getInitValues(),
             fragmentManager = object : FragmentManager(){},
             setStartArea = {},
             setBoardingPlace = {},
@@ -200,6 +239,7 @@ private fun PreviewTicketUpdate() {
             setOpenChatLink = {},
             setRecruitPersonCount = {},
             setFee = {},
+            updateTicket = {},
             onNavigateToHome = {}
         )
     }

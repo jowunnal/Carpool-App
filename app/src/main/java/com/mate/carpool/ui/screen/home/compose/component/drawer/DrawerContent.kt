@@ -1,5 +1,6 @@
 package com.mate.carpool.ui.screen.home.compose.component.drawer
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -18,6 +19,7 @@ import com.mate.carpool.R
 import com.mate.carpool.ui.theme.*
 import com.mate.carpool.ui.util.tu
 import kotlinx.coroutines.launch
+import kotlin.math.log
 
 enum class DrawerItem(
     val title: String,
@@ -44,6 +46,8 @@ enum class DrawerItem(
 @Composable
 fun DrawerContent(
     items: List<DrawerItem>,
+    logout: () -> Unit,
+    withDraw: () -> Unit,
     onCloseDrawer: suspend () -> Unit
 ) {
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
@@ -51,7 +55,11 @@ fun DrawerContent(
             Header(onCloseDrawer)
             Column(modifier = Modifier.weight(1f)) {
                 for (item in items) {
-                    Body(item = item)
+                    Body(
+                        item = item,
+                        logout = logout,
+                        withDraw = withDraw
+                    )
                 }
             }
             Tail()
@@ -91,7 +99,9 @@ private fun Header(
 
 @Composable
 private fun Body(
-    item: DrawerItem
+    item: DrawerItem,
+    logout: () -> Unit,
+    withDraw: () -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -99,12 +109,22 @@ private fun Body(
             .padding(16.dp)
     ) {
         when (item) {
+            DrawerItem.LOGOUT -> {
+                Text(
+                    text = item.title,
+                    fontSize = 16.tu,
+                    fontWeight = FontWeight.W700,
+                    color = black,
+                    modifier = Modifier.clickable { logout() }
+                )
+            }
             DrawerItem.WITHDRAW -> {
                 Text(
                     text = item.title,
                     fontSize = 16.tu,
                     fontWeight = FontWeight.W700,
-                    color = neutral30
+                    color = neutral30,
+                    modifier = Modifier.clickable { withDraw() }
                 )
             }
             else -> {
@@ -146,7 +166,9 @@ private fun PreviewDrawerContent() {
                 DrawerItem.LOGOUT,
                 DrawerItem.WITHDRAW
             ),
-            onCloseDrawer = {}
+            onCloseDrawer = {},
+            logout = {},
+            withDraw = {}
         )
     }
 }
