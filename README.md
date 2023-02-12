@@ -11,7 +11,7 @@ https://user-images.githubusercontent.com/75519689/218297123-a64b2985-993a-4a82-
 # Member
 
 | 기획 | 디자인 | BE | FE/AOS | FE/IOS |
-| ----- | --------------------- |
+| ----- | ----- | ----- | ----- | ----- |
 | 2 | 2 | 2 | 2 | 1 |
 
 # Detail
