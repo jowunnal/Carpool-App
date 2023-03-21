@@ -75,13 +75,13 @@ Carpool App은 대학생들을 대상으로 차량을 공유하여 드라이버�
 
 # UI
 
-![홈](https://user-images.githubusercontent.com/75519689/226547890-d8698695-4455-40cb-a4b6-634de973756f.jpg)
+![홈](https://user-images.githubusercontent.com/75519689/226549014-be8afbe9-deff-407e-8379-04513355f4d4.jpg)
 홈화면 일때
 <br/>
-![내티켓](https://user-images.githubusercontent.com/75519689/226547936-1ad22eeb-c1d6-4edc-b8fc-05a3f596bb5f.jpg)
+![내티켓](https://user-images.githubusercontent.com/75519689/226549038-8a9b1af6-e17a-4dca-9114-c3cf01a78cf9.jpg)
 내 티켓 일때
 <br/>
-![다른티켓](https://user-images.githubusercontent.com/75519689/226547957-633c8748-f6d5-47d0-97f7-e37ac5f495ee.jpg)
+![다른티켓](https://user-images.githubusercontent.com/75519689/226549025-0591ca30-21d8-44f5-87a2-7d01bea0db3a.jpg)
 내 티켓이 아닐때
 
 # 동작 영상
@@ -93,6 +93,12 @@ https://user-images.githubusercontent.com/75519689/218297123-a64b2985-993a-4a82-
 | 기획 | 디자인 | BE | FE/AOS | FE/IOS |
 | ----- | ----- | ----- | ----- | ----- |
 | 2 | 2 | 2 | 2 | 1 |
+
+# 추가로 공부할 점
+
+- MVVM 이 MVC/MVP 와 어떤점이 다르고 왜 안드로이드에서는 MVVM을 많이 사용하는가 에 대해 학습하고자 합니다.
+- Api 여러개를 fetch 하여 하나의 가공된 data를 얻고자 하는 요구사항이 있을 수 있습니다. 이때 flow 기반으로 cold stream 상에서 여러 api들로 부터 받은 데이터들을 ViewModel 에서 onEach, map, zip, flat, transform 등의 중간연산자를 활용하여 하나의 결과물로 만들어 View에 딱맞는 형태로 전달해주는 방법을 학습해 보고자 합니다.
+- Compose 상에서 화면내의 Animation 에 대해 학습해 보고자 합니다.
 
 # Detail
 
