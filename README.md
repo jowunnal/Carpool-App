@@ -76,12 +76,15 @@ Carpool App은 대학생들을 대상으로 차량을 공유하여 드라이버�
 # UI
 
 ![홈](https://user-images.githubusercontent.com/75519689/226549014-be8afbe9-deff-407e-8379-04513355f4d4.jpg)
+<br/>
 홈화면 일때
 <br/>
 ![내티켓](https://user-images.githubusercontent.com/75519689/226549038-8a9b1af6-e17a-4dca-9114-c3cf01a78cf9.jpg)
+<br/>
 내 티켓 일때
 <br/>
 ![다른티켓](https://user-images.githubusercontent.com/75519689/226549025-0591ca30-21d8-44f5-87a2-7d01bea0db3a.jpg)
+<br/>
 내 티켓이 아닐때
 
 # 동작 영상
